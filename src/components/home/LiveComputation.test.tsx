@@ -19,4 +19,10 @@ describe('LiveComputation', () => {
     expect(screen.getByRole('heading', { name: /Loss moves downhill/i })).toBeInTheDocument();
     expect(screen.getByText(/θ ← θ/i)).toBeInTheDocument();
   });
+
+  it('supports locking to a specific concept and hiding tab buttons', () => {
+    render(<MemoryRouter><LiveComputation lockConcept="gradient" hideTabs /></MemoryRouter>);
+    expect(screen.getByRole('heading', { name: /Loss moves downhill/i })).toBeInTheDocument();
+    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+  });
 });

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { PracticeProblem } from '../../lib/practiceProblem';
+import type { DocPage } from '../../lib/contentTree';
 import VectorOpsPlayground, { getVectorOpSpec } from './VectorOpsPlayground';
+import LiveComputation, { getLiveConceptForTopic } from '../home/LiveComputation';
 import {
   ClockIcon,
   SparkleIcon,
   ZapIcon,
   BookOpenIcon,
-  GoldMasteryIcon,
-  BronzeMasteryIcon,
 } from '../icons/PracticeIcons';
 import type { MasteryTier } from '../../lib/gamification';
 
@@ -17,6 +17,7 @@ interface ProblemPanelProps {
   mdxContent?: React.ReactNode;
   solved?: boolean;
   masteryTier?: MasteryTier | null;
+  relatedLesson?: DocPage;
   onHintViewed?: () => void;
   onExpandFocus?: () => void;
   isFocused?: boolean;
@@ -32,7 +33,8 @@ export default function ProblemPanel({
   problem,
   mdxContent,
   solved,
-  masteryTier,
+  masteryTier: _masteryTier,
+  relatedLesson,
   onHintViewed,
   onExpandFocus,
   isFocused,
@@ -43,6 +45,7 @@ export default function ProblemPanel({
 
   const difficultyColor = DIFFICULTY_ACCENT[problem.difficulty] ?? 'var(--nm-accent-danger)';
   const vectorOpSpec = getVectorOpSpec(problem);
+  const liveConcept = getLiveConceptForTopic(problem.topic, problem.title);
 
   const handleSelectHintLevel = (level: number) => {
     setHintLevel(level);
@@ -231,48 +234,23 @@ export default function ProblemPanel({
                   {problem.estimatedTime}
                 </span>
 
-                {/* Solved Mastery Tier Pill (Gold vs Bronze) */}
+                {/* Solved Status */}
                 {solved && (
                   <span
                     style={{
-                      fontSize: 11,
-                      fontWeight: 600,
+                      fontSize: 11.5,
+                      fontWeight: 700,
                       padding: '3px 8px',
                       borderRadius: 4,
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: 5,
-                      background:
-                        masteryTier === 'gold'
-                          ? 'color-mix(in srgb, var(--nm-accent-warn) 12%, transparent)'
-                          : 'color-mix(in srgb, var(--nm-accent-primary) 12%, transparent)',
-                      color:
-                        masteryTier === 'gold'
-                          ? 'var(--nm-accent-warn)'
-                          : 'var(--nm-accent-primary)',
-                      border: `1px solid ${
-                        masteryTier === 'gold'
-                          ? 'color-mix(in srgb, var(--nm-accent-warn) 30%, transparent)'
-                          : 'color-mix(in srgb, var(--nm-accent-primary) 30%, transparent)'
-                      }`,
+                      background: 'color-mix(in srgb, var(--nm-accent-primary) 12%, transparent)',
+                      color: 'var(--nm-accent-primary)',
+                      border: '1px solid color-mix(in srgb, var(--nm-accent-primary) 30%, transparent)',
                     }}
-                    title={
-                      masteryTier === 'gold'
-                        ? 'Solved independently without viewing hints'
-                        : 'Solved with hint guidance'
-                    }
                   >
-                    {masteryTier === 'gold' ? (
-                      <>
-                        <GoldMasteryIcon size={13} color="var(--nm-accent-warn)" />
-                        Solved independently
-                      </>
-                    ) : (
-                      <>
-                        <BronzeMasteryIcon size={13} color="var(--nm-accent-primary)" />
-                        Solved with hints
-                      </>
-                    )}
+                    ✓ Solved
                   </span>
                 )}
               </div>
@@ -300,6 +278,55 @@ export default function ProblemPanel({
                 </div>
               )}
             </div>
+
+            {/* Item G: Study this concept first */}
+            {relatedLesson && (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 12,
+                  padding: '10px 14px',
+                  borderRadius: 8,
+                  background: 'color-mix(in srgb, var(--nm-accent-secondary) 8%, var(--nm-surface))',
+                  border: '1px solid color-mix(in srgb, var(--nm-accent-secondary) 25%, var(--nm-border))',
+                  marginBottom: 16,
+                  flexWrap: 'wrap',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: '1 1 200px' }}>
+                  <BookOpenIcon size={14} color="var(--nm-accent-secondary)" />
+                  <span style={{ fontSize: 12.5, color: 'var(--nm-text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    New to this topic? <strong style={{ color: 'var(--nm-text-primary)' }}>{relatedLesson.title}</strong>
+                  </span>
+                </div>
+                <Link
+                  to={relatedLesson.route}
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 700,
+                    color: 'var(--nm-accent-secondary)',
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                  }}
+                >
+                  Study this concept first →
+                </Link>
+              </div>
+            )}
+
+            {/* Item B: Live Interactive Computation Visual at top of problem */}
+            {vectorOpSpec ? (
+              <div style={{ marginBottom: 20 }}>
+                <VectorOpsPlayground spec={vectorOpSpec} />
+              </div>
+            ) : liveConcept ? (
+              <div style={{ marginBottom: 20 }}>
+                <LiveComputation lockConcept={liveConcept} hideTabs />
+              </div>
+            ) : null}
 
             {/* Mission Box: Whitespace and typographic discipline */}
             <div
@@ -492,17 +519,107 @@ export default function ProblemPanel({
               <div style={{ marginTop: vectorOpSpec ? 16 : 0 }}>
                 {mdxContent}
               </div>
-            ) : !vectorOpSpec ? (
-              <div style={{ lineHeight: 1.6, color: 'var(--nm-text-primary)', fontSize: 13.5 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 700, margin: '0 0 8px' }}>Mathematical Intuition</h3>
-                <p>
-                  For vectors $a$ and $b$, the dot product computes $a \cdot b = \sum_i a_i b_i$. It pairs corresponding coordinates, multiplies them, and sums the total.
-                </p>
-                <p>
-                  In modern Machine Learning, dot products quantify vector alignment, form matrix multiplications (A · B), and drive self-attention mechanisms (Q · K^T / sqrt(d_k)).
-                </p>
+            ) : (
+              <div style={{ marginTop: vectorOpSpec ? 20 : 0, lineHeight: 1.6, color: 'var(--nm-text-primary)', fontSize: 13.5 }}>
+                <div style={{ marginBottom: 18 }}>
+                  <h3 style={{ fontSize: 15, fontWeight: 700, margin: '0 0 6px', color: 'var(--nm-text-primary)' }}>
+                    Worked Intuition &amp; Problem Walkthrough
+                  </h3>
+                  <p style={{ margin: '0 0 10px', color: 'var(--nm-text-secondary)', fontSize: 13 }}>
+                    {problem.mission}
+                  </p>
+                  <div style={{ fontSize: 12.5, color: 'var(--nm-text-muted)', lineHeight: 1.5 }}>
+                    {problem.taskDescription}
+                  </div>
+                </div>
+
+                {/* Step-by-Step Walkthrough */}
+                <div style={{ marginTop: 18 }}>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 700,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      color: 'var(--nm-accent-secondary)',
+                      marginBottom: 10,
+                    }}
+                  >
+                    How to Solve This, Step by Step
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    {/* Step 1: Direction & Framing */}
+                    <div
+                      style={{
+                        padding: '10px 12px',
+                        borderRadius: 6,
+                        background: 'var(--nm-surface-alt)',
+                        border: '1px solid var(--nm-border)',
+                        borderLeft: '3px solid var(--nm-accent-secondary)',
+                      }}
+                    >
+                      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-accent-secondary)', marginBottom: 3 }}>
+                        Step 1: Frame the Goal &amp; Invariants
+                      </div>
+                      <div style={{ fontSize: 12.5, color: 'var(--nm-text-primary)', lineHeight: 1.5 }}>
+                        {problem.hints?.small ?? 'Identify the exact inputs and return shapes expected by the signature.'}
+                      </div>
+                    </div>
+
+                    {/* Step 2: Implementation Walkthrough */}
+                    <div
+                      style={{
+                        padding: '10px 12px',
+                        borderRadius: 6,
+                        background: 'var(--nm-surface-alt)',
+                        border: '1px solid var(--nm-border)',
+                        borderLeft: '3px solid var(--nm-accent-teal)',
+                      }}
+                    >
+                      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-accent-teal)', marginBottom: 3 }}>
+                        Step 2: Implementation Walkthrough
+                      </div>
+                      <div style={{ fontSize: 12.5, color: 'var(--nm-text-primary)', lineHeight: 1.5 }}>
+                        {problem.hints?.strong ?? 'Iterate through the required operations and accumulate or transform intermediate values.'}
+                      </div>
+                    </div>
+
+                    {/* Step 3: Core Algorithm Concept */}
+                    <div
+                      style={{
+                        padding: '10px 12px',
+                        borderRadius: 6,
+                        background: 'var(--nm-surface-alt)',
+                        border: '1px solid var(--nm-border)',
+                        borderLeft: '3px solid var(--nm-accent-purple)',
+                      }}
+                    >
+                      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-accent-purple)', marginBottom: 3 }}>
+                        Step 3: Core Concept &amp; Numerical Properties
+                      </div>
+                      <div style={{ fontSize: 12.5, color: 'var(--nm-text-primary)', lineHeight: 1.5 }}>
+                        {problem.hints?.concept ?? `Fundamental computation applied in ${problem.topic}.`}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Constraints Reminder */}
+                {problem.constraints && problem.constraints.length > 0 && (
+                  <div style={{ marginTop: 18 }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: 6 }}>
+                      Constraints to Keep in Mind
+                    </div>
+                    <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12.5, color: 'var(--nm-text-secondary)', lineHeight: 1.6 }}>
+                      {problem.constraints.map((c, i) => (
+                        <li key={i}>{c}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
-            ) : null}
+            )}
           </div>
         )}
       </div>

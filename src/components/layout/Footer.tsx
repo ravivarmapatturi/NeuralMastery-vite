@@ -30,7 +30,7 @@ export default function Footer() {
         }}
       >
         <span>© {year} Neural Mastery</span>
-        <nav style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }} aria-label="Footer">
+        <nav style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }} aria-label="Footer">
           <Link to="/about" style={{ color: 'inherit' }}>
             About
           </Link>
@@ -40,6 +40,14 @@ export default function Footer() {
           <Link to="/terms" style={{ color: 'inherit' }}>
             Terms of Service
           </Link>
+          <a
+            href="https://x.com/NeuralMastery"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: 'inherit' }}
+          >
+            Questions? Reach out on X
+          </a>
         </nav>
       </div>
     </footer>

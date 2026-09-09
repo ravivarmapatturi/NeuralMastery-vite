@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeHead, runAttention, tokenize } from '../../viz/lib/attention';
 
-type Concept = 'algebra' | 'gradient' | 'attention' | 'llm' | 'rag' | 'agent';
+export type Concept = 'algebra' | 'gradient' | 'attention' | 'llm' | 'rag' | 'agent';
 
-const concepts: Array<{ id: Concept; label: string; route: string; title: string; subtitle: string; stages: string[] }> = [
+export const concepts: Array<{ id: Concept; label: string; route: string; title: string; subtitle: string; stages: string[] }> = [
   { id: 'algebra', label: 'Linear algebra', route: '/docs/mathematics-for-ai/overview', title: 'A vector transforms', subtitle: 'Matrix multiplication is the first computation behind every model.', stages: ['vector', 'matrix', 'transform', 'result'] },
   { id: 'gradient', label: 'Gradient descent', route: '/docs/machine-learning/linear-regression', title: 'Loss moves downhill', subtitle: 'A real update rule changes the parameters on each step.', stages: ['parameters', 'prediction', 'loss', 'gradient'] },
   { id: 'attention', label: 'Attention', route: '/docs/deep-learning/attention-transformers', title: 'Tokens attend to tokens', subtitle: 'Q · Kᵀ / √d → softmax → weighted values, computed in the page.', stages: ['tokens', 'Q K V', 'scores', 'attention'] },
@@ -12,6 +12,21 @@ const concepts: Array<{ id: Concept; label: string; route: string; title: string
   { id: 'rag', label: 'RAG', route: '/docs/llms-genai/overview', title: 'A query retrieves context', subtitle: 'Embedding similarity ranks the documents before generation.', stages: ['query', 'embed', 'retrieve', 'context'] },
   { id: 'agent', label: 'Agent', route: '/docs/agents/overview', title: 'A system executes a plan', subtitle: 'Goal, tool call, observation, and next action form an operating loop.', stages: ['goal', 'plan', 'tool', 'observe'] },
 ];
+
+export function getLiveConceptForTopic(topic?: string, title?: string): Concept | null {
+  const t = (topic || '').toLowerCase();
+  const name = (title || '').toLowerCase();
+  const combined = `${t} ${name}`;
+
+  if (combined.includes('attention') || combined.includes('transformer') || combined.includes('qkv') || combined.includes('head')) return 'attention';
+  if (combined.includes('rag') || combined.includes('retriev') || combined.includes('vector search') || combined.includes('embedding') || combined.includes('chunk')) return 'rag';
+  if (combined.includes('agent') || combined.includes('mcp') || combined.includes('tool use') || combined.includes('planning') || combined.includes('workflow')) return 'agent';
+  if (combined.includes('llm') || combined.includes('logit') || combined.includes('decoding') || combined.includes('sampling') || combined.includes('prompt') || combined.includes('temperature') || combined.includes('generation')) return 'llm';
+  if (combined.includes('gradient') || combined.includes('backprop') || combined.includes('loss') || combined.includes('sgd') || combined.includes('regression') || combined.includes('optimizer') || combined.includes('adam')) return 'gradient';
+  if (combined.includes('algebra') || combined.includes('vector') || combined.includes('matrix') || combined.includes('dot product') || combined.includes('cosine') || combined.includes('math') || combined.includes('numpy') || combined.includes('tensor')) return 'algebra';
+
+  return null;
+}
 
 const softmax = (values: number[]) => {
   const max = Math.max(...values);
@@ -36,11 +51,26 @@ function Bars({ labels, values }: { labels: string[]; values: number[] }) {
   return <div className="nm-live-bars">{labels.map((label, index) => <div key={label}><span>{label}</span><i><b style={{ width: `${Math.max(3, values[index] * 100)}%` }} /></i><em>{(values[index] * 100).toFixed(0)}%</em></div>)}</div>;
 }
 
-export default function LiveComputation() {
-  const [selected, setSelected] = useState<Concept>('attention');
+export interface LiveComputationProps {
+  initialConcept?: Concept;
+  lockConcept?: Concept;
+  hideTabs?: boolean;
+  className?: string;
+  titlePrefix?: string;
+}
+
+export default function LiveComputation({
+  initialConcept = 'attention',
+  lockConcept,
+  hideTabs = false,
+  className = '',
+  titlePrefix = 'LIVE CONCEPT SYSTEM',
+}: LiveComputationProps = {}) {
+  const [internalSelected, setInternalSelected] = useState<Concept>(lockConcept ?? initialConcept);
+  const selected = lockConcept ?? internalSelected;
   const [tick, setTick] = useState(0);
   const reducedMotion = useReducedMotion();
-  const concept = concepts.find((entry) => entry.id === selected)!;
+  const concept = concepts.find((entry) => entry.id === selected) ?? concepts[0];
   const attention = useMemo(() => runAttention(tokenize('models learn relationships'), makeHead(1)), []);
   const llmProbabilities = useMemo(() => softmax([2.8, 1.6, 0.9, 0.3]), []);
   const retrieval = useMemo(() => softmax([0.92, 0.63, 0.31]), []);
@@ -57,10 +87,10 @@ export default function LiveComputation() {
   const gradientLoss = gradientX ** 2;
   const attentionValues = attention.weights[0];
 
-  return <section className="nm-live-computation" aria-labelledby="live-computation-heading">
+  return <section className={`nm-live-computation ${className}`.trim()} aria-labelledby="live-computation-heading">
     <div className="nm-live-topbar"><span><i aria-hidden="true" /> live deterministic computation</span><span>{reducedMotion ? 'motion paused' : `step ${activeStage + 1}/${concept.stages.length}`}</span></div>
     <div className="nm-live-body">
-      <div className="nm-live-heading"><div><p>LIVE CONCEPT SYSTEM</p><h2 id="live-computation-heading">{concept.title}</h2><small>{concept.subtitle}</small></div><Link to={concept.route}>Open lesson →</Link></div>
+      <div className="nm-live-heading"><div><p>{titlePrefix}</p><h2 id="live-computation-heading">{concept.title}</h2><small>{concept.subtitle}</small></div><Link to={concept.route}>Open lesson →</Link></div>
       <div className="nm-live-pipeline" aria-label={`${concept.label} computation stages`}>
         {concept.stages.map((stage, index) => <div className={index <= activeStage ? 'is-active' : ''} key={stage}><span>{String(index + 1).padStart(2, '0')}</span><strong>{stage}</strong></div>)}
       </div>
@@ -73,8 +103,10 @@ export default function LiveComputation() {
         {selected === 'agent' && <><div className="nm-agent-trace">{['goal', 'plan', 'search docs', 'observe'].map((step, index) => <span className={index <= activeStage ? 'is-active' : ''} key={step}>{step}</span>)}</div><p>Execution trace: the active node advances through a real agent loop.</p></>}
       </div>
     </div>
-    <div className="nm-live-tabs" role="tablist" aria-label="Choose a live AI computation">
-      {concepts.map((entry) => <button key={entry.id} role="tab" aria-selected={selected === entry.id} type="button" onClick={() => setSelected(entry.id)}>{entry.label}</button>)}
-    </div>
+    {!hideTabs && !lockConcept && (
+      <div className="nm-live-tabs" role="tablist" aria-label="Choose a live AI computation">
+        {concepts.map((entry) => <button key={entry.id} role="tab" aria-selected={selected === entry.id} type="button" onClick={() => setInternalSelected(entry.id)}>{entry.label}</button>)}
+      </div>
+    )}
   </section>;
 }

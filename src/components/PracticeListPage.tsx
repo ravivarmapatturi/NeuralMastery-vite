@@ -7,8 +7,6 @@ import {
   hasAward,
   pointsForDifficulty,
   SYSTEM_DESIGN_CHALLENGE_POINTS,
-  getProblemAward,
-  getMasteryTier,
 } from '../lib/gamification';
 import { recommendedProblem } from '../lib/mastery';
 import { getPracticeProblem } from '../lib/practiceProblem';
@@ -16,10 +14,9 @@ import { buildTopicLabels, getPracticeTracks } from '../lib/practiceTracks';
 import { useDocumentTitle } from '../lib/useDocumentTitle';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import {
-  GoldMasteryIcon,
-  BronzeMasteryIcon,
   ArrowRightIcon,
 } from './icons/PracticeIcons';
+import LiveComputation from './home/LiveComputation';
 
 const DIFFICULTY_COLOR: Record<PracticeDifficulty, string> = {
   easy: 'var(--nm-accent-primary)',
@@ -41,13 +38,12 @@ function isDesignChallenge(page: DocPage): boolean {
 
 export default function PracticeListPage() {
   const problems = useMemo(() => getPracticeProblems(), []);
-  const placeholderCount = useMemo(() => problems.filter((p) => p.placeholder).length, [problems]);
-  const realCount = problems.length - placeholderCount;
+  const realCount = problems.filter((p) => !p.placeholder).length;
 
-  useDocumentTitle(`Practice AI — ${realCount} Real, Hands-On Problems (${placeholderCount} more being added)`);
+  useDocumentTitle(`Practice AI — ${realCount} Real, Hands-On Problems`);
   useDocumentMeta(
     'Practice AI',
-    `A growing AI Engineering practice curriculum with ${realCount} real, hands-on problems (${placeholderCount} more being added) covering Agentic AI, Transformers, RAG, MCP, Graphs, Math, NumPy, ML, and Systems.`,
+    `A comprehensive AI Engineering practice curriculum with ${realCount} real, hands-on problems covering Agentic AI, Transformers, RAG, MCP, Graphs, Math, NumPy, ML, and Systems.`,
   );
 
   const topicLabels = useMemo(buildTopicLabels, []);
@@ -173,7 +169,7 @@ export default function PracticeListPage() {
                 wordBreak: 'break-word',
               }}
             >
-              Practice AI — {realCount} Real, Hands-On Problems ({placeholderCount} more being added)
+              Practice AI — {realCount} Real, Hands-On Problems
             </h1>
             <p style={{ fontSize: 14, color: 'var(--nm-text-secondary)', margin: '0 0 0.75rem', lineHeight: 1.6, maxWidth: 780, overflowWrap: 'break-word' }}>
               {realCount} real AI engineering problems with working test suites and instant browser-based execution, covering
@@ -198,7 +194,10 @@ export default function PracticeListPage() {
             }}
           >
             <button
-              onClick={() => setViewMode('roadmap')}
+              onClick={() => {
+                setViewMode('roadmap');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
               style={{
                 padding: '0.45rem 0.85rem',
                 borderRadius: 6,
@@ -213,7 +212,11 @@ export default function PracticeListPage() {
               Curriculum Roadmap
             </button>
             <button
-              onClick={() => setViewMode('table')}
+              onClick={() => {
+                setViewMode('table');
+                const el = document.getElementById('practice-catalogue');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
               style={{
                 padding: '0.45rem 0.85rem',
                 borderRadius: 6,
@@ -344,6 +347,30 @@ export default function PracticeListPage() {
           </div>
         )}
 
+        {/* Live Computation Showcase */}
+        <div style={{ marginBottom: '2.5rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'baseline',
+              marginBottom: '1rem',
+              flexWrap: 'wrap',
+              gap: 8,
+            }}
+          >
+            <div>
+              <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
+                Live Deterministic Computation
+              </h2>
+              <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', marginTop: 2 }}>
+                Step-by-step mathematical execution of fundamental AI algorithms
+              </div>
+            </div>
+          </div>
+          <LiveComputation />
+        </div>
+
         {/* Practice Tracks */}
         <div className="nm-practice-tracks" style={{ marginBottom: '2.5rem' }}>
           <div
@@ -433,106 +460,131 @@ export default function PracticeListPage() {
           </div>
         </div>
 
-        {/* Filter Toolbar */}
-        <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setCurrentPage(1);
-            }}
-            placeholder="Search practice problems..."
-            aria-label="Search practice problems by title"
-            style={{
-              flex: '1 1 220px',
-              padding: '0.5rem 0.75rem',
-              borderRadius: 6,
-              border: '1px solid var(--nm-border)',
-              background: 'var(--nm-surface)',
-              color: 'var(--nm-text-primary)',
-              fontSize: 13,
-              maxWidth: '100%',
-              boxSizing: 'border-box',
-            }}
-          />
-          <select
-            value={difficultyFilter}
-            onChange={(e) => {
-              setDifficultyFilter(e.target.value as typeof difficultyFilter);
-              setCurrentPage(1);
-            }}
-            aria-label="Filter by difficulty"
-            style={{
-              padding: '0.5rem 0.6rem',
-              borderRadius: 6,
-              border: '1px solid var(--nm-border)',
-              background: 'var(--nm-surface)',
-              color: 'var(--nm-text-primary)',
-              fontSize: 13,
-              maxWidth: '100%',
-              boxSizing: 'border-box',
-            }}
-          >
-            <option value="all">All difficulties</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-            <option value="design">Design Challenge</option>
-          </select>
-          <select
-            value={topicFilter}
-            onChange={(e) => {
-              setTopicFilter(e.target.value);
-              setCurrentPage(1);
-            }}
-            aria-label="Filter by topic"
-            style={{
-              padding: '0.5rem 0.6rem',
-              borderRadius: 6,
-              border: '1px solid var(--nm-border)',
-              background: 'var(--nm-surface)',
-              color: 'var(--nm-text-primary)',
-              fontSize: 13,
-              maxWidth: '100%',
-              boxSizing: 'border-box',
-            }}
-          >
-            <option value="all">All topics</option>
-            {topics.map((t) => (
-              <option key={t} value={t}>
-                {topicLabels[t] ?? t} ({topicCounts[t] ?? 0})
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Catalogue Table */}
-        <div
-          style={{
-            borderRadius: 8,
-            border: '1px solid var(--nm-border)',
-            overflowX: 'auto',
-            WebkitOverflowScrolling: 'touch',
-            maxWidth: '100%',
-          }}
-        >
-          <div id="practice-catalogue" style={{ minWidth: 620, scrollMarginTop: 90 }}>
+        {/* All Problems Catalogue */}
+        <div id="practice-catalogue" style={{ marginBottom: '2.5rem', scrollMarginTop: 80 }}>
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 110px 160px 130px 70px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'baseline',
+              marginBottom: '1rem',
+              flexWrap: 'wrap',
               gap: 8,
-              padding: '0.6rem 1rem',
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: '0.04em',
-              textTransform: 'uppercase',
-              color: 'var(--nm-text-muted)',
-              background: 'var(--nm-surface-alt)',
-              borderBottom: '1px solid var(--nm-border)',
             }}
           >
+            <div>
+              <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
+                All Problems Catalogue
+              </h2>
+              <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', marginTop: 2 }}>
+                Search, filter by difficulty or topic, and browse across all {problems.length} problems
+              </div>
+            </div>
+            <span style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>
+              Showing {filtered.length} of {problems.length} problems
+            </span>
+          </div>
+
+          {/* Filter Toolbar */}
+          <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+              }}
+              placeholder="Search practice problems..."
+              aria-label="Search practice problems by title"
+              style={{
+                flex: '1 1 220px',
+                padding: '0.5rem 0.75rem',
+                borderRadius: 6,
+                border: '1px solid var(--nm-border)',
+                background: 'var(--nm-surface)',
+                color: 'var(--nm-text-primary)',
+                fontSize: 13,
+                maxWidth: '100%',
+                boxSizing: 'border-box',
+              }}
+            />
+            <select
+              value={difficultyFilter}
+              onChange={(e) => {
+                setDifficultyFilter(e.target.value as typeof difficultyFilter);
+                setCurrentPage(1);
+              }}
+              aria-label="Filter by difficulty"
+              style={{
+                padding: '0.5rem 0.6rem',
+                borderRadius: 6,
+                border: '1px solid var(--nm-border)',
+                background: 'var(--nm-surface)',
+                color: 'var(--nm-text-primary)',
+                fontSize: 13,
+                maxWidth: '100%',
+                boxSizing: 'border-box',
+              }}
+            >
+              <option value="all">All difficulties</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+              <option value="design">Design Challenge</option>
+            </select>
+            <select
+              value={topicFilter}
+              onChange={(e) => {
+                setTopicFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              aria-label="Filter by topic"
+              style={{
+                padding: '0.5rem 0.6rem',
+                borderRadius: 6,
+                border: '1px solid var(--nm-border)',
+                background: 'var(--nm-surface)',
+                color: 'var(--nm-text-primary)',
+                fontSize: 13,
+                maxWidth: '100%',
+                boxSizing: 'border-box',
+              }}
+            >
+              <option value="all">All topics</option>
+              {topics.map((t) => (
+                <option key={t} value={t}>
+                  {topicLabels[t] ?? t} ({topicCounts[t] ?? 0})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Catalogue Table */}
+          <div
+            style={{
+              borderRadius: 8,
+              border: '1px solid var(--nm-border)',
+              overflowX: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              maxWidth: '100%',
+            }}
+          >
+            <div style={{ minWidth: 620 }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 110px 160px 130px 70px',
+                gap: 8,
+                padding: '0.6rem 1rem',
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+                color: 'var(--nm-text-muted)',
+                background: 'var(--nm-surface-alt)',
+                borderBottom: '1px solid var(--nm-border)',
+              }}
+            >
             <span>Title</span>
             <span>Difficulty</span>
             <span>Topic</span>
@@ -548,8 +600,6 @@ export default function PracticeListPage() {
             displayedProblems.map((p, i) => {
               const design = isDesignChallenge(p);
               const solved = hasAward(events, p.route, design ? 'design' : 'complete');
-              const award = getProblemAward(events, p.route);
-              const tier = getMasteryTier(award);
               const points = design ? SYSTEM_DESIGN_CHALLENGE_POINTS : pointsForDifficulty(p.difficulty);
 
               return (
@@ -601,17 +651,9 @@ export default function PracticeListPage() {
                   </span>
                   <span style={{ fontSize: 12, display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                     {solved ? (
-                      tier === 'gold' ? (
-                        <span style={{ color: 'var(--nm-accent-warn)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 3 }}>
-                          <GoldMasteryIcon size={12} color="var(--nm-accent-warn)" />
-                          ✓ Solved (Independent)
-                        </span>
-                      ) : (
-                        <span style={{ color: 'var(--nm-accent-primary)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 3 }}>
-                          <BronzeMasteryIcon size={12} color="var(--nm-accent-primary)" />
-                          ✓ Solved (With hints)
-                        </span>
-                      )
+                      <span style={{ color: 'var(--nm-accent-primary)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                        ✓ Solved
+                      </span>
                     ) : (
                       <span style={{ color: 'var(--nm-text-muted)' }}>Not started</span>
                     )}
@@ -705,6 +747,7 @@ export default function PracticeListPage() {
             </div>
           </div>
         )}
+        </div>
       </main>
     </div>
   );

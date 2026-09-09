@@ -42,12 +42,12 @@ describe('PracticeListPage', () => {
     expect(screen.getByText(/^0 \/ \d+ solved$/)).toBeInTheDocument()
   })
 
-  it('the H1 leads with the real, hands-on problem count and notes placeholders being added, while the solved count reports total catalogue', () => {
+  it('the H1 leads with the real, hands-on problem count, while the solved count reports total catalogue', () => {
     renderList()
     const solvedText = screen.getByText(/^\d+ \/ \d+ solved$/).textContent!
     const total = Number(solvedText.split('/')[1].trim().split(' ')[0])
     expect(total).toBeGreaterThan(0)
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/Practice AI — \d+ Real, Hands-On Problems \(\d+ more being added\)/)
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/Practice AI — \d+ Real, Hands-On Problems$/)
   })
 
   it('reflects a real completed problem as Solved, and increments the header count', () => {

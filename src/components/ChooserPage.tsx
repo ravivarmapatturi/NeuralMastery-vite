@@ -43,7 +43,7 @@ export default function ChooserPage() {
               <p className="nm-eyebrow">Interactive AI engineering curriculum</p>
               <h1>Learn it.<br />Practice it.<br /><em>Achieve Mastery.</em></h1>
               <p className="nm-hero-lede">
-                Master AI through real computation, interactive visualizations, and executable practice—from foundations to LLMs and agents.
+                Master AI engineering through real in-browser execution, step-by-step computed visualizations, and rigorous test suites—from linear algebra and gradient descent to transformers, RAG, and autonomous agent loops.
               </p>
               <div className="nm-hero-actions">
                 <Link className="nm-button nm-button-primary" to={completed ? '/progress' : '/learn'}>
@@ -118,9 +118,9 @@ export default function ChooserPage() {
 
         <section className="nm-final-cta">
           <div className="nm-landing-shell">
-            <p className="nm-eyebrow">Build durable intuition</p>
-            <h2>Understand the computation.<br />Then make it yours.</h2>
-            <p>Choose a starting point, explore the system, and build real AI/ML skill one concept at a time.</p>
+            <p className="nm-eyebrow">Code it. Run it. Verify it.</p>
+            <h2>Run real algorithms.<br />Inspect every tensor, step by step.</h2>
+            <p>From core matrix math to production multi-agent systems—solve hands-on problems with zero setup and instant in-browser test validation.</p>
             <Link className="nm-button nm-button-primary" to="/learn">Start learning AI <Arrow /></Link>
           </div>
         </section>

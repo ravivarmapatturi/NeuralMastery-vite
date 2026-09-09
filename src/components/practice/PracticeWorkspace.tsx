@@ -22,6 +22,7 @@ import { ServerExecutor } from '../../lib/execution/serverExecutor';
 import type { CodeExecutor, ExecutionResult } from '../../lib/execution/types';
 import AuthButton from '../layout/AuthButton';
 import StreakBadge from '../layout/StreakBadge';
+import { showRewardToast } from '../ui/Confetti';
 import { useGamification } from '../../contexts/GamificationContext';
 import { normalizeRoute, getFlatPages, getPageByRoute, getPracticeProblems } from '../../lib/contentTree';
 import { isSolved, recommendedProblem, relatedLesson } from '../../lib/mastery';
@@ -190,6 +191,13 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
         const hintUsed = hasViewedHints(problemId);
         awardProblemCompleted(permalink, problem.difficulty, bonusToAward, hintUsed);
         void import('../../lib/firebase').then(({ trackFeatureEvent }) => trackFeatureEvent('practice_problem_solve', { problem_id: problemId }));
+
+        showRewardToast({
+          title: 'Problem Solved!',
+          subtitle: `All ${res.caseResults.length} test cases passed. Real browser verification complete!`,
+          icon: '⚡',
+          type: 'celebration',
+        });
       }
     }
   }
@@ -547,6 +555,7 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
             mdxContent={mdxContent}
             solved={solved}
             masteryTier={masteryTier}
+            relatedLesson={concept}
             onHintViewed={() => recordHintViewed(problemId)}
             isFocused={focusMode === 'problem'}
             onExpandFocus={() => setFocusMode(focusMode === 'problem' ? 'normal' : 'problem')}
