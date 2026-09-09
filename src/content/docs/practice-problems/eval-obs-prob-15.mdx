@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #428. Agent Evaluation & Observability Module 3: Problem 15"
-description: "Master #428. Agent Evaluation & Observability Module 3: Problem 15 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Weighted Composite Eval Score"
+description: "Implement weighted composite scoring, combining several individually-meaningful eval metrics (accuracy, latency, cost) into one real overall number for a leaderboard or gating decision."
 difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #428. Agent Evaluation & Observability Module 3: Problem 15
+# Weighted Composite Eval Score
 
-**Track**: Agent Evaluation & Observability | **Rank**: #428 of 1072 | **Points**: 60 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#428. Agent Evaluation & Observability Module 3: Problem 15` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement weighted composite scoring, combining several individually-meaningful eval metrics (accuracy, latency, cost) into one real overall number for a leaderboard or gating decision.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_3_problem_15`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `composite_score(metric_scores, weights)`. Return `sum(metric_scores[k] * weights[k] for k in weights) / sum(weights.values())` -- a weighted average, normalized so the weights don't need to sum to 1 themselves.
 
 <PracticePlayground problemId="eval-obs-prob-15" />

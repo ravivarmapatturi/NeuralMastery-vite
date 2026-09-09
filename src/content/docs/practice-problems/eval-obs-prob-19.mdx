@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #432. Agent Evaluation & Observability Module 4: Problem 19"
-description: "Master #432. Agent Evaluation & Observability Module 4: Problem 19 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Alert Deduplication by Fingerprint"
+description: "Implement alert deduplication, a real, necessary filter preventing an observability system from paging an on-call engineer once per occurrence of what's really the same ongoing incident."
 difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #432. Agent Evaluation & Observability Module 4: Problem 19
+# Alert Deduplication by Fingerprint
 
-**Track**: Agent Evaluation & Observability | **Rank**: #432 of 1072 | **Points**: 60 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#432. Agent Evaluation & Observability Module 4: Problem 19` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement alert deduplication, a real, necessary filter preventing an observability system from paging an on-call engineer once per occurrence of what's really the same ongoing incident.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `dedupe_alerts(alerts, dedup_window_s)`. `alerts` is a list of `{"fingerprint": str, "ts": float}`, sorted by `ts` ascending. Keep an alert if it's the FIRST occurrence of its fingerprint, OR if its `ts` is more than `dedup_window_s` after the LAST KEPT alert with the same fingerprint. Return the kept alerts, preserving order.
 
 <PracticePlayground problemId="eval-obs-prob-19" />

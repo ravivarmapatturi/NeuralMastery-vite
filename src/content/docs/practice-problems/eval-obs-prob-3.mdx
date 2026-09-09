@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #416. Agent Evaluation & Observability Module 1: Problem 3"
-description: "Master #416. Agent Evaluation & Observability Module 1: Problem 3 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Inter-Rater Agreement (Cohen's Kappa)"
+description: "Implement Cohen's Kappa, the real, standard statistic for measuring agreement between two evaluators (human or LLM-judge) beyond what chance alone would predict."
+difficulty: "hard"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #416. Agent Evaluation & Observability Module 1: Problem 3
+# Inter-Rater Agreement (Cohen's Kappa)
 
-**Track**: Agent Evaluation & Observability | **Rank**: #416 of 1072 | **Points**: 40 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#416. Agent Evaluation & Observability Module 1: Problem 3` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement Cohen's Kappa, the real, standard statistic for measuring agreement between two evaluators (human or LLM-judge) beyond what chance alone would predict.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cohens_kappa(rater_a, rater_b)`. Observed agreement `p_o` = fraction where `rater_a[i] == rater_b[i]`. Expected agreement `p_e` = `sum(freq_a[c] * freq_b[c] for c in categories)`, where `freq_a[c]`/`freq_b[c]` are each rater's fraction of ratings equal to category `c`. Kappa = `(p_o - p_e) / (1 - p_e)`. Return `1.0` if `p_e == 1`.
 
 <PracticePlayground problemId="eval-obs-prob-3" />

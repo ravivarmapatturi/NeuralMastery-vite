@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #438. Agent Evaluation & Observability Module 5: Problem 25"
-description: "Master #438. Agent Evaluation & Observability Module 5: Problem 25 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Compute Real Token-Efficiency Score"
+description: "Implement token-efficiency scoring, a real metric capturing that a SUCCESSFUL agent using fewer tokens than a baseline is genuinely more efficient, while a failed run should score zero regardless of token usage."
+difficulty: "easy"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #438. Agent Evaluation & Observability Module 5: Problem 25
+# Compute Real Token-Efficiency Score
 
-**Track**: Agent Evaluation & Observability | **Rank**: #438 of 1072 | **Points**: 90 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#438. Agent Evaluation & Observability Module 5: Problem 25` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement token-efficiency scoring, a real metric capturing that a SUCCESSFUL agent using fewer tokens than a baseline is genuinely more efficient, while a failed run should score zero regardless of token usage.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `token_efficiency(task_success, tokens_used, baseline_tokens)`. If `not task_success`, return `0.0` (a failed run is never efficient). Otherwise return `baseline_tokens / tokens_used` (uncapped -- can exceed 1.0 if the agent used FEWER tokens than baseline).
 
 <PracticePlayground problemId="eval-obs-prob-25" />

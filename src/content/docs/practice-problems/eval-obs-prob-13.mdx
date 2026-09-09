@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #426. Agent Evaluation & Observability Module 3: Problem 13"
-description: "Master #426. Agent Evaluation & Observability Module 3: Problem 13 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Compute Real Token Usage Cost Attribution by User"
+description: "Implement per-user cost attribution, a real observability requirement for any multi-tenant agent deployment needing to bill or budget-track individual users."
+difficulty: "easy"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #426. Agent Evaluation & Observability Module 3: Problem 13
+# Compute Real Token Usage Cost Attribution by User
 
-**Track**: Agent Evaluation & Observability | **Rank**: #426 of 1072 | **Points**: 60 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#426. Agent Evaluation & Observability Module 3: Problem 13` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement per-user cost attribution, a real observability requirement for any multi-tenant agent deployment needing to bill or budget-track individual users.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_3_problem_13`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `cost_by_user(request_costs)`. Each entry is `{"user_id": str, "cost": float}`. Return a dict mapping each distinct user id to the SUM of their costs.
 
 <PracticePlayground problemId="eval-obs-prob-13" />

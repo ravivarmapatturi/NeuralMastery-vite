@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #442. Agent Evaluation & Observability Module 6: Problem 29"
-description: "Master #442. Agent Evaluation & Observability Module 6: Problem 29 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Aggregate Multi-Turn Conversation Success Rate"
+description: "Implement conversation-level (not turn-level) success rate computation, the real metric that actually matters for a multi-turn agent -- a conversation with even one broken turn is usually a real failed user experience overall."
+difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #442. Agent Evaluation & Observability Module 6: Problem 29
+# Aggregate Multi-Turn Conversation Success Rate
 
-**Track**: Agent Evaluation & Observability | **Rank**: #442 of 1072 | **Points**: 90 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#442. Agent Evaluation & Observability Module 6: Problem 29` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement conversation-level (not turn-level) success rate computation, the real metric that actually matters for a multi-turn agent -- a conversation with even one broken turn is usually a real failed user experience overall.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_6_problem_29`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `conversation_success_rate(conversations)`. Each conversation is `{"turns": list[bool]}` (per-turn success flags). A conversation counts as successful ONLY if ALL its turns succeeded. Return the fraction of conversations that are fully successful.
 
 <PracticePlayground problemId="eval-obs-prob-29" />

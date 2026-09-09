@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #425. Agent Evaluation & Observability Module 3: Problem 12"
-description: "Master #425. Agent Evaluation & Observability Module 3: Problem 12 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Statistical Significance of an Eval Score Delta"
+description: "Implement statistical-significance testing for an eval score comparison, the real gate before claiming 'model B genuinely beats model A' rather than a difference explainable by eval-set sample noise."
+difficulty: "hard"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #425. Agent Evaluation & Observability Module 3: Problem 12
+# Statistical Significance of an Eval Score Delta
 
-**Track**: Agent Evaluation & Observability | **Rank**: #425 of 1072 | **Points**: 60 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#425. Agent Evaluation & Observability Module 3: Problem 12` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement statistical-significance testing for an eval score comparison, the real gate before claiming 'model B genuinely beats model A' rather than a difference explainable by eval-set sample noise.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `eval_delta_significant(pass_count_a, total_a, pass_count_b, total_b, z_threshold)` using the same two-proportion z-test as an A/B test: `p_a = pass_count_a/total_a`; `p_b = pass_count_b/total_b`; `p_pool = (pass_count_a+pass_count_b)/(total_a+total_b)`; `se = sqrt(p_pool*(1-p_pool)*(1/total_a + 1/total_b))`. Return `True` if `se > 0` and `abs(p_b-p_a)/se > z_threshold`.
 
 <PracticePlayground problemId="eval-obs-prob-12" />

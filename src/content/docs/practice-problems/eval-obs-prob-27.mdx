@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #440. Agent Evaluation & Observability Module 6: Problem 27"
-description: "Master #440. Agent Evaluation & Observability Module 6: Problem 27 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Compute Real Judge-Model Bias Toward Position"
+description: "Implement position-bias detection for an LLM-as-judge pairwise comparison setup, a real, well-documented failure mode where judges systematically favor whichever answer appears first/second regardless of actual quality."
+difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #440. Agent Evaluation & Observability Module 6: Problem 27
+# Compute Real Judge-Model Bias Toward Position
 
-**Track**: Agent Evaluation & Observability | **Rank**: #440 of 1072 | **Points**: 90 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#440. Agent Evaluation & Observability Module 6: Problem 27` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement position-bias detection for an LLM-as-judge pairwise comparison setup, a real, well-documented failure mode where judges systematically favor whichever answer appears first/second regardless of actual quality.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `position_bias_rate(judge_results)`. Each entry is `{"winner_position": str}` (either `'first'` or `'second'`). Return the fraction of results where `winner_position == 'first'`. A value far from `0.5` suggests real position bias (assuming answer quality is genuinely randomized across positions).
 
 <PracticePlayground problemId="eval-obs-prob-27" />

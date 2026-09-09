@@ -112929,6 +112929,2771 @@ def warm_pool_size(peak_qps, qps_per_instance, safety_margin_pct):
       ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  "eval-obs-prob-1": {
+    id: "eval-obs-prob-1",
+    title: "Exact-Match Task Accuracy",
+    difficulty: "easy",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "exact_match_accuracy",
+    functionSignature: "exact_match_accuracy(predictions: list[str], references: list[str]) -> float",
+    starterCode: `def exact_match_accuracy(predictions, references):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement exact-match accuracy, the simplest real agent-evaluation metric -- what fraction of outputs are byte-for-byte identical to the expected answer.",
+    taskDescription: "Implement `exact_match_accuracy(predictions, references)`: return the fraction of positions where `predictions[i] == references[i]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(predictions) == len(references) > 0"
+      ],
+    hints: {
+  "small": "Count exact matches, divide by total.",
+        "strong": "sum(1 for p,r in zip(predictions,references) if p==r)/len(predictions).",
+        "concept": "Exact match is a real, strict metric -- correct but differently-formatted answers (extra whitespace, different capitalization) count as wrong, which is both its main weakness and exactly why it's still useful as a conservative lower bound alongside softer metrics."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "all correct",
+          "input": {
+            "predictions": [
+              "a",
+              "b",
+              "c"
+            ],
+            "references": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "partial correct",
+          "input": {
+            "predictions": [
+              "a",
+              "x",
+              "c"
+            ],
+            "references": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "expectedOutput": 0.6666666666666666,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "none correct",
+          "input": {
+            "predictions": [
+              "x",
+              "y"
+            ],
+            "references": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single item",
+          "input": {
+            "predictions": [
+              "a"
+            ],
+            "references": [
+              "a"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-2": {
+    id: "eval-obs-prob-2",
+    title: "LLM-as-Judge Score Normalization",
+    difficulty: "easy",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "normalize_judge_score",
+    functionSignature: "normalize_judge_score(raw_score: float, scale_min: float, scale_max: float) -> float",
+    starterCode: `def normalize_judge_score(raw_score, scale_min, scale_max):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement judge-score normalization, converting an LLM-as-judge's raw rating (on whatever scale the judge prompt used) into a standard [0,1] range for aggregation across differently-scaled evaluations.",
+    taskDescription: "Implement `normalize_judge_score(raw_score, scale_min, scale_max)`: return `(raw_score - scale_min) / (scale_max - scale_min)`, clamped to `[0, 1]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "scale_max > scale_min"
+      ],
+    hints: {
+  "small": "Linear rescale to [0,1], then clamp.",
+        "strong": "norm = (raw_score-scale_min)/(scale_max-scale_min); return max(0.0, min(1.0, norm)).",
+        "concept": "Different eval prompts use different scales (1-5, 1-10, 0-100) -- normalizing to a common [0,1] range is what makes results from different eval runs (or different judge prompts) directly comparable and averageable."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "1-5 scale midpoint",
+          "input": {
+            "raw_score": 3,
+            "scale_min": 1,
+            "scale_max": 5
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "1-10 scale near top",
+          "input": {
+            "raw_score": 9,
+            "scale_min": 1,
+            "scale_max": 10
+          },
+          "expectedOutput": 0.8888888888888888,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "at scale minimum",
+          "input": {
+            "raw_score": 1,
+            "scale_min": 1,
+            "scale_max": 5
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "out of range clamped",
+          "input": {
+            "raw_score": 15,
+            "scale_min": 1,
+            "scale_max": 10
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-3": {
+    id: "eval-obs-prob-3",
+    title: "Inter-Rater Agreement (Cohen's Kappa)",
+    difficulty: "hard",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "cohens_kappa",
+    functionSignature: "cohens_kappa(rater_a: list[str], rater_b: list[str]) -> float",
+    starterCode: `def cohens_kappa(rater_a, rater_b):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Cohen's Kappa, the real, standard statistic for measuring agreement between two evaluators (human or LLM-judge) beyond what chance alone would predict.",
+    taskDescription: "Implement `cohens_kappa(rater_a, rater_b)`. Observed agreement `p_o` = fraction where `rater_a[i] == rater_b[i]`. Expected agreement `p_e` = `sum(freq_a[c] * freq_b[c] for c in categories)`, where `freq_a[c]`/`freq_b[c]` are each rater's fraction of ratings equal to category `c`. Kappa = `(p_o - p_e) / (1 - p_e)`. Return `1.0` if `p_e == 1`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(rater_a) == len(rater_b) > 0"
+      ],
+    hints: {
+  "small": "Observed agreement is the raw match rate; expected agreement models what two INDEPENDENT raters with the same marginal label distributions would agree on by chance.",
+        "strong": "n=len(rater_a); p_o = sum(1 for a,b in zip(rater_a,rater_b) if a==b)/n; cats = set(rater_a)|set(rater_b); from collections import Counter; ca,cb = Counter(rater_a), Counter(rater_b); p_e = sum((ca.get(c,0)/n)*(cb.get(c,0)/n) for c in cats); return 1.0 if p_e==1 else (p_o-p_e)/(1-p_e).",
+        "concept": "Raw percent-agreement is a real, common evaluation-metric mistake -- two judges who both mostly say 'good' will show high raw agreement even if they're not really tracking each other at all; Kappa corrects for exactly this chance-agreement inflation."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "perfect agreement kappa=1",
+          "input": {
+            "rater_a": [
+              "good",
+              "bad",
+              "good"
+            ],
+            "rater_b": [
+              "good",
+              "bad",
+              "good"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no agreement beyond chance",
+          "input": {
+            "rater_a": [
+              "good",
+              "good",
+              "bad",
+              "bad"
+            ],
+            "rater_b": [
+              "bad",
+              "bad",
+              "good",
+              "good"
+            ]
+          },
+          "expectedOutput": -1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "high but not perfect agreement",
+          "input": {
+            "rater_a": [
+              "good",
+              "bad",
+              "good",
+              "bad"
+            ],
+            "rater_b": [
+              "good",
+              "bad",
+              "good",
+              "good"
+            ]
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "all same category both raters",
+          "input": {
+            "rater_a": [
+              "good",
+              "good"
+            ],
+            "rater_b": [
+              "good",
+              "good"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-4": {
+    id: "eval-obs-prob-4",
+    title: "Structured Log Line Formatting",
+    difficulty: "easy",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "format_log_line",
+    functionSignature: "format_log_line(level: str, event: str, fields: dict) -> str",
+    starterCode: `import json
+
+def format_log_line(level, event, fields):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement structured JSON log-line formatting, the real, standard output format an observability pipeline (not humans) actually needs to parse agent logs reliably.",
+    taskDescription: "Implement `format_log_line(level, event, fields)`. Build a dict `{\"level\": level, \"event\": event, **fields}`, and return it serialized via `json.dumps(that_dict, sort_keys=True)` (sorted keys for deterministic, diffable output).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "fields does not contain the keys 'level' or 'event'"
+      ],
+    hints: {
+  "small": "Merge the three parts into one dict, serialize with sorted keys.",
+        "strong": "import json; entry = {'level': level, 'event': event, **fields}; return json.dumps(entry, sort_keys=True).",
+        "concept": "Structured (JSON) logging, not free-text log lines, is what lets a real observability system (Datadog, ELK, etc.) reliably filter/aggregate/alert on specific fields -- 'grep for a substring in free text' doesn't scale to a production agent's real log volume."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "basic log entry",
+          "input": {
+            "level": "info",
+            "event": "tool_call",
+            "fields": {
+              "tool": "search"
+            }
+          },
+          "expectedOutput": "{\"event\": \"tool_call\", \"level\": \"info\", \"tool\": \"search\"}",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no extra fields",
+          "input": {
+            "level": "error",
+            "event": "timeout",
+            "fields": {}
+          },
+          "expectedOutput": "{\"event\": \"timeout\", \"level\": \"error\"}",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple fields sorted in output",
+          "input": {
+            "level": "info",
+            "event": "x",
+            "fields": {
+              "z": 1,
+              "a": 2
+            }
+          },
+          "expectedOutput": "{\"a\": 2, \"event\": \"x\", \"level\": \"info\", \"z\": 1}",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "warning level entry",
+          "input": {
+            "level": "warning",
+            "event": "retry",
+            "fields": {
+              "attempt": 2
+            }
+          },
+          "expectedOutput": "{\"attempt\": 2, \"event\": \"retry\", \"level\": \"warning\"}",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-5": {
+    id: "eval-obs-prob-5",
+    title: "Compute Eval Suite Pass Rate by Category",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "pass_rate_by_category",
+    functionSignature: "pass_rate_by_category(results: list[dict]) -> dict[str, float]",
+    starterCode: `def pass_rate_by_category(results):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement per-category eval pass-rate breakdown, a real diagnostic step revealing WHICH kind of task an agent is actually weak on, rather than one opaque overall score.",
+    taskDescription: "Implement `pass_rate_by_category(results)`. Each result is `{\"category\": str, \"passed\": bool}`. Return a dict mapping each distinct category to its pass rate (fraction of that category's results with `passed==True`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "results non-empty"
+      ],
+    hints: {
+  "small": "Group by category, compute the pass fraction within each group.",
+        "strong": "cats = set(r['category'] for r in results); {c: sum(1 for r in results if r['category']==c and r['passed'])/sum(1 for r in results if r['category']==c) for c in cats}.",
+        "concept": "A single overall accuracy number of, say, 85% is genuinely uninformative about WHERE to focus improvement effort -- per-category breakdown (e.g. 'math: 95%, multi-step reasoning: 40%') is what turns an eval result into an actionable engineering priority."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two categories different rates",
+          "input": {
+            "results": [
+              {
+                "category": "math",
+                "passed": true
+              },
+              {
+                "category": "math",
+                "passed": true
+              },
+              {
+                "category": "reasoning",
+                "passed": false
+              }
+            ]
+          },
+          "expectedOutput": {
+            "math": 1,
+            "reasoning": 0
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single category all pass",
+          "input": {
+            "results": [
+              {
+                "category": "a",
+                "passed": true
+              },
+              {
+                "category": "a",
+                "passed": true
+              }
+            ]
+          },
+          "expectedOutput": {
+            "a": 1
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single category all fail",
+          "input": {
+            "results": [
+              {
+                "category": "a",
+                "passed": false
+              }
+            ]
+          },
+          "expectedOutput": {
+            "a": 0
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "mixed results one category",
+          "input": {
+            "results": [
+              {
+                "category": "a",
+                "passed": true
+              },
+              {
+                "category": "a",
+                "passed": false
+              }
+            ]
+          },
+          "expectedOutput": {
+            "a": 0.5
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-6": {
+    id: "eval-obs-prob-6",
+    title: "Token-Level F1 Score for Answer Matching",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "token_f1",
+    functionSignature: "token_f1(prediction: str, reference: str) -> float",
+    starterCode: `def token_f1(prediction, reference):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement token-level F1 score, the standard soft-matching metric (as used in SQuAD-style QA evaluation) for comparing a free-text agent answer against a reference answer.",
+    taskDescription: "Implement `token_f1(prediction, reference)`. Tokenize both (lowercase, split on whitespace). Compute the multiset intersection of tokens (a token appearing twice in both counts as 2 shared). `precision = shared/len(pred_tokens)`, `recall = shared/len(ref_tokens)`. Return `2*precision*recall/(precision+recall)`, or `0.0` if either token list is empty or precision+recall is 0.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "prediction and reference are strings"
+      ],
+    hints: {
+  "small": "Multiset (Counter) intersection for the shared-token count, then the standard F1 formula.",
+        "strong": "from collections import Counter; pt=prediction.lower().split(); rt=reference.lower().split(); if not pt or not rt: return 0.0; common = Counter(pt)&Counter(rt); shared=sum(common.values()); if shared==0: return 0.0; prec=shared/len(pt); rec=shared/len(rt); return 2*prec*rec/(prec+rec).",
+        "concept": "Token F1 is a real, standard 'partial credit' metric between overly-strict exact match and looser semantic similarity -- an answer with the right words in a different order or with minor extra text still scores well, which better reflects real answer quality than exact match alone."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identical answers",
+          "input": {
+            "prediction": "the capital is paris",
+            "reference": "the capital is paris"
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "partial overlap",
+          "input": {
+            "prediction": "paris is the capital of france",
+            "reference": "the capital is paris"
+          },
+          "expectedOutput": 0.8,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no overlap",
+          "input": {
+            "prediction": "completely different",
+            "reference": "the capital is paris"
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "extra words reduce precision",
+          "input": {
+            "prediction": "the capital city is definitely paris i think",
+            "reference": "the capital is paris"
+          },
+          "expectedOutput": 0.6666666666666666,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-7": {
+    id: "eval-obs-prob-7",
+    title: "Detect Test-Set Contamination via Overlap",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "contamination_overlap",
+    functionSignature: "contamination_overlap(eval_examples: list[str], training_examples: list[str]) -> float",
+    starterCode: `def contamination_overlap(eval_examples, training_examples):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real, simple contamination check, flagging when eval benchmark examples appear to overlap with training data -- a genuine, common cause of inflated eval scores that don't reflect real generalization.",
+    taskDescription: "Implement `contamination_overlap(eval_examples, training_examples)`: return the fraction of `eval_examples` that appear EXACTLY (as an element) in `training_examples`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "eval_examples non-empty"
+      ],
+    hints: {
+  "small": "Count exact matches against the training set, divide by eval set size.",
+        "strong": "train_set = set(training_examples); sum(1 for e in eval_examples if e in train_set)/len(eval_examples).",
+        "concept": "A benchmark score can be genuinely meaningless if a real fraction of its test examples leaked into training data (verbatim or near-verbatim) -- checking exact overlap is a real, if incomplete (near-duplicate contamination needs fuzzy matching), first-pass sanity check any credible eval report should run."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no contamination",
+          "input": {
+            "eval_examples": [
+              "q1",
+              "q2"
+            ],
+            "training_examples": [
+              "q3",
+              "q4"
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "full contamination",
+          "input": {
+            "eval_examples": [
+              "q1",
+              "q2"
+            ],
+            "training_examples": [
+              "q1",
+              "q2",
+              "q3"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "partial contamination",
+          "input": {
+            "eval_examples": [
+              "q1",
+              "q2",
+              "q3",
+              "q4"
+            ],
+            "training_examples": [
+              "q1",
+              "q5"
+            ]
+          },
+          "expectedOutput": 0.25,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single eval example contaminated",
+          "input": {
+            "eval_examples": [
+              "q1"
+            ],
+            "training_examples": [
+              "q1"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-8": {
+    id: "eval-obs-prob-8",
+    title: "Compute Distributed Trace Span Duration",
+    difficulty: "easy",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "span_duration_ms",
+    functionSignature: "span_duration_ms(start_ts: float, end_ts: float) -> float",
+    starterCode: `def span_duration_ms(start_ts, end_ts):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement trace-span duration calculation, the basic real building block of any observability trace visualization for an agent's multi-step execution.",
+    taskDescription: "Implement `span_duration_ms(start_ts, end_ts)` where both timestamps are in seconds: return `(end_ts - start_ts) * 1000` (converted to milliseconds).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "end_ts >= start_ts"
+      ],
+    hints: {
+  "small": "Difference in seconds, converted to milliseconds.",
+        "strong": "return (end_ts - start_ts) * 1000.",
+        "concept": "This is the actual real primitive every trace-visualization tool (Jaeger, Datadog APM, etc.) computes per span -- individually trivial, but it's what every waterfall diagram of an agent's tool-call sequence is built from."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "sub-second span",
+          "input": {
+            "start_ts": 1000,
+            "end_ts": 1000.25
+          },
+          "expectedOutput": 250,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "multi-second span",
+          "input": {
+            "start_ts": 1000,
+            "end_ts": 1002.5
+          },
+          "expectedOutput": 2500,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero duration",
+          "input": {
+            "start_ts": 1000,
+            "end_ts": 1000
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "sub-millisecond span",
+          "input": {
+            "start_ts": 1000,
+            "end_ts": 1000.0001
+          },
+          "expectedOutput": 0.09999999997489795,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-9": {
+    id: "eval-obs-prob-9",
+    title: "Aggregate Trace Spans Into a Tree",
+    difficulty: "hard",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "build_span_tree",
+    functionSignature: "build_span_tree(spans: list[dict]) -> dict",
+    starterCode: `def build_span_tree(spans):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement span-tree reconstruction, assembling flat trace spans (each with a parent reference) into the real hierarchical call tree an observability UI actually displays.",
+    taskDescription: "Implement `build_span_tree(spans)`. Each span is `{\"id\": str, \"parent_id\": str|None, \"name\": str}`. Return a nested dict for the ROOT span (the one with `parent_id is None`): `{\"name\": str, \"children\": [recursively nested child dicts]}`, where children are sorted by `id` for determinism. Assume exactly one root exists.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "exactly one span has parent_id == None"
+      ],
+    hints: {
+  "small": "Build a parent->children lookup first, then recursively assemble from the root.",
+        "strong": "by_id = {s['id']: s for s in spans}; children_of = {}; for s in spans: children_of.setdefault(s['parent_id'], []).append(s['id']); def build(sid): s = by_id[sid]; kids = sorted(children_of.get(sid, [])); return {'name': s['name'], 'children': [build(k) for k in kids]}; root_id = next(s['id'] for s in spans if s['parent_id'] is None); return build(root_id).",
+        "concept": "This exact tree reconstruction from a flat span list (each just referencing its own parent) is what every real distributed tracing tool does to render a waterfall/flame-graph view -- the flat storage format is efficient to write, but the tree is what's actually useful to look at."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "root with one child",
+          "input": {
+            "spans": [
+              {
+                "id": "a",
+                "parent_id": null,
+                "name": "root"
+              },
+              {
+                "id": "b",
+                "parent_id": "a",
+                "name": "child"
+              }
+            ]
+          },
+          "expectedOutput": {
+            "name": "root",
+            "children": [
+              {
+                "name": "child",
+                "children": []
+              }
+            ]
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "root with two children",
+          "input": {
+            "spans": [
+              {
+                "id": "a",
+                "parent_id": null,
+                "name": "root"
+              },
+              {
+                "id": "b",
+                "parent_id": "a",
+                "name": "child1"
+              },
+              {
+                "id": "c",
+                "parent_id": "a",
+                "name": "child2"
+              }
+            ]
+          },
+          "expectedOutput": {
+            "name": "root",
+            "children": [
+              {
+                "name": "child1",
+                "children": []
+              },
+              {
+                "name": "child2",
+                "children": []
+              }
+            ]
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "root only no children",
+          "input": {
+            "spans": [
+              {
+                "id": "a",
+                "parent_id": null,
+                "name": "root"
+              }
+            ]
+          },
+          "expectedOutput": {
+            "name": "root",
+            "children": []
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three-level nesting",
+          "input": {
+            "spans": [
+              {
+                "id": "a",
+                "parent_id": null,
+                "name": "root"
+              },
+              {
+                "id": "b",
+                "parent_id": "a",
+                "name": "mid"
+              },
+              {
+                "id": "c",
+                "parent_id": "b",
+                "name": "leaf"
+              }
+            ]
+          },
+          "expectedOutput": {
+            "name": "root",
+            "children": [
+              {
+                "name": "mid",
+                "children": [
+                  {
+                    "name": "leaf",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-10": {
+    id: "eval-obs-prob-10",
+    title: "Regression Detection Between Two Eval Runs",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "detect_regressions",
+    functionSignature: "detect_regressions(baseline_results: dict[str, bool], new_results: dict[str, bool]) -> list[str]",
+    starterCode: `def detect_regressions(baseline_results, new_results):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement eval regression detection, finding SPECIFIC test cases that flipped from passing to failing between two versions -- more actionable than comparing aggregate scores alone.",
+    taskDescription: "Implement `detect_regressions(baseline_results, new_results)`. Both map test-case id -> pass/fail bool. Return the sorted list of test ids present in BOTH that were `True` in `baseline_results` but `False` in `new_results`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "test ids may differ between the two dicts (new/removed tests)"
+      ],
+    hints: {
+  "small": "Only compare test ids present in both runs, look for a True->False flip specifically.",
+        "strong": "sorted(tid for tid in baseline_results if tid in new_results and baseline_results[tid] and not new_results[tid]).",
+        "concept": "Two eval runs can have IDENTICAL aggregate pass rates while a real, concerning set of specific regressions is hidden by an equal number of NEW passes elsewhere -- per-test regression detection is what catches this exact case that a single overall score would completely mask."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "one regression detected",
+          "input": {
+            "baseline_results": {
+              "t1": true,
+              "t2": true
+            },
+            "new_results": {
+              "t1": true,
+              "t2": false
+            }
+          },
+          "expectedOutput": [
+            "t2"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no regressions",
+          "input": {
+            "baseline_results": {
+              "t1": true
+            },
+            "new_results": {
+              "t1": true
+            }
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "improvement not counted as regression",
+          "input": {
+            "baseline_results": {
+              "t1": false
+            },
+            "new_results": {
+              "t1": true
+            }
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "test removed in new run ignored",
+          "input": {
+            "baseline_results": {
+              "t1": true,
+              "t2": true
+            },
+            "new_results": {
+              "t1": true
+            }
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-11": {
+    id: "eval-obs-prob-11",
+    title: "Compute Real Cost Per Eval Run",
+    difficulty: "easy",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "eval_run_cost",
+    functionSignature: "eval_run_cost(total_input_tokens: int, total_output_tokens: int, input_price_per_1k: float, output_price_per_1k: float) -> float",
+    starterCode: `def eval_run_cost(total_input_tokens, total_output_tokens, input_price_per_1k, output_price_per_1k):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement real eval-run cost computation, since input and output tokens are typically priced differently and a full eval suite run against a real API genuinely costs money.",
+    taskDescription: "Implement `eval_run_cost(total_input_tokens, total_output_tokens, input_price_per_1k, output_price_per_1k)`: return `total_input_tokens/1000*input_price_per_1k + total_output_tokens/1000*output_price_per_1k`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all values >= 0"
+      ],
+    hints: {
+  "small": "Two separate cost components (input and output priced differently), summed.",
+        "strong": "total_input_tokens/1000*input_price_per_1k + total_output_tokens/1000*output_price_per_1k.",
+        "concept": "Output tokens are typically priced 2-5x higher than input tokens across most real LLM APIs -- an eval harness computing cost with a single blended price would systematically misestimate real cost, especially for eval tasks that generate long completions."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "balanced input/output",
+          "input": {
+            "total_input_tokens": 10000,
+            "total_output_tokens": 5000,
+            "input_price_per_1k": 0.01,
+            "output_price_per_1k": 0.03
+          },
+          "expectedOutput": 0.25,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "output heavy generation task",
+          "input": {
+            "total_input_tokens": 1000,
+            "total_output_tokens": 50000,
+            "input_price_per_1k": 0.01,
+            "output_price_per_1k": 0.03
+          },
+          "expectedOutput": 1.51,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero output tokens",
+          "input": {
+            "total_input_tokens": 5000,
+            "total_output_tokens": 0,
+            "input_price_per_1k": 0.01,
+            "output_price_per_1k": 0.03
+          },
+          "expectedOutput": 0.05,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero everything",
+          "input": {
+            "total_input_tokens": 0,
+            "total_output_tokens": 0,
+            "input_price_per_1k": 0.01,
+            "output_price_per_1k": 0.03
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-12": {
+    id: "eval-obs-prob-12",
+    title: "Statistical Significance of an Eval Score Delta",
+    difficulty: "hard",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "eval_delta_significant",
+    functionSignature: "eval_delta_significant(pass_count_a: int, total_a: int, pass_count_b: int, total_b: int, z_threshold: float) -> bool",
+    starterCode: `import math
+
+def eval_delta_significant(pass_count_a, total_a, pass_count_b, total_b, z_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement statistical-significance testing for an eval score comparison, the real gate before claiming 'model B genuinely beats model A' rather than a difference explainable by eval-set sample noise.",
+    taskDescription: "Implement `eval_delta_significant(pass_count_a, total_a, pass_count_b, total_b, z_threshold)` using the same two-proportion z-test as an A/B test: `p_a = pass_count_a/total_a`; `p_b = pass_count_b/total_b`; `p_pool = (pass_count_a+pass_count_b)/(total_a+total_b)`; `se = sqrt(p_pool*(1-p_pool)*(1/total_a + 1/total_b))`. Return `True` if `se > 0` and `abs(p_b-p_a)/se > z_threshold`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "total_a, total_b > 0"
+      ],
+    hints: {
+  "small": "This is the exact same two-proportion z-test formula used for A/B testing, applied to eval pass rates instead of conversion rates.",
+        "strong": "p_a=pass_count_a/total_a; p_b=pass_count_b/total_b; p_pool=(pass_count_a+pass_count_b)/(total_a+total_b); se=math.sqrt(p_pool*(1-p_pool)*(1/total_a+1/total_b)); return se>0 and abs(p_b-p_a)/se > z_threshold.",
+        "concept": "A 2-point eval-score improvement on a 100-example benchmark is often genuinely within noise -- treating any score delta as a real finding without a significance test is a common, real mistake in reported model comparisons, especially on small benchmarks."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "large sample clear difference significant",
+          "input": {
+            "pass_count_a": 700,
+            "total_a": 1000,
+            "pass_count_b": 800,
+            "total_b": 1000,
+            "z_threshold": 1.96
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "small sample same rate not significant",
+          "input": {
+            "pass_count_a": 8,
+            "total_a": 10,
+            "pass_count_b": 9,
+            "total_b": 10,
+            "z_threshold": 1.96
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "identical rates never significant",
+          "input": {
+            "pass_count_a": 500,
+            "total_a": 1000,
+            "pass_count_b": 500,
+            "total_b": 1000,
+            "z_threshold": 1.96
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "small benchmark large delta may still be significant",
+          "input": {
+            "pass_count_a": 2,
+            "total_a": 20,
+            "pass_count_b": 18,
+            "total_b": 20,
+            "z_threshold": 1.96
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-13": {
+    id: "eval-obs-prob-13",
+    title: "Compute Real Token Usage Cost Attribution by User",
+    difficulty: "easy",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "cost_by_user",
+    functionSignature: "cost_by_user(request_costs: list[dict]) -> dict[str, float]",
+    starterCode: `def cost_by_user(request_costs):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement per-user cost attribution, a real observability requirement for any multi-tenant agent deployment needing to bill or budget-track individual users.",
+    taskDescription: "Implement `cost_by_user(request_costs)`. Each entry is `{\"user_id\": str, \"cost\": float}`. Return a dict mapping each distinct user id to the SUM of their costs.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "request_costs is a list of dicts"
+      ],
+    hints: {
+  "small": "Group and sum costs by user id.",
+        "strong": "totals={}; for r in request_costs: totals[r['user_id']] = totals.get(r['user_id'],0.0)+r['cost']; return totals.",
+        "concept": "Without real per-user cost tracking, a multi-tenant agent platform has no way to detect one abusive/runaway user consuming a disproportionate share of the total budget, nor to implement fair usage-based billing -- this aggregation is the real foundation both of those features need."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two users different totals",
+          "input": {
+            "request_costs": [
+              {
+                "user_id": "u1",
+                "cost": 0.5
+              },
+              {
+                "user_id": "u2",
+                "cost": 0.3
+              },
+              {
+                "user_id": "u1",
+                "cost": 0.2
+              }
+            ]
+          },
+          "expectedOutput": {
+            "u1": 0.7,
+            "u2": 0.3
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single user multiple requests",
+          "input": {
+            "request_costs": [
+              {
+                "user_id": "u1",
+                "cost": 0.1
+              },
+              {
+                "user_id": "u1",
+                "cost": 0.1
+              }
+            ]
+          },
+          "expectedOutput": {
+            "u1": 0.2
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single request",
+          "input": {
+            "request_costs": [
+              {
+                "user_id": "u1",
+                "cost": 1
+              }
+            ]
+          },
+          "expectedOutput": {
+            "u1": 1
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty request list",
+          "input": {
+            "request_costs": []
+          },
+          "expectedOutput": {},
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-14": {
+    id: "eval-obs-prob-14",
+    title: "Detect Silent Eval Harness Failures",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "has_silent_failures",
+    functionSignature: "has_silent_failures(results: list[dict]) -> list[str]",
+    starterCode: `def has_silent_failures(results):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement silent-failure detection in an eval harness, catching test cases that neither clearly passed nor clearly failed -- a real, common eval-infrastructure bug that silently inflates or deflates reported scores.",
+    taskDescription: "Implement `has_silent_failures(results)`. Each result is `{\"id\": str, \"output\": str, \"error\": str|None}`. Return the sorted list of ids where `error is None` AND `output == ''` (empty output but no reported error -- a suspicious 'passed silently with nothing to show' case).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "results is a list of dicts"
+      ],
+    hints: {
+  "small": "Flag results with no error AND no real output content -- neither a clean success nor an honest failure.",
+        "strong": "sorted(r['id'] for r in results if r['error'] is None and r['output'] == '').",
+        "concept": "A test harness bug that swallows an exception and reports a blank 'success' is a genuinely real, insidious failure mode -- it silently corrupts the eval score upward without ever surfacing as an obvious error, which is exactly why this specific pattern (no error, but also no real output) is worth checking for explicitly."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "one silent failure detected",
+          "input": {
+            "results": [
+              {
+                "id": "t1",
+                "output": "real answer",
+                "error": null
+              },
+              {
+                "id": "t2",
+                "output": "",
+                "error": null
+              }
+            ]
+          },
+          "expectedOutput": [
+            "t2"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no silent failures, real error reported",
+          "input": {
+            "results": [
+              {
+                "id": "t1",
+                "output": "",
+                "error": "timeout"
+              }
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no silent failures, real output present",
+          "input": {
+            "results": [
+              {
+                "id": "t1",
+                "output": "answer",
+                "error": null
+              }
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multiple silent failures sorted",
+          "input": {
+            "results": [
+              {
+                "id": "z",
+                "output": "",
+                "error": null
+              },
+              {
+                "id": "a",
+                "output": "",
+                "error": null
+              }
+            ]
+          },
+          "expectedOutput": [
+            "a",
+            "z"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-15": {
+    id: "eval-obs-prob-15",
+    title: "Weighted Composite Eval Score",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "composite_score",
+    functionSignature: "composite_score(metric_scores: dict[str, float], weights: dict[str, float]) -> float",
+    starterCode: `def composite_score(metric_scores, weights):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement weighted composite scoring, combining several individually-meaningful eval metrics (accuracy, latency, cost) into one real overall number for a leaderboard or gating decision.",
+    taskDescription: "Implement `composite_score(metric_scores, weights)`. Return `sum(metric_scores[k] * weights[k] for k in weights) / sum(weights.values())` -- a weighted average, normalized so the weights don't need to sum to 1 themselves.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "weights.values() sum to a positive number",
+        "every key in weights exists in metric_scores"
+      ],
+    hints: {
+  "small": "Weighted sum divided by the total weight, so arbitrary (unnormalized) weights still produce a correctly-scaled average.",
+        "strong": "total_weight = sum(weights.values()); weighted_sum = sum(metric_scores[k]*weights[k] for k in weights); return weighted_sum/total_weight.",
+        "concept": "Normalizing by total weight (rather than requiring weights to already sum to 1) is a real, practical convenience -- it lets someone express 'accuracy matters 3x more than latency' directly as weights of 3 and 1, without needing to first convert those to 0.75/0.25."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "equal weights simple average",
+          "input": {
+            "metric_scores": {
+              "accuracy": 0.9,
+              "latency_score": 0.7
+            },
+            "weights": {
+              "accuracy": 1,
+              "latency_score": 1
+            }
+          },
+          "expectedOutput": 0.8,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "accuracy weighted more heavily",
+          "input": {
+            "metric_scores": {
+              "accuracy": 0.9,
+              "latency_score": 0.3
+            },
+            "weights": {
+              "accuracy": 3,
+              "latency_score": 1
+            }
+          },
+          "expectedOutput": 0.75,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single metric",
+          "input": {
+            "metric_scores": {
+              "accuracy": 0.85
+            },
+            "weights": {
+              "accuracy": 1
+            }
+          },
+          "expectedOutput": 0.85,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "unnormalized weights still correct",
+          "input": {
+            "metric_scores": {
+              "a": 1,
+              "b": 0
+            },
+            "weights": {
+              "a": 5,
+              "b": 5
+            }
+          },
+          "expectedOutput": 0.5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-16": {
+    id: "eval-obs-prob-16",
+    title: "Sliding Window Error Rate Monitoring",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "sliding_window_error_rate",
+    functionSignature: "sliding_window_error_rate(recent_outcomes: list[bool], window_size: int) -> float",
+    starterCode: `def sliding_window_error_rate(recent_outcomes, window_size):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement sliding-window error-rate monitoring, giving a real-time observability dashboard a responsive, recency-weighted error signal instead of an all-time cumulative average that reacts too slowly to a fresh incident.",
+    taskDescription: "Implement `sliding_window_error_rate(recent_outcomes, window_size)`. `recent_outcomes` is `True`=success, `False`=error, in chronological order (oldest first). Consider only the LAST `window_size` entries (or all of them if fewer exist). Return the fraction of those that are `False` (errors).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "window_size >= 1"
+      ],
+    hints: {
+  "small": "Take the tail of the list up to window_size, compute the error fraction within just that window.",
+        "strong": "window = recent_outcomes[-window_size:]; return sum(1 for o in window if not o)/len(window) if window else 0.0.",
+        "concept": "An all-time cumulative error rate genuinely dilutes a real, fresh incident -- if a service has been healthy for months and then breaks, the cumulative rate barely moves for a long time, while a sliding-window rate reacts within roughly one window's worth of requests, which is exactly why production dashboards use windowed rates for alerting."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "recent errors dominate window",
+          "input": {
+            "recent_outcomes": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              false
+            ],
+            "window_size": 3
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "window larger than history uses all",
+          "input": {
+            "recent_outcomes": [
+              true,
+              false
+            ],
+            "window_size": 10
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all successes zero error rate",
+          "input": {
+            "recent_outcomes": [
+              true,
+              true,
+              true
+            ],
+            "window_size": 3
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty history",
+          "input": {
+            "recent_outcomes": [],
+            "window_size": 5
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-17": {
+    id: "eval-obs-prob-17",
+    title: "Extract Structured Tool-Call Events From a Trace",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "extract_tool_events",
+    functionSignature: "extract_tool_events(trace_events: list[dict]) -> list[str]",
+    starterCode: `def extract_tool_events(trace_events):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement tool-call event extraction from a raw agent execution trace, the real filtering step behind a 'show me every tool this agent called' observability view.",
+    taskDescription: "Implement `extract_tool_events(trace_events)`. Each event is `{\"type\": str, \"tool_name\": str|None}`. Return the list of `tool_name`s (preserving order) for every event with `type == 'tool_call'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "trace_events is a list of dicts"
+      ],
+    hints: {
+  "small": "Filter to tool_call events, extract the tool name, preserve order.",
+        "strong": "[e['tool_name'] for e in trace_events if e['type']=='tool_call'].",
+        "concept": "A raw agent trace mixes many event types (LLM calls, tool calls, state updates, errors) -- extracting just the tool-call sequence, in order, is a real, common first query against trace data for understanding 'what did this agent actually DO' at a glance."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "mixed event types filters to tool calls",
+          "input": {
+            "trace_events": [
+              {
+                "type": "llm_call",
+                "tool_name": null
+              },
+              {
+                "type": "tool_call",
+                "tool_name": "search"
+              },
+              {
+                "type": "tool_call",
+                "tool_name": "write_file"
+              }
+            ]
+          },
+          "expectedOutput": [
+            "search",
+            "write_file"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no tool calls in trace",
+          "input": {
+            "trace_events": [
+              {
+                "type": "llm_call",
+                "tool_name": null
+              }
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all tool calls",
+          "input": {
+            "trace_events": [
+              {
+                "type": "tool_call",
+                "tool_name": "a"
+              },
+              {
+                "type": "tool_call",
+                "tool_name": "b"
+              }
+            ]
+          },
+          "expectedOutput": [
+            "a",
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty trace",
+          "input": {
+            "trace_events": []
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-18": {
+    id: "eval-obs-prob-18",
+    title: "Compute Eval Confidence Interval (Wilson Score)",
+    difficulty: "hard",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "wilson_interval",
+    functionSignature: "wilson_interval(successes: int, total: int, z: float) -> tuple",
+    starterCode: `import math
+
+def wilson_interval(successes, total, z):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the Wilson score confidence interval, a real, more statistically sound alternative to a naive normal-approximation interval for reporting uncertainty on a small-sample eval pass rate.",
+    taskDescription: "Implement `wilson_interval(successes, total, z)` using the real Wilson score formula: `p = successes/total`; `denom = 1 + z**2/total`; `center = (p + z**2/(2*total)) / denom`; `margin = (z * sqrt(p*(1-p)/total + z**2/(4*total**2))) / denom`. Return `(center - margin, center + margin)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "total > 0",
+        "z > 0 (e.g. 1.96 for ~95% confidence)"
+      ],
+    hints: {
+  "small": "This is a direct formula application -- compute the center and margin exactly as given, in order.",
+        "strong": "p = successes/total; denom = 1 + z**2/total; center = (p + z**2/(2*total))/denom; margin = (z*math.sqrt(p*(1-p)/total + z**2/(4*total**2)))/denom; return (center-margin, center+margin).",
+        "concept": "The naive normal-approximation interval (p +/- z*sqrt(p(1-p)/n)) can produce a nonsensical interval extending below 0% or above 100% on small samples -- Wilson's interval stays correctly bounded within [0,1] and is the real, standard recommended choice specifically for small-n eval reporting (e.g. a 20-example benchmark)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "large sample tight interval",
+          "input": {
+            "successes": 850,
+            "total": 1000,
+            "z": 1.96
+          },
+          "expectedOutput": [
+            0.8265308859716873,
+            0.8707902850178393
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "small sample wide interval",
+          "input": {
+            "successes": 8,
+            "total": 10,
+            "z": 1.96
+          },
+          "expectedOutput": [
+            0.49015684672072335,
+            0.9433190520193067
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "perfect score still has real uncertainty",
+          "input": {
+            "successes": 10,
+            "total": 10,
+            "z": 1.96
+          },
+          "expectedOutput": [
+            0.7224598312333834,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero successes",
+          "input": {
+            "successes": 0,
+            "total": 20,
+            "z": 1.96
+          },
+          "expectedOutput": [
+            -1.3877787807814457e-17,
+            0.16113012549493322
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-19": {
+    id: "eval-obs-prob-19",
+    title: "Alert Deduplication by Fingerprint",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "dedupe_alerts",
+    functionSignature: "dedupe_alerts(alerts: list[dict], dedup_window_s: float) -> list[dict]",
+    starterCode: `def dedupe_alerts(alerts, dedup_window_s):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement alert deduplication, a real, necessary filter preventing an observability system from paging an on-call engineer once per occurrence of what's really the same ongoing incident.",
+    taskDescription: "Implement `dedupe_alerts(alerts, dedup_window_s)`. `alerts` is a list of `{\"fingerprint\": str, \"ts\": float}`, sorted by `ts` ascending. Keep an alert if it's the FIRST occurrence of its fingerprint, OR if its `ts` is more than `dedup_window_s` after the LAST KEPT alert with the same fingerprint. Return the kept alerts, preserving order.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "alerts sorted by ts ascending"
+      ],
+    hints: {
+  "small": "Track the last-kept timestamp per fingerprint; only keep an alert if enough time has passed since that fingerprint's last kept alert.",
+        "strong": "last_kept = {}; kept = []; for a in alerts: fp, ts = a['fingerprint'], a['ts']; if fp not in last_kept or ts - last_kept[fp] > dedup_window_s: kept.append(a); last_kept[fp] = ts.",
+        "concept": "Without deduplication, a single flapping condition (e.g. a service bouncing up and down every few seconds) can generate hundreds of individually-real alerts that collectively represent ONE incident -- fingerprint-based dedup within a time window is the real, standard fix, distinct from alert SUPPRESSION (which would hide a genuinely new, separate incident)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "rapid repeats deduped",
+          "input": {
+            "alerts": [
+              {
+                "fingerprint": "disk_full",
+                "ts": 0
+              },
+              {
+                "fingerprint": "disk_full",
+                "ts": 10
+              }
+            ],
+            "dedup_window_s": 60
+          },
+          "expectedOutput": [
+            {
+              "fingerprint": "disk_full",
+              "ts": 0
+            }
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "alerts outside window both kept",
+          "input": {
+            "alerts": [
+              {
+                "fingerprint": "disk_full",
+                "ts": 0
+              },
+              {
+                "fingerprint": "disk_full",
+                "ts": 100
+              }
+            ],
+            "dedup_window_s": 60
+          },
+          "expectedOutput": [
+            {
+              "fingerprint": "disk_full",
+              "ts": 0
+            },
+            {
+              "fingerprint": "disk_full",
+              "ts": 100
+            }
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "different fingerprints both kept",
+          "input": {
+            "alerts": [
+              {
+                "fingerprint": "a",
+                "ts": 0
+              },
+              {
+                "fingerprint": "b",
+                "ts": 1
+              }
+            ],
+            "dedup_window_s": 60
+          },
+          "expectedOutput": [
+            {
+              "fingerprint": "a",
+              "ts": 0
+            },
+            {
+              "fingerprint": "b",
+              "ts": 1
+            }
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three rapid repeats only first kept",
+          "input": {
+            "alerts": [
+              {
+                "fingerprint": "x",
+                "ts": 0
+              },
+              {
+                "fingerprint": "x",
+                "ts": 5
+              },
+              {
+                "fingerprint": "x",
+                "ts": 10
+              }
+            ],
+            "dedup_window_s": 60
+          },
+          "expectedOutput": [
+            {
+              "fingerprint": "x",
+              "ts": 0
+            }
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-20": {
+    id: "eval-obs-prob-20",
+    title: "Compute Real Answer Diversity Across Sampled Generations",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "self_consistency_rate",
+    functionSignature: "self_consistency_rate(sampled_answers: list[str]) -> float",
+    starterCode: `def self_consistency_rate(sampled_answers):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement self-consistency rate calculation, a real reliability signal from sampling an agent's answer to the SAME question multiple times -- high agreement across samples correlates with genuine confidence.",
+    taskDescription: "Implement `self_consistency_rate(sampled_answers)`: return the fraction of samples equal to the SINGLE most common answer (the mode). Return `1.0` for a single-element list.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "sampled_answers non-empty"
+      ],
+    hints: {
+  "small": "Find the mode's count, divide by total samples.",
+        "strong": "from collections import Counter; counts = Counter(sampled_answers); most_common_count = counts.most_common(1)[0][1]; return most_common_count/len(sampled_answers).",
+        "concept": "This is the real signal behind self-consistency prompting (sample the same question N times, take the majority answer) -- a LOW self-consistency rate is itself a useful, real uncertainty estimate, even independent of whether the majority answer is actually correct."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "high agreement",
+          "input": {
+            "sampled_answers": [
+              "A",
+              "A",
+              "A",
+              "A",
+              "B"
+            ]
+          },
+          "expectedOutput": 0.8,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "low agreement",
+          "input": {
+            "sampled_answers": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ]
+          },
+          "expectedOutput": 0.25,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "perfect agreement",
+          "input": {
+            "sampled_answers": [
+              "A",
+              "A",
+              "A"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single sample",
+          "input": {
+            "sampled_answers": [
+              "A"
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-21": {
+    id: "eval-obs-prob-21",
+    title: "Detect Metric Drift Between Deploys",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "metric_drifted",
+    functionSignature: "metric_drifted(deploy_history: list[float], current_value: float, std_multiplier: float) -> bool",
+    starterCode: `import statistics
+
+def metric_drifted(deploy_history, current_value, std_multiplier):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement deploy-over-deploy metric drift detection, a real automated check comparing a new deployment's key metric against the historical distribution from prior deploys.",
+    taskDescription: "Implement `metric_drifted(deploy_history, current_value, std_multiplier)`. Compute the mean and population standard deviation of `deploy_history`. Return `True` if `abs(current_value - mean) > std_multiplier * std`. If `std` is 0, return `True` only if `current_value != mean`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "deploy_history non-empty"
+      ],
+    hints: {
+  "small": "Standard deviation-based outlier check against a historical baseline.",
+        "strong": "import statistics; mean = statistics.mean(deploy_history); std = statistics.pstdev(deploy_history); if std == 0: return current_value != mean; return abs(current_value-mean) > std_multiplier*std.",
+        "concept": "This is a real, automatable version of 'does this deploy's metric look normal compared to history' -- exactly the kind of check that should run automatically after every deploy rather than relying on someone manually eyeballing a dashboard and possibly missing a real regression."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "value within normal range",
+          "input": {
+            "deploy_history": [
+              0.9,
+              0.91,
+              0.89,
+              0.9
+            ],
+            "current_value": 0.905,
+            "std_multiplier": 2
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "significant drift detected",
+          "input": {
+            "deploy_history": [
+              0.9,
+              0.91,
+              0.89,
+              0.9
+            ],
+            "current_value": 0.5,
+            "std_multiplier": 2
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero variance history exact match not drifted",
+          "input": {
+            "deploy_history": [
+              0.9,
+              0.9,
+              0.9
+            ],
+            "current_value": 0.9,
+            "std_multiplier": 2
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero variance history any deviation drifted",
+          "input": {
+            "deploy_history": [
+              0.9,
+              0.9,
+              0.9
+            ],
+            "current_value": 0.85,
+            "std_multiplier": 2
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-22": {
+    id: "eval-obs-prob-22",
+    title: "Build a Real-Time Dashboard Rollup Window",
+    difficulty: "easy",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "rollup_bucket",
+    functionSignature: "rollup_bucket(event_timestamp: float, bucket_size_s: float) -> float",
+    starterCode: `def rollup_bucket(event_timestamp, bucket_size_s):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement time-bucket assignment for dashboard rollups, the real primitive behind aggregating a high-volume event stream into fixed-size time windows for display.",
+    taskDescription: "Implement `rollup_bucket(event_timestamp, bucket_size_s)`: return the START timestamp of the bucket `event_timestamp` falls into: `floor(event_timestamp / bucket_size_s) * bucket_size_s`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "bucket_size_s > 0"
+      ],
+    hints: {
+  "small": "Floor-divide to find which bucket index the timestamp falls in, multiply back to get that bucket's start time.",
+        "strong": "import math; return math.floor(event_timestamp/bucket_size_s) * bucket_size_s.",
+        "concept": "This exact bucketing function is what a real-time dashboard uses to group a raw, continuous event stream into fixed intervals (e.g. '1-minute buckets') for a real-time chart -- every event with the same bucket start timestamp gets aggregated into the same visual bar/point."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "event in first bucket",
+          "input": {
+            "event_timestamp": 45,
+            "bucket_size_s": 60
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "event exactly at bucket boundary",
+          "input": {
+            "event_timestamp": 60,
+            "bucket_size_s": 60
+          },
+          "expectedOutput": 60,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "event in a later bucket",
+          "input": {
+            "event_timestamp": 185,
+            "bucket_size_s": 60
+          },
+          "expectedOutput": 180,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "small bucket size",
+          "input": {
+            "event_timestamp": 7.5,
+            "bucket_size_s": 5
+          },
+          "expectedOutput": 5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-23": {
+    id: "eval-obs-prob-23",
+    title: "Compute Real Precision and Recall for a Binary Judge",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "precision_recall",
+    functionSignature: "precision_recall(predictions: list[bool], references: list[bool]) -> tuple",
+    starterCode: `def precision_recall(predictions, references):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement precision and recall computation for a binary agent classification/judgment task, the standard real metrics distinguishing two different real error costs (false positives vs. false negatives).",
+    taskDescription: "Implement `precision_recall(predictions, references)`. Both are lists of booleans (`True`=positive). `tp = count where prediction and reference both True`; `fp = prediction True, reference False`; `fn = prediction False, reference True`. `precision = tp/(tp+fp)` (0.0 if denominator is 0); `recall = tp/(tp+fn)` (0.0 if denominator is 0). Return `(precision, recall)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(predictions) == len(references)"
+      ],
+    hints: {
+  "small": "Count the 3 relevant confusion-matrix cells, then apply the standard formulas with zero-division guards.",
+        "strong": "tp=sum(1 for p,r in zip(predictions,references) if p and r); fp=sum(1 for p,r in zip(predictions,references) if p and not r); fn=sum(1 for p,r in zip(predictions,references) if not p and r); prec = tp/(tp+fp) if (tp+fp)>0 else 0.0; rec = tp/(tp+fn) if (tp+fn)>0 else 0.0; return (prec, rec).",
+        "concept": "Precision and recall trade off DIFFERENT real costs -- e.g. for a content-moderation agent, low precision means flagging safe content as unsafe (annoying false positives), low recall means missing genuinely unsafe content (a real safety miss) -- reporting both, not a single blended accuracy, is what lets you see which failure mode actually dominates."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "perfect predictions",
+          "input": {
+            "predictions": [
+              true,
+              false,
+              true
+            ],
+            "references": [
+              true,
+              false,
+              true
+            ]
+          },
+          "expectedOutput": [
+            1,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "some false positives lower precision",
+          "input": {
+            "predictions": [
+              true,
+              true,
+              false
+            ],
+            "references": [
+              true,
+              false,
+              false
+            ]
+          },
+          "expectedOutput": [
+            0.5,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "some false negatives lower recall",
+          "input": {
+            "predictions": [
+              false,
+              false,
+              true
+            ],
+            "references": [
+              true,
+              true,
+              true
+            ]
+          },
+          "expectedOutput": [
+            1,
+            0.3333333333333333
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "no positive predictions zero precision",
+          "input": {
+            "predictions": [
+              false,
+              false
+            ],
+            "references": [
+              true,
+              false
+            ]
+          },
+          "expectedOutput": [
+            0,
+            0
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-24": {
+    id: "eval-obs-prob-24",
+    title: "Detect Flaky Test Cases Across Repeated Eval Runs",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "find_flaky_tests",
+    functionSignature: "find_flaky_tests(run_results: list[dict]) -> list[str]",
+    starterCode: `def find_flaky_tests(run_results):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement flaky-test detection across repeated eval runs, catching test cases whose result genuinely isn't deterministic -- a real, important distinction from tests that reliably pass or reliably fail.",
+    taskDescription: "Implement `find_flaky_tests(run_results)`. Each entry is `{\"test_id\": str, \"passed\": bool}`, with each test_id potentially appearing multiple times (once per run). Return the sorted list of test_ids that have BOTH at least one `True` AND at least one `False` result across their occurrences.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "run_results is a list of dicts"
+      ],
+    hints: {
+  "small": "Group results by test id, flag ids whose outcome set contains both True and False.",
+        "strong": "outcomes = {}; for r in run_results: outcomes.setdefault(r['test_id'], set()).add(r['passed']); return sorted(tid for tid, s in outcomes.items() if len(s) > 1).",
+        "concept": "A flaky test is a genuinely real, distinct problem from a consistently-failing one -- it usually indicates non-determinism in either the test harness or the agent itself (a race condition, a sampling-temperature-dependent answer), and needs a different fix (find and remove the non-determinism) than a real regression does."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "one flaky test detected",
+          "input": {
+            "run_results": [
+              {
+                "test_id": "t1",
+                "passed": true
+              },
+              {
+                "test_id": "t1",
+                "passed": false
+              },
+              {
+                "test_id": "t2",
+                "passed": true
+              },
+              {
+                "test_id": "t2",
+                "passed": true
+              }
+            ]
+          },
+          "expectedOutput": [
+            "t1"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no flaky tests all consistent",
+          "input": {
+            "run_results": [
+              {
+                "test_id": "t1",
+                "passed": true
+              },
+              {
+                "test_id": "t1",
+                "passed": true
+              }
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "consistently failing not flaky",
+          "input": {
+            "run_results": [
+              {
+                "test_id": "t1",
+                "passed": false
+              },
+              {
+                "test_id": "t1",
+                "passed": false
+              }
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single run per test never flaky",
+          "input": {
+            "run_results": [
+              {
+                "test_id": "t1",
+                "passed": true
+              },
+              {
+                "test_id": "t2",
+                "passed": false
+              }
+            ]
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-25": {
+    id: "eval-obs-prob-25",
+    title: "Compute Real Token-Efficiency Score",
+    difficulty: "easy",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "token_efficiency",
+    functionSignature: "token_efficiency(task_success: bool, tokens_used: int, baseline_tokens: int) -> float",
+    starterCode: `def token_efficiency(task_success, tokens_used, baseline_tokens):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement token-efficiency scoring, a real metric capturing that a SUCCESSFUL agent using fewer tokens than a baseline is genuinely more efficient, while a failed run should score zero regardless of token usage.",
+    taskDescription: "Implement `token_efficiency(task_success, tokens_used, baseline_tokens)`. If `not task_success`, return `0.0` (a failed run is never efficient). Otherwise return `baseline_tokens / tokens_used` (uncapped -- can exceed 1.0 if the agent used FEWER tokens than baseline).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "tokens_used > 0",
+        "baseline_tokens > 0"
+      ],
+    hints: {
+  "small": "Failure gates the score to zero first; success scores relative token usage against the baseline.",
+        "strong": "if not task_success: return 0.0; return baseline_tokens/tokens_used.",
+        "concept": "A naive 'fewer tokens is always better' metric would reward a FAILED run that gave up quickly using very few tokens -- gating on actual task success first is what prevents that perverse incentive, matching the real product goal (efficient success, not just low token count)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "successful run more efficient than baseline",
+          "input": {
+            "task_success": true,
+            "tokens_used": 500,
+            "baseline_tokens": 1000
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "successful run less efficient than baseline",
+          "input": {
+            "task_success": true,
+            "tokens_used": 2000,
+            "baseline_tokens": 1000
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "failed run always scores zero",
+          "input": {
+            "task_success": false,
+            "tokens_used": 100,
+            "baseline_tokens": 1000
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at baseline efficiency",
+          "input": {
+            "task_success": true,
+            "tokens_used": 1000,
+            "baseline_tokens": 1000
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-26": {
+    id: "eval-obs-prob-26",
+    title: "Correlate Metric Anomaly With Deploy Event",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "anomaly_correlates_with_deploy",
+    functionSignature: "anomaly_correlates_with_deploy(anomaly_ts: float, deploy_timestamps: list[float], correlation_window_s: float) -> bool",
+    starterCode: `def anomaly_correlates_with_deploy(anomaly_ts, deploy_timestamps, correlation_window_s):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement deploy-correlation checking, a real, first diagnostic step whenever an observability system flags an anomaly -- was this caused by a recent deploy, or something else entirely.",
+    taskDescription: "Implement `anomaly_correlates_with_deploy(anomaly_ts, deploy_timestamps, correlation_window_s)`: return `True` if ANY deploy timestamp is within `correlation_window_s` BEFORE `anomaly_ts` (i.e. `0 <= anomaly_ts - deploy_ts <= correlation_window_s`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "correlation_window_s >= 0"
+      ],
+    hints: {
+  "small": "Check if any deploy happened shortly before (not after) the anomaly, within the window.",
+        "strong": "return any(0 <= anomaly_ts - d <= correlation_window_s for d in deploy_timestamps).",
+        "concept": "Requiring the deploy to be BEFORE the anomaly (not just nearby in time) matters -- a deploy that happened AFTER the anomaly was first observed obviously can't have caused it, and conflating the two directions would produce real false correlations that mislead an incident investigation."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "recent deploy correlates",
+          "input": {
+            "anomaly_ts": 1000,
+            "deploy_timestamps": [
+              950
+            ],
+            "correlation_window_s": 300
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "deploy too long ago no correlation",
+          "input": {
+            "anomaly_ts": 1000,
+            "deploy_timestamps": [
+              500
+            ],
+            "correlation_window_s": 300
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "deploy after anomaly no correlation",
+          "input": {
+            "anomaly_ts": 1000,
+            "deploy_timestamps": [
+              1100
+            ],
+            "correlation_window_s": 300
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multiple deploys one correlates",
+          "input": {
+            "anomaly_ts": 1000,
+            "deploy_timestamps": [
+              500,
+              950
+            ],
+            "correlation_window_s": 300
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-27": {
+    id: "eval-obs-prob-27",
+    title: "Compute Real Judge-Model Bias Toward Position",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "position_bias_rate",
+    functionSignature: "position_bias_rate(judge_results: list[dict]) -> float",
+    starterCode: `def position_bias_rate(judge_results):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement position-bias detection for an LLM-as-judge pairwise comparison setup, a real, well-documented failure mode where judges systematically favor whichever answer appears first/second regardless of actual quality.",
+    taskDescription: "Implement `position_bias_rate(judge_results)`. Each entry is `{\"winner_position\": str}` (either `'first'` or `'second'`). Return the fraction of results where `winner_position == 'first'`. A value far from `0.5` suggests real position bias (assuming answer quality is genuinely randomized across positions).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "judge_results non-empty"
+      ],
+    hints: {
+  "small": "Fraction of judgments favoring the first-shown answer.",
+        "strong": "sum(1 for r in judge_results if r['winner_position']=='first')/len(judge_results).",
+        "concept": "Real published research has repeatedly found LLM judges favoring the first-presented answer at rates well above 50% -- the real, standard mitigation is running EVERY comparison twice with swapped positions and only counting a genuine win if the same answer wins both orderings, and this metric is exactly what you'd check to confirm the bias exists before deciding whether that mitigation is needed."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no apparent bias near 50%",
+          "input": {
+            "judge_results": [
+              {
+                "winner_position": "first"
+              },
+              {
+                "winner_position": "second"
+              },
+              {
+                "winner_position": "first"
+              },
+              {
+                "winner_position": "second"
+              }
+            ]
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "strong bias toward first position",
+          "input": {
+            "judge_results": [
+              {
+                "winner_position": "first"
+              },
+              {
+                "winner_position": "first"
+              },
+              {
+                "winner_position": "first"
+              },
+              {
+                "winner_position": "second"
+              }
+            ]
+          },
+          "expectedOutput": 0.75,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "strong bias toward second position",
+          "input": {
+            "judge_results": [
+              {
+                "winner_position": "second"
+              },
+              {
+                "winner_position": "second"
+              },
+              {
+                "winner_position": "first"
+              }
+            ]
+          },
+          "expectedOutput": 0.3333333333333333,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single result",
+          "input": {
+            "judge_results": [
+              {
+                "winner_position": "first"
+              }
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-28": {
+    id: "eval-obs-prob-28",
+    title: "Compute Real Uptime SLA Percentage",
+    difficulty: "easy",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "uptime_percentage",
+    functionSignature: "uptime_percentage(total_downtime_s: float, total_period_s: float) -> float",
+    starterCode: `def uptime_percentage(total_downtime_s, total_period_s):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement uptime percentage calculation, the real, direct arithmetic behind reporting an agent-serving system's SLA compliance (e.g. 'three nines' = 99.9%).",
+    taskDescription: "Implement `uptime_percentage(total_downtime_s, total_period_s)`: return `(1 - total_downtime_s/total_period_s) * 100`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= total_downtime_s <= total_period_s",
+        "total_period_s > 0"
+      ],
+    hints: {
+  "small": "Fraction of the period NOT down, as a percentage.",
+        "strong": "(1 - total_downtime_s/total_period_s) * 100.",
+        "concept": "This exact number is what 'three nines' (99.9%) or 'four nines' (99.99%) claims are made of -- and it's worth knowing the real implied downtime budget: 99.9% over a 30-day month allows only about 43 minutes of downtime, a number many teams don't realize until they compute it directly."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "high uptime",
+          "input": {
+            "total_downtime_s": 60,
+            "total_period_s": 2592000
+          },
+          "expectedOutput": 99.99768518518518,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "perfect uptime",
+          "input": {
+            "total_downtime_s": 0,
+            "total_period_s": 86400
+          },
+          "expectedOutput": 100,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "significant downtime",
+          "input": {
+            "total_downtime_s": 3600,
+            "total_period_s": 86400
+          },
+          "expectedOutput": 95.83333333333334,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "total outage zero uptime",
+          "input": {
+            "total_downtime_s": 86400,
+            "total_period_s": 86400
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "eval-obs-prob-29": {
+    id: "eval-obs-prob-29",
+    title: "Aggregate Multi-Turn Conversation Success Rate",
+    difficulty: "medium",
+    topic: "Agent Evaluation & Observability",
+    estimatedTime: '15 min',
+    functionName: "conversation_success_rate",
+    functionSignature: "conversation_success_rate(conversations: list[dict]) -> float",
+    starterCode: `def conversation_success_rate(conversations):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement conversation-level (not turn-level) success rate computation, the real metric that actually matters for a multi-turn agent -- a conversation with even one broken turn is usually a real failed user experience overall.",
+    taskDescription: "Implement `conversation_success_rate(conversations)`. Each conversation is `{\"turns\": list[bool]}` (per-turn success flags). A conversation counts as successful ONLY if ALL its turns succeeded. Return the fraction of conversations that are fully successful.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "conversations non-empty",
+        "each has at least 1 turn"
+      ],
+    hints: {
+  "small": "A conversation succeeds only if every single turn in it succeeded.",
+        "strong": "sum(1 for c in conversations if all(c['turns']))/len(conversations).",
+        "concept": "Averaging per-turn success rate across all turns systematically overstates real quality for multi-turn interactions -- a bot with 90% per-turn success has a MUCH lower than 90% chance of completing a real 5-turn conversation flawlessly (0.9^5 ≈ 59%), which is exactly why conversation-level (all-turns-succeed) is the metric that reflects genuine user-facing quality."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "all conversations fully successful",
+          "input": {
+            "conversations": [
+              {
+                "turns": [
+                  true,
+                  true
+                ]
+              },
+              {
+                "turns": [
+                  true,
+                  true,
+                  true
+                ]
+              }
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one broken turn fails whole conversation",
+          "input": {
+            "conversations": [
+              {
+                "turns": [
+                  true,
+                  false,
+                  true
+                ]
+              }
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "mixed conversations",
+          "input": {
+            "conversations": [
+              {
+                "turns": [
+                  true,
+                  true
+                ]
+              },
+              {
+                "turns": [
+                  true,
+                  false
+                ]
+              }
+            ]
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single-turn conversations",
+          "input": {
+            "conversations": [
+              {
+                "turns": [
+                  true
+                ]
+              },
+              {
+                "turns": [
+                  false
+                ]
+              }
+            ]
+          },
+          "expectedOutput": 0.5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

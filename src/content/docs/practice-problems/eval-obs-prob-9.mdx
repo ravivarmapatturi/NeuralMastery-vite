@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #422. Agent Evaluation & Observability Module 2: Problem 9"
-description: "Master #422. Agent Evaluation & Observability Module 2: Problem 9 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Aggregate Trace Spans Into a Tree"
+description: "Implement span-tree reconstruction, assembling flat trace spans (each with a parent reference) into the real hierarchical call tree an observability UI actually displays."
+difficulty: "hard"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #422. Agent Evaluation & Observability Module 2: Problem 9
+# Aggregate Trace Spans Into a Tree
 
-**Track**: Agent Evaluation & Observability | **Rank**: #422 of 1072 | **Points**: 40 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#422. Agent Evaluation & Observability Module 2: Problem 9` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement span-tree reconstruction, assembling flat trace spans (each with a parent reference) into the real hierarchical call tree an observability UI actually displays.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `build_span_tree(spans)`. Each span is `{"id": str, "parent_id": str|None, "name": str}`. Return a nested dict for the ROOT span (the one with `parent_id is None`): `{"name": str, "children": [recursively nested child dicts]}`, where children are sorted by `id` for determinism. Assume exactly one root exists.
 
 <PracticePlayground problemId="eval-obs-prob-9" />

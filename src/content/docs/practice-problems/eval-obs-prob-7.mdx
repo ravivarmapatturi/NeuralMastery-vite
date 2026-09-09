@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #420. Agent Evaluation & Observability Module 2: Problem 7"
-description: "Master #420. Agent Evaluation & Observability Module 2: Problem 7 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Detect Test-Set Contamination via Overlap"
+description: "Implement a real, simple contamination check, flagging when eval benchmark examples appear to overlap with training data -- a genuine, common cause of inflated eval scores that don't reflect real generalization."
+difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #420. Agent Evaluation & Observability Module 2: Problem 7
+# Detect Test-Set Contamination via Overlap
 
-**Track**: Agent Evaluation & Observability | **Rank**: #420 of 1072 | **Points**: 40 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#420. Agent Evaluation & Observability Module 2: Problem 7` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real, simple contamination check, flagging when eval benchmark examples appear to overlap with training data -- a genuine, common cause of inflated eval scores that don't reflect real generalization.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_2_problem_7`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `contamination_overlap(eval_examples, training_examples)`: return the fraction of `eval_examples` that appear EXACTLY (as an element) in `training_examples`.
 
 <PracticePlayground problemId="eval-obs-prob-7" />

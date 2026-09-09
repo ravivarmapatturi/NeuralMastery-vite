@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #436. Agent Evaluation & Observability Module 5: Problem 23"
-description: "Master #436. Agent Evaluation & Observability Module 5: Problem 23 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Compute Real Precision and Recall for a Binary Judge"
+description: "Implement precision and recall computation for a binary agent classification/judgment task, the standard real metrics distinguishing two different real error costs (false positives vs. false negatives)."
+difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #436. Agent Evaluation & Observability Module 5: Problem 23
+# Compute Real Precision and Recall for a Binary Judge
 
-**Track**: Agent Evaluation & Observability | **Rank**: #436 of 1072 | **Points**: 90 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#436. Agent Evaluation & Observability Module 5: Problem 23` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement precision and recall computation for a binary agent classification/judgment task, the standard real metrics distinguishing two different real error costs (false positives vs. false negatives).
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `precision_recall(predictions, references)`. Both are lists of booleans (`True`=positive). `tp = count where prediction and reference both True`; `fp = prediction True, reference False`; `fn = prediction False, reference True`. `precision = tp/(tp+fp)` (0.0 if denominator is 0); `recall = tp/(tp+fn)` (0.0 if denominator is 0). Return `(precision, recall)`.
 
 <PracticePlayground problemId="eval-obs-prob-23" />

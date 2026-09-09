@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #433. Agent Evaluation & Observability Module 4: Problem 20"
-description: "Master #433. Agent Evaluation & Observability Module 4: Problem 20 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Compute Real Answer Diversity Across Sampled Generations"
+description: "Implement self-consistency rate calculation, a real reliability signal from sampling an agent's answer to the SAME question multiple times -- high agreement across samples correlates with genuine confidence."
 difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #433. Agent Evaluation & Observability Module 4: Problem 20
+# Compute Real Answer Diversity Across Sampled Generations
 
-**Track**: Agent Evaluation & Observability | **Rank**: #433 of 1072 | **Points**: 60 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#433. Agent Evaluation & Observability Module 4: Problem 20` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement self-consistency rate calculation, a real reliability signal from sampling an agent's answer to the SAME question multiple times -- high agreement across samples correlates with genuine confidence.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `self_consistency_rate(sampled_answers)`: return the fraction of samples equal to the SINGLE most common answer (the mode). Return `1.0` for a single-element list.
 
 <PracticePlayground problemId="eval-obs-prob-20" />

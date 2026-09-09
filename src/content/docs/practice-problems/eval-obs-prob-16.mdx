@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #429. Agent Evaluation & Observability Module 4: Problem 16"
-description: "Master #429. Agent Evaluation & Observability Module 4: Problem 16 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Sliding Window Error Rate Monitoring"
+description: "Implement sliding-window error-rate monitoring, giving a real-time observability dashboard a responsive, recency-weighted error signal instead of an all-time cumulative average that reacts too slowly to a fresh incident."
 difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #429. Agent Evaluation & Observability Module 4: Problem 16
+# Sliding Window Error Rate Monitoring
 
-**Track**: Agent Evaluation & Observability | **Rank**: #429 of 1072 | **Points**: 60 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#429. Agent Evaluation & Observability Module 4: Problem 16` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement sliding-window error-rate monitoring, giving a real-time observability dashboard a responsive, recency-weighted error signal instead of an all-time cumulative average that reacts too slowly to a fresh incident.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `sliding_window_error_rate(recent_outcomes, window_size)`. `recent_outcomes` is `True`=success, `False`=error, in chronological order (oldest first). Consider only the LAST `window_size` entries (or all of them if fewer exist). Return the fraction of those that are `False` (errors).
 
 <PracticePlayground problemId="eval-obs-prob-16" />

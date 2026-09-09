@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #419. Agent Evaluation & Observability Module 2: Problem 6"
-description: "Master #419. Agent Evaluation & Observability Module 2: Problem 6 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Token-Level F1 Score for Answer Matching"
+description: "Implement token-level F1 score, the standard soft-matching metric (as used in SQuAD-style QA evaluation) for comparing a free-text agent answer against a reference answer."
+difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #419. Agent Evaluation & Observability Module 2: Problem 6
+# Token-Level F1 Score for Answer Matching
 
-**Track**: Agent Evaluation & Observability | **Rank**: #419 of 1072 | **Points**: 40 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#419. Agent Evaluation & Observability Module 2: Problem 6` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement token-level F1 score, the standard soft-matching metric (as used in SQuAD-style QA evaluation) for comparing a free-text agent answer against a reference answer.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `token_f1(prediction, reference)`. Tokenize both (lowercase, split on whitespace). Compute the multiset intersection of tokens (a token appearing twice in both counts as 2 shared). `precision = shared/len(pred_tokens)`, `recall = shared/len(ref_tokens)`. Return `2*precision*recall/(precision+recall)`, or `0.0` if either token list is empty or precision+recall is 0.
 
 <PracticePlayground problemId="eval-obs-prob-6" />

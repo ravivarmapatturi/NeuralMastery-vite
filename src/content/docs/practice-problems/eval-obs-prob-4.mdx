@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #417. Agent Evaluation & Observability Module 1: Problem 4"
-description: "Master #417. Agent Evaluation & Observability Module 1: Problem 4 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Structured Log Line Formatting"
+description: "Implement structured JSON log-line formatting, the real, standard output format an observability pipeline (not humans) actually needs to parse agent logs reliably."
 difficulty: "easy"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #417. Agent Evaluation & Observability Module 1: Problem 4
+# Structured Log Line Formatting
 
-**Track**: Agent Evaluation & Observability | **Rank**: #417 of 1072 | **Points**: 40 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#417. Agent Evaluation & Observability Module 1: Problem 4` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement structured JSON log-line formatting, the real, standard output format an observability pipeline (not humans) actually needs to parse agent logs reliably.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `format_log_line(level, event, fields)`. Build a dict `{"level": level, "event": event, **fields}`, and return it serialized via `json.dumps(that_dict, sort_keys=True)` (sorted keys for deterministic, diffable output).
 
 <PracticePlayground problemId="eval-obs-prob-4" />

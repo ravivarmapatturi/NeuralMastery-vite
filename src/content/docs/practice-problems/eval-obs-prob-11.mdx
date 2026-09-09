@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #424. Agent Evaluation & Observability Module 3: Problem 11"
-description: "Master #424. Agent Evaluation & Observability Module 3: Problem 11 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "medium"
+title: "Practice: Compute Real Cost Per Eval Run"
+description: "Implement real eval-run cost computation, since input and output tokens are typically priced differently and a full eval suite run against a real API genuinely costs money."
+difficulty: "easy"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #424. Agent Evaluation & Observability Module 3: Problem 11
+# Compute Real Cost Per Eval Run
 
-**Track**: Agent Evaluation & Observability | **Rank**: #424 of 1072 | **Points**: 60 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#424. Agent Evaluation & Observability Module 3: Problem 11` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement real eval-run cost computation, since input and output tokens are typically priced differently and a full eval suite run against a real API genuinely costs money.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_3_problem_11`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `eval_run_cost(total_input_tokens, total_output_tokens, input_price_per_1k, output_price_per_1k)`: return `total_input_tokens/1000*input_price_per_1k + total_output_tokens/1000*output_price_per_1k`.
 
 <PracticePlayground problemId="eval-obs-prob-11" />

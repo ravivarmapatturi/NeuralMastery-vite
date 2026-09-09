@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #423. Agent Evaluation & Observability Module 2: Problem 10"
-description: "Master #423. Agent Evaluation & Observability Module 2: Problem 10 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Regression Detection Between Two Eval Runs"
+description: "Implement eval regression detection, finding SPECIFIC test cases that flipped from passing to failing between two versions -- more actionable than comparing aggregate scores alone."
+difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #423. Agent Evaluation & Observability Module 2: Problem 10
+# Regression Detection Between Two Eval Runs
 
-**Track**: Agent Evaluation & Observability | **Rank**: #423 of 1072 | **Points**: 40 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#423. Agent Evaluation & Observability Module 2: Problem 10` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement eval regression detection, finding SPECIFIC test cases that flipped from passing to failing between two versions -- more actionable than comparing aggregate scores alone.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `detect_regressions(baseline_results, new_results)`. Both map test-case id -> pass/fail bool. Return the sorted list of test ids present in BOTH that were `True` in `baseline_results` but `False` in `new_results`.
 
 <PracticePlayground problemId="eval-obs-prob-10" />

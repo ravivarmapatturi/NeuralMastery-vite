@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #427. Agent Evaluation & Observability Module 3: Problem 14"
-description: "Master #427. Agent Evaluation & Observability Module 3: Problem 14 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Detect Silent Eval Harness Failures"
+description: "Implement silent-failure detection in an eval harness, catching test cases that neither clearly passed nor clearly failed -- a real, common eval-infrastructure bug that silently inflates or deflates reported scores."
 difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #427. Agent Evaluation & Observability Module 3: Problem 14
+# Detect Silent Eval Harness Failures
 
-**Track**: Agent Evaluation & Observability | **Rank**: #427 of 1072 | **Points**: 60 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#427. Agent Evaluation & Observability Module 3: Problem 14` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement silent-failure detection in an eval harness, catching test cases that neither clearly passed nor clearly failed -- a real, common eval-infrastructure bug that silently inflates or deflates reported scores.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_3_problem_14`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `has_silent_failures(results)`. Each result is `{"id": str, "output": str, "error": str|None}`. Return the sorted list of ids where `error is None` AND `output == ''` (empty output but no reported error -- a suspicious 'passed silently with nothing to show' case).
 
 <PracticePlayground problemId="eval-obs-prob-14" />

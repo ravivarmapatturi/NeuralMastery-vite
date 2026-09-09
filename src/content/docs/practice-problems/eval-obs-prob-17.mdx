@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #430. Agent Evaluation & Observability Module 4: Problem 17"
-description: "Master #430. Agent Evaluation & Observability Module 4: Problem 17 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Extract Structured Tool-Call Events From a Trace"
+description: "Implement tool-call event extraction from a raw agent execution trace, the real filtering step behind a 'show me every tool this agent called' observability view."
 difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #430. Agent Evaluation & Observability Module 4: Problem 17
+# Extract Structured Tool-Call Events From a Trace
 
-**Track**: Agent Evaluation & Observability | **Rank**: #430 of 1072 | **Points**: 60 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#430. Agent Evaluation & Observability Module 4: Problem 17` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement tool-call event extraction from a raw agent execution trace, the real filtering step behind a 'show me every tool this agent called' observability view.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_4_problem_17`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `extract_tool_events(trace_events)`. Each event is `{"type": str, "tool_name": str|None}`. Return the list of `tool_name`s (preserving order) for every event with `type == 'tool_call'`.
 
 <PracticePlayground problemId="eval-obs-prob-17" />

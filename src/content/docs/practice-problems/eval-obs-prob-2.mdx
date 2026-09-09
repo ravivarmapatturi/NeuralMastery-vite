@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #415. Agent Evaluation & Observability Module 1: Problem 2"
-description: "Master #415. Agent Evaluation & Observability Module 1: Problem 2 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: LLM-as-Judge Score Normalization"
+description: "Implement judge-score normalization, converting an LLM-as-judge's raw rating (on whatever scale the judge prompt used) into a standard [0,1] range for aggregation across differently-scaled evaluations."
 difficulty: "easy"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #415. Agent Evaluation & Observability Module 1: Problem 2
+# LLM-as-Judge Score Normalization
 
-**Track**: Agent Evaluation & Observability | **Rank**: #415 of 1072 | **Points**: 40 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#415. Agent Evaluation & Observability Module 1: Problem 2` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement judge-score normalization, converting an LLM-as-judge's raw rating (on whatever scale the judge prompt used) into a standard [0,1] range for aggregation across differently-scaled evaluations.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `normalize_judge_score(raw_score, scale_min, scale_max)`: return `(raw_score - scale_min) / (scale_max - scale_min)`, clamped to `[0, 1]`.
 
 <PracticePlayground problemId="eval-obs-prob-2" />

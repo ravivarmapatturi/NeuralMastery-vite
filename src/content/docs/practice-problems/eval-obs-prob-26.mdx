@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #439. Agent Evaluation & Observability Module 6: Problem 26"
-description: "Master #439. Agent Evaluation & Observability Module 6: Problem 26 in the Agent Evaluation & Observability track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Correlate Metric Anomaly With Deploy Event"
+description: "Implement deploy-correlation checking, a real, first diagnostic step whenever an observability system flags an anomaly -- was this caused by a recent deploy, or something else entirely."
+difficulty: "medium"
 topic: "Agent Evaluation & Observability"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #439. Agent Evaluation & Observability Module 6: Problem 26
+# Correlate Metric Anomaly With Deploy Event
 
-**Track**: Agent Evaluation & Observability | **Rank**: #439 of 1072 | **Points**: 90 XP
+**Track**: Agent Evaluation & Observability | **Points**: 40 XP
 
 ## Overview
 
-Implement `#439. Agent Evaluation & Observability Module 6: Problem 26` to advance your mastery in **Agent Evaluation & Observability**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement deploy-correlation checking, a real, first diagnostic step whenever an observability system flags an anomaly -- was this caused by a recent deploy, or something else entirely.
 
 ## Task
 
-Implement the function `agent_evaluation_and_observability_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `anomaly_correlates_with_deploy(anomaly_ts, deploy_timestamps, correlation_window_s)`: return `True` if ANY deploy timestamp is within `correlation_window_s` BEFORE `anomaly_ts` (i.e. `0 <= anomaly_ts - deploy_ts <= correlation_window_s`).
 
 <PracticePlayground problemId="eval-obs-prob-26" />
