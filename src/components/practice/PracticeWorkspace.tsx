@@ -1,10 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import ProblemPanel from './ProblemPanel';
 import CodeEditorPane from './CodeEditorPane';
 import TestResultsPane from './TestResultsPane';
-import CanvasAgentBuilder from '../canvas/CanvasAgentBuilder';
 import { getPracticeProblem, type PracticeTestCase } from '../../lib/practiceProblem';
+
+// Lazy-loaded: @xyflow/react is a real, sizeable dependency that only
+// react-agent-loop (v1 scope) actually needs -- a static import would pull
+// it into every practice page's main bundle regardless of whether the
+// visitor ever opens Canvas mode.
+const CanvasAgentBuilder = lazy(() => import('../canvas/CanvasAgentBuilder'));
 import {
   loadSavedCode,
   saveUserCode,
@@ -699,12 +704,14 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
               background: 'var(--nm-surface-alt)',
             }}
           >
-            <CanvasAgentBuilder
-              canvasSpec={problem.canvasSpec}
-              problemId={problemId}
-              permalink={permalink}
-              modeToggle={modeToggle}
-            />
+            <Suspense fallback={<div style={{ padding: '2rem', color: 'var(--nm-text-muted)' }}>Loading canvas…</div>}>
+              <CanvasAgentBuilder
+                canvasSpec={problem.canvasSpec}
+                problemId={problemId}
+                permalink={permalink}
+                modeToggle={modeToggle}
+              />
+            </Suspense>
           </div>
         ) : (
           <div
