@@ -1,39 +1,22 @@
 ---
 title: "Practice: Temperature-Scaled Softmax Distribution"
-sidebar_position: 365
 description: "Implement temperature-scaled softmax probability computation with numerical stability for LLM sampling and decoding control."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Temperature-Scaled Softmax Distribution
 
-**Rank #365** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement temperature-scaled softmax probability computation with numerical stability for LLM sampling and decoding control. Prerequisite: `llm-internals-prob-4`.
+## Overview
+
+Implement temperature-scaled softmax probability computation with numerical stability for LLM sampling and decoding control.
+
+## Task
+
+Implement `temperature_softmax(logits, temperature)`. Apply `(z_i - max(z)) / T` before exponentiation, normalize by sum of exponentials, and return probabilities rounded to 4 decimal places.
 
 <PracticePlayground problemId="llm-internals-prob-5" />
-
-<Solution>
-
-```python
-import math
-
-def temperature_softmax(logits, temperature):
-    if temperature <= 0:
-        raise ValueError("temperature must be positive")
-    if not logits:
-        raise ValueError("logits must be non-empty")
-    max_l = max(logits)
-    scaled = [(l - max_l) / temperature for l in logits]
-    exp_vals = [math.exp(s) for s in scaled]
-    sum_exp = sum(exp_vals)
-    return [round(e / sum_exp, 4) for e in exp_vals]
-```
-
-Subtracting the maximum logit ensures numerical stability before exponentiation, while the temperature denominator scales variance: lower values peak probabilities on the argmax, higher values flatten towards uniform.
-
-</Solution>

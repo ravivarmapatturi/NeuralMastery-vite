@@ -1,36 +1,22 @@
 ---
 title: "Practice: Multi-Head Attention Parameter Count"
-sidebar_position: 380
 description: "Count the number of trainable weight parameters in a multi-head attention module (Q, K, V, and output projections)."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Multi-Head Attention Parameter Count
 
-**Rank #380** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement `count_mha_params(d_model, num_heads, include_bias=False)` that returns the total number of weight (and optionally bias) parameters in a multi-head attention module. The module has four square projection matrices: W_Q, W_K, W_V, and W_O, each of shape `(d_model, d_model)`. When `include_bias=True`, add `d_model` bias terms for each of the four projections. Prerequisite: `llm-internals-prob-19`.
+## Overview
+
+Count the number of trainable weight parameters in a multi-head attention module (Q, K, V, and output projections).
+
+## Task
+
+Implement `count_mha_params(d_model, num_heads, include_bias=False)` that returns the total number of weight (and optionally bias) parameters in a multi-head attention module. The module has four square projection matrices: W_Q, W_K, W_V, and W_O, each of shape `(d_model, d_model)`. When `include_bias=True`, add `d_model` bias terms for each of the four projections.
 
 <PracticePlayground problemId="llm-internals-prob-20" />
-
-<Solution>
-
-```python
-def count_mha_params(d_model, num_heads, include_bias=False):
-    if d_model <= 0 or num_heads <= 0:
-        raise ValueError("d_model and num_heads must be positive")
-    if d_model % num_heads != 0:
-        raise ValueError("d_model must be divisible by num_heads")
-    weight_params = 4 * d_model * d_model
-    if include_bias:
-        return weight_params + 4 * d_model
-    return weight_params
-```
-
-Each of the four linear layers maps `d_model -> d_model` (internally split into `num_heads` heads, but as matrices the shape stays `d_model x d_model`). Understanding the parameter budget is essential for model sizing and memory estimation before training.
-
-</Solution>

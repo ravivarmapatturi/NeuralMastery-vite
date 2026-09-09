@@ -1,49 +1,22 @@
 ---
 title: "Practice: Compute BLEU-1 Score with Brevity Penalty"
-sidebar_position: 368
 description: "Implement unigram BLEU score with exponential Brevity Penalty to evaluate machine translation and generation conciseness."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Compute BLEU-1 Score with Brevity Penalty
 
-**Rank #368** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement unigram BLEU score with exponential Brevity Penalty to evaluate machine translation and generation conciseness. Prerequisite: `llm-internals-prob-7`.
+## Overview
+
+Implement unigram BLEU score with exponential Brevity Penalty to evaluate machine translation and generation conciseness.
+
+## Task
+
+Implement `compute_bleu_1(reference, candidate)`. Calculate modified unigram precision `p_1` and brevity penalty `BP = exp(1 - r/c)` when `c <= r` (`1.0` if `c > r`). Return `BLEU = BP * p_1` rounded to 4 decimal places.
 
 <PracticePlayground problemId="llm-internals-prob-8" />
-
-<Solution>
-
-```python
-import math
-import re
-from collections import Counter
-
-def compute_bleu_1(reference, candidate):
-    def tokenize(s):
-        clean = re.sub(r'[^\w\s]', '', s.lower())
-        return clean.split()
-    ref_tokens = tokenize(reference)
-    cand_tokens = tokenize(candidate)
-    c = len(cand_tokens)
-    r = len(ref_tokens)
-    if c == 0:
-        return 0.0
-    ref_counts = Counter(ref_tokens)
-    cand_counts = Counter(cand_tokens)
-    overlap = sum(min(cand_counts[w], ref_counts[w]) for w in cand_counts)
-    p1 = overlap / c
-    if p1 == 0.0:
-        return 0.0
-    bp = 1.0 if c > r else math.exp(1.0 - r / c)
-    return round(bp * p1, 4)
-```
-
-BLEU-1 evaluates unigram precision penalized by an exponential brevity penalty if the generated text is too short, preventing degenerate single-word responses from gaming precision.
-
-</Solution>

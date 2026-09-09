@@ -1,37 +1,22 @@
 ---
 title: "Practice: Calculate Perplexity from Cross-Entropy Loss"
-sidebar_position: 364
 description: "Compute language model perplexity from token-level cross-entropy loss values -- the gold-standard evaluation metric for generative language modeling."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Calculate Perplexity from Cross-Entropy Loss
 
-**Rank #364** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Compute language model perplexity from token-level cross-entropy loss values -- the gold-standard evaluation metric for generative language modeling. Prerequisite: `llm-internals-prob-3`.
+## Overview
+
+Compute language model perplexity from token-level cross-entropy loss values -- the gold-standard evaluation metric for generative language modeling.
+
+## Task
+
+Implement `calculate_perplexity(loss_values)`. Compute the average cross-entropy loss and return `PPL = exp(mean_loss)` rounded to 4 decimal places.
 
 <PracticePlayground problemId="llm-internals-prob-4" />
-
-<Solution>
-
-```python
-import math
-
-def calculate_perplexity(loss_values):
-    if not loss_values:
-        raise ValueError("loss_values must be non-empty")
-    for val in loss_values:
-        if val < 0:
-            raise ValueError("loss cannot be negative")
-    avg_loss = sum(loss_values) / len(loss_values)
-    return round(math.exp(avg_loss), 4)
-```
-
-Perplexity is the exponentiated cross-entropy loss, representing the geometric mean branching factor of predictions; lower perplexity indicates the language model assigns higher likelihood to test tokens.
-
-</Solution>

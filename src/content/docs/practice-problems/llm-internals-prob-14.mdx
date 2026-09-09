@@ -1,62 +1,22 @@
 ---
 title: "Practice: Verify RAG Citations and Token Overlap"
-sidebar_position: 374
 description: "Implement citation verification and lexical overlap scoring for evaluating hallucination rates in RAG generation systems."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Verify RAG Citations and Token Overlap
 
-**Rank #374** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement citation verification and lexical overlap scoring for evaluating hallucination rates in RAG generation systems. Prerequisite: `llm-internals-prob-13`.
+## Overview
+
+Implement citation verification and lexical overlap scoring for evaluating hallucination rates in RAG generation systems.
+
+## Task
+
+Implement `verify_citations(claims, source_documents)`. For each claim, check whether its `citation_index` is valid. If valid, compute unique word overlap `len(claim_words & doc_words) / len(claim_words)`. Return summary metrics rounded to 4 decimal places.
 
 <PracticePlayground problemId="llm-internals-prob-14" />
-
-<Solution>
-
-```python
-import re
-
-def verify_citations(claims, source_documents):
-    if not claims:
-        return {"valid_citations_count": 0, "invalid_citations_count": 0, "avg_overlap_score": 0.0}
-    valid_count = 0
-    invalid_count = 0
-    overlap_scores = []
-    
-    def tokenize(s):
-        clean = re.sub(r'[^\w\s]', '', s.lower())
-        return set(clean.split())
-    
-    for claim in claims:
-        idx = claim.get("citation_index", -1)
-        text = claim.get("text", "")
-        if idx < 0 or idx >= len(source_documents):
-            invalid_count += 1
-            overlap_scores.append(0.0)
-        else:
-            valid_count += 1
-            claim_words = tokenize(text)
-            doc_words = tokenize(source_documents[idx])
-            if not claim_words:
-                overlap_scores.append(1.0)
-            else:
-                overlap = len(claim_words.intersection(doc_words)) / len(claim_words)
-                overlap_scores.append(overlap)
-                
-    avg_score = round(sum(overlap_scores) / len(overlap_scores), 4) if overlap_scores else 0.0
-    return {
-        "valid_citations_count": valid_count,
-        "invalid_citations_count": invalid_count,
-        "avg_overlap_score": avg_score
-    }
-```
-
-Verifying cited document indices and quantifying lexical overlap prevents hallucinated attribution in RAG systems where claims cite nonexistent chunks or fail to ground in source text.
-
-</Solution>

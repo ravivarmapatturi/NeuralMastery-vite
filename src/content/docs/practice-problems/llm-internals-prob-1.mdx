@@ -1,41 +1,22 @@
 ---
 title: "Practice: Compute Scaled Dot-Product Attention Scores"
-sidebar_position: 361
 description: "Compute scaled dot-product attention logits between a query vector and a sequence of key vectors -- the foundational similarity calculation in transformer attention layers."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Compute Scaled Dot-Product Attention Scores
 
-**Rank #361** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Compute scaled dot-product attention logits between a query vector and a sequence of key vectors -- the foundational similarity calculation in transformer attention layers. Prerequisite: `deep-learning-prob-60`.
+## Overview
+
+Compute scaled dot-product attention logits between a query vector and a sequence of key vectors -- the foundational similarity calculation in transformer attention layers.
+
+## Task
+
+Implement `scaled_dot_product_scores(q, k)`. For query vector `q` of dimension `d` and key vectors `k`, compute `(q . k_i) / sqrt(d)` for each key vector, rounded to 4 decimal places.
 
 <PracticePlayground problemId="llm-internals-prob-1" />
-
-<Solution>
-
-```python
-import math
-
-def scaled_dot_product_scores(q, k):
-    if not q or not k:
-        raise ValueError("q and k must be non-empty")
-    d = len(q)
-    scale = math.sqrt(d)
-    scores = []
-    for ki in k:
-        if len(ki) != d:
-            raise ValueError("All key vectors must have the same dimension as query vector")
-        dot = sum(qi * k_val for qi, k_val in zip(q, ki))
-        scores.append(round(dot / scale, 4))
-    return scores
-```
-
-Dividing dot products by sqrt(d) stabilizes attention logits against extreme values as dimension increases, preventing softmax gradients from saturating and vanishing during backpropagation.
-
-</Solution>

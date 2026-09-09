@@ -1,32 +1,22 @@
 ---
 title: "Practice: Calculate KV-Cache Memory Footprint"
-sidebar_position: 371
 description: "Calculate the exact VRAM footprint in bytes required by an LLM KV-cache during multi-turn autoregressive serving."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Calculate KV-Cache Memory Footprint
 
-**Rank #371** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Calculate the exact VRAM footprint in bytes required by an LLM KV-cache during multi-turn autoregressive serving. Prerequisite: `llm-internals-prob-10`.
+## Overview
+
+Calculate the exact VRAM footprint in bytes required by an LLM KV-cache during multi-turn autoregressive serving.
+
+## Task
+
+Implement `calculate_kv_cache_bytes(num_layers, num_kv_heads, head_dim, seq_len, batch_size, bytes_per_param=2)`. Return the total byte count accounting for both Key and Value tensors across all layers, heads, positions, and batch slots.
 
 <PracticePlayground problemId="llm-internals-prob-11" />
-
-<Solution>
-
-```python
-def calculate_kv_cache_bytes(num_layers, num_kv_heads, head_dim, seq_len, batch_size, bytes_per_param=2):
-    for arg in (num_layers, num_kv_heads, head_dim, seq_len, batch_size, bytes_per_param):
-        if arg <= 0:
-            raise ValueError("All parameters must be positive integers")
-    return 2 * num_layers * num_kv_heads * head_dim * seq_len * batch_size * bytes_per_param
-```
-
-At inference time, transformer decoders store past Key and Value tensors in memory to avoid recalculating self-attention on prior tokens; KV-cache memory scales linearly with sequence length and batch size.
-
-</Solution>

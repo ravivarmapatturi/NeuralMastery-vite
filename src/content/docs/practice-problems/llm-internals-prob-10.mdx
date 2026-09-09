@@ -1,48 +1,22 @@
 ---
 title: "Practice: Detect Prompt Injection Heuristics"
-sidebar_position: 370
 description: "Build a rule-based safety classifier detecting adversarial prompt injections, system overrides, and jailbreak attempts in user inputs."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Detect Prompt Injection Heuristics
 
-**Rank #370** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Build a rule-based safety classifier detecting adversarial prompt injections, system overrides, and jailbreak attempts in user inputs. Prerequisite: `llm-internals-prob-9`.
+## Overview
+
+Build a rule-based safety classifier detecting adversarial prompt injections, system overrides, and jailbreak attempts in user inputs.
+
+## Task
+
+Implement `detect_prompt_injection(prompt, custom_patterns=None)`. Check case-insensitively for injection patterns, reporting whether any matched, the list of matched patterns in order, and risk score.
 
 <PracticePlayground problemId="llm-internals-prob-10" />
-
-<Solution>
-
-```python
-def detect_prompt_injection(prompt, custom_patterns=None):
-    if custom_patterns is None:
-        patterns = [
-            "ignore previous instructions",
-            "disregard all prior instructions",
-            "system override",
-            "you are now dan",
-            "act as an unfiltered",
-            "bypass safety guidelines"
-        ]
-    else:
-        patterns = [p.lower() for p in custom_patterns]
-    
-    prompt_lower = prompt.lower()
-    matched = [p for p in patterns if p in prompt_lower]
-    risk_score = round(len(matched) / len(patterns), 4) if patterns else 0.0
-    return {
-        "is_suspicious": len(matched) > 0,
-        "matched_patterns": matched,
-        "risk_score": risk_score
-    }
-```
-
-Heuristic safety filters scan inputs for instruction override and jailbreak patterns before model inference, providing a deterministic guardrail layer to protect agentic workflows.
-
-</Solution>

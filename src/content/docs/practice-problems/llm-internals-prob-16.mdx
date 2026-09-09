@@ -1,33 +1,22 @@
 ---
 title: "Practice: Transformer Attention Head Dimension"
-sidebar_position: 376
 description: "Compute the per-head key/query/value dimension in multi-head attention given d_model and num_heads."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Transformer Attention Head Dimension
 
-**Rank #376** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Compute the per-head dimension `d_k = d_model // num_heads` used in multi-head attention. This governs the shape of each Q/K/V projection and the scaling factor `1/sqrt(d_k)`. Prerequisite: `llm-internals-prob-15`.
+## Overview
+
+Compute the per-head key/query/value dimension in multi-head attention given d_model and num_heads.
+
+## Task
+
+Implement `attention_head_dim(d_model, num_heads)`. Compute the per-head dimension `d_k = d_model // num_heads` used in multi-head attention. Raise `ValueError` if either parameter is non-positive or if `d_model` is not divisible by `num_heads`.
 
 <PracticePlayground problemId="llm-internals-prob-16" />
-
-<Solution>
-
-```python
-def attention_head_dim(d_model, num_heads):
-    if d_model <= 0 or num_heads <= 0:
-        raise ValueError("d_model and num_heads must be positive integers")
-    if d_model % num_heads != 0:
-        raise ValueError("d_model must be exactly divisible by num_heads")
-    return d_model // num_heads
-```
-
-Each head independently attends over a `d_k`-dimensional subspace. Using `d_model // num_heads` distributes the total representational capacity evenly; requiring exact divisibility avoids unequal head sizes that would break tensor reshaping.
-
-</Solution>

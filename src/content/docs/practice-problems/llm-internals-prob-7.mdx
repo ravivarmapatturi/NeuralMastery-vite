@@ -1,41 +1,22 @@
 ---
 title: "Practice: Sinusoidal Positional Encoding"
-sidebar_position: 367
 description: "Implement the classic Vaswani et al. (2017) sinusoidal positional encoding table inject position awareness into sequence embeddings."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Sinusoidal Positional Encoding
 
-**Rank #367** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement the classic Vaswani et al. (2017) sinusoidal positional encoding table inject position awareness into sequence embeddings. Prerequisite: `llm-internals-prob-6`.
+## Overview
+
+Implement the classic Vaswani et al. (2017) sinusoidal positional encoding table inject position awareness into sequence embeddings.
+
+## Task
+
+Implement `sinusoidal_position_encoding(seq_len, d_model)`. For each position `pos` and dimension pair `(2i, 2i+1)`, compute `sin` and `cos` positional waves, returning a 2D list of shape `(seq_len, d_model)` rounded to 4 decimal places.
 
 <PracticePlayground problemId="llm-internals-prob-7" />
-
-<Solution>
-
-```python
-import math
-
-def sinusoidal_position_encoding(seq_len, d_model):
-    if seq_len <= 0 or d_model <= 0 or d_model % 2 != 0:
-        raise ValueError("seq_len and d_model must be positive and d_model even")
-    pe = []
-    for pos in range(seq_len):
-        row = []
-        for i in range(d_model // 2):
-            denom = 10000.0 ** ((2 * i) / d_model)
-            row.append(round(math.sin(pos / denom), 4))
-            row.append(round(math.cos(pos / denom), 4))
-        pe.append(row)
-    return pe
-```
-
-Fixed sinusoidal encodings use geometric progression wavelengths across embedding dimensions, enabling the attention mechanism to learn relative token offsets as linear projections.
-
-</Solution>

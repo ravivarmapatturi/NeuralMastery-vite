@@ -1,31 +1,22 @@
 ---
 title: "Practice: Construct Causal Attention Mask"
-sidebar_position: 363
 description: "Build a causal (autoregressive) attention mask matrix preventing query positions from attending to future key positions during decoding."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Construct Causal Attention Mask
 
-**Rank #363** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Build a causal (autoregressive) attention mask matrix preventing query positions from attending to future key positions during decoding. Prerequisite: `llm-internals-prob-2`.
+## Overview
+
+Build a causal (autoregressive) attention mask matrix preventing query positions from attending to future key positions during decoding.
+
+## Task
+
+Implement `causal_attention_mask(seq_len)`. Return a 2D integer list of size `(seq_len, seq_len)` where element `(i, j)` is `1` if `j <= i` (visible) and `0` if `j > i` (masked future token).
 
 <PracticePlayground problemId="llm-internals-prob-3" />
-
-<Solution>
-
-```python
-def causal_attention_mask(seq_len):
-    if seq_len <= 0:
-        raise ValueError("seq_len must be positive")
-    return [[1 if j <= i else 0 for j in range(seq_len)] for i in range(seq_len)]
-```
-
-Causal masks enforce autoregressive generation by preventing positions from attending to future tokens, ensuring each token's representation depends only on preceding context.
-
-</Solution>

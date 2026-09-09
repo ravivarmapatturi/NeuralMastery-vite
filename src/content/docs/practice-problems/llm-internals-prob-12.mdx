@@ -1,44 +1,22 @@
 ---
 title: "Practice: Compute LLM Generation Latency Metrics"
-sidebar_position: 372
 description: "Compute production LLM serving benchmarks: Time To First Token (TTFT), Inter-Token Latency (ITL), and throughput (Tokens Per Second)."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Compute LLM Generation Latency Metrics
 
-**Rank #372** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Compute production LLM serving benchmarks: Time To First Token (TTFT), Inter-Token Latency (ITL), and throughput (Tokens Per Second). Prerequisite: `llm-internals-prob-11`.
+## Overview
+
+Compute production LLM serving benchmarks: Time To First Token (TTFT), Inter-Token Latency (ITL), and throughput (Tokens Per Second).
+
+## Task
+
+Implement `evaluate_generation_latencies(timestamps)`. Given arrival timestamps in seconds starting with request dispatch, return `ttft_ms`, `mean_itl_ms`, and `tokens_per_second` rounded to 2 decimal places.
 
 <PracticePlayground problemId="llm-internals-prob-12" />
-
-<Solution>
-
-```python
-def evaluate_generation_latencies(timestamps):
-    if len(timestamps) < 2:
-        raise ValueError("Must provide at least request start and first token timestamp")
-    for i in range(1, len(timestamps)):
-        if timestamps[i] < timestamps[i-1]:
-            raise ValueError("Timestamps must be non-decreasing")
-    ttft_ms = (timestamps[1] - timestamps[0]) * 1000.0
-    itls = [(timestamps[i] - timestamps[i-1]) * 1000.0 for i in range(2, len(timestamps))]
-    mean_itl_ms = sum(itls) / len(itls) if itls else 0.0
-    total_time = timestamps[-1] - timestamps[0]
-    num_tokens = len(timestamps) - 1
-    tps = (num_tokens / total_time) if total_time > 0 else 0.0
-    return {
-        "ttft_ms": round(ttft_ms, 2),
-        "mean_itl_ms": round(mean_itl_ms, 2),
-        "tokens_per_second": round(tps, 2)
-    }
-```
-
-Time To First Token (TTFT) gauges time-to-responsiveness (prefill phase), while Inter-Token Latency (ITL) and Tokens Per Second (TPS) measure decode streaming fluency in interactive LLM applications.
-
-</Solution>

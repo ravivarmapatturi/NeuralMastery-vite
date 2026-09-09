@@ -1,31 +1,22 @@
 ---
 title: "Practice: Transformer FFN Inner Dimension"
-sidebar_position: 379
 description: "Compute the inner (hidden) dimension of the position-wise feed-forward network in a transformer block."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Transformer FFN Inner Dimension
 
-**Rank #379** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement `ffn_inner_dim(d_model, expansion_factor=4)` that returns `d_model * expansion_factor` -- the size of the intermediate dense layer in the transformer's position-wise FFN (`d_model -> d_ff -> d_model`). Raise `ValueError` for non-positive inputs. Prerequisite: `llm-internals-prob-18`.
+## Overview
+
+Compute the inner (hidden) dimension of the position-wise feed-forward network in a transformer block.
+
+## Task
+
+Implement `ffn_inner_dim(d_model, expansion_factor=4)` that returns `d_model * expansion_factor` -- the size of the intermediate dense layer in the transformer position-wise FFN (`d_model -> d_ff -> d_model`). Raise `ValueError` for non-positive inputs.
 
 <PracticePlayground problemId="llm-internals-prob-19" />
-
-<Solution>
-
-```python
-def ffn_inner_dim(d_model, expansion_factor=4):
-    if d_model <= 0 or expansion_factor <= 0:
-        raise ValueError("d_model and expansion_factor must be positive")
-    return d_model * expansion_factor
-```
-
-The original "Attention is All You Need" paper used `d_ff = 4 * d_model` (e.g. 512 -> 2048). Modern variants sometimes use 8/3 * d_model (LLaMA's SwiGLU variant which uses two matrices) or other ratios, but the fundamental idea is that the expanded hidden dimension gives the FFN capacity to learn complex non-linear feature transformations.
-
-</Solution>

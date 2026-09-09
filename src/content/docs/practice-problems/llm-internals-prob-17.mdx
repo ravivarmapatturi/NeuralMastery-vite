@@ -1,37 +1,22 @@
 ---
 title: "Practice: Layer Normalization Forward Pass"
-sidebar_position: 377
 description: "Implement the Layer Normalization forward pass: normalize each vector to zero mean and unit variance along the feature dimension."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Layer Normalization Forward Pass
 
-**Rank #377** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement `layer_norm(x, eps=1e-5)` which normalizes a 1D feature vector by subtracting its mean and dividing by its standard deviation (plus epsilon for numerical stability). Return values rounded to 4 decimal places. Prerequisite: `llm-internals-prob-16`.
+## Overview
+
+Implement the Layer Normalization forward pass: normalize each vector to zero mean and unit variance along the feature dimension.
+
+## Task
+
+Implement `layer_norm(x, eps=1e-5)` which normalizes a 1D feature vector by subtracting its mean and dividing by its standard deviation (plus epsilon for numerical stability). Return values rounded to 4 decimal places. If x is empty, return empty list.
 
 <PracticePlayground problemId="llm-internals-prob-17" />
-
-<Solution>
-
-```python
-import math
-
-def layer_norm(x, eps=1e-5):
-    if not x:
-        return []
-    n = len(x)
-    mean = sum(x) / n
-    var = sum((xi - mean) ** 2 for xi in x) / n
-    std = math.sqrt(var + eps)
-    return [round((xi - mean) / std, 4) for xi in x]
-```
-
-Layer Norm computes statistics across the *feature* dimension (not batch), making it independent of batch size -- crucial for autoregressive decoding where sequences are generated one token at a time. Adding `eps` prevents division by zero on constant inputs.
-
-</Solution>

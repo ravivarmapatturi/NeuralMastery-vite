@@ -1,36 +1,22 @@
 ---
 title: "Practice: Numerically Stable Softmax"
-sidebar_position: 378
 description: "Implement numerically stable softmax by subtracting the max logit before exponentiation to prevent overflow."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Numerically Stable Softmax
 
-**Rank #378** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement `stable_softmax(logits)` that applies the max-subtraction trick before exponentiation. Naive softmax overflows for large logit values (e.g. 1000+). The stable version subtracts `max(logits)` before calling `exp`, which cancels out in the ratio and leaves the result identical. Return a list of floats rounded to 4 decimal places. Prerequisite: `llm-internals-prob-17`.
+## Overview
+
+Implement numerically stable softmax by subtracting the max logit before exponentiation to prevent overflow.
+
+## Task
+
+Implement `stable_softmax(logits)` that applies the max-subtraction trick before exponentiation. Subtract `max(logits)` before calling `exp`, normalize by the sum of exponentials, and return a list of floats rounded to 4 decimal places. Return empty list if logits is empty.
 
 <PracticePlayground problemId="llm-internals-prob-18" />
-
-<Solution>
-
-```python
-import math
-
-def stable_softmax(logits):
-    if not logits:
-        return []
-    max_val = max(logits)
-    exp_shifted = [math.exp(x - max_val) for x in logits]
-    total = sum(exp_shifted)
-    return [round(e / total, 4) for e in exp_shifted]
-```
-
-`softmax(x_i) = exp(x_i - c) / sum(exp(x_j - c))` for any constant `c`. Choosing `c = max(x)` ensures all shifted values are `<= 0`, preventing `exp` overflow. The result is mathematically identical to naive softmax but numerically safe for any magnitude of logits.
-
-</Solution>

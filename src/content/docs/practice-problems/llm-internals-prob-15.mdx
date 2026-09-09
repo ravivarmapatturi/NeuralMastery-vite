@@ -1,47 +1,22 @@
 ---
 title: "Practice: Top-P (Nucleus) Token Selection"
-sidebar_position: 375
 description: "Implement Top-P (Nucleus) sampling token selection -- dynamically sizing candidate token sets based on cumulative probability mass."
-difficulty: easy
-topic: transformers-llms
+difficulty: "easy"
+topic: "transformers-llms"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
 # Top-P (Nucleus) Token Selection
 
-**Rank #375** · Difficulty: **Easy** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: transformers-llms | **Points**: 40 XP
 
-Implement Top-P (Nucleus) sampling token selection -- dynamically sizing candidate token sets based on cumulative probability mass. Prerequisite: `llm-internals-prob-14`.
+## Overview
+
+Implement Top-P (Nucleus) sampling token selection -- dynamically sizing candidate token sets based on cumulative probability mass.
+
+## Task
+
+Implement `top_p_filter(probabilities, p)`. Sort tokens in descending probability order, include tokens until cumulative probability is `>= p`, and return their original indices.
 
 <PracticePlayground problemId="llm-internals-prob-15" />
-
-<Solution>
-
-```python
-def top_p_filter(probabilities, p):
-    if p <= 0.0 or p > 1.0:
-        raise ValueError("p must be in (0.0, 1.0]")
-    if not probabilities:
-        raise ValueError("probabilities cannot be empty")
-    for pr in probabilities:
-        if pr < 0.0:
-            raise ValueError("probabilities cannot be negative")
-    if abs(sum(probabilities) - 1.0) > 0.01:
-        raise ValueError("probabilities must sum to 1.0")
-    
-    indexed = sorted(enumerate(probabilities), key=lambda x: x[1], reverse=True)
-    cum_sum = 0.0
-    chosen = []
-    for idx, pr in indexed:
-        chosen.append(idx)
-        cum_sum += pr
-        if cum_sum >= p:
-            break
-    return chosen
-```
-
-Top-P (Nucleus) sampling dynamically adjusts candidate set sizes by thresholding cumulative probability mass, selecting fewer tokens when confidence is high and more tokens when confidence is diffuse.
-
-</Solution>
