@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Deep learning Module 37: Problem 337"
-sidebar_position: 337
-description: "Curriculum Problem 337 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: Vision Transformer Patch Extraction and Flattening"
+description: "Decompose a multi-channel 2D image into flattened sequential patch vectors for Transformer processing."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Deep learning Module 37: Problem 337
+# Vision Transformer Patch Extraction and Flattening
 
-**Rank #337** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-36`.
+## Overview
+
+Decompose a multi-channel 2D image into flattened sequential patch vectors for Transformer processing.
+
+## Task
+
+Implement `vit_patch_flatten(image, patch_size)`. `image` has shape `C x H x W`. Slice non-overlapping patches of size `patch_size x patch_size` in row-major order (top to bottom, left to right). For each patch, flatten in channel-first order: `[patch[c][r][c_col] for c in range(C) for r in range(patch_size) for c_col in range(patch_size)]`. Return 2D list of shape `num_patches x (C * patch_size * patch_size)`.
 
 <PracticePlayground problemId="deep-learning-prob-37" />
-
-<Solution>
-
-```python
-def deep_learning_p37(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Deep learning.
-
-</Solution>

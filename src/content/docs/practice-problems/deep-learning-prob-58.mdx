@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 58: Problem 358"
-sidebar_position: 358
-description: "Curriculum Problem 358 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: hard
-topic: deep-learning-vision/nlp
+title: "Practice: Masked Sequence Cross-Entropy Loss"
+description: "Compute cross-entropy loss over a sequence, ignoring padded token positions using a binary mask."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 58: Problem 358
+# Masked Sequence Cross-Entropy Loss
 
-**Rank #358** · Difficulty: **Hard** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-57`.
+## Overview
+
+Compute cross-entropy loss over a sequence, ignoring padded token positions using a binary mask.
+
+## Task
+
+Implement `sequence_cross_entropy_masked(logits_seq, targets, mask)`. For each timestep `t` where `mask[t] == 1`, compute stable log-softmax cross entropy: `loss_t = -logits[t][targets[t]] + max_l + log(sum(exp(l - max_l)))`. Sum losses over all active timesteps and divide by `sum(mask)`. If `sum(mask) == 0`, return 0.0. Round result to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-58" />
-
-<Solution>
-
-```python
-def deep_learning_p58(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

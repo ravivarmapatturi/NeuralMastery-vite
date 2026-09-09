@@ -6053,92 +6053,92 @@
     "/docs/practice-problems/deep-learning-prob-31": {
       "slug": "practice-problems/deep-learning-prob-31",
       "section": "practice-problems",
-      "title": "Practice: NLP Module 31: Problem 331",
-      "sidebarPosition": 331,
-      "description": "Curriculum Problem 331 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Harris Corner Detector Response Score",
+      "sidebarPosition": null,
+      "description": "Compute the Harris corner response score R = det(M) - k * (trace(M))^2 for local image feature detection.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-32": {
       "slug": "practice-problems/deep-learning-prob-32",
       "section": "practice-problems",
-      "title": "Practice: NLP evaluation Module 32: Problem 332",
-      "sidebarPosition": 332,
-      "description": "Curriculum Problem 332 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Color Jitter Brightness Adjustment",
+      "sidebarPosition": null,
+      "description": "Scale image intensities by a multiplicative jitter factor and clamp to valid normalized range [0.0, 1.0].",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-33": {
       "slug": "practice-problems/deep-learning-prob-33",
       "section": "practice-problems",
-      "title": "Practice: Deep learning Module 33: Problem 333",
-      "sidebarPosition": 333,
-      "description": "Curriculum Problem 333 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning.",
+      "title": "Practice: Structural Similarity Index (SSIM) Components",
+      "sidebarPosition": null,
+      "description": "Compute the luminance, contrast-structure, and composite SSIM index between two image patches.",
       "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-34": {
       "slug": "practice-problems/deep-learning-prob-34",
       "section": "practice-problems",
-      "title": "Practice: CNN Module 34: Problem 334",
-      "sidebarPosition": 334,
-      "description": "Curriculum Problem 334 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: 2D Affine Transformation Mapping",
+      "sidebarPosition": null,
+      "description": "Map continuous 2D coordinates through an affine transformation matrix for geometric data augmentation.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-35": {
       "slug": "practice-problems/deep-learning-prob-35",
       "section": "practice-problems",
-      "title": "Practice: NLP Module 35: Problem 335",
-      "sidebarPosition": 335,
-      "description": "Curriculum Problem 335 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings.",
+      "title": "Practice: CenterNet Gaussian Target Radius Calculator",
+      "sidebarPosition": null,
+      "description": "Compute the Gaussian splatter radius for object center heatmap targets in anchor-free detectors.",
       "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-36": {
       "slug": "practice-problems/deep-learning-prob-36",
       "section": "practice-problems",
-      "title": "Practice: NLP evaluation Module 36: Problem 336",
-      "sidebarPosition": 336,
-      "description": "Curriculum Problem 336 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation.",
+      "title": "Practice: Lucas-Kanade Optical Flow 2x2 Solver",
+      "sidebarPosition": null,
+      "description": "Solve the 2x2 normal equations for local optical flow velocity vector (u, v) from spatial and temporal image gradients.",
       "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-37": {
       "slug": "practice-problems/deep-learning-prob-37",
       "section": "practice-problems",
-      "title": "Practice: Deep learning Module 37: Problem 337",
-      "sidebarPosition": 337,
-      "description": "Curriculum Problem 337 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning.",
+      "title": "Practice: Vision Transformer Patch Extraction and Flattening",
+      "sidebarPosition": null,
+      "description": "Decompose a multi-channel 2D image into flattened sequential patch vectors for Transformer processing.",
       "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-38": {
       "slug": "practice-problems/deep-learning-prob-38",
       "section": "practice-problems",
-      "title": "Practice: CNN Module 38: Problem 338",
-      "sidebarPosition": 338,
-      "description": "Curriculum Problem 338 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Sørensen-Dice Coefficient for Binary Masks",
+      "sidebarPosition": null,
+      "description": "Compute the Sørensen-Dice similarity coefficient (F1 score) between predicted and ground-truth segmentation masks.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-39": {
       "slug": "practice-problems/deep-learning-prob-39",
       "section": "practice-problems",
-      "title": "Practice: NLP Module 39: Problem 339",
-      "sidebarPosition": 339,
-      "description": "Curriculum Problem 339 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings.",
+      "title": "Practice: RoIAlign Bilinear Sampling Point Coordinates",
+      "sidebarPosition": null,
+      "description": "Calculate continuous sub-pixel sampling coordinates for RoIAlign without spatial quantization artifacts.",
       "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-4": {
       "slug": "practice-problems/deep-learning-prob-4",
@@ -6153,102 +6153,102 @@
     "/docs/practice-problems/deep-learning-prob-40": {
       "slug": "practice-problems/deep-learning-prob-40",
       "section": "practice-problems",
-      "title": "Practice: NLP evaluation Module 40: Problem 340",
-      "sidebarPosition": 340,
-      "description": "Curriculum Problem 340 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Multi-Class Focal Loss Forward Pass",
+      "sidebarPosition": null,
+      "description": "Compute multi-class focal loss with modulating factor (1 - p_t)^gamma to focus training on hard examples.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-41": {
       "slug": "practice-problems/deep-learning-prob-41",
       "section": "practice-problems",
-      "title": "Practice: Deep learning Module 41: Problem 341",
-      "sidebarPosition": 341,
-      "description": "Curriculum Problem 341 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: N-Gram Language Model Maximum Likelihood Probability",
+      "sidebarPosition": null,
+      "description": "Compute Maximum Likelihood conditional probability P(w | prefix) from n-gram occurrence frequency tables.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-42": {
       "slug": "practice-problems/deep-learning-prob-42",
       "section": "practice-problems",
-      "title": "Practice: CNN Module 42: Problem 342",
-      "sidebarPosition": 342,
-      "description": "Curriculum Problem 342 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Add-K / Laplace Smoothing for Language Modeling",
+      "sidebarPosition": null,
+      "description": "Smooth n-gram probability estimates using Add-k smoothing to prevent zero probability on unseen transitions.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-43": {
       "slug": "practice-problems/deep-learning-prob-43",
       "section": "practice-problems",
-      "title": "Practice: NLP Module 43: Problem 343",
-      "sidebarPosition": 343,
-      "description": "Curriculum Problem 343 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Porter Stemmer Step 1a Suffix Reduction",
+      "sidebarPosition": null,
+      "description": "Implement Step 1a of the classic Porter Stemmer algorithm for plural and suffix normalization in information retrieval.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-44": {
       "slug": "practice-problems/deep-learning-prob-44",
       "section": "practice-problems",
-      "title": "Practice: NLP evaluation Module 44: Problem 344",
-      "sidebarPosition": 344,
-      "description": "Curriculum Problem 344 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: SentencePiece Unigram Viterbi Segmentation",
+      "sidebarPosition": null,
+      "description": "Segment text into subwords maximizing joint log-probability under a Unigram vocabulary model using 1D dynamic programming.",
+      "difficulty": "hard",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-45": {
       "slug": "practice-problems/deep-learning-prob-45",
       "section": "practice-problems",
-      "title": "Practice: Deep learning Module 45: Problem 345",
-      "sidebarPosition": 345,
-      "description": "Curriculum Problem 345 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning.",
+      "title": "Practice: Dynamic Time Warping (DTW) Distance",
+      "sidebarPosition": null,
+      "description": "Compute optimal non-linear time alignment distance between two variable-speed 1D speech or sensor sequences.",
       "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-46": {
       "slug": "practice-problems/deep-learning-prob-46",
       "section": "practice-problems",
-      "title": "Practice: CNN Module 46: Problem 346",
-      "sidebarPosition": 346,
-      "description": "Curriculum Problem 346 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision.",
+      "title": "Practice: Beam Search Hypothesis Expansion Step",
+      "sidebarPosition": null,
+      "description": "Expand current active beam hypotheses by token log-probabilities and retain the top-K highest scoring paths.",
       "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-47": {
       "slug": "practice-problems/deep-learning-prob-47",
       "section": "practice-problems",
-      "title": "Practice: NLP Module 47: Problem 347",
-      "sidebarPosition": 347,
-      "description": "Curriculum Problem 347 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: CTC Extended Target Sequence Generator",
+      "sidebarPosition": null,
+      "description": "Interleave blank tokens into a target sequence to build the 2L + 1 extended label sequence for CTC loss alignment.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-48": {
       "slug": "practice-problems/deep-learning-prob-48",
       "section": "practice-problems",
-      "title": "Practice: NLP evaluation Module 48: Problem 348",
-      "sidebarPosition": 348,
-      "description": "Curriculum Problem 348 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation.",
-      "difficulty": "medium",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Linear-Chain CRF Sequence Path Score",
+      "sidebarPosition": null,
+      "description": "Compute the unnormalized path score combining emission and state transition matrices in a linear-chain CRF.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-49": {
       "slug": "practice-problems/deep-learning-prob-49",
       "section": "practice-problems",
-      "title": "Practice: Deep learning Module 49: Problem 349",
-      "sidebarPosition": 349,
-      "description": "Curriculum Problem 349 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: 1D Position Embedding Linear Interpolation Resampler",
+      "sidebarPosition": null,
+      "description": "Resample a 1D positional embedding vector to a new sequence length via continuous linear interpolation.",
+      "difficulty": "medium",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-5": {
       "slug": "practice-problems/deep-learning-prob-5",
@@ -6263,102 +6263,102 @@
     "/docs/practice-problems/deep-learning-prob-50": {
       "slug": "practice-problems/deep-learning-prob-50",
       "section": "practice-problems",
-      "title": "Practice: CNN Module 50: Problem 350",
-      "sidebarPosition": 350,
-      "description": "Curriculum Problem 350 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: EmbeddingBag Sum Aggregator with Offsets",
+      "sidebarPosition": null,
+      "description": "Aggregate embedding vectors by sum across variable-length bags defined by start offsets (PyTorch EmbeddingBag style).",
+      "difficulty": "medium",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-51": {
       "slug": "practice-problems/deep-learning-prob-51",
       "section": "practice-problems",
-      "title": "Practice: NLP Module 51: Problem 351",
-      "sidebarPosition": 351,
-      "description": "Curriculum Problem 351 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Semantic Chunking Boundary Detector",
+      "sidebarPosition": null,
+      "description": "Identify semantic chunk split boundaries where cosine similarity between adjacent sentence embeddings drops below a threshold.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-52": {
       "slug": "practice-problems/deep-learning-prob-52",
       "section": "practice-problems",
-      "title": "Practice: NLP evaluation Module 52: Problem 352",
-      "sidebarPosition": 352,
-      "description": "Curriculum Problem 352 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: METEOR Greedy Unigram Alignment Matcher",
+      "sidebarPosition": null,
+      "description": "Match candidate unigrams to reference unigrams using greedy exact matching for METEOR machine translation evaluation.",
+      "difficulty": "medium",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-53": {
       "slug": "practice-problems/deep-learning-prob-53",
       "section": "practice-problems",
-      "title": "Practice: Deep learning Module 53: Problem 353",
-      "sidebarPosition": 353,
-      "description": "Curriculum Problem 353 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Self-BLEU Corpus Diversity Evaluator",
+      "sidebarPosition": null,
+      "description": "Evaluate mode collapse and diversity in text generation by measuring unigram overlap across generated samples.",
+      "difficulty": "medium",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-54": {
       "slug": "practice-problems/deep-learning-prob-54",
       "section": "practice-problems",
-      "title": "Practice: CNN Module 54: Problem 354",
-      "sidebarPosition": 354,
-      "description": "Curriculum Problem 354 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Hough Transform Polar Line Voting Accumulator",
+      "sidebarPosition": null,
+      "description": "Accumulate edge pixel evidence in polar Hough parameter space rho = x * cos(theta) + y * sin(theta) for line detection.",
+      "difficulty": "medium",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-55": {
       "slug": "practice-problems/deep-learning-prob-55",
       "section": "practice-problems",
-      "title": "Practice: NLP Module 55: Problem 355",
-      "sidebarPosition": 355,
-      "description": "Curriculum Problem 355 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Spatial Transformer Network Normalized Grid Generator",
+      "sidebarPosition": null,
+      "description": "Generate normalized source sampling coordinates [-1.0, 1.0] for a Spatial Transformer Network (STN).",
+      "difficulty": "medium",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-56": {
       "slug": "practice-problems/deep-learning-prob-56",
       "section": "practice-problems",
-      "title": "Practice: NLP evaluation Module 56: Problem 356",
-      "sidebarPosition": 356,
-      "description": "Curriculum Problem 356 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: FPN 1x1 Lateral Convolution Alignment",
+      "sidebarPosition": null,
+      "description": "Project multi-scale bottom-up feature channels to uniform channel dimension using 1x1 lateral convolutions in Feature Pyramid Networks.",
+      "difficulty": "medium",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-57": {
       "slug": "practice-problems/deep-learning-prob-57",
       "section": "practice-problems",
-      "title": "Practice: Deep learning Module 57: Problem 357",
-      "sidebarPosition": 357,
-      "description": "Curriculum Problem 357 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Hard Negative Triplet Mining",
+      "sidebarPosition": null,
+      "description": "Identify the hardest negative sample violating the triplet margin constraint for efficient contrastive training.",
+      "difficulty": "medium",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-58": {
       "slug": "practice-problems/deep-learning-prob-58",
       "section": "practice-problems",
-      "title": "Practice: CNN Module 58: Problem 358",
-      "sidebarPosition": 358,
-      "description": "Curriculum Problem 358 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Masked Sequence Cross-Entropy Loss",
+      "sidebarPosition": null,
+      "description": "Compute cross-entropy loss over a sequence, ignoring padded token positions using a binary mask.",
+      "difficulty": "medium",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-59": {
       "slug": "practice-problems/deep-learning-prob-59",
       "section": "practice-problems",
-      "title": "Practice: NLP Module 59: Problem 359",
-      "sidebarPosition": 359,
-      "description": "Curriculum Problem 359 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Optical Flow Average Endpoint Error (EPE)",
+      "sidebarPosition": null,
+      "description": "Compute the Average Endpoint Error (EPE) metric between predicted and ground-truth optical flow fields.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-6": {
       "slug": "practice-problems/deep-learning-prob-6",
@@ -6373,12 +6373,12 @@
     "/docs/practice-problems/deep-learning-prob-60": {
       "slug": "practice-problems/deep-learning-prob-60",
       "section": "practice-problems",
-      "title": "Practice: NLP evaluation Module 60: Problem 360",
-      "sidebarPosition": 360,
-      "description": "Curriculum Problem 360 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation.",
-      "difficulty": "hard",
-      "topic": "deep-learning-vision/nlp",
-      "placeholder": true
+      "title": "Practice: Vision Transformer CLS Token Prepending",
+      "sidebarPosition": null,
+      "description": "Prepend the learnable [CLS] classification token to the sequence of patch embeddings in Vision Transformers.",
+      "difficulty": "easy",
+      "topic": "Deep Learning & Vision/NLP",
+      "placeholder": false
     },
     "/docs/practice-problems/deep-learning-prob-7": {
       "slug": "practice-problems/deep-learning-prob-7",

@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP evaluation Module 52: Problem 352"
-sidebar_position: 352
-description: "Curriculum Problem 352 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation."
-difficulty: hard
-topic: deep-learning-vision/nlp
+title: "Practice: METEOR Greedy Unigram Alignment Matcher"
+description: "Match candidate unigrams to reference unigrams using greedy exact matching for METEOR machine translation evaluation."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP evaluation Module 52: Problem 352
+# METEOR Greedy Unigram Alignment Matcher
 
-**Rank #352** · Difficulty: **Hard** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-51`.
+## Overview
+
+Match candidate unigrams to reference unigrams using greedy exact matching for METEOR machine translation evaluation.
+
+## Task
+
+Implement `meteor_unigram_match(candidate, reference)`. Match each token in `candidate` to the first available identical token in `reference` (each reference token may be matched at most once). Return `[match_count, len(candidate), len(reference)]`.
 
 <PracticePlayground problemId="deep-learning-prob-52" />
-
-<Solution>
-
-```python
-def deep_learning_p52(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP evaluation.
-
-</Solution>

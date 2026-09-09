@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 46: Problem 346"
-sidebar_position: 346
-description: "Curriculum Problem 346 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: Beam Search Hypothesis Expansion Step"
+description: "Expand current active beam hypotheses by token log-probabilities and retain the top-K highest scoring paths."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 46: Problem 346
+# Beam Search Hypothesis Expansion Step
 
-**Rank #346** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-45`.
+## Overview
+
+Expand current active beam hypotheses by token log-probabilities and retain the top-K highest scoring paths.
+
+## Task
+
+Implement `beam_search_step(candidates, next_token_logprobs, beam_width)`. `candidates` is a list of `B` hypotheses, each `[tokens_list, cumulative_logprob]`. `next_token_logprobs[i]` is a list of log-probabilities for all vocabulary tokens given hypothesis `i`. Form all `B * V` new hypotheses: `[tokens + [v], round(cum_logprob + logprob[v], 4)]`. Sort descending by score (ties broken by lower token index at the newest position), and return the top `beam_width` hypotheses.
 
 <PracticePlayground problemId="deep-learning-prob-46" />
-
-<Solution>
-
-```python
-def deep_learning_p46(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

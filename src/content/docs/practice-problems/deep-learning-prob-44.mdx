@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP evaluation Module 44: Problem 344"
-sidebar_position: 344
-description: "Curriculum Problem 344 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: SentencePiece Unigram Viterbi Segmentation"
+description: "Segment text into subwords maximizing joint log-probability under a Unigram vocabulary model using 1D dynamic programming."
+difficulty: "hard"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP evaluation Module 44: Problem 344
+# SentencePiece Unigram Viterbi Segmentation
 
-**Rank #344** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-43`.
+## Overview
+
+Segment text into subwords maximizing joint log-probability under a Unigram vocabulary model using 1D dynamic programming.
+
+## Task
+
+Implement `unigram_segment(text, vocab_log_probs)`. Let `N = len(text)`. Find a segmentation into subwords present in `vocab_log_probs` maximizing `sum(vocab_log_probs[subword])`. Compute `best_score[i]` for `i = 1 ... N`. If no valid segmentation exists from known subwords, return `[text]`. Return the optimal list of subword strings.
 
 <PracticePlayground problemId="deep-learning-prob-44" />
-
-<Solution>
-
-```python
-def deep_learning_p44(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP evaluation.
-
-</Solution>

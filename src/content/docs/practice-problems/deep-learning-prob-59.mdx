@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP Module 59: Problem 359"
-sidebar_position: 359
-description: "Curriculum Problem 359 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings."
-difficulty: hard
-topic: deep-learning-vision/nlp
+title: "Practice: Optical Flow Average Endpoint Error (EPE)"
+description: "Compute the Average Endpoint Error (EPE) metric between predicted and ground-truth optical flow fields."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP Module 59: Problem 359
+# Optical Flow Average Endpoint Error (EPE)
 
-**Rank #359** · Difficulty: **Hard** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-58`.
+## Overview
+
+Compute the Average Endpoint Error (EPE) metric between predicted and ground-truth optical flow fields.
+
+## Task
+
+Implement `optical_flow_aee(flow_pred, flow_gt)`. Given flow fields of shape `H x W x 2` (where `[u, v]` is the displacement vector at pixel `(r, c)`), compute the Euclidean distance `sqrt((u_pred - u_gt)^2 + (v_pred - v_gt)^2)` at each pixel. Return the mean error across all `H * W` pixels rounded to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-59" />
-
-<Solution>
-
-```python
-def deep_learning_p59(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP / embeddings.
-
-</Solution>

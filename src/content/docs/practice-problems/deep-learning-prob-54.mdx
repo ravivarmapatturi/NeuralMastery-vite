@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 54: Problem 354"
-sidebar_position: 354
-description: "Curriculum Problem 354 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: hard
-topic: deep-learning-vision/nlp
+title: "Practice: Hough Transform Polar Line Voting Accumulator"
+description: "Accumulate edge pixel evidence in polar Hough parameter space rho = x * cos(theta) + y * sin(theta) for line detection."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 54: Problem 354
+# Hough Transform Polar Line Voting Accumulator
 
-**Rank #354** · Difficulty: **Hard** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-53`.
+## Overview
+
+Accumulate edge pixel evidence in polar Hough parameter space rho = x * cos(theta) + y * sin(theta) for line detection.
+
+## Task
+
+Implement `hough_line_votes(edge_pixels, theta_angles_deg, rho_max)`. Polar parameters are `theta` and `rho` in range `[-rho_max, rho_max]` (total `2 * rho_max + 1` bins, shifted by `+rho_max` so bin index is `int(round(rho)) + rho_max`). For each pixel `[x, y]` in `edge_pixels` and each angle `deg` in `theta_angles_deg`, compute `rad = math.radians(deg)`, `rho = x * math.cos(rad) + y * math.sin(rad)`. If `-rho_max <= round(rho) <= rho_max`, increment bin `accumulator[theta_idx][int(round(rho)) + rho_max]`. Return 2D matrix of shape `len(thetas) x (2 * rho_max + 1)`.
 
 <PracticePlayground problemId="deep-learning-prob-54" />
-
-<Solution>
-
-```python
-def deep_learning_p54(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

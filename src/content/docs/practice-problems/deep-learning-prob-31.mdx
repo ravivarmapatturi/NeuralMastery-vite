@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP Module 31: Problem 331"
-sidebar_position: 331
-description: "Curriculum Problem 331 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: Harris Corner Detector Response Score"
+description: "Compute the Harris corner response score R = det(M) - k * (trace(M))^2 for local image feature detection."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP Module 31: Problem 331
+# Harris Corner Detector Response Score
 
-**Rank #331** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-30`.
+## Overview
+
+Compute the Harris corner response score R = det(M) - k * (trace(M))^2 for local image feature detection.
+
+## Task
+
+Implement `harris_corner_response(Ixx, Iyy, Ixy, k)`. For structure tensor matrix `M = [[Ixx, Ixy], [Ixy, Iyy]]`, compute `det_M = Ixx * Iyy - Ixy ** 2` and `trace_M = Ixx + Iyy`. The corner response is `R = det_M - k * (trace_M ** 2)`. Round result to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-31" />
-
-<Solution>
-
-```python
-def deep_learning_p31(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP / embeddings.
-
-</Solution>

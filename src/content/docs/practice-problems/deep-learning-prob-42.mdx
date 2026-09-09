@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 42: Problem 342"
-sidebar_position: 342
-description: "Curriculum Problem 342 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: Add-K / Laplace Smoothing for Language Modeling"
+description: "Smooth n-gram probability estimates using Add-k smoothing to prevent zero probability on unseen transitions."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 42: Problem 342
+# Add-K / Laplace Smoothing for Language Modeling
 
-**Rank #342** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-41`.
+## Overview
+
+Smooth n-gram probability estimates using Add-k smoothing to prevent zero probability on unseen transitions.
+
+## Task
+
+Implement `add_k_laplace_smoothing(ngram_count, prefix_count, vocab_size, k)`. Compute the smoothed probability `P = (ngram_count + k) / (prefix_count + k * vocab_size)`. Round result to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-42" />
-
-<Solution>
-
-```python
-def deep_learning_p42(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

@@ -119682,6 +119682,4084 @@ def redundancy_penalty(candidate_embedding, selected_embeddings):
       ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  "deep-learning-prob-31": {
+    id: "deep-learning-prob-31",
+    title: "Harris Corner Detector Response Score",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "harris_corner_response",
+    functionSignature: "harris_corner_response(Ixx: float, Iyy: float, Ixy: float, k: float) -> float",
+    starterCode: `def harris_corner_response(Ixx: float, Iyy: float, Ixy: float, k: float = 0.04) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the Harris corner response score R = det(M) - k * (trace(M))^2 for local image feature detection.",
+    taskDescription: "Implement `harris_corner_response(Ixx, Iyy, Ixy, k)`. For structure tensor matrix `M = [[Ixx, Ixy], [Ixy, Iyy]]`, compute `det_M = Ixx * Iyy - Ixy ** 2` and `trace_M = Ixx + Iyy`. The corner response is `R = det_M - k * (trace_M ** 2)`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "k > 0.0"
+      ],
+    hints: {
+  "small": "Compute determinant and trace of the 2x2 structure tensor.",
+        "strong": "det_M = Ixx * Iyy - Ixy ** 2; trace_M = Ixx + Iyy; R = det_M - k * (trace_M ** 2); return round(R, 4).",
+        "concept": "Large positive R indicates a corner (two large eigenvalues); large negative R indicates an edge (one large eigenvalue); near zero is a flat region."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "clear corner two equal eigenvalues",
+          "input": {
+            "Ixx": 10,
+            "Iyy": 10,
+            "Ixy": 0,
+            "k": 0.04
+          },
+          "expectedOutput": 84,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "edge one large eigenvalue negative response",
+          "input": {
+            "Ixx": 10,
+            "Iyy": 0,
+            "Ixy": 0,
+            "k": 0.04
+          },
+          "expectedOutput": -4,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "flat region zero gradient",
+          "input": {
+            "Ixx": 0,
+            "Iyy": 0,
+            "Ixy": 0,
+            "k": 0.04
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "off-diagonal gradient shear",
+          "input": {
+            "Ixx": 5,
+            "Iyy": 5,
+            "Ixy": 2,
+            "k": 0.05
+          },
+          "expectedOutput": 16,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-32": {
+    id: "deep-learning-prob-32",
+    title: "Color Jitter Brightness Adjustment",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "color_jitter_brightness",
+    functionSignature: "color_jitter_brightness(image: list[list[float]], factor: float) -> list[list[float]]",
+    starterCode: `def color_jitter_brightness(image: list[list[float]], factor: float) -> list[list[float]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Scale image intensities by a multiplicative jitter factor and clamp to valid normalized range [0.0, 1.0].",
+    taskDescription: "Implement `color_jitter_brightness(image, factor)`. Multiply each pixel intensity in the 2D image matrix by `factor` and clamp the result to `[0.0, 1.0]`: `clamped = max(0.0, min(1.0, pixel * factor))`. Round each cell to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "image cells in [0.0, 1.0]",
+        "factor >= 0.0"
+      ],
+    hints: {
+  "small": "Iterate over rows and columns, multiply by factor, and clamp with min/max.",
+        "strong": "return [[round(max(0.0, min(1.0, val * factor)), 4) for val in row] for row in image].",
+        "concept": "Brightness jittering is a core vision augmentation that prevents neural networks from overfitting to specific camera exposure levels."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "scale up with saturation clamp",
+          "input": {
+            "image": [
+              [
+                0.5,
+                0.8
+              ],
+              [
+                0.2,
+                0
+              ]
+            ],
+            "factor": 1.5
+          },
+          "expectedOutput": [
+            [
+              0.75,
+              1
+            ],
+            [
+              0.3,
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "dimming factor",
+          "input": {
+            "image": [
+              [
+                1,
+                0.5
+              ],
+              [
+                0.4,
+                0.2
+              ]
+            ],
+            "factor": 0.5
+          },
+          "expectedOutput": [
+            [
+              0.5,
+              0.25
+            ],
+            [
+              0.2,
+              0.1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "identity factor 1.0",
+          "input": {
+            "image": [
+              [
+                0.1,
+                0.9
+              ]
+            ],
+            "factor": 1
+          },
+          "expectedOutput": [
+            [
+              0.1,
+              0.9
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero factor complete blackout",
+          "input": {
+            "image": [
+              [
+                0.7,
+                0.3
+              ]
+            ],
+            "factor": 0
+          },
+          "expectedOutput": [
+            [
+              0,
+              0
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-33": {
+    id: "deep-learning-prob-33",
+    title: "Structural Similarity Index (SSIM) Components",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "image_ssim_components",
+    functionSignature: "image_ssim_components(mu_x: float, mu_y: float, var_x: float, var_y: float, cov_xy: float, c1: float, c2: float) -> list[float]",
+    starterCode: `def image_ssim_components(mu_x: float, mu_y: float, var_x: float, var_y: float, cov_xy: float, c1: float = 0.01, c2: float = 0.03) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the luminance, contrast-structure, and composite SSIM index between two image patches.",
+    taskDescription: "Implement `image_ssim_components(mu_x, mu_y, var_x, var_y, cov_xy, c1, c2)`. Luminance comparison is `l = (2 * mu_x * mu_y + c1) / (mu_x**2 + mu_y**2 + c1)`. Contrast-structure comparison is `cs = (2 * cov_xy + c2) / (var_x + var_y + c2)`. Total SSIM is `ssim = l * cs`. Return `[round(l, 4), round(cs, 4), round(ssim, 4)]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "var_x >= 0.0",
+        "var_y >= 0.0",
+        "c1 > 0.0",
+        "c2 > 0.0"
+      ],
+    hints: {
+  "small": "Compute l and cs using the standard formulas with stabilization constants c1 and c2.",
+        "strong": "l = (2*mu_x*mu_y + c1) / (mu_x**2 + mu_y**2 + c1); cs = (2*cov_xy + c2) / (var_x + var_y + c2); return [round(l, 4), round(cs, 4), round(l*cs, 4)].",
+        "concept": "Unlike MSE, SSIM aligns with human perceptual quality by measuring structural degradation independently of mean luminance shifts."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identical statistics perfect 1.0",
+          "input": {
+            "mu_x": 0.5,
+            "mu_y": 0.5,
+            "var_x": 0.1,
+            "var_y": 0.1,
+            "cov_xy": 0.1,
+            "c1": 0.01,
+            "c2": 0.03
+          },
+          "expectedOutput": [
+            1,
+            1,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "different luminance equal variance",
+          "input": {
+            "mu_x": 0.2,
+            "mu_y": 0.8,
+            "var_x": 0.05,
+            "var_y": 0.05,
+            "cov_xy": 0.05,
+            "c1": 0.01,
+            "c2": 0.03
+          },
+          "expectedOutput": [
+            0.4783,
+            1,
+            0.4783
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "orthogonal uncorrelated patches",
+          "input": {
+            "mu_x": 0.5,
+            "mu_y": 0.5,
+            "var_x": 0.2,
+            "var_y": 0.2,
+            "cov_xy": 0,
+            "c1": 0.01,
+            "c2": 0.03
+          },
+          "expectedOutput": [
+            1,
+            0.0698,
+            0.0698
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero mean patches",
+          "input": {
+            "mu_x": 0,
+            "mu_y": 0,
+            "var_x": 0.1,
+            "var_y": 0.2,
+            "cov_xy": 0.1,
+            "c1": 0.01,
+            "c2": 0.03
+          },
+          "expectedOutput": [
+            1,
+            0.697,
+            0.697
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-34": {
+    id: "deep-learning-prob-34",
+    title: "2D Affine Transformation Mapping",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "affine_transform_point_2d",
+    functionSignature: "affine_transform_point_2d(point: list[float], matrix_2x3: list[list[float]]) -> list[float]",
+    starterCode: `def affine_transform_point_2d(point: list[float], matrix_2x3: list[list[float]]) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Map continuous 2D coordinates through an affine transformation matrix for geometric data augmentation.",
+    taskDescription: "Implement `affine_transform_point_2d(point, matrix_2x3)`. Given a point `[x, y]` and 2x3 affine matrix `[[a, b, tx], [c, d, ty]]`, compute `new_x = a * x + b * y + tx` and `new_y = c * x + d * y + ty`. Return `[round(new_x, 4), round(new_y, 4)]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(point) == 2",
+        "matrix_2x3 has shape 2x3"
+      ],
+    hints: {
+  "small": "Multiply point vector by 2x2 submatrix and add translation column.",
+        "strong": "new_x = m[0][0]*x + m[0][1]*y + m[0][2]; new_y = m[1][0]*x + m[1][1]*y + m[1][2].",
+        "concept": "Affine transforms (scaling, rotation, translation, shearing) preserve parallel lines and form the core of spatial augmentation."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identity with translation",
+          "input": {
+            "point": [
+              1,
+              2
+            ],
+            "matrix_2x3": [
+              [
+                1,
+                0,
+                5
+              ],
+              [
+                0,
+                1,
+                -3
+              ]
+            ]
+          },
+          "expectedOutput": [
+            6,
+            -1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "90 degree rotation around origin",
+          "input": {
+            "point": [
+              1,
+              0
+            ],
+            "matrix_2x3": [
+              [
+                0,
+                -1,
+                0
+              ],
+              [
+                1,
+                0,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": [
+            0,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "scaling by 2x",
+          "input": {
+            "point": [
+              3,
+              4
+            ],
+            "matrix_2x3": [
+              [
+                2,
+                0,
+                0
+              ],
+              [
+                0,
+                2,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": [
+            6,
+            8
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "shear and translate",
+          "input": {
+            "point": [
+              2,
+              1
+            ],
+            "matrix_2x3": [
+              [
+                1,
+                0.5,
+                1
+              ],
+              [
+                0,
+                1,
+                2
+              ]
+            ]
+          },
+          "expectedOutput": [
+            3.5,
+            3
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-35": {
+    id: "deep-learning-prob-35",
+    title: "CenterNet Gaussian Target Radius Calculator",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "centernet_gaussian_radius",
+    functionSignature: "centernet_gaussian_radius(h: int, w: int, min_overlap: float) -> int",
+    starterCode: `def centernet_gaussian_radius(h: int, w: int, min_overlap: float = 0.7) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the Gaussian splatter radius for object center heatmap targets in anchor-free detectors.",
+    taskDescription: "Implement `centernet_gaussian_radius(h, w, min_overlap)`. In CenterNet/CornerNet, the target radius `r` ensures any bounding box with shifted corners has at least `min_overlap` IoU. Compute `r1`, `r2`, `r3` from the 3 quadratic roots for the three cases: Case 1: `a=1, b=-(h+w), c=w*h*(1-min_overlap)/(1+min_overlap)`. Case 2: `a=4, b=-2*(h+w), c=(1-min_overlap)*w*h`. Case 3: `a=4*min_overlap, b=2*min_overlap*(h+w), c=(min_overlap-1)*w*h`. In each case, take the positive root: `(-b - sqrt(b^2 - 4*a*c)) / (2*a)` for Cases 1 and 2; `(-b + sqrt(b^2 - 4*a*c)) / (2*a)` for Case 3. Return `max(0, int(min(r1, r2, r3)))`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "h, w >= 1",
+        "0.0 < min_overlap < 1.0"
+      ],
+    hints: {
+  "small": "Solve the three quadratic equations, take min of valid positive roots, cast to int.",
+        "strong": "Solve standard CornerNet quadratic formulas for r1, r2, r3, return max(0, int(min(r1, r2, r3))).",
+        "concept": "CenterNet places a Gaussian kernel centered on ground truth object centers so false positives nearby receive partial credit during training."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "square 100x100 overlap 0.7",
+          "input": {
+            "h": 100,
+            "w": 100,
+            "min_overlap": 0.7
+          },
+          "expectedOutput": 8,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "rectangular box 200x50",
+          "input": {
+            "h": 200,
+            "w": 50,
+            "min_overlap": 0.7
+          },
+          "expectedOutput": 6,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "small box low overlap",
+          "input": {
+            "h": 20,
+            "w": 20,
+            "min_overlap": 0.5
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "strict high overlap 0.9",
+          "input": {
+            "h": 150,
+            "w": 150,
+            "min_overlap": 0.9
+          },
+          "expectedOutput": 3,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-36": {
+    id: "deep-learning-prob-36",
+    title: "Lucas-Kanade Optical Flow 2x2 Solver",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "lucas_kanade_2x2_flow",
+    functionSignature: "lucas_kanade_2x2_flow(Ix: list[float], Iy: list[float], It: list[float]) -> list[float]",
+    starterCode: `def lucas_kanade_2x2_flow(Ix: list[float], Iy: list[float], It: list[float]) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Solve the 2x2 normal equations for local optical flow velocity vector (u, v) from spatial and temporal image gradients.",
+    taskDescription: "Implement `lucas_kanade_2x2_flow(Ix, Iy, It)`. In a local window of N pixels, spatial gradients `Ix, Iy` and temporal gradient `It` satisfy `[sum(Ix^2), sum(Ix*Iy); sum(Ix*Iy), sum(Iy^2)] * [u, v]^T = -[sum(Ix*It), sum(Iy*It)]^T`. Compute determinant `det = sum(Ix^2)*sum(Iy^2) - sum(Ix*Iy)^2`. If `abs(det) < 1e-7`, system is degenerate / aperture problem: return `[0.0, 0.0]`. Otherwise solve via 2x2 inverse and return `[round(u, 4), round(v, 4)]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(Ix) == len(Iy) == len(It) >= 1"
+      ],
+    hints: {
+  "small": "Form 2x2 matrix A and 2x1 vector b, check determinant, apply 2x2 Cramer rule or matrix inverse.",
+        "strong": "u = ( -sum_IxIt * sum_Iy2 - (-sum_IyIt) * sum_IxIy ) / det; v = ( sum_Ix2 * (-sum_IyIt) - sum_IxIy * (-sum_IxIt) ) / det.",
+        "concept": "Lucas-Kanade assumes constant velocity in a small neighborhood, turning an underdetermined single-pixel constraint into an overdetermined solvable system."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "pure horizontal motion",
+          "input": {
+            "Ix": [
+              1,
+              1
+            ],
+            "Iy": [
+              0,
+              0
+            ],
+            "It": [
+              -2,
+              -2
+            ]
+          },
+          "expectedOutput": [
+            0,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "diagonal motion",
+          "input": {
+            "Ix": [
+              1,
+              1
+            ],
+            "Iy": [
+              1,
+              1
+            ],
+            "It": [
+              -2,
+              -2
+            ]
+          },
+          "expectedOutput": [
+            0,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "orthogonal components invertible",
+          "input": {
+            "Ix": [
+              2,
+              0
+            ],
+            "Iy": [
+              0,
+              2
+            ],
+            "It": [
+              -4,
+              -6
+            ]
+          },
+          "expectedOutput": [
+            2,
+            3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "flat region zero gradient returns zero",
+          "input": {
+            "Ix": [
+              0,
+              0
+            ],
+            "Iy": [
+              0,
+              0
+            ],
+            "It": [
+              0,
+              0
+            ]
+          },
+          "expectedOutput": [
+            0,
+            0
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-37": {
+    id: "deep-learning-prob-37",
+    title: "Vision Transformer Patch Extraction and Flattening",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "vit_patch_flatten",
+    functionSignature: "vit_patch_flatten(image: list[list[list[float]]], patch_size: int) -> list[list[float]]",
+    starterCode: `def vit_patch_flatten(image: list[list[list[float]]], patch_size: int) -> list[list[float]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Decompose a multi-channel 2D image into flattened sequential patch vectors for Transformer processing.",
+    taskDescription: "Implement `vit_patch_flatten(image, patch_size)`. `image` has shape `C x H x W`. Slice non-overlapping patches of size `patch_size x patch_size` in row-major order (top to bottom, left to right). For each patch, flatten in channel-first order: `[patch[c][r][c_col] for c in range(C) for r in range(patch_size) for c_col in range(patch_size)]`. Return 2D list of shape `num_patches x (C * patch_size * patch_size)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "H % patch_size == 0",
+        "W % patch_size == 0"
+      ],
+    hints: {
+  "small": "Iterate grid rows pr from 0 to H//patch_size and cols pc from 0 to W//patch_size.",
+        "strong": "Extract slice image[c][pr*P : (pr+1)*P][pc*P : (pc+1)*P] and flatten.",
+        "concept": "Tokenizing images into discrete spatial patches allows standard 1D Transformer encoders to process 2D images without convolutional inductive biases."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "1 channel 4x4 image 2x2 patches",
+          "input": {
+            "image": [
+              [
+                [
+                  1,
+                  2,
+                  3,
+                  4
+                ],
+                [
+                  5,
+                  6,
+                  7,
+                  8
+                ],
+                [
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                [
+                  13,
+                  14,
+                  15,
+                  16
+                ]
+              ]
+            ],
+            "patch_size": 2
+          },
+          "expectedOutput": [
+            [
+              1,
+              2,
+              5,
+              6
+            ],
+            [
+              3,
+              4,
+              7,
+              8
+            ],
+            [
+              9,
+              10,
+              13,
+              14
+            ],
+            [
+              11,
+              12,
+              15,
+              16
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "2 channels 2x2 image 2x2 patch",
+          "input": {
+            "image": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ]
+              ],
+              [
+                [
+                  5,
+                  6
+                ],
+                [
+                  7,
+                  8
+                ]
+              ]
+            ],
+            "patch_size": 2
+          },
+          "expectedOutput": [
+            [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "1x1 patch size pixel tokens",
+          "input": {
+            "image": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ]
+              ]
+            ],
+            "patch_size": 1
+          },
+          "expectedOutput": [
+            [
+              1
+            ],
+            [
+              2
+            ],
+            [
+              3
+            ],
+            [
+              4
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "asymmetric 4x2 image 2x2 patch",
+          "input": {
+            "image": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  5,
+                  6
+                ],
+                [
+                  7,
+                  8
+                ]
+              ]
+            ],
+            "patch_size": 2
+          },
+          "expectedOutput": [
+            [
+              1,
+              2,
+              3,
+              4
+            ],
+            [
+              5,
+              6,
+              7,
+              8
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-38": {
+    id: "deep-learning-prob-38",
+    title: "Sørensen-Dice Coefficient for Binary Masks",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "dice_coefficient_binary",
+    functionSignature: "dice_coefficient_binary(pred_mask: list[list[int]], gt_mask: list[list[int]], smooth: float) -> float",
+    starterCode: `def dice_coefficient_binary(pred_mask: list[list[int]], gt_mask: list[list[int]], smooth: float = 1.0) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the Sørensen-Dice similarity coefficient (F1 score) between predicted and ground-truth segmentation masks.",
+    taskDescription: "Implement `dice_coefficient_binary(pred_mask, gt_mask, smooth)`. Given two binary matrices of identical shape `H x W` (cells are 0 or 1), compute intersection `inter = sum(p * g)`, and total active pixels `total = sum(p) + sum(g)`. Dice coefficient is `(2 * inter + smooth) / (total + smooth)`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "pred_mask and gt_mask have same dimensions",
+        "smooth >= 0.0"
+      ],
+    hints: {
+  "small": "Count joint ones for intersection, sum all ones across both masks, evaluate formula.",
+        "strong": "inter = sum(pred_mask[r][c] * gt_mask[r][c]); total = sum(pred) + sum(gt); return round((2*inter + smooth) / (total + smooth), 4).",
+        "concept": "The Dice coefficient is widely used in biomedical image segmentation where foreground target regions occupy a small fraction of total pixels."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "perfect overlap returns 1.0",
+          "input": {
+            "pred_mask": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "gt_mask": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "smooth": 1
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "completely disjoint masks",
+          "input": {
+            "pred_mask": [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "gt_mask": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                1
+              ]
+            ],
+            "smooth": 1
+          },
+          "expectedOutput": 0.2,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty masks smoothed to 1.0",
+          "input": {
+            "pred_mask": [
+              [
+                0,
+                0
+              ]
+            ],
+            "gt_mask": [
+              [
+                0,
+                0
+              ]
+            ],
+            "smooth": 1
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "half overlap",
+          "input": {
+            "pred_mask": [
+              [
+                1,
+                1,
+                0
+              ]
+            ],
+            "gt_mask": [
+              [
+                0,
+                1,
+                1
+              ]
+            ],
+            "smooth": 0
+          },
+          "expectedOutput": 0.5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-39": {
+    id: "deep-learning-prob-39",
+    title: "RoIAlign Bilinear Sampling Point Coordinates",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "roi_align_sample_points",
+    functionSignature: "roi_align_sample_points(roi: list[float], bin_r: int, bin_c: int, pooled_h: int, pooled_w: int, sampling_ratio: int) -> list[list[float]]",
+    starterCode: `def roi_align_sample_points(roi: list[float], bin_r: int, bin_c: int, pooled_h: int, pooled_w: int, sampling_ratio: int = 2) -> list[list[float]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Calculate continuous sub-pixel sampling coordinates for RoIAlign without spatial quantization artifacts.",
+    taskDescription: "Implement `roi_align_sample_points(roi, bin_r, bin_c, pooled_h, pooled_w, sampling_ratio)`. `roi` is `[x1, y1, x2, y2]`. The bin width is `bin_w = (x2 - x1) / pooled_w` and height is `bin_h = (y2 - y1) / pooled_h`. The bin top-left is `start_x = x1 + bin_c * bin_w` and `start_y = y1 + bin_r * bin_h`. Within this bin, sample `sampling_ratio x sampling_ratio` evenly spaced points at `x = start_x + (sx + 0.5) * (bin_w / sampling_ratio)` and `y = start_y + (sy + 0.5) * (bin_h / sampling_ratio)` for `sy, sx in [0, ..., sampling_ratio-1]` in row-major order. Return list of `[round(x, 4), round(y, 4)]` pairs.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= bin_r < pooled_h",
+        "0 <= bin_c < pooled_w",
+        "sampling_ratio >= 1"
+      ],
+    hints: {
+  "small": "Compute continuous bin dimensions, then generate regularly spaced grid offsets within the bin.",
+        "strong": "Iterate sy from 0 to sampling_ratio-1 and sx from 0 to sampling_ratio-1, adding offset (s + 0.5) * step.",
+        "concept": "RoIAlign avoids the harsh coordinate quantization of RoIPooling by using continuous bilinear sampling, crucial for pixel-accurate instance masks."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single bin 2x2 sampling",
+          "input": {
+            "roi": [
+              0,
+              0,
+              10,
+              10
+            ],
+            "bin_r": 0,
+            "bin_c": 0,
+            "pooled_h": 1,
+            "pooled_w": 1,
+            "sampling_ratio": 2
+          },
+          "expectedOutput": [
+            [
+              2.5,
+              2.5
+            ],
+            [
+              7.5,
+              2.5
+            ],
+            [
+              2.5,
+              7.5
+            ],
+            [
+              7.5,
+              7.5
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "top-right bin of 2x2 pool",
+          "input": {
+            "roi": [
+              0,
+              0,
+              20,
+              20
+            ],
+            "bin_r": 0,
+            "bin_c": 1,
+            "pooled_h": 2,
+            "pooled_w": 2,
+            "sampling_ratio": 1
+          },
+          "expectedOutput": [
+            [
+              15,
+              5
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "offset roi coordinates",
+          "input": {
+            "roi": [
+              5,
+              5,
+              15,
+              25
+            ],
+            "bin_r": 1,
+            "bin_c": 0,
+            "pooled_h": 2,
+            "pooled_w": 1,
+            "sampling_ratio": 2
+          },
+          "expectedOutput": [
+            [
+              7.5,
+              17.5
+            ],
+            [
+              12.5,
+              17.5
+            ],
+            [
+              7.5,
+              22.5
+            ],
+            [
+              12.5,
+              22.5
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3x3 sampling density",
+          "input": {
+            "roi": [
+              0,
+              0,
+              3,
+              3
+            ],
+            "bin_r": 0,
+            "bin_c": 0,
+            "pooled_h": 1,
+            "pooled_w": 1,
+            "sampling_ratio": 3
+          },
+          "expectedOutput": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              1.5,
+              0.5
+            ],
+            [
+              2.5,
+              0.5
+            ],
+            [
+              0.5,
+              1.5
+            ],
+            [
+              1.5,
+              1.5
+            ],
+            [
+              2.5,
+              1.5
+            ],
+            [
+              0.5,
+              2.5
+            ],
+            [
+              1.5,
+              2.5
+            ],
+            [
+              2.5,
+              2.5
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-40": {
+    id: "deep-learning-prob-40",
+    title: "Multi-Class Focal Loss Forward Pass",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "focal_loss_multiclass",
+    functionSignature: "focal_loss_multiclass(probs: list[float], target_class: int, gamma: float, alpha: float) -> float",
+    starterCode: `def focal_loss_multiclass(probs: list[float], target_class: int, gamma: float = 2.0, alpha: float = 0.25) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute multi-class focal loss with modulating factor (1 - p_t)^gamma to focus training on hard examples.",
+    taskDescription: "Implement `focal_loss_multiclass(probs, target_class, gamma, alpha)`. Let `p_t = probs[target_class]`. Compute `FL = -alpha * ((1.0 - p_t) ** gamma) * math.log(max(1e-15, p_t))`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= target_class < len(probs)",
+        "gamma >= 0.0",
+        "alpha > 0.0"
+      ],
+    hints: {
+  "small": "Extract probability of target class, apply modulating factor and log loss.",
+        "strong": "p_t = probs[target_class]; loss = -alpha * ((1.0 - p_t) ** gamma) * math.log(max(1e-15, p_t)); return round(loss, 4).",
+        "concept": "Focal loss down-weights well-classified easy examples (where p_t is close to 1), concentrating the gradient on hard ambiguous samples."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "confident prediction low loss",
+          "input": {
+            "probs": [
+              0.05,
+              0.9,
+              0.05
+            ],
+            "target_class": 1,
+            "gamma": 2,
+            "alpha": 0.25
+          },
+          "expectedOutput": 0.0003,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "uncertain prediction higher loss",
+          "input": {
+            "probs": [
+              0.5,
+              0.5
+            ],
+            "target_class": 0,
+            "gamma": 2,
+            "alpha": 0.25
+          },
+          "expectedOutput": 0.0433,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "gamma zero reduces to weighted cross entropy",
+          "input": {
+            "probs": [
+              0.2,
+              0.8
+            ],
+            "target_class": 1,
+            "gamma": 0,
+            "alpha": 1
+          },
+          "expectedOutput": 0.2231,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "incorrect prediction high loss",
+          "input": {
+            "probs": [
+              0.95,
+              0.05
+            ],
+            "target_class": 1,
+            "gamma": 2,
+            "alpha": 0.5
+          },
+          "expectedOutput": 1.3518,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-41": {
+    id: "deep-learning-prob-41",
+    title: "N-Gram Language Model Maximum Likelihood Probability",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "ngram_prob_mle",
+    functionSignature: "ngram_prob_mle(prefix: list[str], next_word: str, ngram_counts: dict[str, int]) -> float",
+    starterCode: `def ngram_prob_mle(prefix: list[str], next_word: str, ngram_counts: dict[str, int]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute Maximum Likelihood conditional probability P(w | prefix) from n-gram occurrence frequency tables.",
+    taskDescription: "Implement `ngram_prob_mle(prefix, next_word, ngram_counts)`. In `ngram_counts`, keys are space-separated strings of tokens. Compute prefix key `' '.join(prefix)` and full key `' '.join(prefix + [next_word])`. If prefix is empty, prefix count is `sum(ngram_counts[k] for k where len(k.split())==1)`. Probability is `count(full) / count(prefix)`. If prefix count is 0, return 0.0. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "ngram_counts has non-negative counts"
+      ],
+    hints: {
+  "small": "Find frequency of prefix + next_word and divide by frequency of prefix.",
+        "strong": "num = ngram_counts.get(' '.join(prefix + [next_word]), 0); den = ngram_counts.get(' '.join(prefix), 0); return round(num / den, 4) if den > 0 else 0.0.",
+        "concept": "N-gram language models estimate joint probability of word sequences using the Markov assumption that P(w_t | w_1...w_{t-1}) approx P(w_t | w_{t-n+1}...w_{t-1})."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "bigram conditional probability",
+          "input": {
+            "prefix": [
+              "the"
+            ],
+            "next_word": "cat",
+            "ngram_counts": {
+              "the": 10,
+              "the cat": 4,
+              "the dog": 6
+            }
+          },
+          "expectedOutput": 0.4,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "trigram probability",
+          "input": {
+            "prefix": [
+              "the",
+              "cat"
+            ],
+            "next_word": "sat",
+            "ngram_counts": {
+              "the cat": 5,
+              "the cat sat": 3
+            }
+          },
+          "expectedOutput": 0.6,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "unseen continuation zero probability",
+          "input": {
+            "prefix": [
+              "green"
+            ],
+            "next_word": "sky",
+            "ngram_counts": {
+              "green": 2,
+              "green grass": 2
+            }
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "unigram probability from empty prefix",
+          "input": {
+            "prefix": [],
+            "next_word": "cat",
+            "ngram_counts": {
+              "cat": 3,
+              "dog": 7
+            }
+          },
+          "expectedOutput": 0.3,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-42": {
+    id: "deep-learning-prob-42",
+    title: "Add-K / Laplace Smoothing for Language Modeling",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "add_k_laplace_smoothing",
+    functionSignature: "add_k_laplace_smoothing(ngram_count: int, prefix_count: int, vocab_size: int, k: float) -> float",
+    starterCode: `def add_k_laplace_smoothing(ngram_count: int, prefix_count: int, vocab_size: int, k: float = 1.0) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Smooth n-gram probability estimates using Add-k smoothing to prevent zero probability on unseen transitions.",
+    taskDescription: "Implement `add_k_laplace_smoothing(ngram_count, prefix_count, vocab_size, k)`. Compute the smoothed probability `P = (ngram_count + k) / (prefix_count + k * vocab_size)`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "ngram_count >= 0",
+        "prefix_count >= ngram_count",
+        "vocab_size >= 1",
+        "k > 0.0"
+      ],
+    hints: {
+  "small": "Directly evaluate (count + k) / (prefix + k * V).",
+        "strong": "return round((ngram_count + k) / (prefix_count + k * vocab_size), 4).",
+        "concept": "Laplace smoothing pretends every vocabulary word was observed k extra times in every context, redistributing probability mass from frequent to rare events."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "unseen transition smoothed non-zero",
+          "input": {
+            "ngram_count": 0,
+            "prefix_count": 10,
+            "vocab_size": 100,
+            "k": 1
+          },
+          "expectedOutput": 0.0091,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "seen transition add-1 smoothing",
+          "input": {
+            "ngram_count": 5,
+            "prefix_count": 10,
+            "vocab_size": 10,
+            "k": 1
+          },
+          "expectedOutput": 0.3,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "add-0.1 smoothing",
+          "input": {
+            "ngram_count": 2,
+            "prefix_count": 20,
+            "vocab_size": 1000,
+            "k": 0.1
+          },
+          "expectedOutput": 0.0175,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "small vocabulary high k",
+          "input": {
+            "ngram_count": 1,
+            "prefix_count": 2,
+            "vocab_size": 4,
+            "k": 2
+          },
+          "expectedOutput": 0.3,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-43": {
+    id: "deep-learning-prob-43",
+    title: "Porter Stemmer Step 1a Suffix Reduction",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "porter_stemmer_step1a",
+    functionSignature: "porter_stemmer_step1a(word: str) -> str",
+    starterCode: `def porter_stemmer_step1a(word: str) -> str:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Step 1a of the classic Porter Stemmer algorithm for plural and suffix normalization in information retrieval.",
+    taskDescription: "Implement `porter_stemmer_step1a(word)`. Apply the first matching rule in order: 1) if `word` ends in `'sses'`, replace with `'ss'`; 2) elif `word` ends in `'ies'`, replace with `'i'`; 3) elif `word` ends in `'ss'`, leave unchanged; 4) elif `word` ends in `'s'` and length is at least 3 and character before `'s'` is NOT `'s'`, remove `'s'`. Return the resulting stemmed string.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "word is a non-empty lowercase alphabetic string"
+      ],
+    hints: {
+  "small": "Check suffixes in strict order: 'sses', 'ies', 'ss', 's'.",
+        "strong": "if word.endswith('sses'): return word[:-2]; elif word.endswith('ies'): return word[:-2]; elif word.endswith('ss'): return word; elif word.endswith('s') and len(word) >= 3 and word[-2] != 's': return word[:-1]; return word.",
+        "concept": "Porter stemming applies algorithmic cascading substitution rules to conflate inflectional variants to a common base form."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "sses to ss",
+          "input": {
+            "word": "caresses"
+          },
+          "expectedOutput": "caress",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "ies to i",
+          "input": {
+            "word": "ponies"
+          },
+          "expectedOutput": "poni",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "ss unchanged",
+          "input": {
+            "word": "caress"
+          },
+          "expectedOutput": "caress",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "cats to cat",
+          "input": {
+            "word": "cats"
+          },
+          "expectedOutput": "cat",
+          "hidden": false
+        },
+        {
+          "id": "tc5",
+          "label": "short word as unchanged",
+          "input": {
+            "word": "as"
+          },
+          "expectedOutput": "as",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-44": {
+    id: "deep-learning-prob-44",
+    title: "SentencePiece Unigram Viterbi Segmentation",
+    difficulty: "hard",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "unigram_segment",
+    functionSignature: "unigram_segment(text: str, vocab_log_probs: dict[str, float]) -> list[str]",
+    starterCode: `def unigram_segment(text: str, vocab_log_probs: dict[str, float]) -> list[str]:
+    # Your implementation here
+    pass
+`,
+    mission: "Segment text into subwords maximizing joint log-probability under a Unigram vocabulary model using 1D dynamic programming.",
+    taskDescription: "Implement `unigram_segment(text, vocab_log_probs)`. Let `N = len(text)`. Find a segmentation into subwords present in `vocab_log_probs` maximizing `sum(vocab_log_probs[subword])`. Compute `best_score[i]` for `i = 1 ... N`. If no valid segmentation exists from known subwords, return `[text]`. Return the optimal list of subword strings.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(text) >= 1"
+      ],
+    hints: {
+  "small": "Use DP array best_score initialized to -inf, best_score[0] = 0.0. Track backpointers.",
+        "strong": "For i from 1 to N, check each j < i. If text[j:i] in vocab, score = best_score[j] + vocab[text[j:i]]; maximize over j.",
+        "concept": "Unlike greedy BPE, Unigram language model tokenization (Kudo 2018) computes globally optimal segmentations based on vocabulary occurrence likelihoods."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "clear single-split",
+          "input": {
+            "text": "hellobird",
+            "vocab_log_probs": {
+              "hello": -2,
+              "bird": -3,
+              "hellobird": -10
+            }
+          },
+          "expectedOutput": [
+            "hello",
+            "bird"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "prefers single token if higher prob",
+          "input": {
+            "text": "cat",
+            "vocab_log_probs": {
+              "c": -5,
+              "at": -4,
+              "cat": -1.5
+            }
+          },
+          "expectedOutput": [
+            "cat"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multi-word segment",
+          "input": {
+            "text": "abc",
+            "vocab_log_probs": {
+              "a": -1,
+              "b": -1,
+              "c": -1,
+              "ab": -3
+            }
+          },
+          "expectedOutput": [
+            "a",
+            "b",
+            "c"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "unsegmentable string fallback",
+          "input": {
+            "text": "xyz",
+            "vocab_log_probs": {
+              "a": -1
+            }
+          },
+          "expectedOutput": [
+            "xyz"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-45": {
+    id: "deep-learning-prob-45",
+    title: "Dynamic Time Warping (DTW) Distance",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "dtw_distance",
+    functionSignature: "dtw_distance(seq1: list[float], seq2: list[float]) -> float",
+    starterCode: `def dtw_distance(seq1: list[float], seq2: list[float]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute optimal non-linear time alignment distance between two variable-speed 1D speech or sensor sequences.",
+    taskDescription: "Implement `dtw_distance(seq1, seq2)`. Given sequences of lengths `N` and `M`, fill DP matrix `cost[i][j] = abs(seq1[i-1] - seq2[j-1]) + min(cost[i-1][j], cost[i][j-1], cost[i-1][j-1])`. Base case `cost[0][0] = 0.0`, all other `cost[0][j] = cost[i][0] = inf`. Return `cost[N][M]` rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(seq1) >= 1",
+        "len(seq2) >= 1"
+      ],
+    hints: {
+  "small": "Initialize (N+1) x (M+1) cost matrix with infinity, cost[0][0] = 0.0.",
+        "strong": "cost[i][j] = abs(seq1[i-1] - seq2[j-1]) + min(cost[i-1][j], cost[i][j-1], cost[i-1][j-1]).",
+        "concept": "Dynamic Time Warping measures similarity between time series that may vary in speed or acceleration, essential for speech signal alignment."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identical sequences zero distance",
+          "input": {
+            "seq1": [
+              1,
+              2,
+              3
+            ],
+            "seq2": [
+              1,
+              2,
+              3
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "time-stretched sequence",
+          "input": {
+            "seq1": [
+              1,
+              2,
+              3
+            ],
+            "seq2": [
+              1,
+              1,
+              2,
+              2,
+              3
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "constant offset",
+          "input": {
+            "seq1": [
+              1,
+              2
+            ],
+            "seq2": [
+              2,
+              3
+            ]
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single elements",
+          "input": {
+            "seq1": [
+              5
+            ],
+            "seq2": [
+              10
+            ]
+          },
+          "expectedOutput": 5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-46": {
+    id: "deep-learning-prob-46",
+    title: "Beam Search Hypothesis Expansion Step",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "beam_search_step",
+    functionSignature: "beam_search_step(candidates: list[list], next_token_logprobs: list[list[float]], beam_width: int) -> list[list]",
+    starterCode: `def beam_search_step(candidates: list[list], next_token_logprobs: list[list[float]], beam_width: int) -> list[list]:
+    # Your implementation here
+    pass
+`,
+    mission: "Expand current active beam hypotheses by token log-probabilities and retain the top-K highest scoring paths.",
+    taskDescription: "Implement `beam_search_step(candidates, next_token_logprobs, beam_width)`. `candidates` is a list of `B` hypotheses, each `[tokens_list, cumulative_logprob]`. `next_token_logprobs[i]` is a list of log-probabilities for all vocabulary tokens given hypothesis `i`. Form all `B * V` new hypotheses: `[tokens + [v], round(cum_logprob + logprob[v], 4)]`. Sort descending by score (ties broken by lower token index at the newest position), and return the top `beam_width` hypotheses.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(candidates) == len(next_token_logprobs)",
+        "beam_width >= 1"
+      ],
+    hints: {
+  "small": "For each candidate i and token v, compute new_tokens and new_score, sort all candidates descending.",
+        "strong": "all_new = []; for i, (toks, score) in enumerate(candidates): for v, lp in enumerate(next_token_logprobs[i]): all_new.append((toks + [v], round(score + lp, 4))). Sort key=lambda h: (-h[1], h[0]).",
+        "concept": "Beam search maintains a pruned set of top hypotheses at each timestep, balancing the greedy search limitation against intractable full search."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single candidate expands top 2",
+          "input": {
+            "candidates": [
+              [
+                [],
+                0
+              ]
+            ],
+            "next_token_logprobs": [
+              [
+                -0.5,
+                -1.5,
+                -0.1
+              ]
+            ],
+            "beam_width": 2
+          },
+          "expectedOutput": [
+            [
+              [
+                2
+              ],
+              -0.1
+            ],
+            [
+              [
+                0
+              ],
+              -0.5
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "2 candidates expand top 2",
+          "input": {
+            "candidates": [
+              [
+                [
+                  0
+                ],
+                -0.2
+              ],
+              [
+                [
+                  1
+                ],
+                -0.8
+              ]
+            ],
+            "next_token_logprobs": [
+              [
+                -0.5,
+                -0.1
+              ],
+              [
+                -0.1,
+                -0.9
+              ]
+            ],
+            "beam_width": 2
+          },
+          "expectedOutput": [
+            [
+              [
+                0,
+                1
+              ],
+              -0.3
+            ],
+            [
+              [
+                0,
+                0
+              ],
+              -0.7
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "beam width larger than total keeps all",
+          "input": {
+            "candidates": [
+              [
+                [
+                  0
+                ],
+                -1
+              ]
+            ],
+            "next_token_logprobs": [
+              [
+                -0.2,
+                -0.3
+              ]
+            ],
+            "beam_width": 5
+          },
+          "expectedOutput": [
+            [
+              [
+                0,
+                0
+              ],
+              -1.2
+            ],
+            [
+              [
+                0,
+                1
+              ],
+              -1.3
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "tie breaking by lower token index",
+          "input": {
+            "candidates": [
+              [
+                [],
+                0
+              ]
+            ],
+            "next_token_logprobs": [
+              [
+                -1,
+                -1
+              ]
+            ],
+            "beam_width": 1
+          },
+          "expectedOutput": [
+            [
+              [
+                0
+              ],
+              -1
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-47": {
+    id: "deep-learning-prob-47",
+    title: "CTC Extended Target Sequence Generator",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "ctc_extend_targets",
+    functionSignature: "ctc_extend_targets(target_tokens: list[int], blank_token: int) -> list[int]",
+    starterCode: `def ctc_extend_targets(target_tokens: list[int], blank_token: int = 0) -> list[int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Interleave blank tokens into a target sequence to build the 2L + 1 extended label sequence for CTC loss alignment.",
+    taskDescription: "Implement `ctc_extend_targets(target_tokens, blank_token)`. For target sequence `target_tokens` of length `L`, construct the extended sequence of length `2 * L + 1` by placing `blank_token` before every label, between every adjacent pair, and after the final label (e.g. `[1, 2] -> [0, 1, 0, 2, 0]`). Return the extended list of integers.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "L >= 0"
+      ],
+    hints: {
+  "small": "Start with [blank_token]. For each token, append token and then blank_token.",
+        "strong": "out = [blank_token]; for t in target_tokens: out.extend([t, blank_token]); return out.",
+        "concept": "CTC creates valid alignments by interleaving blank tokens so that transitions can step through blanks or skip them."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two tokens interleaved",
+          "input": {
+            "target_tokens": [
+              1,
+              2
+            ],
+            "blank_token": 0
+          },
+          "expectedOutput": [
+            0,
+            1,
+            0,
+            2,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "repeated adjacent tokens",
+          "input": {
+            "target_tokens": [
+              3,
+              3
+            ],
+            "blank_token": 0
+          },
+          "expectedOutput": [
+            0,
+            3,
+            0,
+            3,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty target returns single blank",
+          "input": {
+            "target_tokens": [],
+            "blank_token": 0
+          },
+          "expectedOutput": [
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "custom blank token",
+          "input": {
+            "target_tokens": [
+              7,
+              8,
+              9
+            ],
+            "blank_token": -1
+          },
+          "expectedOutput": [
+            -1,
+            7,
+            -1,
+            8,
+            -1,
+            9,
+            -1
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-48": {
+    id: "deep-learning-prob-48",
+    title: "Linear-Chain CRF Sequence Path Score",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "crf_sequence_score",
+    functionSignature: "crf_sequence_score(emissions: list[list[float]], tags: list[int], transitions: list[list[float]]) -> float",
+    starterCode: `def crf_sequence_score(emissions: list[list[float]], tags: list[int], transitions: list[list[float]]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the unnormalized path score combining emission and state transition matrices in a linear-chain CRF.",
+    taskDescription: "Implement `crf_sequence_score(emissions, tags, transitions)`. Given sequence emissions `emissions` of shape `T x K`, tag sequence `tags` of length `T`, and transition matrix `transitions` of shape `K x K` (where `transitions[i][j]` is transition from tag `i` to `j`). Path score is `sum_{t=0}^{T-1} emissions[t][tags[t]] + sum_{t=0}^{T-2} transitions[tags[t]][tags[t+1]]`. Return scalar float rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(emissions) == len(tags) >= 1",
+        "transitions is K x K matrix"
+      ],
+    hints: {
+  "small": "Sum emission for tags[t] at each timestep t, plus transition from tags[t] to tags[t+1].",
+        "strong": "score = sum(emissions[t][tags[t]] for t in range(T)) + sum(transitions[tags[t]][tags[t+1]] for t in range(T - 1)).",
+        "concept": "Linear-chain CRFs capture label sequence dependencies (such as prohibiting 'I-PER' after 'O' in NER) using transition weights."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "2 timesteps path score",
+          "input": {
+            "emissions": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                4
+              ]
+            ],
+            "tags": [
+              0,
+              1
+            ],
+            "transitions": [
+              [
+                0.5,
+                1.5
+              ],
+              [
+                2.5,
+                0.5
+              ]
+            ]
+          },
+          "expectedOutput": 6.5,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single timestep no transitions",
+          "input": {
+            "emissions": [
+              [
+                10,
+                20
+              ]
+            ],
+            "tags": [
+              1
+            ],
+            "transitions": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": 20,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "3 timesteps consistent tag",
+          "input": {
+            "emissions": [
+              [
+                1
+              ],
+              [
+                2
+              ],
+              [
+                3
+              ]
+            ],
+            "tags": [
+              0,
+              0,
+              0
+            ],
+            "transitions": [
+              [
+                0.5
+              ]
+            ]
+          },
+          "expectedOutput": 7,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "negative emissions and transitions",
+          "input": {
+            "emissions": [
+              [
+                -1,
+                0
+              ],
+              [
+                -2,
+                1
+              ]
+            ],
+            "tags": [
+              0,
+              1
+            ],
+            "transitions": [
+              [
+                -0.5,
+                -0.5
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": -0.5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-49": {
+    id: "deep-learning-prob-49",
+    title: "1D Position Embedding Linear Interpolation Resampler",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "linear_interpolation_1d",
+    functionSignature: "linear_interpolation_1d(original_values: list[float], target_length: int) -> list[float]",
+    starterCode: `def linear_interpolation_1d(original_values: list[float], target_length: int) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Resample a 1D positional embedding vector to a new sequence length via continuous linear interpolation.",
+    taskDescription: "Implement `linear_interpolation_1d(original_values, target_length)`. Given 1D list `original_values` of length `N` (indexed `0` to `N-1`), resample to `target_length` points evenly spaced from index `0` to `N-1`. For target point `j` in `0...target_length-1`, source position is `src_pos = j * (N - 1) / (target_length - 1)` (if `target_length == 1`, `src_pos = 0.0`). Let `low = int(src_pos)` and `high = min(N - 1, low + 1)`. Interpolated value is `original_values[low] * (1.0 - (src_pos - low)) + original_values[high] * (src_pos - low)`. Return list of floats rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(original_values) >= 1",
+        "target_length >= 1"
+      ],
+    hints: {
+  "small": "Compute continuous index src_pos, take floor and ceil, blend with linear weight.",
+        "strong": "frac = src_pos - low; val = original_values[low] * (1.0 - frac) + original_values[high] * frac; return round(val, 4).",
+        "concept": "Position interpolation allows Transformers to extend their context window during fine-tuning without retraining embeddings from scratch."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "upsample 3 points to 5",
+          "input": {
+            "original_values": [
+              0,
+              10,
+              20
+            ],
+            "target_length": 5
+          },
+          "expectedOutput": [
+            0,
+            5,
+            10,
+            15,
+            20
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "downsample 5 points to 3",
+          "input": {
+            "original_values": [
+              0,
+              2.5,
+              5,
+              7.5,
+              10
+            ],
+            "target_length": 3
+          },
+          "expectedOutput": [
+            0,
+            5,
+            10
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "target length 1",
+          "input": {
+            "original_values": [
+              3,
+              6
+            ],
+            "target_length": 1
+          },
+          "expectedOutput": [
+            3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "same length returns original",
+          "input": {
+            "original_values": [
+              1,
+              4,
+              9
+            ],
+            "target_length": 3
+          },
+          "expectedOutput": [
+            1,
+            4,
+            9
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-50": {
+    id: "deep-learning-prob-50",
+    title: "EmbeddingBag Sum Aggregator with Offsets",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "embedding_bag_sum",
+    functionSignature: "embedding_bag_sum(indices: list[int], offsets: list[int], embedding_matrix: list[list[float]]) -> list[list[float]]",
+    starterCode: `def embedding_bag_sum(indices: list[int], offsets: list[int], embedding_matrix: list[list[float]]) -> list[list[float]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Aggregate embedding vectors by sum across variable-length bags defined by start offsets (PyTorch EmbeddingBag style).",
+    taskDescription: "Implement `embedding_bag_sum(indices, offsets, embedding_matrix)`. For `B = len(offsets)`, bag `i` spans slice `indices[offsets[i] : offsets[i+1]]` (for last bag, up to `len(indices)`). For each bag, sum the embedding vectors of all its indices. If a bag is empty, return a zero vector of dimension `D`. Return list of `B` summed vectors, each rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "offsets is strictly increasing",
+        "offsets[0] == 0",
+        "valid row indices"
+      ],
+    hints: {
+  "small": "For each bag i, find start and end indices, sum rows of embedding_matrix.",
+        "strong": "bag_indices = indices[offsets[i]:offsets[i+1]]; if empty return [0.0]*D; else sum(embedding_matrix[idx][d] for idx).",
+        "concept": "EmbeddingBag combines table lookup and pooling into a single kernel, dramatically speeding up recommendation models with sparse IDs."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two bags distinct lengths",
+          "input": {
+            "indices": [
+              0,
+              1,
+              2
+            ],
+            "offsets": [
+              0,
+              2
+            ],
+            "embedding_matrix": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                2,
+                2
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              2
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single bag all elements",
+          "input": {
+            "indices": [
+              0,
+              1
+            ],
+            "offsets": [
+              0
+            ],
+            "embedding_matrix": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                4
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              4,
+              6
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty second bag",
+          "input": {
+            "indices": [
+              0
+            ],
+            "offsets": [
+              0,
+              1
+            ],
+            "embedding_matrix": [
+              [
+                5,
+                5
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              5,
+              5
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3 bags with multiple indices",
+          "input": {
+            "indices": [
+              0,
+              0,
+              1,
+              1,
+              0
+            ],
+            "offsets": [
+              0,
+              2,
+              4
+            ],
+            "embedding_matrix": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              2,
+              4
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-51": {
+    id: "deep-learning-prob-51",
+    title: "Semantic Chunking Boundary Detector",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "semantic_chunk_splits",
+    functionSignature: "semantic_chunk_splits(embeddings: list[list[float]], similarity_threshold: float) -> list[int]",
+    starterCode: `def semantic_chunk_splits(embeddings: list[list[float]], similarity_threshold: float) -> list[int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Identify semantic chunk split boundaries where cosine similarity between adjacent sentence embeddings drops below a threshold.",
+    taskDescription: "Implement `semantic_chunk_splits(embeddings, similarity_threshold)`. Given unit-norm sentence embeddings `embeddings`, compute cosine similarity `sim = sum(a * b)` between adjacent sentences `embeddings[i]` and `embeddings[i+1]` for `i = 0 ... len(embeddings)-2`. If `sim < similarity_threshold`, add `i + 1` as a boundary split index. Return the list of split indices in ascending order.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(embeddings) >= 1",
+        "embeddings are unit vectors"
+      ],
+    hints: {
+  "small": "Compute dot product of embeddings[i] and embeddings[i+1]. If below threshold, record split at i+1.",
+        "strong": "splits = []; for i in range(len(embeddings)-1): if sum(x*y for x,y in zip(embeddings[i], embeddings[i+1])) < threshold: splits.append(i+1).",
+        "concept": "Semantic chunking breaks prose into coherent passages at natural topical shifts rather than arbitrary token boundaries."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "drop in similarity splits at index 2",
+          "input": {
+            "embeddings": [
+              [
+                1,
+                0
+              ],
+              [
+                0.95,
+                0.31
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                0.1,
+                0.99
+              ]
+            ],
+            "similarity_threshold": 0.5
+          },
+          "expectedOutput": [
+            2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "all similar no splits",
+          "input": {
+            "embeddings": [
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "similarity_threshold": 0.8
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "alternating orthogonal vectors split every step",
+          "input": {
+            "embeddings": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "similarity_threshold": 0.5
+          },
+          "expectedOutput": [
+            1,
+            2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single embedding no splits",
+          "input": {
+            "embeddings": [
+              [
+                1,
+                0
+              ]
+            ],
+            "similarity_threshold": 0.5
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-52": {
+    id: "deep-learning-prob-52",
+    title: "METEOR Greedy Unigram Alignment Matcher",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "meteor_unigram_match",
+    functionSignature: "meteor_unigram_match(candidate: list[str], reference: list[str]) -> list[int]",
+    starterCode: `def meteor_unigram_match(candidate: list[str], reference: list[str]) -> list[int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Match candidate unigrams to reference unigrams using greedy exact matching for METEOR machine translation evaluation.",
+    taskDescription: "Implement `meteor_unigram_match(candidate, reference)`. Match each token in `candidate` to the first available identical token in `reference` (each reference token may be matched at most once). Return `[match_count, len(candidate), len(reference)]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "candidate and reference are lists of strings"
+      ],
+    hints: {
+  "small": "Keep a set of used reference indices. For each candidate token, search for first unused matching reference index.",
+        "strong": "used_ref = set(); matches = 0; for c in candidate: for j, r in enumerate(reference): if j not in used_ref and c == r: used_ref.add(j); matches += 1; break. return [matches, len(candidate), len(reference)].",
+        "concept": "METEOR computes harmonic mean of precision and recall with higher weight on recall, matching unigrams by exact match, stem, and synonymy."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "exact alignment match",
+          "input": {
+            "candidate": [
+              "the",
+              "cat",
+              "sat"
+            ],
+            "reference": [
+              "the",
+              "cat",
+              "sat"
+            ]
+          },
+          "expectedOutput": [
+            3,
+            3,
+            3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "repeated words in candidate limited by reference",
+          "input": {
+            "candidate": [
+              "the",
+              "the"
+            ],
+            "reference": [
+              "the"
+            ]
+          },
+          "expectedOutput": [
+            1,
+            2,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "disordered words matched",
+          "input": {
+            "candidate": [
+              "sat",
+              "cat"
+            ],
+            "reference": [
+              "cat",
+              "sat"
+            ]
+          },
+          "expectedOutput": [
+            2,
+            2,
+            2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "no overlap zero matches",
+          "input": {
+            "candidate": [
+              "apple"
+            ],
+            "reference": [
+              "banana",
+              "orange"
+            ]
+          },
+          "expectedOutput": [
+            0,
+            1,
+            2
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-53": {
+    id: "deep-learning-prob-53",
+    title: "Self-BLEU Corpus Diversity Evaluator",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "self_bleu_1",
+    functionSignature: "self_bleu_1(generated_texts: list[list[str]]) -> float",
+    starterCode: `def self_bleu_1(generated_texts: list[list[str]]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Evaluate mode collapse and diversity in text generation by measuring unigram overlap across generated samples.",
+    taskDescription: "Implement `self_bleu_1(generated_texts)`. For each text `i`, treat all other texts `j != i` as reference documents. Compute unigram precision: for each word in text `i`, count is clipped to the maximum frequency of that word in any single reference document. Score for text `i` is `clipped_unigram_matches / len(text_i)`. Return the average score across all texts rounded to 4 decimal places. If `len(generated_texts) <= 1`, return 0.0.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(generated_texts) >= 1",
+        "each text is non-empty list of strings"
+      ],
+    hints: {
+  "small": "For each text i, compute BLEU-1 precision against all other texts as reference set.",
+        "strong": "For text i: refs = [t for j, t in enumerate(generated_texts) if j != i]. Count clipped matches, divide by len(text_i). Average over all i.",
+        "concept": "Self-BLEU measures sample diversity: lower Self-BLEU scores indicate high diversity, while high Self-BLEU reveals repetitive mode collapse."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identical generated samples maximum score 1.0",
+          "input": {
+            "generated_texts": [
+              [
+                "the",
+                "cat"
+              ],
+              [
+                "the",
+                "cat"
+              ]
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "completely distinct vocabularies zero score",
+          "input": {
+            "generated_texts": [
+              [
+                "a",
+                "b"
+              ],
+              [
+                "c",
+                "d"
+              ]
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "partial overlap between 3 samples",
+          "input": {
+            "generated_texts": [
+              [
+                "a",
+                "b"
+              ],
+              [
+                "b",
+                "c"
+              ],
+              [
+                "c",
+                "a"
+              ]
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single document returns zero",
+          "input": {
+            "generated_texts": [
+              [
+                "lone",
+                "doc"
+              ]
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-54": {
+    id: "deep-learning-prob-54",
+    title: "Hough Transform Polar Line Voting Accumulator",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "hough_line_votes",
+    functionSignature: "hough_line_votes(edge_pixels: list[list[int]], theta_angles_deg: list[int], rho_max: int) -> list[list[int]]",
+    starterCode: `def hough_line_votes(edge_pixels: list[list[int]], theta_angles_deg: list[int], rho_max: int = 100) -> list[list[int]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Accumulate edge pixel evidence in polar Hough parameter space rho = x * cos(theta) + y * sin(theta) for line detection.",
+    taskDescription: "Implement `hough_line_votes(edge_pixels, theta_angles_deg, rho_max)`. Polar parameters are `theta` and `rho` in range `[-rho_max, rho_max]` (total `2 * rho_max + 1` bins, shifted by `+rho_max` so bin index is `int(round(rho)) + rho_max`). For each pixel `[x, y]` in `edge_pixels` and each angle `deg` in `theta_angles_deg`, compute `rad = math.radians(deg)`, `rho = x * math.cos(rad) + y * math.sin(rad)`. If `-rho_max <= round(rho) <= rho_max`, increment bin `accumulator[theta_idx][int(round(rho)) + rho_max]`. Return 2D matrix of shape `len(thetas) x (2 * rho_max + 1)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "rho_max >= 10"
+      ],
+    hints: {
+  "small": "Convert degree to radians, compute rho, clamp or check within [-rho_max, rho_max], add to accumulator.",
+        "strong": "rho_idx = int(round(rho)) + rho_max; if 0 <= rho_idx < 2*rho_max+1: acc[t_idx][rho_idx] += 1.",
+        "concept": "Hough transform maps collinear spatial points into intersecting sinusoids in Hough space, making line detection robust to occlusions."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "vertical line points vote at theta 0",
+          "input": {
+            "edge_pixels": [
+              [
+                5,
+                0
+              ],
+              [
+                5,
+                1
+              ],
+              [
+                5,
+                2
+              ]
+            ],
+            "theta_angles_deg": [
+              0,
+              90
+            ],
+            "rho_max": 10
+          },
+          "expectedOutput": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "origin pixel votes rho zero for all thetas",
+          "input": {
+            "edge_pixels": [
+              [
+                0,
+                0
+              ]
+            ],
+            "theta_angles_deg": [
+              0,
+              45,
+              90
+            ],
+            "rho_max": 10
+          },
+          "expectedOutput": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "horizontal line points vote at theta 90",
+          "input": {
+            "edge_pixels": [
+              [
+                0,
+                3
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                3
+              ]
+            ],
+            "theta_angles_deg": [
+              0,
+              90
+            ],
+            "rho_max": 10
+          },
+          "expectedOutput": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single point diagonal",
+          "input": {
+            "edge_pixels": [
+              [
+                2,
+                2
+              ]
+            ],
+            "theta_angles_deg": [
+              45
+            ],
+            "rho_max": 5
+          },
+          "expectedOutput": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-55": {
+    id: "deep-learning-prob-55",
+    title: "Spatial Transformer Network Normalized Grid Generator",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "spatial_transform_grid",
+    functionSignature: "spatial_transform_grid(theta: list[list[float]], out_h: int, out_w: int) -> list[list[list[float]]]",
+    starterCode: `def spatial_transform_grid(theta: list[list[float]], out_h: int, out_w: int) -> list[list[list[float]]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Generate normalized source sampling coordinates [-1.0, 1.0] for a Spatial Transformer Network (STN).",
+    taskDescription: "Implement `spatial_transform_grid(theta, out_h, out_w)`. For output grid coordinates `(r, c)`, normalized target coordinates are `yt = -1.0 + 2.0 * r / (out_h - 1)` (if `out_h > 1` else 0.0) and `xt = -1.0 + 2.0 * c / (out_w - 1)` (if `out_w > 1` else 0.0). Apply affine transform: `xs = theta[0][0] * xt + theta[0][1] * yt + theta[0][2]` and `ys = theta[1][0] * xt + theta[1][1] * yt + theta[1][2]`. Return 3D list of shape `out_h x out_w x 2` where cell is `[round(xs, 4), round(ys, 4)]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "theta has shape 2x3",
+        "out_h, out_w >= 1"
+      ],
+    hints: {
+  "small": "Compute normalized xt, yt in [-1, 1], apply affine matrix multiplication.",
+        "strong": "xs = theta[0][0]*xt + theta[0][1]*yt + theta[0][2]; ys = theta[1][0]*xt + theta[1][1]*yt + theta[1][2].",
+        "concept": "Spatial Transformer Networks enable neural networks to learn spatial invariance dynamically by predicting affine warp parameters."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identity transform 2x2 grid",
+          "input": {
+            "theta": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ]
+            ],
+            "out_h": 2,
+            "out_w": 2
+          },
+          "expectedOutput": [
+            [
+              [
+                -1,
+                -1
+              ],
+              [
+                1,
+                -1
+              ]
+            ],
+            [
+              [
+                -1,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "pure translation shift",
+          "input": {
+            "theta": [
+              [
+                1,
+                0,
+                0.5
+              ],
+              [
+                0,
+                1,
+                -0.5
+              ]
+            ],
+            "out_h": 2,
+            "out_w": 2
+          },
+          "expectedOutput": [
+            [
+              [
+                -0.5,
+                -1.5
+              ],
+              [
+                1.5,
+                -1.5
+              ]
+            ],
+            [
+              [
+                -0.5,
+                0.5
+              ],
+              [
+                1.5,
+                0.5
+              ]
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "scaling by half",
+          "input": {
+            "theta": [
+              [
+                0.5,
+                0,
+                0
+              ],
+              [
+                0,
+                0.5,
+                0
+              ]
+            ],
+            "out_h": 3,
+            "out_w": 3
+          },
+          "expectedOutput": [
+            [
+              [
+                -0.5,
+                -0.5
+              ],
+              [
+                0,
+                -0.5
+              ],
+              [
+                0.5,
+                -0.5
+              ]
+            ],
+            [
+              [
+                -0.5,
+                0
+              ],
+              [
+                0,
+                0
+              ],
+              [
+                0.5,
+                0
+              ]
+            ],
+            [
+              [
+                -0.5,
+                0.5
+              ],
+              [
+                0,
+                0.5
+              ],
+              [
+                0.5,
+                0.5
+              ]
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "1x1 output grid centered",
+          "input": {
+            "theta": [
+              [
+                1,
+                0,
+                0.2
+              ],
+              [
+                0,
+                1,
+                0.3
+              ]
+            ],
+            "out_h": 1,
+            "out_w": 1
+          },
+          "expectedOutput": [
+            [
+              [
+                0.2,
+                0.3
+              ]
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-56": {
+    id: "deep-learning-prob-56",
+    title: "FPN 1x1 Lateral Convolution Alignment",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "fpn_lateral_1x1",
+    functionSignature: "fpn_lateral_1x1(feature_map: list[list[list[float]]], weights: list[list[float]], bias: list[float]) -> list[list[list[float]]]",
+    starterCode: `def fpn_lateral_1x1(feature_map: list[list[list[float]]], weights: list[list[float]], bias: list[float]) -> list[list[list[float]]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Project multi-scale bottom-up feature channels to uniform channel dimension using 1x1 lateral convolutions in Feature Pyramid Networks.",
+    taskDescription: "Implement `fpn_lateral_1x1(feature_map, weights, bias)`. `feature_map` has shape `C_in x H x W`. `weights` has shape `C_out x C_in` and `bias` has length `C_out`. For each output channel `co`, output pixel `(r, c)` is `sum_{ci=0}^{C_in-1} weights[co][ci] * feature_map[ci][r][c] + bias[co]`. Return 3D list of shape `C_out x H x W` with values rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(weights) == len(bias)",
+        "len(weights[0]) == len(feature_map)"
+      ],
+    hints: {
+  "small": "Compute dot product between weight row and input channel column at each spatial location (r, c), plus bias.",
+        "strong": "out[co][r][c] = sum(weights[co][ci] * feature_map[ci][r][c] for ci in range(C_in)) + bias[co].",
+        "concept": "Lateral 1x1 convolutions in FPN project high-dimensional backbone features into a uniform channel depth (typically 256) before merging."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "2 channels to 1 channel 2x2 spatial",
+          "input": {
+            "feature_map": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ]
+              ],
+              [
+                [
+                  5,
+                  6
+                ],
+                [
+                  7,
+                  8
+                ]
+              ]
+            ],
+            "weights": [
+              [
+                0.5,
+                0.5
+              ]
+            ],
+            "bias": [
+              1
+            ]
+          },
+          "expectedOutput": [
+            [
+              [
+                4,
+                5
+              ],
+              [
+                6,
+                7
+              ]
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "identity 1 channel projection",
+          "input": {
+            "feature_map": [
+              [
+                [
+                  2,
+                  3
+                ]
+              ]
+            ],
+            "weights": [
+              [
+                1
+              ]
+            ],
+            "bias": [
+              0
+            ]
+          },
+          "expectedOutput": [
+            [
+              [
+                2,
+                3
+              ]
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "1 channel to 2 channels expansion",
+          "input": {
+            "feature_map": [
+              [
+                [
+                  1
+                ]
+              ]
+            ],
+            "weights": [
+              [
+                2
+              ],
+              [
+                3
+              ]
+            ],
+            "bias": [
+              0.1,
+              0.2
+            ]
+          },
+          "expectedOutput": [
+            [
+              [
+                2.1
+              ]
+            ],
+            [
+              [
+                3.2
+              ]
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero weights produces bias",
+          "input": {
+            "feature_map": [
+              [
+                [
+                  10,
+                  20
+                ]
+              ]
+            ],
+            "weights": [
+              [
+                0
+              ]
+            ],
+            "bias": [
+              5
+            ]
+          },
+          "expectedOutput": [
+            [
+              [
+                5,
+                5
+              ]
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-57": {
+    id: "deep-learning-prob-57",
+    title: "Hard Negative Triplet Mining",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "mine_hard_triplet",
+    functionSignature: "mine_hard_triplet(anchor: list[float], positive: list[float], negatives: list[list[float]], margin: float) -> int",
+    starterCode: `def mine_hard_triplet(anchor: list[float], positive: list[float], negatives: list[list[float]], margin: float = 0.5) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Identify the hardest negative sample violating the triplet margin constraint for efficient contrastive training.",
+    taskDescription: "Implement `mine_hard_triplet(anchor, positive, negatives, margin)`. Let `d(u, v) = sqrt(sum((u - v)^2))`. Compute `d_pos = d(anchor, positive)`. A negative `negatives[k]` violates the margin if `d(anchor, negatives[k]) < d_pos + margin`. Find the index `k` among all violating negatives that MINIMIZES `d(anchor, negatives[k])` (the hardest negative closest to anchor; ties broken by smallest index). If no negative violates the margin, return `-1`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(anchor) == len(positive)",
+        "len(negatives) >= 1",
+        "margin > 0.0"
+      ],
+    hints: {
+  "small": "Compute d_pos, filter negatives with d_neg < d_pos + margin, find argmin of d_neg.",
+        "strong": "best_k = -1, min_d = inf; for k, neg in enumerate(negatives): d_neg = d(anchor, neg); if d_neg < d_pos + margin and d_neg < min_d: min_d = d_neg, best_k = k.",
+        "concept": "Random triplet selection leads to slow convergence because most negatives satisfy the margin early; mining hard negatives produces active gradients."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "one clearly hard negative",
+          "input": {
+            "anchor": [
+              0,
+              0
+            ],
+            "positive": [
+              2,
+              0
+            ],
+            "negatives": [
+              [
+                10,
+                0
+              ],
+              [
+                1.5,
+                0
+              ],
+              [
+                3,
+                0
+              ]
+            ],
+            "margin": 1
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "all negatives beyond margin returns -1",
+          "input": {
+            "anchor": [
+              0,
+              0
+            ],
+            "positive": [
+              1,
+              0
+            ],
+            "negatives": [
+              [
+                10,
+                0
+              ],
+              [
+                20,
+                0
+              ]
+            ],
+            "margin": 0.5
+          },
+          "expectedOutput": -1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "hardest is negative closer than positive",
+          "input": {
+            "anchor": [
+              0,
+              0
+            ],
+            "positive": [
+              2,
+              0
+            ],
+            "negatives": [
+              [
+                0.5,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "margin": 0.5
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exact tie broken by lowest index",
+          "input": {
+            "anchor": [
+              0,
+              0
+            ],
+            "positive": [
+              2,
+              0
+            ],
+            "negatives": [
+              [
+                1,
+                0
+              ],
+              [
+                -1,
+                0
+              ]
+            ],
+            "margin": 0.5
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-58": {
+    id: "deep-learning-prob-58",
+    title: "Masked Sequence Cross-Entropy Loss",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "sequence_cross_entropy_masked",
+    functionSignature: "sequence_cross_entropy_masked(logits_seq: list[list[float]], targets: list[int], mask: list[int]) -> float",
+    starterCode: `def sequence_cross_entropy_masked(logits_seq: list[list[float]], targets: list[int], mask: list[int]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute cross-entropy loss over a sequence, ignoring padded token positions using a binary mask.",
+    taskDescription: "Implement `sequence_cross_entropy_masked(logits_seq, targets, mask)`. For each timestep `t` where `mask[t] == 1`, compute stable log-softmax cross entropy: `loss_t = -logits[t][targets[t]] + max_l + log(sum(exp(l - max_l)))`. Sum losses over all active timesteps and divide by `sum(mask)`. If `sum(mask) == 0`, return 0.0. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(logits_seq) == len(targets) == len(mask)",
+        "targets values in [0, num_classes-1]"
+      ],
+    hints: {
+  "small": "At each timestep with mask==1, compute standard softmax loss using stable log-sum-exp, then average over active tokens.",
+        "strong": "max_l = max(logits[t]); lse = max_l + log(sum(exp(x - max_l))); loss_t = lse - logits[t][targets[t]].",
+        "concept": "Masked loss is essential for batch training in sequence models so loss gradients are not computed on meaningless padding tokens."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "2 tokens active 1 masked padding",
+          "input": {
+            "logits_seq": [
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                2
+              ],
+              [
+                10,
+                10
+              ]
+            ],
+            "targets": [
+              0,
+              1,
+              0
+            ],
+            "mask": [
+              1,
+              1,
+              0
+            ]
+          },
+          "expectedOutput": 0.1269,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "all tokens active",
+          "input": {
+            "logits_seq": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "targets": [
+              0,
+              1
+            ],
+            "mask": [
+              1,
+              1
+            ]
+          },
+          "expectedOutput": 0.6931,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all masked returns zero",
+          "input": {
+            "logits_seq": [
+              [
+                5,
+                0
+              ]
+            ],
+            "targets": [
+              0
+            ],
+            "mask": [
+              0
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "confident prediction low loss",
+          "input": {
+            "logits_seq": [
+              [
+                10,
+                0
+              ],
+              [
+                0,
+                10
+              ]
+            ],
+            "targets": [
+              0,
+              1
+            ],
+            "mask": [
+              1,
+              1
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-59": {
+    id: "deep-learning-prob-59",
+    title: "Optical Flow Average Endpoint Error (EPE)",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "optical_flow_aee",
+    functionSignature: "optical_flow_aee(flow_pred: list[list[list[float]]], flow_gt: list[list[list[float]]]) -> float",
+    starterCode: `def optical_flow_aee(flow_pred: list[list[list[float]]], flow_gt: list[list[list[float]]]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the Average Endpoint Error (EPE) metric between predicted and ground-truth optical flow fields.",
+    taskDescription: "Implement `optical_flow_aee(flow_pred, flow_gt)`. Given flow fields of shape `H x W x 2` (where `[u, v]` is the displacement vector at pixel `(r, c)`), compute the Euclidean distance `sqrt((u_pred - u_gt)^2 + (v_pred - v_gt)^2)` at each pixel. Return the mean error across all `H * W` pixels rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "flow_pred and flow_gt have same dimensions H x W x 2",
+        "H, W >= 1"
+      ],
+    hints: {
+  "small": "Compute Euclidean distance between (u_pred, v_pred) and (u_gt, v_gt) at each pixel, average over total pixels.",
+        "strong": "err = math.sqrt((p[0] - g[0])**2 + (p[1] - g[1])**2); return round(sum(err) / (H * W), 4).",
+        "concept": "Average Endpoint Error is the standard quantitative benchmark metric for optical flow estimation models (e.g. RAFT, FlowNet)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "perfect prediction zero EPE",
+          "input": {
+            "flow_pred": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ]
+              ]
+            ],
+            "flow_gt": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ]
+              ]
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "constant 1-pixel shift error",
+          "input": {
+            "flow_pred": [
+              [
+                [
+                  1,
+                  0
+                ]
+              ]
+            ],
+            "flow_gt": [
+              [
+                [
+                  0,
+                  0
+                ]
+              ]
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "2x2 field 3-4-5 triangle error",
+          "input": {
+            "flow_pred": [
+              [
+                [
+                  3,
+                  4
+                ],
+                [
+                  0,
+                  0
+                ]
+              ],
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
+            ],
+            "flow_gt": [
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0
+                ]
+              ],
+              [
+                [
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
+            ]
+          },
+          "expectedOutput": 1.25,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "negative coordinate error",
+          "input": {
+            "flow_pred": [
+              [
+                [
+                  -1,
+                  -1
+                ]
+              ]
+            ],
+            "flow_gt": [
+              [
+                [
+                  1,
+                  1
+                ]
+              ]
+            ]
+          },
+          "expectedOutput": 2.8284,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-60": {
+    id: "deep-learning-prob-60",
+    title: "Vision Transformer CLS Token Prepending",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "vit_class_token_prepend",
+    functionSignature: "vit_class_token_prepend(patch_embeddings: list[list[float]], cls_token: list[float]) -> list[list[float]]",
+    starterCode: `def vit_class_token_prepend(patch_embeddings: list[list[float]], cls_token: list[float]) -> list[list[float]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Prepend the learnable [CLS] classification token to the sequence of patch embeddings in Vision Transformers.",
+    taskDescription: "Implement `vit_class_token_prepend(patch_embeddings, cls_token)`. Given a 2D matrix `patch_embeddings` of shape `N x D` and a 1D vector `cls_token` of length `D`, insert `cls_token` as the very first row (position 0), resulting in an `(N + 1) x D` matrix. Return the new 2D list.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(cls_token) == len(patch_embeddings[0]) if patch_embeddings else len(cls_token)"
+      ],
+    hints: {
+  "small": "Create new list with cls_token followed by all rows of patch_embeddings.",
+        "strong": "return [list(cls_token)] + [list(row) for row in patch_embeddings].",
+        "concept": "Borrowed from BERT, the [CLS] token aggregates global image representation across attention layers and is passed to the final classification head."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "2 patches prepended with cls",
+          "input": {
+            "patch_embeddings": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                4
+              ]
+            ],
+            "cls_token": [
+              0,
+              0
+            ]
+          },
+          "expectedOutput": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              3,
+              4
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "empty patch sequence returns just cls token",
+          "input": {
+            "patch_embeddings": [],
+            "cls_token": [
+              0.5,
+              0.5
+            ]
+          },
+          "expectedOutput": [
+            [
+              0.5,
+              0.5
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single patch 3d vector",
+          "input": {
+            "patch_embeddings": [
+              [
+                1,
+                1,
+                1
+              ]
+            ],
+            "cls_token": [
+              9,
+              9,
+              9
+            ]
+          },
+          "expectedOutput": [
+            [
+              9,
+              9,
+              9
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "high dimension token",
+          "input": {
+            "patch_embeddings": [
+              [
+                0.1,
+                0.1,
+                0.1,
+                0.1
+              ]
+            ],
+            "cls_token": [
+              0.9,
+              0.9,
+              0.9,
+              0.9
+            ]
+          },
+          "expectedOutput": [
+            [
+              0.9,
+              0.9,
+              0.9,
+              0.9
+            ],
+            [
+              0.1,
+              0.1,
+              0.1,
+              0.1
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

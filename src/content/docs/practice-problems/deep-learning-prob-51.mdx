@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP Module 51: Problem 351"
-sidebar_position: 351
-description: "Curriculum Problem 351 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings."
-difficulty: hard
-topic: deep-learning-vision/nlp
+title: "Practice: Semantic Chunking Boundary Detector"
+description: "Identify semantic chunk split boundaries where cosine similarity between adjacent sentence embeddings drops below a threshold."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP Module 51: Problem 351
+# Semantic Chunking Boundary Detector
 
-**Rank #351** · Difficulty: **Hard** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-50`.
+## Overview
+
+Identify semantic chunk split boundaries where cosine similarity between adjacent sentence embeddings drops below a threshold.
+
+## Task
+
+Implement `semantic_chunk_splits(embeddings, similarity_threshold)`. Given unit-norm sentence embeddings `embeddings`, compute cosine similarity `sim = sum(a * b)` between adjacent sentences `embeddings[i]` and `embeddings[i+1]` for `i = 0 ... len(embeddings)-2`. If `sim < similarity_threshold`, add `i + 1` as a boundary split index. Return the list of split indices in ascending order.
 
 <PracticePlayground problemId="deep-learning-prob-51" />
-
-<Solution>
-
-```python
-def deep_learning_p51(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP / embeddings.
-
-</Solution>

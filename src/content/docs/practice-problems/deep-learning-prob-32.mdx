@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP evaluation Module 32: Problem 332"
-sidebar_position: 332
-description: "Curriculum Problem 332 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: Color Jitter Brightness Adjustment"
+description: "Scale image intensities by a multiplicative jitter factor and clamp to valid normalized range [0.0, 1.0]."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP evaluation Module 32: Problem 332
+# Color Jitter Brightness Adjustment
 
-**Rank #332** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-31`.
+## Overview
+
+Scale image intensities by a multiplicative jitter factor and clamp to valid normalized range [0.0, 1.0].
+
+## Task
+
+Implement `color_jitter_brightness(image, factor)`. Multiply each pixel intensity in the 2D image matrix by `factor` and clamp the result to `[0.0, 1.0]`: `clamped = max(0.0, min(1.0, pixel * factor))`. Round each cell to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-32" />
-
-<Solution>
-
-```python
-def deep_learning_p32(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP evaluation.
-
-</Solution>

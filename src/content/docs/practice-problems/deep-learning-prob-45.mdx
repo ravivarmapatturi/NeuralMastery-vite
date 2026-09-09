@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Deep learning Module 45: Problem 345"
-sidebar_position: 345
-description: "Curriculum Problem 345 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: Dynamic Time Warping (DTW) Distance"
+description: "Compute optimal non-linear time alignment distance between two variable-speed 1D speech or sensor sequences."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Deep learning Module 45: Problem 345
+# Dynamic Time Warping (DTW) Distance
 
-**Rank #345** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-44`.
+## Overview
+
+Compute optimal non-linear time alignment distance between two variable-speed 1D speech or sensor sequences.
+
+## Task
+
+Implement `dtw_distance(seq1, seq2)`. Given sequences of lengths `N` and `M`, fill DP matrix `cost[i][j] = abs(seq1[i-1] - seq2[j-1]) + min(cost[i-1][j], cost[i][j-1], cost[i-1][j-1])`. Base case `cost[0][0] = 0.0`, all other `cost[0][j] = cost[i][0] = inf`. Return `cost[N][M]` rounded to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-45" />
-
-<Solution>
-
-```python
-def deep_learning_p45(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Deep learning.
-
-</Solution>

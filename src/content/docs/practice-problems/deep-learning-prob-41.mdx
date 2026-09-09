@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Deep learning Module 41: Problem 341"
-sidebar_position: 341
-description: "Curriculum Problem 341 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: N-Gram Language Model Maximum Likelihood Probability"
+description: "Compute Maximum Likelihood conditional probability P(w | prefix) from n-gram occurrence frequency tables."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Deep learning Module 41: Problem 341
+# N-Gram Language Model Maximum Likelihood Probability
 
-**Rank #341** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-40`.
+## Overview
+
+Compute Maximum Likelihood conditional probability P(w | prefix) from n-gram occurrence frequency tables.
+
+## Task
+
+Implement `ngram_prob_mle(prefix, next_word, ngram_counts)`. In `ngram_counts`, keys are space-separated strings of tokens. Compute prefix key `' '.join(prefix)` and full key `' '.join(prefix + [next_word])`. If prefix is empty, prefix count is `sum(ngram_counts[k] for k where len(k.split())==1)`. Probability is `count(full) / count(prefix)`. If prefix count is 0, return 0.0. Round result to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-41" />
-
-<Solution>
-
-```python
-def deep_learning_p41(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Deep learning.
-
-</Solution>

@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 34: Problem 334"
-sidebar_position: 334
-description: "Curriculum Problem 334 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: 2D Affine Transformation Mapping"
+description: "Map continuous 2D coordinates through an affine transformation matrix for geometric data augmentation."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 34: Problem 334
+# 2D Affine Transformation Mapping
 
-**Rank #334** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-33`.
+## Overview
+
+Map continuous 2D coordinates through an affine transformation matrix for geometric data augmentation.
+
+## Task
+
+Implement `affine_transform_point_2d(point, matrix_2x3)`. Given a point `[x, y]` and 2x3 affine matrix `[[a, b, tx], [c, d, ty]]`, compute `new_x = a * x + b * y + tx` and `new_y = c * x + d * y + ty`. Return `[round(new_x, 4), round(new_y, 4)]`.
 
 <PracticePlayground problemId="deep-learning-prob-34" />
-
-<Solution>
-
-```python
-def deep_learning_p34(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

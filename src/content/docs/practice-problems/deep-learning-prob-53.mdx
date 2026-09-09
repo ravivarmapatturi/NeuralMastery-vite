@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Deep learning Module 53: Problem 353"
-sidebar_position: 353
-description: "Curriculum Problem 353 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning."
-difficulty: hard
-topic: deep-learning-vision/nlp
+title: "Practice: Self-BLEU Corpus Diversity Evaluator"
+description: "Evaluate mode collapse and diversity in text generation by measuring unigram overlap across generated samples."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Deep learning Module 53: Problem 353
+# Self-BLEU Corpus Diversity Evaluator
 
-**Rank #353** · Difficulty: **Hard** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-52`.
+## Overview
+
+Evaluate mode collapse and diversity in text generation by measuring unigram overlap across generated samples.
+
+## Task
+
+Implement `self_bleu_1(generated_texts)`. For each text `i`, treat all other texts `j != i` as reference documents. Compute unigram precision: for each word in text `i`, count is clipped to the maximum frequency of that word in any single reference document. Score for text `i` is `clipped_unigram_matches / len(text_i)`. Return the average score across all texts rounded to 4 decimal places. If `len(generated_texts) <= 1`, return 0.0.
 
 <PracticePlayground problemId="deep-learning-prob-53" />
-
-<Solution>
-
-```python
-def deep_learning_p53(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Deep learning.
-
-</Solution>
