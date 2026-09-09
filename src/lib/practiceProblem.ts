@@ -67677,3066 +67677,6 @@ def nmi_clustering(labels_true, labels_pred):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
-  'llm-internals-prob-1': {
-    id: 'llm-internals-prob-1',
-    title: 'LLM Concept 1',
-    difficulty: 'easy',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_1',
-    functionSignature: 'llm_op_1(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_1(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 1.',
-    taskDescription: 'Implement `llm_op_1` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-2': {
-    id: 'llm-internals-prob-2',
-    title: 'LLM Concept 2',
-    difficulty: 'easy',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_2',
-    functionSignature: 'llm_op_2(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_2(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 2.',
-    taskDescription: 'Implement `llm_op_2` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-3': {
-    id: 'llm-internals-prob-3',
-    title: 'LLM Concept 3',
-    difficulty: 'easy',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_3',
-    functionSignature: 'llm_op_3(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_3(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 3.',
-    taskDescription: 'Implement `llm_op_3` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-4': {
-    id: 'llm-internals-prob-4',
-    title: 'LLM Concept 4',
-    difficulty: 'easy',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_4',
-    functionSignature: 'llm_op_4(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_4(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 4.',
-    taskDescription: 'Implement `llm_op_4` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-5': {
-    id: 'llm-internals-prob-5',
-    title: 'LLM Concept 5',
-    difficulty: 'easy',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_5',
-    functionSignature: 'llm_op_5(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_5(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 5.',
-    taskDescription: 'Implement `llm_op_5` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-6': {
-    id: 'llm-internals-prob-6',
-    title: 'LLM Concept 6',
-    difficulty: 'easy',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_6',
-    functionSignature: 'llm_op_6(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_6(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 6.',
-    taskDescription: 'Implement `llm_op_6` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-7': {
-    id: 'llm-internals-prob-7',
-    title: 'LLM Concept 7',
-    difficulty: 'easy',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_7',
-    functionSignature: 'llm_op_7(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_7(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 7.',
-    taskDescription: 'Implement `llm_op_7` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-8': {
-    id: 'llm-internals-prob-8',
-    title: 'LLM Concept 8',
-    difficulty: 'easy',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_8',
-    functionSignature: 'llm_op_8(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_8(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 8.',
-    taskDescription: 'Implement `llm_op_8` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-9': {
-    id: 'llm-internals-prob-9',
-    title: 'LLM Concept 9',
-    difficulty: 'easy',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_9',
-    functionSignature: 'llm_op_9(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_9(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 9.',
-    taskDescription: 'Implement `llm_op_9` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-10': {
-    id: 'llm-internals-prob-10',
-    title: 'LLM Concept 10',
-    difficulty: 'easy',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_10',
-    functionSignature: 'llm_op_10(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_10(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 10.',
-    taskDescription: 'Implement `llm_op_10` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-11': {
-    id: 'llm-internals-prob-11',
-    title: 'LLM Concept 11',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_11',
-    functionSignature: 'llm_op_11(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_11(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 11.',
-    taskDescription: 'Implement `llm_op_11` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-12': {
-    id: 'llm-internals-prob-12',
-    title: 'LLM Concept 12',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_12',
-    functionSignature: 'llm_op_12(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_12(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 12.',
-    taskDescription: 'Implement `llm_op_12` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-13': {
-    id: 'llm-internals-prob-13',
-    title: 'LLM Concept 13',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_13',
-    functionSignature: 'llm_op_13(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_13(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 13.',
-    taskDescription: 'Implement `llm_op_13` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-14': {
-    id: 'llm-internals-prob-14',
-    title: 'LLM Concept 14',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_14',
-    functionSignature: 'llm_op_14(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_14(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 14.',
-    taskDescription: 'Implement `llm_op_14` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-15': {
-    id: 'llm-internals-prob-15',
-    title: 'LLM Concept 15',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_15',
-    functionSignature: 'llm_op_15(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_15(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 15.',
-    taskDescription: 'Implement `llm_op_15` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-16': {
-    id: 'llm-internals-prob-16',
-    title: 'LLM Concept 16',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_16',
-    functionSignature: 'llm_op_16(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_16(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 16.',
-    taskDescription: 'Implement `llm_op_16` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-17': {
-    id: 'llm-internals-prob-17',
-    title: 'LLM Concept 17',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_17',
-    functionSignature: 'llm_op_17(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_17(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 17.',
-    taskDescription: 'Implement `llm_op_17` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-18': {
-    id: 'llm-internals-prob-18',
-    title: 'LLM Concept 18',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_18',
-    functionSignature: 'llm_op_18(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_18(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 18.',
-    taskDescription: 'Implement `llm_op_18` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-19': {
-    id: 'llm-internals-prob-19',
-    title: 'LLM Concept 19',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_19',
-    functionSignature: 'llm_op_19(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_19(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 19.',
-    taskDescription: 'Implement `llm_op_19` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-20': {
-    id: 'llm-internals-prob-20',
-    title: 'LLM Concept 20',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_20',
-    functionSignature: 'llm_op_20(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_20(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 20.',
-    taskDescription: 'Implement `llm_op_20` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-21': {
-    id: 'llm-internals-prob-21',
-    title: 'LLM Concept 21',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_21',
-    functionSignature: 'llm_op_21(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_21(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 21.',
-    taskDescription: 'Implement `llm_op_21` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-22': {
-    id: 'llm-internals-prob-22',
-    title: 'LLM Concept 22',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_22',
-    functionSignature: 'llm_op_22(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_22(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 22.',
-    taskDescription: 'Implement `llm_op_22` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-23': {
-    id: 'llm-internals-prob-23',
-    title: 'LLM Concept 23',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_23',
-    functionSignature: 'llm_op_23(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_23(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 23.',
-    taskDescription: 'Implement `llm_op_23` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-24': {
-    id: 'llm-internals-prob-24',
-    title: 'LLM Concept 24',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_24',
-    functionSignature: 'llm_op_24(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_24(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 24.',
-    taskDescription: 'Implement `llm_op_24` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-25': {
-    id: 'llm-internals-prob-25',
-    title: 'LLM Concept 25',
-    difficulty: 'medium',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_25',
-    functionSignature: 'llm_op_25(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_25(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 25.',
-    taskDescription: 'Implement `llm_op_25` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-26': {
-    id: 'llm-internals-prob-26',
-    title: 'LLM Concept 26',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_26',
-    functionSignature: 'llm_op_26(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_26(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 26.',
-    taskDescription: 'Implement `llm_op_26` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-27': {
-    id: 'llm-internals-prob-27',
-    title: 'LLM Concept 27',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_27',
-    functionSignature: 'llm_op_27(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_27(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 27.',
-    taskDescription: 'Implement `llm_op_27` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-28': {
-    id: 'llm-internals-prob-28',
-    title: 'LLM Concept 28',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_28',
-    functionSignature: 'llm_op_28(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_28(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 28.',
-    taskDescription: 'Implement `llm_op_28` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-29': {
-    id: 'llm-internals-prob-29',
-    title: 'LLM Concept 29',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_29',
-    functionSignature: 'llm_op_29(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_29(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 29.',
-    taskDescription: 'Implement `llm_op_29` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-30': {
-    id: 'llm-internals-prob-30',
-    title: 'LLM Concept 30',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_30',
-    functionSignature: 'llm_op_30(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_30(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 30.',
-    taskDescription: 'Implement `llm_op_30` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-1': {
-    id: 'deep-learning-prob-1',
-    title: 'Deep Learning Operation 1',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_1',
-    functionSignature: 'dl_op_1(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_1(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 1.',
-    taskDescription: 'Implement `dl_op_1` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-2': {
-    id: 'deep-learning-prob-2',
-    title: 'Deep Learning Operation 2',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_2',
-    functionSignature: 'dl_op_2(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_2(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 2.',
-    taskDescription: 'Implement `dl_op_2` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-3': {
-    id: 'deep-learning-prob-3',
-    title: 'Deep Learning Operation 3',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_3',
-    functionSignature: 'dl_op_3(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_3(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 3.',
-    taskDescription: 'Implement `dl_op_3` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-4': {
-    id: 'deep-learning-prob-4',
-    title: 'Deep Learning Operation 4',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_4',
-    functionSignature: 'dl_op_4(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_4(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 4.',
-    taskDescription: 'Implement `dl_op_4` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-5': {
-    id: 'deep-learning-prob-5',
-    title: 'Deep Learning Operation 5',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_5',
-    functionSignature: 'dl_op_5(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_5(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 5.',
-    taskDescription: 'Implement `dl_op_5` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-6': {
-    id: 'deep-learning-prob-6',
-    title: 'Deep Learning Operation 6',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_6',
-    functionSignature: 'dl_op_6(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_6(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 6.',
-    taskDescription: 'Implement `dl_op_6` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-7': {
-    id: 'deep-learning-prob-7',
-    title: 'Deep Learning Operation 7',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_7',
-    functionSignature: 'dl_op_7(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_7(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 7.',
-    taskDescription: 'Implement `dl_op_7` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-8': {
-    id: 'deep-learning-prob-8',
-    title: 'Deep Learning Operation 8',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_8',
-    functionSignature: 'dl_op_8(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_8(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 8.',
-    taskDescription: 'Implement `dl_op_8` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-9': {
-    id: 'deep-learning-prob-9',
-    title: 'Deep Learning Operation 9',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_9',
-    functionSignature: 'dl_op_9(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_9(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 9.',
-    taskDescription: 'Implement `dl_op_9` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-10': {
-    id: 'deep-learning-prob-10',
-    title: 'Deep Learning Operation 10',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_10',
-    functionSignature: 'dl_op_10(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_10(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 10.',
-    taskDescription: 'Implement `dl_op_10` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-11': {
-    id: 'deep-learning-prob-11',
-    title: 'Deep Learning Operation 11',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_11',
-    functionSignature: 'dl_op_11(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_11(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 11.',
-    taskDescription: 'Implement `dl_op_11` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-12': {
-    id: 'deep-learning-prob-12',
-    title: 'Deep Learning Operation 12',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_12',
-    functionSignature: 'dl_op_12(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_12(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 12.',
-    taskDescription: 'Implement `dl_op_12` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-13': {
-    id: 'deep-learning-prob-13',
-    title: 'Deep Learning Operation 13',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_13',
-    functionSignature: 'dl_op_13(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_13(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 13.',
-    taskDescription: 'Implement `dl_op_13` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-14': {
-    id: 'deep-learning-prob-14',
-    title: 'Deep Learning Operation 14',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_14',
-    functionSignature: 'dl_op_14(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_14(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 14.',
-    taskDescription: 'Implement `dl_op_14` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-15': {
-    id: 'deep-learning-prob-15',
-    title: 'Deep Learning Operation 15',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_15',
-    functionSignature: 'dl_op_15(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_15(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 15.',
-    taskDescription: 'Implement `dl_op_15` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-16': {
-    id: 'deep-learning-prob-16',
-    title: 'Deep Learning Operation 16',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_16',
-    functionSignature: 'dl_op_16(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_16(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 16.',
-    taskDescription: 'Implement `dl_op_16` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-17': {
-    id: 'deep-learning-prob-17',
-    title: 'Deep Learning Operation 17',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_17',
-    functionSignature: 'dl_op_17(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_17(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 17.',
-    taskDescription: 'Implement `dl_op_17` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-18': {
-    id: 'deep-learning-prob-18',
-    title: 'Deep Learning Operation 18',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_18',
-    functionSignature: 'dl_op_18(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_18(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 18.',
-    taskDescription: 'Implement `dl_op_18` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-19': {
-    id: 'deep-learning-prob-19',
-    title: 'Deep Learning Operation 19',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_19',
-    functionSignature: 'dl_op_19(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_19(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 19.',
-    taskDescription: 'Implement `dl_op_19` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-20': {
-    id: 'deep-learning-prob-20',
-    title: 'Deep Learning Operation 20',
-    difficulty: 'easy',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_20',
-    functionSignature: 'dl_op_20(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_20(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 20.',
-    taskDescription: 'Implement `dl_op_20` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-21': {
-    id: 'deep-learning-prob-21',
-    title: 'Deep Learning Operation 21',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_21',
-    functionSignature: 'dl_op_21(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_21(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 21.',
-    taskDescription: 'Implement `dl_op_21` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-22': {
-    id: 'deep-learning-prob-22',
-    title: 'Deep Learning Operation 22',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_22',
-    functionSignature: 'dl_op_22(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_22(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 22.',
-    taskDescription: 'Implement `dl_op_22` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-23': {
-    id: 'deep-learning-prob-23',
-    title: 'Deep Learning Operation 23',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_23',
-    functionSignature: 'dl_op_23(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_23(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 23.',
-    taskDescription: 'Implement `dl_op_23` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-24': {
-    id: 'deep-learning-prob-24',
-    title: 'Deep Learning Operation 24',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_24',
-    functionSignature: 'dl_op_24(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_24(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 24.',
-    taskDescription: 'Implement `dl_op_24` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-25': {
-    id: 'deep-learning-prob-25',
-    title: 'Deep Learning Operation 25',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_25',
-    functionSignature: 'dl_op_25(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_25(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 25.',
-    taskDescription: 'Implement `dl_op_25` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-26': {
-    id: 'deep-learning-prob-26',
-    title: 'Deep Learning Operation 26',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_26',
-    functionSignature: 'dl_op_26(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_26(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 26.',
-    taskDescription: 'Implement `dl_op_26` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-27': {
-    id: 'deep-learning-prob-27',
-    title: 'Deep Learning Operation 27',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_27',
-    functionSignature: 'dl_op_27(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_27(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 27.',
-    taskDescription: 'Implement `dl_op_27` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-28': {
-    id: 'deep-learning-prob-28',
-    title: 'Deep Learning Operation 28',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_28',
-    functionSignature: 'dl_op_28(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_28(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 28.',
-    taskDescription: 'Implement `dl_op_28` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-29': {
-    id: 'deep-learning-prob-29',
-    title: 'Deep Learning Operation 29',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_29',
-    functionSignature: 'dl_op_29(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_29(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 29.',
-    taskDescription: 'Implement `dl_op_29` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-30': {
-    id: 'deep-learning-prob-30',
-    title: 'Deep Learning Operation 30',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_30',
-    functionSignature: 'dl_op_30(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_30(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 30.',
-    taskDescription: 'Implement `dl_op_30` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-31': {
-    id: 'deep-learning-prob-31',
-    title: 'Deep Learning Operation 31',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_31',
-    functionSignature: 'dl_op_31(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_31(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 31.',
-    taskDescription: 'Implement `dl_op_31` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-32': {
-    id: 'deep-learning-prob-32',
-    title: 'Deep Learning Operation 32',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_32',
-    functionSignature: 'dl_op_32(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_32(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 32.',
-    taskDescription: 'Implement `dl_op_32` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-33': {
-    id: 'deep-learning-prob-33',
-    title: 'Deep Learning Operation 33',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_33',
-    functionSignature: 'dl_op_33(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_33(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 33.',
-    taskDescription: 'Implement `dl_op_33` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-34': {
-    id: 'deep-learning-prob-34',
-    title: 'Deep Learning Operation 34',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_34',
-    functionSignature: 'dl_op_34(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_34(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 34.',
-    taskDescription: 'Implement `dl_op_34` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-35': {
-    id: 'deep-learning-prob-35',
-    title: 'Deep Learning Operation 35',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_35',
-    functionSignature: 'dl_op_35(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_35(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 35.',
-    taskDescription: 'Implement `dl_op_35` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-36': {
-    id: 'deep-learning-prob-36',
-    title: 'Deep Learning Operation 36',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_36',
-    functionSignature: 'dl_op_36(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_36(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 36.',
-    taskDescription: 'Implement `dl_op_36` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-37': {
-    id: 'deep-learning-prob-37',
-    title: 'Deep Learning Operation 37',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_37',
-    functionSignature: 'dl_op_37(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_37(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 37.',
-    taskDescription: 'Implement `dl_op_37` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-38': {
-    id: 'deep-learning-prob-38',
-    title: 'Deep Learning Operation 38',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_38',
-    functionSignature: 'dl_op_38(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_38(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 38.',
-    taskDescription: 'Implement `dl_op_38` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-39': {
-    id: 'deep-learning-prob-39',
-    title: 'Deep Learning Operation 39',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_39',
-    functionSignature: 'dl_op_39(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_39(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 39.',
-    taskDescription: 'Implement `dl_op_39` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-40': {
-    id: 'deep-learning-prob-40',
-    title: 'Deep Learning Operation 40',
-    difficulty: 'medium',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_40',
-    functionSignature: 'dl_op_40(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_40(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 40.',
-    taskDescription: 'Implement `dl_op_40` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-41': {
-    id: 'deep-learning-prob-41',
-    title: 'Deep Learning Operation 41',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_41',
-    functionSignature: 'dl_op_41(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_41(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 41.',
-    taskDescription: 'Implement `dl_op_41` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-42': {
-    id: 'deep-learning-prob-42',
-    title: 'Deep Learning Operation 42',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_42',
-    functionSignature: 'dl_op_42(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_42(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 42.',
-    taskDescription: 'Implement `dl_op_42` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-43': {
-    id: 'deep-learning-prob-43',
-    title: 'Deep Learning Operation 43',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_43',
-    functionSignature: 'dl_op_43(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_43(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 43.',
-    taskDescription: 'Implement `dl_op_43` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-44': {
-    id: 'deep-learning-prob-44',
-    title: 'Deep Learning Operation 44',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_44',
-    functionSignature: 'dl_op_44(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_44(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 44.',
-    taskDescription: 'Implement `dl_op_44` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-45': {
-    id: 'deep-learning-prob-45',
-    title: 'Deep Learning Operation 45',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_45',
-    functionSignature: 'dl_op_45(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_45(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 45.',
-    taskDescription: 'Implement `dl_op_45` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-46': {
-    id: 'deep-learning-prob-46',
-    title: 'Deep Learning Operation 46',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_46',
-    functionSignature: 'dl_op_46(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_46(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 46.',
-    taskDescription: 'Implement `dl_op_46` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-47': {
-    id: 'deep-learning-prob-47',
-    title: 'Deep Learning Operation 47',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_47',
-    functionSignature: 'dl_op_47(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_47(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 47.',
-    taskDescription: 'Implement `dl_op_47` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-48': {
-    id: 'deep-learning-prob-48',
-    title: 'Deep Learning Operation 48',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_48',
-    functionSignature: 'dl_op_48(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_48(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 48.',
-    taskDescription: 'Implement `dl_op_48` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-49': {
-    id: 'deep-learning-prob-49',
-    title: 'Deep Learning Operation 49',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_49',
-    functionSignature: 'dl_op_49(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_49(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 49.',
-    taskDescription: 'Implement `dl_op_49` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-50': {
-    id: 'deep-learning-prob-50',
-    title: 'Deep Learning Operation 50',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_50',
-    functionSignature: 'dl_op_50(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_50(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 50.',
-    taskDescription: 'Implement `dl_op_50` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-51': {
-    id: 'deep-learning-prob-51',
-    title: 'Deep Learning Operation 51',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_51',
-    functionSignature: 'dl_op_51(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_51(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 51.',
-    taskDescription: 'Implement `dl_op_51` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-52': {
-    id: 'deep-learning-prob-52',
-    title: 'Deep Learning Operation 52',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_52',
-    functionSignature: 'dl_op_52(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_52(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 52.',
-    taskDescription: 'Implement `dl_op_52` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-53': {
-    id: 'deep-learning-prob-53',
-    title: 'Deep Learning Operation 53',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_53',
-    functionSignature: 'dl_op_53(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_53(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 53.',
-    taskDescription: 'Implement `dl_op_53` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-54': {
-    id: 'deep-learning-prob-54',
-    title: 'Deep Learning Operation 54',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_54',
-    functionSignature: 'dl_op_54(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_54(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 54.',
-    taskDescription: 'Implement `dl_op_54` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-55': {
-    id: 'deep-learning-prob-55',
-    title: 'Deep Learning Operation 55',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_55',
-    functionSignature: 'dl_op_55(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_55(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 55.',
-    taskDescription: 'Implement `dl_op_55` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-56': {
-    id: 'deep-learning-prob-56',
-    title: 'Deep Learning Operation 56',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_56',
-    functionSignature: 'dl_op_56(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_56(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 56.',
-    taskDescription: 'Implement `dl_op_56` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-57': {
-    id: 'deep-learning-prob-57',
-    title: 'Deep Learning Operation 57',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_57',
-    functionSignature: 'dl_op_57(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_57(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 57.',
-    taskDescription: 'Implement `dl_op_57` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-58': {
-    id: 'deep-learning-prob-58',
-    title: 'Deep Learning Operation 58',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_58',
-    functionSignature: 'dl_op_58(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_58(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 58.',
-    taskDescription: 'Implement `dl_op_58` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-59': {
-    id: 'deep-learning-prob-59',
-    title: 'Deep Learning Operation 59',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_59',
-    functionSignature: 'dl_op_59(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_59(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 59.',
-    taskDescription: 'Implement `dl_op_59` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'deep-learning-prob-60': {
-    id: 'deep-learning-prob-60',
-    title: 'Deep Learning Operation 60',
-    difficulty: 'hard',
-    topic: 'Deep Learning & Vision/NLP',
-    estimatedTime: '10–15 min',
-    functionName: 'dl_op_60',
-    functionSignature: 'dl_op_60(x: list[float]) -> list[float]',
-    starterCode: `def dl_op_60(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the Deep Learning Operation 60.',
-    taskDescription: 'Implement `dl_op_60` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 4.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [-2.0, 0.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.0, 3.0], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
   'DUPE_llm-internals-prob-1_DUPE': {
     id: 'llm-internals-prob-1',
     title: 'LLM Concept 1',
@@ -71737,346 +68677,6 @@ def nmi_clustering(labels_true, labels_pred):
 `,
     mission: 'Implement the LLM Concept 30.',
     taskDescription: 'Implement `llm_op_30` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-31': {
-    id: 'llm-internals-prob-31',
-    title: 'LLM Concept 31',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_31',
-    functionSignature: 'llm_op_31(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_31(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 31.',
-    taskDescription: 'Implement `llm_op_31` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-32': {
-    id: 'llm-internals-prob-32',
-    title: 'LLM Concept 32',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_32',
-    functionSignature: 'llm_op_32(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_32(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 32.',
-    taskDescription: 'Implement `llm_op_32` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-33': {
-    id: 'llm-internals-prob-33',
-    title: 'LLM Concept 33',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_33',
-    functionSignature: 'llm_op_33(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_33(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 33.',
-    taskDescription: 'Implement `llm_op_33` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-34': {
-    id: 'llm-internals-prob-34',
-    title: 'LLM Concept 34',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_34',
-    functionSignature: 'llm_op_34(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_34(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 34.',
-    taskDescription: 'Implement `llm_op_34` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-35': {
-    id: 'llm-internals-prob-35',
-    title: 'LLM Concept 35',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_35',
-    functionSignature: 'llm_op_35(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_35(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 35.',
-    taskDescription: 'Implement `llm_op_35` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-36': {
-    id: 'llm-internals-prob-36',
-    title: 'LLM Concept 36',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_36',
-    functionSignature: 'llm_op_36(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_36(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 36.',
-    taskDescription: 'Implement `llm_op_36` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-37': {
-    id: 'llm-internals-prob-37',
-    title: 'LLM Concept 37',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_37',
-    functionSignature: 'llm_op_37(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_37(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 37.',
-    taskDescription: 'Implement `llm_op_37` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-38': {
-    id: 'llm-internals-prob-38',
-    title: 'LLM Concept 38',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_38',
-    functionSignature: 'llm_op_38(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_38(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 38.',
-    taskDescription: 'Implement `llm_op_38` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-39': {
-    id: 'llm-internals-prob-39',
-    title: 'LLM Concept 39',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_39',
-    functionSignature: 'llm_op_39(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_39(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 39.',
-    taskDescription: 'Implement `llm_op_39` to perform the operation.',
-    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
-    bonusPoints: 10,
-    bonusDescription: 'Pure Python implementation',
-    constraints: [
-      'Apply the operation correctly.',
-      'Libraries (NumPy) allowed.',
-    ],
-    hints: {
-      small: 'Review the mathematical formulation.',
-      strong: 'Try element-wise operations.',
-      concept: 'This is a fundamental operation in neural networks and LLMs.',
-    },
-    conceptConnections: [],
-    testCases: [
-      { id: 'tc1', label: 'Test 1', input: {"x": [1.0, 2.0]}, expectedOutput: [2.0, 3.0], hidden: false },
-      { id: 'tc2', label: 'Test 2', input: {"x": [-1.0, 0.0]}, expectedOutput: [0.0, 1.0], hidden: false },
-      { id: 'tc3', label: 'Test 3', input: {"x": [0.5, 1.5]}, expectedOutput: [1.5, 2.5], hidden: true }
-    ],
-    runtime: { language: 'python', capabilities: ['python'] },
-  },
-  'llm-internals-prob-40': {
-    id: 'llm-internals-prob-40',
-    title: 'LLM Concept 40',
-    difficulty: 'hard',
-    topic: 'Transformers & LLMs',
-    estimatedTime: '10–15 min',
-    functionName: 'llm_op_40',
-    functionSignature: 'llm_op_40(x: list[float]) -> list[float]',
-    starterCode: `def llm_op_40(x):
-    # Your implementation here
-    pass
-`,
-    mission: 'Implement the LLM Concept 40.',
-    taskDescription: 'Implement `llm_op_40` to perform the operation.',
     libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
     bonusPoints: 10,
     bonusDescription: 'Pure Python implementation',
@@ -118171,6 +114771,4912 @@ def redundancy_penalty(candidate_embedding, selected_embeddings):
             "generation_ms": 0
           },
           "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-1": {
+    id: "deep-learning-prob-1",
+    title: "RGB to HSV Color Space Conversion",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "rgb_to_hsv",
+    functionSignature: "rgb_to_hsv(r: float, g: float, b: float) -> list[float]",
+    starterCode: `def rgb_to_hsv(r: float, g: float, b: float) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Convert normalized RGB color channels to HSV representation, essential for color-invariant computer vision.",
+    taskDescription: "Implement `rgb_to_hsv(r, g, b)`. Given `r, g, b` in `[0.0, 1.0]`, compute `[h, s, v]` where `h` is in degrees `[0.0, 360.0)`, and `s, v` are in `[0.0, 1.0]`. If `max == min`, `h = 0.0`. Round each value to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0.0 <= r, g, b <= 1.0"
+      ],
+    hints: {
+  "small": "v is max(r, g, b). If v == 0, s = 0; else s = (v - min) / v.",
+        "strong": "For hue: if max == min, h = 0. Else delta = max - min; if max == r, h = 60 * ((g - b) / delta % 6); if max == g, h = 60 * ((b - r) / delta + 2); if max == b, h = 60 * ((r - g) / delta + 4).",
+        "concept": "HSV decouples chromaticity (hue/saturation) from luminance (value), making object detection much more robust to lighting variations."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "pure red",
+          "input": {
+            "r": 1,
+            "g": 0,
+            "b": 0
+          },
+          "expectedOutput": [
+            0,
+            1,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "pure green",
+          "input": {
+            "r": 0,
+            "g": 1,
+            "b": 0
+          },
+          "expectedOutput": [
+            120,
+            1,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "gray midpoint",
+          "input": {
+            "r": 0.5,
+            "g": 0.5,
+            "b": 0.5
+          },
+          "expectedOutput": [
+            0,
+            0,
+            0.5
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "custom color",
+          "input": {
+            "r": 0.25,
+            "g": 0.75,
+            "b": 0.5
+          },
+          "expectedOutput": [
+            150,
+            0.6667,
+            0.75
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-2": {
+    id: "deep-learning-prob-2",
+    title: "Center Crop 2D Image Matrix",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "center_crop_2d",
+    functionSignature: "center_crop_2d(image: list[list[float]], crop_h: int, crop_w: int) -> list[list[float]]",
+    starterCode: `def center_crop_2d(image: list[list[float]], crop_h: int, crop_w: int) -> list[list[float]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Extract the center spatial crop from an image matrix, the standard evaluation preprocessing in vision pipelines.",
+    taskDescription: "Implement `center_crop_2d(image, crop_h, crop_w)`. For an input 2D image matrix of size `H x W`, extract a centered window of size `crop_h x crop_w`. The top-left starting indices are `start_r = (H - crop_h) // 2` and `start_c = (W - crop_w) // 2`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "1 <= crop_h <= H",
+        "1 <= crop_w <= W"
+      ],
+    hints: {
+  "small": "Compute integer offsets start_r and start_c, then slice rows and columns.",
+        "strong": "row[start_c : start_c + crop_w] for row in image[start_r : start_r + crop_h].",
+        "concept": "Standard ImageNet evaluation scales images to 256x256 and takes a 224x224 center crop to focus on the dominant object."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "4x4 crop to 2x2",
+          "input": {
+            "image": [
+              [
+                1,
+                2,
+                3,
+                4
+              ],
+              [
+                5,
+                6,
+                7,
+                8
+              ],
+              [
+                9,
+                10,
+                11,
+                12
+              ],
+              [
+                13,
+                14,
+                15,
+                16
+              ]
+            ],
+            "crop_h": 2,
+            "crop_w": 2
+          },
+          "expectedOutput": [
+            [
+              6,
+              7
+            ],
+            [
+              10,
+              11
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "full size crop",
+          "input": {
+            "image": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                4
+              ]
+            ],
+            "crop_h": 2,
+            "crop_w": 2
+          },
+          "expectedOutput": [
+            [
+              1,
+              2
+            ],
+            [
+              3,
+              4
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "asymmetric crop",
+          "input": {
+            "image": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                7,
+                8,
+                9
+              ]
+            ],
+            "crop_h": 1,
+            "crop_w": 2
+          },
+          "expectedOutput": [
+            [
+              4,
+              5
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single pixel center",
+          "input": {
+            "image": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                4,
+                5,
+                6
+              ],
+              [
+                7,
+                8,
+                9
+              ]
+            ],
+            "crop_h": 1,
+            "crop_w": 1
+          },
+          "expectedOutput": [
+            [
+              5
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-3": {
+    id: "deep-learning-prob-3",
+    title: "CutMix Bounding Box Coordinate Generator",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "cutmix_bbox",
+    functionSignature: "cutmix_bbox(W: int, H: int, lam: float, cx: int, cy: int) -> list[int]",
+    starterCode: `def cutmix_bbox(W: int, H: int, lam: float, cx: int, cy: int) -> list[int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the rectangular crop coordinates for CutMix data augmentation preserving target area ratio.",
+    taskDescription: "Implement `cutmix_bbox(W, H, lam, cx, cy)`. Given image dimensions `W, H`, combination factor `lam` in `[0.0, 1.0]`, and center point `(cx, cy)`, compute the cut bounding box `[x1, y1, x2, y2]`. Calculate `cut_w = int(round(W * math.sqrt(1.0 - lam)))` and `cut_h = int(round(H * math.sqrt(1.0 - lam)))`. Then `x1 = max(0, cx - cut_w // 2)`, `y1 = max(0, cy - cut_h // 2)`, `x2 = min(W, cx + cut_w // 2)`, `y2 = min(H, cy + cut_h // 2)`. Return `[x1, y1, x2, y2]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "W, H >= 1",
+        "0.0 <= lam <= 1.0"
+      ],
+    hints: {
+  "small": "Calculate cut_w and cut_h using sqrt(1 - lam), then center around (cx, cy) and clamp to [0, W] and [0, H].",
+        "strong": "x1 = max(0, cx - cut_w // 2), x2 = min(W, cx + cut_w // 2), similarly for y.",
+        "concept": "CutMix replaces a rectangular patch of one image with another, teaching CNNs to locate objects without relying only on one distinct feature."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "lam 0.5 centered",
+          "input": {
+            "W": 100,
+            "H": 100,
+            "lam": 0.5,
+            "cx": 50,
+            "cy": 50
+          },
+          "expectedOutput": [
+            15,
+            15,
+            85,
+            85
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "lam 1.0 zero patch",
+          "input": {
+            "W": 100,
+            "H": 100,
+            "lam": 1,
+            "cx": 50,
+            "cy": 50
+          },
+          "expectedOutput": [
+            50,
+            50,
+            50,
+            50
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "corner clamp",
+          "input": {
+            "W": 100,
+            "H": 100,
+            "lam": 0.25,
+            "cx": 5,
+            "cy": 5
+          },
+          "expectedOutput": [
+            0,
+            0,
+            48,
+            48
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "asymmetric dimensions",
+          "input": {
+            "W": 200,
+            "H": 100,
+            "lam": 0.64,
+            "cx": 100,
+            "cy": 50
+          },
+          "expectedOutput": [
+            40,
+            20,
+            160,
+            80
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-4": {
+    id: "deep-learning-prob-4",
+    title: "2D Gaussian Smoothing Filter Kernel",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "gaussian_kernel_2d",
+    functionSignature: "gaussian_kernel_2d(size: int, sigma: float) -> list[list[float]]",
+    starterCode: `def gaussian_kernel_2d(size: int, sigma: float) -> list[list[float]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Construct a normalized 2D Gaussian blur kernel for noise reduction and image preprocessing.",
+    taskDescription: "Implement `gaussian_kernel_2d(size, sigma)`. Generate a square `size x size` filter (where `size` is an odd integer). The center pixel is at `(center, center)` where `center = size // 2`. Unnormalized value at `(r, c)` is `exp(-((r - center)^2 + (c - center)^2) / (2 * sigma^2))`. Normalize so all entries sum to 1.0. Round each cell to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "size is an odd positive integer",
+        "sigma > 0"
+      ],
+    hints: {
+  "small": "Compute coordinates relative to center, evaluate Gaussian exponential, sum all elements, and divide.",
+        "strong": "Unnormalized k[r][c] = exp(-((r-center)**2 + (c-center)**2) / (2 * sigma**2)). Divide by total sum.",
+        "concept": "Gaussian smoothing is the unique rotationally symmetric linear filter that does not introduce new spurious structures at coarser scales."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "3x3 sigma 1.0",
+          "input": {
+            "size": 3,
+            "sigma": 1
+          },
+          "expectedOutput": [
+            [
+              0.0751,
+              0.1238,
+              0.0751
+            ],
+            [
+              0.1238,
+              0.2042,
+              0.1238
+            ],
+            [
+              0.0751,
+              0.1238,
+              0.0751
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "1x1 kernel",
+          "input": {
+            "size": 1,
+            "sigma": 0.5
+          },
+          "expectedOutput": [
+            [
+              1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "5x5 sigma 1.5",
+          "input": {
+            "size": 5,
+            "sigma": 1.5
+          },
+          "expectedOutput": [
+            [
+              0.0144,
+              0.0281,
+              0.0351,
+              0.0281,
+              0.0144
+            ],
+            [
+              0.0281,
+              0.0547,
+              0.0683,
+              0.0547,
+              0.0281
+            ],
+            [
+              0.0351,
+              0.0683,
+              0.0853,
+              0.0683,
+              0.0351
+            ],
+            [
+              0.0281,
+              0.0547,
+              0.0683,
+              0.0547,
+              0.0281
+            ],
+            [
+              0.0144,
+              0.0281,
+              0.0351,
+              0.0281,
+              0.0144
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3x3 high sigma",
+          "input": {
+            "size": 3,
+            "sigma": 10
+          },
+          "expectedOutput": [
+            [
+              0.1107,
+              0.1113,
+              0.1107
+            ],
+            [
+              0.1113,
+              0.1119,
+              0.1113
+            ],
+            [
+              0.1107,
+              0.1113,
+              0.1107
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-5": {
+    id: "deep-learning-prob-5",
+    title: "Otsu Binarization Global Thresholding",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "otsu_threshold",
+    functionSignature: "otsu_threshold(hist: list[int]) -> int",
+    starterCode: `def otsu_threshold(hist: list[int]) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Calculate the optimal image threshold maximizing between-class variance across an intensity histogram.",
+    taskDescription: "Implement `otsu_threshold(hist)`. Given a 256-bin pixel intensity histogram `hist` (frequencies for intensities 0 to 255), find the threshold `t` (where `0 <= t < 255`) that maximizes the between-class variance `sigma_b^2 = w0 * w1 * (mu0 - mu1)^2`. `w0` and `w1` are probabilities of background (`<= t`) and foreground (`> t`). In case of ties, choose the smallest `t`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(hist) == 256",
+        "sum(hist) > 0"
+      ],
+    hints: {
+  "small": "Iterate candidate threshold t from 0 to 254. Keep cumulative count and cumulative intensity sum.",
+        "strong": "Total pixels N = sum(hist). w0 = sum(hist[:t+1])/N, w1 = 1 - w0. If w0==0 or w1==0, variance is 0. mu0 = sum(i*hist[i] for i <= t) / (w0*N), mu1 = sum(i*hist[i] for i > t) / (w1*N).",
+        "concept": "Otsu thresholding non-parametrically partitions bimodal histograms by maximizing between-class variance, equivalent to minimizing intra-class variance."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "bimodal two spikes",
+          "input": {
+            "hist": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              100,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              100,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "expectedOutput": 50,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "unimodal centered",
+          "input": {
+            "hist": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              100,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          },
+          "expectedOutput": 106,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "skewed foreground",
+          "input": {
+            "hist": [
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              10,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100,
+              100
+            ]
+          },
+          "expectedOutput": 166,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "dense step distribution",
+          "input": {
+            "hist": [
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              50,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200,
+              200
+            ]
+          },
+          "expectedOutput": 150,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-6": {
+    id: "deep-learning-prob-6",
+    title: "Generalized Intersection over Union (GIoU)",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "giou_2d",
+    functionSignature: "giou_2d(box1: list[float], box2: list[float]) -> float",
+    starterCode: `def giou_2d(box1: list[float], box2: list[float]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute Generalized IoU between two bounding boxes to provide gradient signal even for non-overlapping boxes.",
+    taskDescription: "Implement `giou_2d(box1, box2)`. Bounding boxes are `[x1, y1, x2, y2]`. GIoU is `IoU - (area(C) - area(union)) / area(C)`, where `C` is the smallest convex enclosing box containing both boxes. If `area(C) == 0`, return 1.0. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "x1 < x2",
+        "y1 < y2"
+      ],
+    hints: {
+  "small": "Compute standard IoU first. Then find bounding box C: min(x1), min(y1), max(x2), max(y2).",
+        "strong": "intersection = max(0, min(x2_a, x2_b) - max(x1_a, x1_b)) * max(0, min(y2_a, y2_b) - max(y1_a, y1_b)). Enclosing C area = (max(x2)-min(x1)) * (max(y2)-min(y1)).",
+        "concept": "Standard IoU yields zero gradient when two boxes do not overlap. GIoU adds an enclosing area penalty term that penalizes distance between disjoint boxes."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identical boxes",
+          "input": {
+            "box1": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "box2": [
+              0,
+              0,
+              2,
+              2
+            ]
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "partial overlap",
+          "input": {
+            "box1": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "box2": [
+              1,
+              1,
+              3,
+              3
+            ]
+          },
+          "expectedOutput": -0.0794,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "disjoint distant boxes",
+          "input": {
+            "box1": [
+              0,
+              0,
+              1,
+              1
+            ],
+            "box2": [
+              3,
+              3,
+              4,
+              4
+            ]
+          },
+          "expectedOutput": -0.875,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "touching edges",
+          "input": {
+            "box1": [
+              0,
+              0,
+              2,
+              2
+            ],
+            "box2": [
+              2,
+              0,
+              4,
+              2
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-7": {
+    id: "deep-learning-prob-7",
+    title: "Anchor Box Target Assignment",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "anchor_matching",
+    functionSignature: "anchor_matching(anchors: list[list[float]], gt_boxes: list[list[float]], pos_thresh: float, neg_thresh: float) -> list[int]",
+    starterCode: `def anchor_matching(anchors: list[list[float]], gt_boxes: list[list[float]], pos_thresh: float, neg_thresh: float) -> list[int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Assign training labels to candidate anchor boxes based on Intersection-over-Union thresholds against ground truth.",
+    taskDescription: "Implement `anchor_matching(anchors, gt_boxes, pos_thresh, neg_thresh)`. For each anchor box, compute its IoU with every ground-truth box. If the maximum IoU is `>= pos_thresh`, assign the index of the ground truth box with highest IoU (ties broken by lowest gt index). If maximum IoU is `< neg_thresh`, assign `-1` (background). Otherwise, assign `-2` (neutral / ignore). Return list of assignments.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(anchors) >= 1",
+        "len(gt_boxes) >= 1",
+        "0.0 <= neg_thresh <= pos_thresh <= 1.0"
+      ],
+    hints: {
+  "small": "Compute pairwise IoU between each anchor and each ground truth box.",
+        "strong": "For each anchor i, find max_iou and argmax_gt over all gt boxes. If max_iou >= pos_thresh: argmax_gt; elif max_iou < neg_thresh: -1; else: -2.",
+        "concept": "Anchor assignment forms the supervision signal for two-stage detectors (like Faster R-CNN RPN) and single-stage detectors (like SSD)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "clear positive and negative",
+          "input": {
+            "anchors": [
+              [
+                0,
+                0,
+                2,
+                2
+              ],
+              [
+                10,
+                10,
+                12,
+                12
+              ]
+            ],
+            "gt_boxes": [
+              [
+                0,
+                0,
+                2,
+                2
+              ]
+            ],
+            "pos_thresh": 0.5,
+            "neg_thresh": 0.3
+          },
+          "expectedOutput": [
+            0,
+            -1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "ambiguous neutral anchor",
+          "input": {
+            "anchors": [
+              [
+                0,
+                0,
+                2,
+                2
+              ]
+            ],
+            "gt_boxes": [
+              [
+                1,
+                0,
+                3,
+                2
+              ]
+            ],
+            "pos_thresh": 0.7,
+            "neg_thresh": 0.2
+          },
+          "expectedOutput": [
+            -2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple ground truths",
+          "input": {
+            "anchors": [
+              [
+                0,
+                0,
+                2,
+                2
+              ],
+              [
+                4,
+                4,
+                6,
+                6
+              ]
+            ],
+            "gt_boxes": [
+              [
+                0,
+                0,
+                2,
+                2
+              ],
+              [
+                4,
+                4,
+                6,
+                6
+              ]
+            ],
+            "pos_thresh": 0.6,
+            "neg_thresh": 0.3
+          },
+          "expectedOutput": [
+            0,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "all background",
+          "input": {
+            "anchors": [
+              [
+                100,
+                100,
+                102,
+                102
+              ]
+            ],
+            "gt_boxes": [
+              [
+                0,
+                0,
+                1,
+                1
+              ]
+            ],
+            "pos_thresh": 0.5,
+            "neg_thresh": 0.3
+          },
+          "expectedOutput": [
+            -1
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-8": {
+    id: "deep-learning-prob-8",
+    title: "Vision Transformer Patch Projection Dimension Calculator",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "vit_patch_projection_dim",
+    functionSignature: "vit_patch_projection_dim(img_h: int, img_w: int, patch_size: int, in_channels: int, embed_dim: int) -> dict",
+    starterCode: `def vit_patch_projection_dim(img_h: int, img_w: int, patch_size: int, in_channels: int, embed_dim: int) -> dict:
+    # Your implementation here
+    pass
+`,
+    mission: "Calculate sequence length and linear projection parameter count for a Vision Transformer (ViT) patch embedding layer.",
+    taskDescription: "Implement `vit_patch_projection_dim(img_h, img_w, patch_size, in_channels, embed_dim)`. A Vision Transformer reshapes an image into `(num_patches_h, num_patches_w)` non-overlapping patches. Each patch has flattened dimension `patch_dim = patch_size * patch_size * in_channels`. A linear projection with bias projects each patch into `embed_dim`. Return a dict: `{'num_patches': int, 'patch_dim': int, 'linear_weights': int, 'linear_biases': int, 'total_params': int}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "img_h % patch_size == 0",
+        "img_w % patch_size == 0"
+      ],
+    hints: {
+  "small": "num_patches = (img_h // patch_size) * (img_w // patch_size).",
+        "strong": "linear_weights = patch_dim * embed_dim, linear_biases = embed_dim, total = weights + biases.",
+        "concept": "ViT treats 16x16 image patches identically to NLP tokens, projecting them into the transformer latent space via a single stride-16 convolution or linear map."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "ViT-Base standard 224x224",
+          "input": {
+            "img_h": 224,
+            "img_w": 224,
+            "patch_size": 16,
+            "in_channels": 3,
+            "embed_dim": 768
+          },
+          "expectedOutput": {
+            "num_patches": 196,
+            "patch_dim": 768,
+            "linear_weights": 589824,
+            "linear_biases": 768,
+            "total_params": 590592
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "small 32x32 image",
+          "input": {
+            "img_h": 32,
+            "img_w": 32,
+            "patch_size": 4,
+            "in_channels": 1,
+            "embed_dim": 64
+          },
+          "expectedOutput": {
+            "num_patches": 64,
+            "patch_dim": 16,
+            "linear_weights": 1024,
+            "linear_biases": 64,
+            "total_params": 1088
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "asymmetric image",
+          "input": {
+            "img_h": 384,
+            "img_w": 192,
+            "patch_size": 32,
+            "in_channels": 3,
+            "embed_dim": 512
+          },
+          "expectedOutput": {
+            "num_patches": 72,
+            "patch_dim": 3072,
+            "linear_weights": 1572864,
+            "linear_biases": 512,
+            "total_params": 1573376
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "patch size equals image",
+          "input": {
+            "img_h": 16,
+            "img_w": 16,
+            "patch_size": 16,
+            "in_channels": 3,
+            "embed_dim": 128
+          },
+          "expectedOutput": {
+            "num_patches": 1,
+            "patch_dim": 768,
+            "linear_weights": 98304,
+            "linear_biases": 128,
+            "total_params": 98432
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-9": {
+    id: "deep-learning-prob-9",
+    title: "2D Binary Morphological Dilation",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "morphological_dilate_2d",
+    functionSignature: "morphological_dilate_2d(grid: list[list[int]], kernel: list[list[int]]) -> list[list[int]]",
+    starterCode: `def morphological_dilate_2d(grid: list[list[int]], kernel: list[list[int]]) -> list[list[int]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement binary morphological dilation to expand foreground boundaries in binary segmentation masks.",
+    taskDescription: "Implement `morphological_dilate_2d(grid, kernel)`. `grid` is an `H x W` binary matrix (0 or 1). `kernel` is an odd-sized `kH x kW` binary matrix with center at `(kH//2, kW//2)`. Output cell `(r, c)` is `1` if there is ANY offset `(dr, dc)` where `kernel[kH//2 + dr][kW//2 + dc] == 1` and `grid[r + dr][c + dc] == 1` (within grid bounds); otherwise `0`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "kH and kW are odd positive integers",
+        "grid cells are 0 or 1"
+      ],
+    hints: {
+  "small": "For each cell (r, c), check neighbor offsets defined by active (==1) entries in kernel.",
+        "strong": "Iterate kernel offsets: if 0 <= r + dr < H and 0 <= c + dc < W and grid[r+dr][c+dc] == 1, output is 1.",
+        "concept": "Morphological dilation bridges small gaps and thickens boundary lines in binary semantic segmentation post-processing."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single dot expansion with cross kernel",
+          "input": {
+            "grid": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0
+              ]
+            ],
+            "kernel": [
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                0,
+                1,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              0,
+              1,
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "empty grid stays empty",
+          "input": {
+            "grid": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "kernel": [
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "corner dilation",
+          "input": {
+            "grid": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "kernel": [
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "identity 1x1 kernel",
+          "input": {
+            "grid": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "kernel": [
+              [
+                1
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-10": {
+    id: "deep-learning-prob-10",
+    title: "Discrete Laplacian 2D Edge Filtering",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "laplacian_kernel_filter",
+    functionSignature: "laplacian_kernel_filter(image: list[list[float]]) -> list[list[float]]",
+    starterCode: `def laplacian_kernel_filter(image: list[list[float]]) -> list[list[float]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Apply the standard 3x3 discrete Laplacian second-derivative kernel to detect edges and rapid intensity changes.",
+    taskDescription: "Implement `laplacian_kernel_filter(image)`. Convolve a 2D image matrix of size `H x W` with the 3x3 Laplacian kernel `[[0, 1, 0], [1, -4, 1], [0, 1, 0]]` using valid padding (resulting in output size `(H - 2) x (W - 2)`). Round each output value to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "H >= 3",
+        "W >= 3"
+      ],
+    hints: {
+  "small": "For each valid center (r, c) from 1 to H-2 and 1 to W-2, sum kernel * neighborhood.",
+        "strong": "val = image[r-1][c] + image[r+1][c] + image[r][c-1] + image[r][c+1] - 4 * image[r][c].",
+        "concept": "The Laplacian operator computes the divergence of the gradient, identifying zero-crossings that correspond to inflection points along sharp edges."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "flat constant image produces zero",
+          "input": {
+            "image": [
+              [
+                5,
+                5,
+                5
+              ],
+              [
+                5,
+                5,
+                5
+              ],
+              [
+                5,
+                5,
+                5
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single peak in center",
+          "input": {
+            "image": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                10,
+                0
+              ],
+              [
+                0,
+                0,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              -40
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "horizontal edge",
+          "input": {
+            "image": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                10,
+                10,
+                10,
+                10
+              ],
+              [
+                10,
+                10,
+                10,
+                10
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              10,
+              10
+            ],
+            [
+              -10,
+              -10
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "linear ramp",
+          "input": {
+            "image": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                2,
+                3,
+                4
+              ],
+              [
+                3,
+                4,
+                5
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              0
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-11": {
+    id: "deep-learning-prob-11",
+    title: "InfoNCE / SimCLR Contrastive Loss",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "infonce_contrastive_loss",
+    functionSignature: "infonce_contrastive_loss(queries: list[list[float]], positives: list[list[float]], temperature: float) -> float",
+    starterCode: `def infonce_contrastive_loss(queries: list[list[float]], positives: list[list[float]], temperature: float) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the InfoNCE contrastive objective used in self-supervised representation learning (SimCLR, MoCo, CLIP).",
+    taskDescription: "Implement `infonce_contrastive_loss(queries, positives, temperature)`. Given `N` normalized queries and `N` normalized positive keys, for query `i`, `positives[i]` is its positive match and `positives[j]` (for all `j != i`) are negative distractors. Compute cosine similarity as dot product `sim(q, k) = sum(q_d * k_d)`. For each query `i`, loss is `-log(exp(sim(q_i, p_i) / tau) / sum_{j=0}^{N-1} exp(sim(q_i, p_j) / tau))`. Return the mean loss across all `N` queries, rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "N >= 2",
+        "temperature > 0",
+        "all vectors have unit norm"
+      ],
+    hints: {
+  "small": "For each query i, compute logits = [dot(queries[i], positives[j]) / tau for j in range(N)]. Use stable log-sum-exp.",
+        "strong": "loss_i = -logits[i] + log(sum(exp(logits[j]))). Average over i.",
+        "concept": "InfoNCE optimizes a lower bound on mutual information between representations, pulling positive views together and pushing negatives apart."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "perfect alignment low temp",
+          "input": {
+            "queries": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "positives": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "temperature": 0.1
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "orthogonal queries temp 1.0",
+          "input": {
+            "queries": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "positives": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "temperature": 1
+          },
+          "expectedOutput": 0.3133,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "inverted assignment higher loss",
+          "input": {
+            "queries": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "positives": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "temperature": 0.5
+          },
+          "expectedOutput": 2.1269,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3-item batch",
+          "input": {
+            "queries": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ],
+            "positives": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                1
+              ]
+            ],
+            "temperature": 0.2
+          },
+          "expectedOutput": 0.0134,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-12": {
+    id: "deep-learning-prob-12",
+    title: "Triplet Margin Loss Forward Pass",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "triplet_margin_loss",
+    functionSignature: "triplet_margin_loss(anchor: list[float], positive: list[float], negative: list[float], margin: float) -> float",
+    starterCode: `def triplet_margin_loss(anchor: list[float], positive: list[float], negative: list[float], margin: float) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute triplet margin loss to enforce distance ordering between metric embeddings (FaceNet style).",
+    taskDescription: "Implement `triplet_margin_loss(anchor, positive, negative, margin)`. Compute Euclidean distance `d_pos = sqrt(sum((a - p)^2))` and `d_neg = sqrt(sum((a - n)^2))`. The loss is `max(0.0, d_pos - d_neg + margin)`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(anchor) == len(positive) == len(negative)",
+        "margin >= 0.0"
+      ],
+    hints: {
+  "small": "Compute Euclidean distance between anchor-positive and anchor-negative, add margin, clamp at 0.",
+        "strong": "d_pos = math.sqrt(sum((a-p)**2)); d_neg = math.sqrt(sum((a-n)**2)); return round(max(0.0, d_pos - d_neg + margin), 4).",
+        "concept": "Triplet loss separates classes by at least a specified margin distance, popular in face recognition and re-identification."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "anchor closer to positive zero loss",
+          "input": {
+            "anchor": [
+              0,
+              0
+            ],
+            "positive": [
+              0.1,
+              0
+            ],
+            "negative": [
+              2,
+              0
+            ],
+            "margin": 0.5
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "positive further than negative violated margin",
+          "input": {
+            "anchor": [
+              0,
+              0
+            ],
+            "positive": [
+              1,
+              0
+            ],
+            "negative": [
+              0.2,
+              0
+            ],
+            "margin": 1
+          },
+          "expectedOutput": 1.8,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero margin identical vectors",
+          "input": {
+            "anchor": [
+              1,
+              1
+            ],
+            "positive": [
+              1,
+              1
+            ],
+            "negative": [
+              1,
+              1
+            ],
+            "margin": 0
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "high dimension embedding",
+          "input": {
+            "anchor": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "positive": [
+              0.5,
+              0.5,
+              0.5,
+              0.5
+            ],
+            "negative": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "margin": 0.2
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-13": {
+    id: "deep-learning-prob-13",
+    title: "Byte-Pair Encoding (BPE) Merge Step",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "bpe_merge_pair",
+    functionSignature: "bpe_merge_pair(vocab_frequencies: dict[str, int], pair_to_merge: list[str]) -> dict[str, int]",
+    starterCode: `def bpe_merge_pair(vocab_frequencies: dict[str, int], pair_to_merge: list[str]) -> dict[str, int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Execute one merge iteration of the Byte-Pair Encoding algorithm on tokenized word frequencies.",
+    taskDescription: "Implement `bpe_merge_pair(vocab_frequencies, pair_to_merge)`. `vocab_frequencies` maps space-separated token sequences (e.g. `'l o w </w>': 5`) to counts. `pair_to_merge` is `[sym1, sym2]`. For each key in `vocab_frequencies`, replace every adjacent occurrence of `sym1` and `sym2` with `sym1sym2` (concatenated without space). Keep frequencies unchanged. Return the new dictionary.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(pair_to_merge) == 2"
+      ],
+    hints: {
+  "small": "Split each key into a list of tokens by space, scan for adjacent matches of pair_to_merge, and merge.",
+        "strong": "When tokens[i] == pair[0] and tokens[i+1] == pair[1], combine into tokens[i]+tokens[i+1] and skip the next token.",
+        "concept": "BPE constructs subword vocabularies by greedily merging the most frequent adjacent symbol pair across a training corpus."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "simple merge e and s",
+          "input": {
+            "vocab_frequencies": {
+              "l o w </w>": 5,
+              "l o w e s t </w>": 2
+            },
+            "pair_to_merge": [
+              "e",
+              "s"
+            ]
+          },
+          "expectedOutput": {
+            "l o w </w>": 5,
+            "l o w es t </w>": 2
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "double occurrence in word",
+          "input": {
+            "vocab_frequencies": {
+              "a a a a": 1
+            },
+            "pair_to_merge": [
+              "a",
+              "a"
+            ]
+          },
+          "expectedOutput": {
+            "aa aa": 1
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "pair not present",
+          "input": {
+            "vocab_frequencies": {
+              "h e l l o": 3
+            },
+            "pair_to_merge": [
+              "x",
+              "y"
+            ]
+          },
+          "expectedOutput": {
+            "h e l l o": 3
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "merge at end of word",
+          "input": {
+            "vocab_frequencies": {
+              "c a t </w>": 4
+            },
+            "pair_to_merge": [
+              "t",
+              "</w>"
+            ]
+          },
+          "expectedOutput": {
+            "c a t</w>": 4
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-14": {
+    id: "deep-learning-prob-14",
+    title: "WordPiece Greedy Subword Tokenization",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "wordpiece_tokenize_word",
+    functionSignature: "wordpiece_tokenize_word(word: str, vocab: list[str], unk_token: str) -> list[str]",
+    starterCode: `def wordpiece_tokenize_word(word: str, vocab: list[str], unk_token: str = '[UNK]') -> list[str]:
+    # Your implementation here
+    pass
+`,
+    mission: "Segment a word into subwords using BERT WordPiece longest-prefix matching with '##' continuation prefixes.",
+    taskDescription: "Implement `wordpiece_tokenize_word(word, vocab, unk_token)`. `vocab` is a list of allowed subwords. Start at index 0. Find the longest substring `word[start:end]` in `vocab` (if `start > 0`, prepend `'##'` to the candidate before checking `vocab`). If found, add the matched token and advance `start = end`. If at any point no valid subword prefix exists, return `[unk_token]`. Return the list of subword tokens.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(word) >= 1",
+        "vocab contains non-empty strings"
+      ],
+    hints: {
+  "small": "Keep start pointer, decrement end from len(word) down to start + 1. Check if candidate is in vocab.",
+        "strong": "cand = word[start:end] if start == 0 else '##' + word[start:end]. If in vocab, advance start = end. If loop exhausts without match, return [unk_token].",
+        "concept": "WordPiece tokenization guarantees that any vocabulary item can be decomposed into subword units, mitigating out-of-vocabulary (OOV) tokens."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "exact word match",
+          "input": {
+            "word": "playing",
+            "vocab": [
+              "playing",
+              "play",
+              "##ing"
+            ],
+            "unk_token": "[UNK]"
+          },
+          "expectedOutput": [
+            "playing"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "prefix and suffix split",
+          "input": {
+            "word": "playing",
+            "vocab": [
+              "play",
+              "##ing"
+            ],
+            "unk_token": "[UNK]"
+          },
+          "expectedOutput": [
+            "play",
+            "##ing"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "unknown character returns unk",
+          "input": {
+            "word": "xyz",
+            "vocab": [
+              "x",
+              "##y"
+            ],
+            "unk_token": "[UNK]"
+          },
+          "expectedOutput": [
+            "[UNK]"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multi piece tokenization",
+          "input": {
+            "word": "unaffable",
+            "vocab": [
+              "un",
+              "##aff",
+              "##able"
+            ],
+            "unk_token": "[UNK]"
+          },
+          "expectedOutput": [
+            "un",
+            "##aff",
+            "##able"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-15": {
+    id: "deep-learning-prob-15",
+    title: "TF-IDF Document Vector Calculation",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "tf_idf_vector",
+    functionSignature: "tf_idf_vector(doc_tokens: list[str], corpus: list[list[str]], vocabulary: list[str]) -> list[float]",
+    starterCode: `def tf_idf_vector(doc_tokens: list[str], corpus: list[list[str]], vocabulary: list[str]) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the smooth TF-IDF feature representation of a text document across a predefined vocabulary.",
+    taskDescription: "Implement `tf_idf_vector(doc_tokens, corpus, vocabulary)`. For each term `t` in `vocabulary`, calculate `tf = count(t, doc_tokens) / len(doc_tokens)` (if `doc_tokens` empty, `tf = 0.0`). Document frequency `df` is the number of documents in `corpus` containing `t`. Compute `idf = ln((1 + N) / (1 + df)) + 1.0` where `N = len(corpus)`. The score is `tf * idf`. Return list of floats rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(corpus) >= 1",
+        "vocabulary non-empty"
+      ],
+    hints: {
+  "small": "Compute tf per vocab word using doc_tokens count. Precompute df per vocab word across corpus.",
+        "strong": "df = sum(1 for doc in corpus if t in set(doc)). idf = math.log((1 + N) / (1 + df)) + 1.0.",
+        "concept": "TF-IDF balances term frequency within a document against corpus-wide inverse document frequency to downweight ubiquitous stop words."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single word in doc",
+          "input": {
+            "doc_tokens": [
+              "cat"
+            ],
+            "corpus": [
+              [
+                "cat",
+                "dog"
+              ],
+              [
+                "dog"
+              ]
+            ],
+            "vocabulary": [
+              "cat",
+              "dog"
+            ]
+          },
+          "expectedOutput": [
+            1.4055,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "term in all documents lower idf",
+          "input": {
+            "doc_tokens": [
+              "a",
+              "b"
+            ],
+            "corpus": [
+              [
+                "a",
+                "b"
+              ],
+              [
+                "a"
+              ]
+            ],
+            "vocabulary": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": [
+            0.5,
+            0.7027
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "word not in document zero tf",
+          "input": {
+            "doc_tokens": [
+              "apple"
+            ],
+            "corpus": [
+              [
+                "apple"
+              ],
+              [
+                "banana"
+              ]
+            ],
+            "vocabulary": [
+              "apple",
+              "banana"
+            ]
+          },
+          "expectedOutput": [
+            1.4055,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "unseen word in corpus df zero",
+          "input": {
+            "doc_tokens": [
+              "rare"
+            ],
+            "corpus": [
+              [
+                "cat"
+              ],
+              [
+                "dog"
+              ]
+            ],
+            "vocabulary": [
+              "rare"
+            ]
+          },
+          "expectedOutput": [
+            2.0986
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-16": {
+    id: "deep-learning-prob-16",
+    title: "Word2Vec Skip-Gram Negative Sampling Loss",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "skipgram_negative_sampling_loss",
+    functionSignature: "skipgram_negative_sampling_loss(target_emb: list[float], context_emb: list[float], negative_embs: list[list[float]]) -> float",
+    starterCode: `def skipgram_negative_sampling_loss(target_emb: list[float], context_emb: list[float], negative_embs: list[list[float]]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Calculate the negative sampling objective for Word2Vec training on a positive pair and sampled negative words.",
+    taskDescription: "Implement `skipgram_negative_sampling_loss(target_emb, context_emb, negative_embs)`. For target vector `v_w` and context vector `v_c`, compute dot product `s_pos = dot(v_w, v_c)`. For each negative vector `v_n`, compute `s_neg = dot(v_w, v_n)`. Objective is `-log(sigmoid(s_pos)) - sum(log(sigmoid(-s_neg)))`. Use `sigmoid(x) = 1.0 / (1.0 + exp(-x))`. Return float rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all embeddings share dimension d >= 1",
+        "len(negative_embs) >= 1"
+      ],
+    hints: {
+  "small": "Use stable sigmoid: for x < 0, 1 - sigmoid(-x), or log(sigmoid(x)) = -log1p(exp(-x)).",
+        "strong": "sigmoid(z) = 1.0 / (1.0 + math.exp(-z)). Loss is -math.log(sigmoid(s_pos)) - sum(math.log(sigmoid(-s_neg))).",
+        "concept": "Negative sampling replaces expensive full-softmax normalization over vocabulary size V with K binary logistic regressions."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "aligned positive orthogonal negative",
+          "input": {
+            "target_emb": [
+              1,
+              0
+            ],
+            "context_emb": [
+              1,
+              0
+            ],
+            "negative_embs": [
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": 1.0064,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "orthogonal positive aligned negative high loss",
+          "input": {
+            "target_emb": [
+              1,
+              0
+            ],
+            "context_emb": [
+              0,
+              1
+            ],
+            "negative_embs": [
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": 2.0064,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple negatives",
+          "input": {
+            "target_emb": [
+              1,
+              1
+            ],
+            "context_emb": [
+              1,
+              1
+            ],
+            "negative_embs": [
+              [
+                -1,
+                0
+              ],
+              [
+                0,
+                -1
+              ]
+            ]
+          },
+          "expectedOutput": 0.7535,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3d vectors",
+          "input": {
+            "target_emb": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "context_emb": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "negative_embs": [
+              [
+                -0.5,
+                -0.5,
+                0.5
+              ]
+            ]
+          },
+          "expectedOutput": 0.9628,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-17": {
+    id: "deep-learning-prob-17",
+    title: "CBOW Context Vector Mean Aggregator",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "cbow_context_averaging",
+    functionSignature: "cbow_context_averaging(context_indices: list[int], embedding_matrix: list[list[float]]) -> list[float]",
+    starterCode: `def cbow_context_averaging(context_indices: list[int], embedding_matrix: list[list[float]]) -> list[float]:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the averaged context representation vector for Word2Vec Continuous Bag-Of-Words (CBOW) architecture.",
+    taskDescription: "Implement `cbow_context_averaging(context_indices, embedding_matrix)`. Look up the embedding row in `embedding_matrix` for each index in `context_indices`. Compute the element-wise arithmetic mean vector across all context words. Return the list of floats rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(context_indices) >= 1",
+        "all row dimensions match"
+      ],
+    hints: {
+  "small": "Sum vectors along each dimension d, then divide by len(context_indices).",
+        "strong": "mean_d = sum(embedding_matrix[idx][d] for idx in context_indices) / len(context_indices).",
+        "concept": "CBOW predicts the target center word given the bag of surrounding context words, averaging embeddings to ignore word order."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two context words average",
+          "input": {
+            "context_indices": [
+              0,
+              1
+            ],
+            "embedding_matrix": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                4
+              ]
+            ]
+          },
+          "expectedOutput": [
+            2,
+            3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single context word",
+          "input": {
+            "context_indices": [
+              2
+            ],
+            "embedding_matrix": [
+              [
+                0.1,
+                0.2
+              ],
+              [
+                0.3,
+                0.4
+              ],
+              [
+                0.5,
+                0.6
+              ]
+            ]
+          },
+          "expectedOutput": [
+            0.5,
+            0.6
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "repeated context index",
+          "input": {
+            "context_indices": [
+              0,
+              0
+            ],
+            "embedding_matrix": [
+              [
+                2,
+                4
+              ]
+            ]
+          },
+          "expectedOutput": [
+            2,
+            4
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "4d embeddings",
+          "input": {
+            "context_indices": [
+              0,
+              1,
+              2
+            ],
+            "embedding_matrix": [
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": [
+            0.3333,
+            0.3333,
+            0.3333,
+            0
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-18": {
+    id: "deep-learning-prob-18",
+    title: "GloVe Co-occurrence Weighting Function",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "glove_weighting_function",
+    functionSignature: "glove_weighting_function(x: float, x_max: float, alpha: float) -> float",
+    starterCode: `def glove_weighting_function(x: float, x_max: float = 100.0, alpha: float = 0.75) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Evaluate the GloVe sub-linear weighting term preventing very frequent co-occurrences from dominating embedding training.",
+    taskDescription: "Implement `glove_weighting_function(x, x_max, alpha)`. If `x < x_max`, return `(x / x_max) ** alpha`. Otherwise, return `1.0`. Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "x >= 0.0",
+        "x_max > 0.0",
+        "0.0 < alpha <= 1.0"
+      ],
+    hints: {
+  "small": "Check whether x < x_max; if so compute power, else 1.0.",
+        "strong": "val = (x / x_max) ** alpha if x < x_max else 1.0; return round(val, 4).",
+        "concept": "GloVe caps weighting at x_max and uses sublinear alpha=0.75 so rare words carry non-trivial weight while frequent words don't overpower."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "x exceeds x_max saturates to 1.0",
+          "input": {
+            "x": 150,
+            "x_max": 100,
+            "alpha": 0.75
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "x is zero returns zero",
+          "input": {
+            "x": 0,
+            "x_max": 100,
+            "alpha": 0.75
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "midpoint value",
+          "input": {
+            "x": 50,
+            "x_max": 100,
+            "alpha": 0.75
+          },
+          "expectedOutput": 0.5946,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "linear alpha 1.0",
+          "input": {
+            "x": 25,
+            "x_max": 100,
+            "alpha": 1
+          },
+          "expectedOutput": 0.25,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-19": {
+    id: "deep-learning-prob-19",
+    title: "Levenshtein Minimum Edit Distance",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "levenshtein_distance",
+    functionSignature: "levenshtein_distance(s1: str, s2: str, ins_cost: int, del_cost: int, sub_cost: int) -> int",
+    starterCode: `def levenshtein_distance(s1: str, s2: str, ins_cost: int = 1, del_cost: int = 1, sub_cost: int = 1) -> int:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute parameterized Levenshtein edit distance using 2D dynamic programming for NLP spelling and evaluation.",
+    taskDescription: "Implement `levenshtein_distance(s1, s2, ins_cost, del_cost, sub_cost)`. Compute the minimum cost to transform string `s1` into string `s2` using character insertions (`ins_cost`), deletions (`del_cost`), and substitutions (`sub_cost`). If characters match, cost is 0. Return the minimum integer cost.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(s1), len(s2) >= 0",
+        "costs >= 1"
+      ],
+    hints: {
+  "small": "Construct (len(s1)+1) x (len(s2)+1) DP table. Base cases are i*del_cost and j*ins_cost.",
+        "strong": "dp[i][j] = min(dp[i-1][j] + del_cost, dp[i][j-1] + ins_cost, dp[i-1][j-1] + (0 if s1[i-1]==s2[j-1] else sub_cost)).",
+        "concept": "Edit distance forms the algorithmic foundation of spell correction, sequence alignment, and Word Error Rate (WER) in ASR."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "kitten to sitting",
+          "input": {
+            "s1": "kitten",
+            "s2": "sitting",
+            "ins_cost": 1,
+            "del_cost": 1,
+            "sub_cost": 1
+          },
+          "expectedOutput": 3,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "identical strings zero cost",
+          "input": {
+            "s1": "hello",
+            "s2": "hello",
+            "ins_cost": 1,
+            "del_cost": 1,
+            "sub_cost": 1
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "empty source all insertions",
+          "input": {
+            "s1": "",
+            "s2": "abc",
+            "ins_cost": 2,
+            "del_cost": 1,
+            "sub_cost": 1
+          },
+          "expectedOutput": 6,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "custom high sub cost prefers del+ins",
+          "input": {
+            "s1": "a",
+            "s2": "b",
+            "ins_cost": 1,
+            "del_cost": 1,
+            "sub_cost": 5
+          },
+          "expectedOutput": 2,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-20": {
+    id: "deep-learning-prob-20",
+    title: "BLEU Clipped N-gram Precision Calculator",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "bleu_clipped_ngram_counts",
+    functionSignature: "bleu_clipped_ngram_counts(candidate: list[str], references: list[list[str]], n: int) -> list[int]",
+    starterCode: `def bleu_clipped_ngram_counts(candidate: list[str], references: list[list[str]], n: int) -> list[int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the clipped n-gram overlap counts used to calculate modified n-gram precision in BLEU score evaluation.",
+    taskDescription: "Implement `bleu_clipped_ngram_counts(candidate, references, n)`. Extract all `n`-grams from `candidate` and compute each unique n-gram's frequency. For each unique n-gram, clip its count to the maximum frequency it achieves in ANY single reference sentence. Return `[clipped_count, total_candidate_ngrams]`. If candidate has fewer than `n` tokens, return `[0, 0]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "n >= 1",
+        "len(references) >= 1"
+      ],
+    hints: {
+  "small": "Form n-grams as tuples. For each unique candidate n-gram, find max count across references.",
+        "strong": "clipped = min(cand_count[ng], max(ref_count[ng] for ref in references)). Sum clipped over all unique candidate n-grams.",
+        "concept": "Clipped precision prevents degenerate repetitive candidates (like 'the the the the') from scoring 100% precision in machine translation evaluation."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "repeated words clipped to max ref",
+          "input": {
+            "candidate": [
+              "the",
+              "the",
+              "the"
+            ],
+            "references": [
+              [
+                "the",
+                "cat"
+              ]
+            ],
+            "n": 1
+          },
+          "expectedOutput": [
+            1,
+            3
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "bigram exact match",
+          "input": {
+            "candidate": [
+              "fast",
+              "car"
+            ],
+            "references": [
+              [
+                "the",
+                "fast",
+                "car"
+              ]
+            ],
+            "n": 2
+          },
+          "expectedOutput": [
+            1,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "candidate shorter than n",
+          "input": {
+            "candidate": [
+              "hi"
+            ],
+            "references": [
+              [
+                "hi",
+                "there"
+              ]
+            ],
+            "n": 2
+          },
+          "expectedOutput": [
+            0,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multiple reference overlap",
+          "input": {
+            "candidate": [
+              "a",
+              "b",
+              "c"
+            ],
+            "references": [
+              [
+                "a",
+                "b"
+              ],
+              [
+                "b",
+                "c"
+              ]
+            ],
+            "n": 2
+          },
+          "expectedOutput": [
+            2,
+            2
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-21": {
+    id: "deep-learning-prob-21",
+    title: "Word Error Rate (WER) for Speech and NLP",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "word_error_rate",
+    functionSignature: "word_error_rate(reference: list[str], hypothesis: list[str]) -> float",
+    starterCode: `def word_error_rate(reference: list[str], hypothesis: list[str]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the industry-standard Word Error Rate (WER = (S + D + I) / N) between reference and predicted token sequences.",
+    taskDescription: "Implement `word_error_rate(reference, hypothesis)`. Using token-level Levenshtein alignment (substitutions S, deletions D, insertions I each with cost 1), compute `WER = (S + D + I) / N` where `N = len(reference)`. If `N == 0` and hypothesis is empty, return 0.0; if `N == 0` and hypothesis is non-empty, return float(len(hypothesis)). Round result to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "reference and hypothesis are token lists"
+      ],
+    hints: {
+  "small": "Compute edit distance between token lists with unit cost for ins, del, sub.",
+        "strong": "distance = levenshtein(reference, hypothesis, ins=1, del=1, sub=1). WER = distance / len(reference).",
+        "concept": "WER is the benchmark evaluation metric for automatic speech recognition (ASR) and OCR transcription."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "perfect match zero error",
+          "input": {
+            "reference": [
+              "the",
+              "cat",
+              "sat"
+            ],
+            "hypothesis": [
+              "the",
+              "cat",
+              "sat"
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one substitution",
+          "input": {
+            "reference": [
+              "the",
+              "cat",
+              "sat"
+            ],
+            "hypothesis": [
+              "the",
+              "dog",
+              "sat"
+            ]
+          },
+          "expectedOutput": 0.3333,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "one insertion",
+          "input": {
+            "reference": [
+              "the",
+              "cat"
+            ],
+            "hypothesis": [
+              "the",
+              "black",
+              "cat"
+            ]
+          },
+          "expectedOutput": 0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty hypothesis all deletions",
+          "input": {
+            "reference": [
+              "a",
+              "b",
+              "c"
+            ],
+            "hypothesis": []
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-22": {
+    id: "deep-learning-prob-22",
+    title: "FastText Character N-Gram Extractor",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "fasttext_ngrams",
+    functionSignature: "fasttext_ngrams(word: str, min_n: int, max_n: int) -> list[str]",
+    starterCode: `def fasttext_ngrams(word: str, min_n: int = 3, max_n: int = 6) -> list[str]:
+    # Your implementation here
+    pass
+`,
+    mission: "Extract character n-grams with word boundary tags for FastText subword embedding models.",
+    taskDescription: "Implement `fasttext_ngrams(word, min_n, max_n)`. Enclose the word with boundary characters: `wrapped = '<' + word + '>'`. For every length `n` from `min_n` to `max_n` (inclusive), extract all substrings of length `n` in order of increasing `n` and left-to-right position. Finally, append the special full wrapped token `wrapped` if it was not already included. Return the list of unique n-grams in order of first appearance.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "1 <= min_n <= max_n",
+        "len(word) >= 1"
+      ],
+    hints: {
+  "small": "Wrap word with '<' and '>'. Iterate n from min_n to max_n, slice string of length n.",
+        "strong": "Keep a list and seen set to preserve order while ensuring uniqueness. Include wrapped itself at the end if not present.",
+        "concept": "FastText represents each word as the sum of its character n-gram vectors, capturing morphological prefixes/suffixes and generalizing to unseen words."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "where with n=3",
+          "input": {
+            "word": "where",
+            "min_n": 3,
+            "max_n": 3
+          },
+          "expectedOutput": [
+            "<wh",
+            "whe",
+            "her",
+            "ere",
+            "re>",
+            "<where>"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "short word 2 to 3",
+          "input": {
+            "word": "at",
+            "min_n": 2,
+            "max_n": 3
+          },
+          "expectedOutput": [
+            "<a",
+            "at",
+            "t>",
+            "<at",
+            "at>",
+            "<at>"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "min_n to max_n range",
+          "input": {
+            "word": "cat",
+            "min_n": 3,
+            "max_n": 4
+          },
+          "expectedOutput": [
+            "<ca",
+            "cat",
+            "at>",
+            "<cat",
+            "cat>",
+            "<cat>"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single character word",
+          "input": {
+            "word": "a",
+            "min_n": 3,
+            "max_n": 3
+          },
+          "expectedOutput": [
+            "<a>"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-23": {
+    id: "deep-learning-prob-23",
+    title: "Viterbi Trellis Decoding for POS Tagging",
+    difficulty: "hard",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "viterbi_pos_tagger",
+    functionSignature: "viterbi_pos_tagger(tokens: list[str], states: list[str], init_prob: dict[str, float], trans_prob: dict[str, dict[str, float]], emit_prob: dict[str, dict[str, float]]) -> list[str]",
+    starterCode: `def viterbi_pos_tagger(tokens: list[str], states: list[str], init_prob: dict[str, float], trans_prob: dict[str, dict[str, float]], emit_prob: dict[str, dict[str, float]]) -> list[str]:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement dynamic programming trellis search to find the most probable sequence of hidden states in an HMM tagger.",
+    taskDescription: "Implement `viterbi_pos_tagger(tokens, states, init_prob, trans_prob, emit_prob)`. For observation sequence `tokens`, compute highest probability path through hidden `states`. At `t=0`, `V[0][s] = init_prob[s] * emit_prob[s].get(tokens[0], 1e-6)`. At step `t`, `V[t][s] = max_{s'} (V[t-1][s'] * trans_prob[s'][s]) * emit_prob[s].get(tokens[t], 1e-6)`. Trace back best path from `argmax_s V[T-1][s]`. Return list of state strings.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(tokens) >= 1",
+        "states is non-empty list of unique state labels"
+      ],
+    hints: {
+  "small": "Keep a backpointer matrix bp[t][s] recording which state s' gave the maximum probability at step t.",
+        "strong": "Track log-probabilities or products. Backtrack from argmax of final column V[T-1].",
+        "concept": "The Viterbi algorithm exact-decodes hidden Markov models and linear-chain CRFs in O(T * |S|^2) time."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "2 state clear path",
+          "input": {
+            "tokens": [
+              "I",
+              "see"
+            ],
+            "states": [
+              "PRON",
+              "VERB"
+            ],
+            "init_prob": {
+              "PRON": 0.8,
+              "VERB": 0.2
+            },
+            "trans_prob": {
+              "PRON": {
+                "PRON": 0.1,
+                "VERB": 0.9
+              },
+              "VERB": {
+                "PRON": 0.5,
+                "VERB": 0.5
+              }
+            },
+            "emit_prob": {
+              "PRON": {
+                "I": 0.9,
+                "see": 0.01
+              },
+              "VERB": {
+                "I": 0.01,
+                "see": 0.9
+              }
+            }
+          },
+          "expectedOutput": [
+            "PRON",
+            "VERB"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single token",
+          "input": {
+            "tokens": [
+              "run"
+            ],
+            "states": [
+              "NOUN",
+              "VERB"
+            ],
+            "init_prob": {
+              "NOUN": 0.4,
+              "VERB": 0.6
+            },
+            "trans_prob": {
+              "NOUN": {
+                "NOUN": 0.5,
+                "VERB": 0.5
+              },
+              "VERB": {
+                "NOUN": 0.5,
+                "VERB": 0.5
+              }
+            },
+            "emit_prob": {
+              "NOUN": {
+                "run": 0.2
+              },
+              "VERB": {
+                "run": 0.8
+              }
+            }
+          },
+          "expectedOutput": [
+            "VERB"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "ambiguous transition disambiguation",
+          "input": {
+            "tokens": [
+              "time",
+              "flies"
+            ],
+            "states": [
+              "NOUN",
+              "VERB"
+            ],
+            "init_prob": {
+              "NOUN": 0.7,
+              "VERB": 0.3
+            },
+            "trans_prob": {
+              "NOUN": {
+                "NOUN": 0.2,
+                "VERB": 0.8
+              },
+              "VERB": {
+                "NOUN": 0.5,
+                "VERB": 0.5
+              }
+            },
+            "emit_prob": {
+              "NOUN": {
+                "time": 0.6,
+                "flies": 0.2
+              },
+              "VERB": {
+                "time": 0.1,
+                "flies": 0.7
+              }
+            }
+          },
+          "expectedOutput": [
+            "NOUN",
+            "VERB"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3 tokens chain",
+          "input": {
+            "tokens": [
+              "a",
+              "b",
+              "c"
+            ],
+            "states": [
+              "S1",
+              "S2"
+            ],
+            "init_prob": {
+              "S1": 1,
+              "S2": 0
+            },
+            "trans_prob": {
+              "S1": {
+                "S1": 0.1,
+                "S2": 0.9
+              },
+              "S2": {
+                "S1": 0.9,
+                "S2": 0.1
+              }
+            },
+            "emit_prob": {
+              "S1": {
+                "a": 1,
+                "b": 0.1,
+                "c": 1
+              },
+              "S2": {
+                "a": 0.1,
+                "b": 1,
+                "c": 0.1
+              }
+            }
+          },
+          "expectedOutput": [
+            "S1",
+            "S2",
+            "S1"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-24": {
+    id: "deep-learning-prob-24",
+    title: "Bahdanau Additive Attention Alignment Score",
+    difficulty: "medium",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "bahdanau_additive_attention",
+    functionSignature: "bahdanau_additive_attention(decoder_hidden: list[float], encoder_hidden: list[float], W_d: list[list[float]], W_e: list[list[float]], v: list[float]) -> float",
+    starterCode: `def bahdanau_additive_attention(decoder_hidden: list[float], encoder_hidden: list[float], W_d: list[list[float]], W_e: list[list[float]], v: list[float]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the additive alignment score e = v^T * tanh(W_d * s + W_e * h) in sequence-to-sequence models.",
+    taskDescription: "Implement `bahdanau_additive_attention(decoder_hidden, encoder_hidden, W_d, W_e, v)`. Given decoder state `s` (dim `d_dec`) and encoder state `h` (dim `d_enc`), compute projections `proj_d = W_d * s` and `proj_e = W_e * h` (where `W_d` is `d_att x d_dec` and `W_e` is `d_att x d_enc`). For each coordinate `k` in `0...d_att-1`, compute `tanh(proj_d[k] + proj_e[k])`. Take dot product with vector `v` of length `d_att`. Return scalar rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "lengths match projection matrix dimensions",
+        "len(v) == len(W_d) == len(W_e)"
+      ],
+    hints: {
+  "small": "Multiply matrix W_d with s and W_e with h, add element-wise, apply math.tanh, then dot with v.",
+        "strong": "val = sum(v[k] * math.tanh(sum(W_d[k][j]*s[j] for j) + sum(W_e[k][j]*h[j] for j)) for k in range(len(v))).",
+        "concept": "Bahdanau attention broke the fixed-size context bottleneck in RNN seq2seq by allowing the decoder to dynamically attend to any source word."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identity 2d projections",
+          "input": {
+            "decoder_hidden": [
+              1,
+              0
+            ],
+            "encoder_hidden": [
+              0,
+              1
+            ],
+            "W_d": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "W_e": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "v": [
+              0.5,
+              0.5
+            ]
+          },
+          "expectedOutput": 0.7616,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "zero vectors produce zero score",
+          "input": {
+            "decoder_hidden": [
+              0,
+              0
+            ],
+            "encoder_hidden": [
+              0,
+              0
+            ],
+            "W_d": [
+              [
+                1,
+                0
+              ]
+            ],
+            "W_e": [
+              [
+                0,
+                1
+              ]
+            ],
+            "v": [
+              1
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "negative alignment",
+          "input": {
+            "decoder_hidden": [
+              -1
+            ],
+            "encoder_hidden": [
+              -1
+            ],
+            "W_d": [
+              [
+                2
+              ]
+            ],
+            "W_e": [
+              [
+                2
+              ]
+            ],
+            "v": [
+              1
+            ]
+          },
+          "expectedOutput": -0.9993,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "asymmetric dimensions",
+          "input": {
+            "decoder_hidden": [
+              1,
+              2
+            ],
+            "encoder_hidden": [
+              3
+            ],
+            "W_d": [
+              [
+                0.5,
+                0.5
+              ]
+            ],
+            "W_e": [
+              [
+                -0.5
+              ]
+            ],
+            "v": [
+              2
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-25": {
+    id: "deep-learning-prob-25",
+    title: "Luong Multiplicative Attention Score",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "luong_multiplicative_attention",
+    functionSignature: "luong_multiplicative_attention(decoder_hidden: list[float], encoder_hidden: list[float], W_a: list[list[float]]) -> float",
+    starterCode: `def luong_multiplicative_attention(decoder_hidden: list[float], encoder_hidden: list[float], W_a: list[list[float]]) -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Compute the general multiplicative attention alignment score score(s, h) = s^T * W_a * h.",
+    taskDescription: "Implement `luong_multiplicative_attention(decoder_hidden, encoder_hidden, W_a)`. Given decoder state vector `s` of length `d_dec`, encoder state vector `h` of length `d_enc`, and weight matrix `W_a` of shape `d_dec x d_enc`, compute the bilinear product `s^T * W_a * h`. Return the scalar rounded to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(W_a) == len(decoder_hidden)",
+        "len(W_a[0]) == len(encoder_hidden)"
+      ],
+    hints: {
+  "small": "Compute intermediate vector temp = W_a * h, then dot with decoder_hidden.",
+        "strong": "temp[i] = sum(W_a[i][j] * h[j] for j in range(d_enc)); score = sum(s[i] * temp[i] for i in range(d_dec)).",
+        "concept": "Luong's multiplicative attention simplifies Bahdanau's additive form into matrix multiplications, which execute significantly faster on GPUs."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "identity matrix dot product",
+          "input": {
+            "decoder_hidden": [
+              1,
+              2
+            ],
+            "encoder_hidden": [
+              3,
+              4
+            ],
+            "W_a": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": 11,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "zero weights zero score",
+          "input": {
+            "decoder_hidden": [
+              5
+            ],
+            "encoder_hidden": [
+              10
+            ],
+            "W_a": [
+              [
+                0
+              ]
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "cross interaction weights",
+          "input": {
+            "decoder_hidden": [
+              1,
+              1
+            ],
+            "encoder_hidden": [
+              2,
+              3
+            ],
+            "W_a": [
+              [
+                0,
+                1
+              ],
+              [
+                1,
+                0
+              ]
+            ]
+          },
+          "expectedOutput": 5,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "asymmetric 1x2 matrix",
+          "input": {
+            "decoder_hidden": [
+              2
+            ],
+            "encoder_hidden": [
+              1,
+              -1
+            ],
+            "W_a": [
+              [
+                3,
+                4
+              ]
+            ]
+          },
+          "expectedOutput": -2,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-26": {
+    id: "deep-learning-prob-26",
+    title: "Pad Variable-Length Sequence Batch",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "pad_sequence_batch",
+    functionSignature: "pad_sequence_batch(sequences: list[list[int]], pad_val: int) -> tuple[list[list[int]], list[list[int]]]",
+    starterCode: `def pad_sequence_batch(sequences: list[list[int]], pad_val: int = 0) -> tuple[list[list[int]], list[list[int]]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Pad ragged text sequences into a rectangular tensor and generate corresponding binary attention masks.",
+    taskDescription: "Implement `pad_sequence_batch(sequences, pad_val)`. For a list of variable-length integer token lists `sequences`, find the maximum sequence length `max_len`. Right-pad each sequence with `pad_val` so all have length `max_len`. Also construct an attention mask matrix where real tokens are `1` and padding positions are `0`. Return tuple `(padded_sequences, attention_masks)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(sequences) >= 1"
+      ],
+    hints: {
+  "small": "Find max_len = max(len(s) for s in sequences). For each seq, pad with pad_val until max_len.",
+        "strong": "padded_seq = seq + [pad_val] * (max_len - len(seq)); mask = [1] * len(seq) + [0] * (max_len - len(seq)).",
+        "concept": "Mini-batching sequence models on GPUs requires rectangular tensor layouts; attention masks prevent padding tokens from biasing representations."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two sequences different lengths",
+          "input": {
+            "sequences": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                4
+              ]
+            ],
+            "pad_val": 0
+          },
+          "expectedOutput": [
+            [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                4,
+                0,
+                0
+              ]
+            ],
+            [
+              [
+                1,
+                1,
+                1
+              ],
+              [
+                1,
+                0,
+                0
+              ]
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "already equal lengths",
+          "input": {
+            "sequences": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                4
+              ]
+            ],
+            "pad_val": -1
+          },
+          "expectedOutput": [
+            [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                4
+              ]
+            ],
+            [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                1
+              ]
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single sequence",
+          "input": {
+            "sequences": [
+              [
+                10,
+                20,
+                30
+              ]
+            ],
+            "pad_val": 0
+          },
+          "expectedOutput": [
+            [
+              [
+                10,
+                20,
+                30
+              ]
+            ],
+            [
+              [
+                1,
+                1,
+                1
+              ]
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "custom pad value",
+          "input": {
+            "sequences": [
+              [
+                5
+              ],
+              [
+                6,
+                7,
+                8,
+                9
+              ]
+            ],
+            "pad_val": 99
+          },
+          "expectedOutput": [
+            [
+              [
+                5,
+                99,
+                99,
+                99
+              ],
+              [
+                6,
+                7,
+                8,
+                9
+              ]
+            ],
+            [
+              [
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                1,
+                1,
+                1
+              ]
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-27": {
+    id: "deep-learning-prob-27",
+    title: "Unpad Sequences via Length Vector",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "unpad_sequence_batch",
+    functionSignature: "unpad_sequence_batch(padded_batch: list[list[int]], lengths: list[int]) -> list[list[int]]",
+    starterCode: `def unpad_sequence_batch(padded_batch: list[list[int]], lengths: list[int]) -> list[list[int]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Restore original ragged token sequences from a padded batch tensor using original sequence lengths.",
+    taskDescription: "Implement `unpad_sequence_batch(padded_batch, lengths)`. Given a 2D matrix `padded_batch` of shape `B x T` and a list of integers `lengths` of length `B`, slice each row `i` from index `0` to `lengths[i]`. Return list of variable-length lists.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(padded_batch) == len(lengths)",
+        "0 <= lengths[i] <= len(padded_batch[i])"
+      ],
+    hints: {
+  "small": "For each row i in padded_batch, take slice row[:lengths[i]].",
+        "strong": "return [row[:l] for row, l in zip(padded_batch, lengths)].",
+        "concept": "Unpadding is inverse collation, used during sequence inference to trim trailing padding tokens before output generation."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "different lengths trim",
+          "input": {
+            "padded_batch": [
+              [
+                1,
+                2,
+                3
+              ],
+              [
+                4,
+                0,
+                0
+              ]
+            ],
+            "lengths": [
+              3,
+              1
+            ]
+          },
+          "expectedOutput": [
+            [
+              1,
+              2,
+              3
+            ],
+            [
+              4
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "full length preserved",
+          "input": {
+            "padded_batch": [
+              [
+                5,
+                6
+              ],
+              [
+                7,
+                8
+              ]
+            ],
+            "lengths": [
+              2,
+              2
+            ]
+          },
+          "expectedOutput": [
+            [
+              5,
+              6
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero length empty list",
+          "input": {
+            "padded_batch": [
+              [
+                0,
+                0
+              ]
+            ],
+            "lengths": [
+              0
+            ]
+          },
+          "expectedOutput": [
+            []
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "3 rows variable",
+          "input": {
+            "padded_batch": [
+              [
+                1,
+                0,
+                0
+              ],
+              [
+                1,
+                2,
+                0
+              ],
+              [
+                1,
+                2,
+                3
+              ]
+            ],
+            "lengths": [
+              1,
+              2,
+              3
+            ]
+          },
+          "expectedOutput": [
+            [
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-28": {
+    id: "deep-learning-prob-28",
+    title: "Scheduled Sampling Teacher Forcing Ratio Decay",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "teacher_forcing_ratio_decay",
+    functionSignature: "teacher_forcing_ratio_decay(initial_ratio: float, decay_rate: float, step: int, mode: str) -> float",
+    starterCode: `def teacher_forcing_ratio_decay(initial_ratio: float, decay_rate: float, step: int, mode: str = 'exponential') -> float:
+    # Your implementation here
+    pass
+`,
+    mission: "Calculate scheduled sampling teacher forcing probability across training steps to combat exposure bias in autoregressive generation.",
+    taskDescription: "Implement `teacher_forcing_ratio_decay(initial_ratio, decay_rate, step, mode)`. If `mode == 'exponential'`, ratio is `initial_ratio * (decay_rate ** step)`. If `mode == 'linear'`, ratio is `max(0.0, initial_ratio - decay_rate * step)`. If `mode == 'inverse_sigmoid'`, ratio is `decay_rate / (decay_rate + math.exp(step / decay_rate))`. Clamp the output to `[0.0, 1.0]` and round to 4 decimal places.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0.0 <= initial_ratio <= 1.0",
+        "step >= 0",
+        "decay_rate > 0"
+      ],
+    hints: {
+  "small": "Branch on mode, compute formula, clamp between 0.0 and 1.0.",
+        "strong": "if mode == 'exponential': val = initial_ratio * (decay_rate ** step); elif mode == 'linear': val = max(0.0, initial_ratio - decay_rate * step); elif mode == 'inverse_sigmoid': val = decay_rate / (decay_rate + math.exp(step / decay_rate)).",
+        "concept": "Gradually replacing ground-truth previous tokens with model predictions during training reduces exposure bias at test time."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "exponential step 0",
+          "input": {
+            "initial_ratio": 1,
+            "decay_rate": 0.9,
+            "step": 0,
+            "mode": "exponential"
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "exponential step 2",
+          "input": {
+            "initial_ratio": 1,
+            "decay_rate": 0.9,
+            "step": 2,
+            "mode": "exponential"
+          },
+          "expectedOutput": 0.81,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "linear decay to zero",
+          "input": {
+            "initial_ratio": 1,
+            "decay_rate": 0.3,
+            "step": 4,
+            "mode": "linear"
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "inverse sigmoid decay",
+          "input": {
+            "initial_ratio": 1,
+            "decay_rate": 10,
+            "step": 10,
+            "mode": "inverse_sigmoid"
+          },
+          "expectedOutput": 0.7863,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-29": {
+    id: "deep-learning-prob-29",
+    title: "CTC Greedy Best-Path Collapse",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "ctc_collapse_repeats",
+    functionSignature: "ctc_collapse_repeats(tokens: list[int], blank_token: int) -> list[int]",
+    starterCode: `def ctc_collapse_repeats(tokens: list[int], blank_token: int = 0) -> list[int]:
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Connectionist Temporal Classification (CTC) greedy collapse to decode speech and handwriting alignments.",
+    taskDescription: "Implement `ctc_collapse_repeats(tokens, blank_token)`. Given a sequence of frame-level predicted token IDs `tokens`: first, collapse consecutive duplicate tokens into a single token (e.g. `[1, 1, 0, 2, 2] -> [1, 0, 2]`). Then, remove all occurrences of `blank_token` (e.g. `[1, 0, 2] -> [1, 2]`). Return the resulting list of token IDs.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "tokens is list of integers",
+        "blank_token is integer"
+      ],
+    hints: {
+  "small": "Keep token if it differs from the immediately preceding token, then filter out blank_token.",
+        "strong": "Step 1: collapsed = [t for i, t in enumerate(tokens) if i == 0 or t != tokens[i-1]]. Step 2: return [t for t in collapsed if t != blank_token].",
+        "concept": "CTC blank tokens allow the model to emit repeated characters (e.g. 'hello' requires a blank between the two 'l's to avoid collapsing)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "collapse duplicates and remove blank",
+          "input": {
+            "tokens": [
+              1,
+              1,
+              0,
+              2,
+              2
+            ],
+            "blank_token": 0
+          },
+          "expectedOutput": [
+            1,
+            2
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "blank separates legitimate duplicate",
+          "input": {
+            "tokens": [
+              1,
+              1,
+              0,
+              1
+            ],
+            "blank_token": 0
+          },
+          "expectedOutput": [
+            1,
+            1
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all blanks produces empty",
+          "input": {
+            "tokens": [
+              0,
+              0,
+              0
+            ],
+            "blank_token": 0
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "custom blank token id",
+          "input": {
+            "tokens": [
+              5,
+              5,
+              99,
+              6,
+              6
+            ],
+            "blank_token": 99
+          },
+          "expectedOutput": [
+            5,
+            6
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "deep-learning-prob-30": {
+    id: "deep-learning-prob-30",
+    title: "Bidirectional RNN Hidden State Concatenation",
+    difficulty: "easy",
+    topic: "Deep Learning & Vision/NLP",
+    estimatedTime: '15 min',
+    functionName: "bidirectional_rnn_concat",
+    functionSignature: "bidirectional_rnn_concat(forward_states: list[list[float]], backward_states: list[list[float]]) -> list[list[float]]",
+    starterCode: `def bidirectional_rnn_concat(forward_states: list[list[float]], backward_states: list[list[float]]) -> list[list[float]]:
+    # Your implementation here
+    pass
+`,
+    mission: "Merge forward and backward hidden state sequences along the feature dimension to form bidirectional representations.",
+    taskDescription: "Implement `bidirectional_rnn_concat(forward_states, backward_states)`. Given two sequences of hidden states of length `T`: `forward_states` (where row `t` is `h_fwd[t]`) and `backward_states` (where row `t` is `h_bwd[t]`), concatenate the two vectors at each position `t`: `h_bi[t] = h_fwd[t] + h_bwd[t]`. Return the 2D list of shape `T x (dim_fwd + dim_bwd)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(forward_states) == len(backward_states)",
+        "lengths of all rows in each matrix are consistent"
+      ],
+    hints: {
+  "small": "For each index t from 0 to T-1, concatenate forward_states[t] + backward_states[t].",
+        "strong": "return [fwd + bwd for fwd, bwd in zip(forward_states, backward_states)].",
+        "concept": "Bidirectional RNNs give each token representation contextual awareness of both preceding context (past) and succeeding context (future)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "2 timesteps 2d each",
+          "input": {
+            "forward_states": [
+              [
+                1,
+                2
+              ],
+              [
+                3,
+                4
+              ]
+            ],
+            "backward_states": [
+              [
+                5,
+                6
+              ],
+              [
+                7,
+                8
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              1,
+              2,
+              5,
+              6
+            ],
+            [
+              3,
+              4,
+              7,
+              8
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single timestep",
+          "input": {
+            "forward_states": [
+              [
+                0.5
+              ]
+            ],
+            "backward_states": [
+              [
+                -0.5
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              0.5,
+              -0.5
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "asymmetric hidden dimensions",
+          "input": {
+            "forward_states": [
+              [
+                1
+              ],
+              [
+                2
+              ]
+            ],
+            "backward_states": [
+              [
+                3,
+                4
+              ],
+              [
+                5,
+                6
+              ]
+            ]
+          },
+          "expectedOutput": [
+            [
+              1,
+              3,
+              4
+            ],
+            [
+              2,
+              5,
+              6
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty sequence",
+          "input": {
+            "forward_states": [],
+            "backward_states": []
+          },
+          "expectedOutput": [],
           "hidden": true
         }
       ],

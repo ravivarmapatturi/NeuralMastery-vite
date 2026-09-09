@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP evaluation Module 16: Problem 316"
-sidebar_position: 316
-description: "Curriculum Problem 316 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: Word2Vec Skip-Gram Negative Sampling Loss"
+description: "Calculate the negative sampling objective for Word2Vec training on a positive pair and sampled negative words."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP evaluation Module 16: Problem 316
+# Word2Vec Skip-Gram Negative Sampling Loss
 
-**Rank #316** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-15`.
+## Overview
+
+Calculate the negative sampling objective for Word2Vec training on a positive pair and sampled negative words.
+
+## Task
+
+Implement `skipgram_negative_sampling_loss(target_emb, context_emb, negative_embs)`. For target vector `v_w` and context vector `v_c`, compute dot product `s_pos = dot(v_w, v_c)`. For each negative vector `v_n`, compute `s_neg = dot(v_w, v_n)`. Objective is `-log(sigmoid(s_pos)) - sum(log(sigmoid(-s_neg)))`. Use `sigmoid(x) = 1.0 / (1.0 + exp(-x))`. Return float rounded to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-16" />
-
-<Solution>
-
-```python
-def deep_learning_p16(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP evaluation.
-
-</Solution>

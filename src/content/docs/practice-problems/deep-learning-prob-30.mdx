@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 30: Problem 330"
-sidebar_position: 330
-description: "Curriculum Problem 330 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: Bidirectional RNN Hidden State Concatenation"
+description: "Merge forward and backward hidden state sequences along the feature dimension to form bidirectional representations."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 30: Problem 330
+# Bidirectional RNN Hidden State Concatenation
 
-**Rank #330** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-29`.
+## Overview
+
+Merge forward and backward hidden state sequences along the feature dimension to form bidirectional representations.
+
+## Task
+
+Implement `bidirectional_rnn_concat(forward_states, backward_states)`. Given two sequences of hidden states of length `T`: `forward_states` (where row `t` is `h_fwd[t]`) and `backward_states` (where row `t` is `h_bwd[t]`), concatenate the two vectors at each position `t`: `h_bi[t] = h_fwd[t] + h_bwd[t]`. Return the 2D list of shape `T x (dim_fwd + dim_bwd)`.
 
 <PracticePlayground problemId="deep-learning-prob-30" />
-
-<Solution>
-
-```python
-def deep_learning_p30(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

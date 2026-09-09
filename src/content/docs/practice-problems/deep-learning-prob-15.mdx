@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP Module 15: Problem 315"
-sidebar_position: 315
-description: "Curriculum Problem 315 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: TF-IDF Document Vector Calculation"
+description: "Compute the smooth TF-IDF feature representation of a text document across a predefined vocabulary."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP Module 15: Problem 315
+# TF-IDF Document Vector Calculation
 
-**Rank #315** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-14`.
+## Overview
+
+Compute the smooth TF-IDF feature representation of a text document across a predefined vocabulary.
+
+## Task
+
+Implement `tf_idf_vector(doc_tokens, corpus, vocabulary)`. For each term `t` in `vocabulary`, calculate `tf = count(t, doc_tokens) / len(doc_tokens)` (if `doc_tokens` empty, `tf = 0.0`). Document frequency `df` is the number of documents in `corpus` containing `t`. Compute `idf = ln((1 + N) / (1 + df)) + 1.0` where `N = len(corpus)`. The score is `tf * idf`. Return list of floats rounded to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-15" />
-
-<Solution>
-
-```python
-def deep_learning_p15(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP / embeddings.
-
-</Solution>

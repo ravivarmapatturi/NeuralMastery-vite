@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 10: Problem 310"
-sidebar_position: 310
-description: "Curriculum Problem 310 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: Discrete Laplacian 2D Edge Filtering"
+description: "Apply the standard 3x3 discrete Laplacian second-derivative kernel to detect edges and rapid intensity changes."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 10: Problem 310
+# Discrete Laplacian 2D Edge Filtering
 
-**Rank #310** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-9`.
+## Overview
+
+Apply the standard 3x3 discrete Laplacian second-derivative kernel to detect edges and rapid intensity changes.
+
+## Task
+
+Implement `laplacian_kernel_filter(image)`. Convolve a 2D image matrix of size `H x W` with the 3x3 Laplacian kernel `[[0, 1, 0], [1, -4, 1], [0, 1, 0]]` using valid padding (resulting in output size `(H - 2) x (W - 2)`). Round each output value to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-10" />
-
-<Solution>
-
-```python
-def deep_learning_p10(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

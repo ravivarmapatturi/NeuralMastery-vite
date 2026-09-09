@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP Module 7: Problem 307"
-sidebar_position: 307
-description: "Curriculum Problem 307 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: Anchor Box Target Assignment"
+description: "Assign training labels to candidate anchor boxes based on Intersection-over-Union thresholds against ground truth."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP Module 7: Problem 307
+# Anchor Box Target Assignment
 
-**Rank #307** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-6`.
+## Overview
+
+Assign training labels to candidate anchor boxes based on Intersection-over-Union thresholds against ground truth.
+
+## Task
+
+Implement `anchor_matching(anchors, gt_boxes, pos_thresh, neg_thresh)`. For each anchor box, compute its IoU with every ground-truth box. If the maximum IoU is `>= pos_thresh`, assign the index of the ground truth box with highest IoU (ties broken by lowest gt index). If maximum IoU is `< neg_thresh`, assign `-1` (background). Otherwise, assign `-2` (neutral / ignore). Return list of assignments.
 
 <PracticePlayground problemId="deep-learning-prob-7" />
-
-<Solution>
-
-```python
-def deep_learning_p7(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP / embeddings.
-
-</Solution>

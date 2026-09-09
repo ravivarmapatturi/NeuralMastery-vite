@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Deep learning Module 1: Problem 301"
-sidebar_position: 301
-description: "Curriculum Problem 301 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: RGB to HSV Color Space Conversion"
+description: "Convert normalized RGB color channels to HSV representation, essential for color-invariant computer vision."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Deep learning Module 1: Problem 301
+# RGB to HSV Color Space Conversion
 
-**Rank #301** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `classical-ml-prob-60`.
+## Overview
+
+Convert normalized RGB color channels to HSV representation, essential for color-invariant computer vision.
+
+## Task
+
+Implement `rgb_to_hsv(r, g, b)`. Given `r, g, b` in `[0.0, 1.0]`, compute `[h, s, v]` where `h` is in degrees `[0.0, 360.0)`, and `s, v` are in `[0.0, 1.0]`. If `max == min`, `h = 0.0`. Round each value to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-1" />
-
-<Solution>
-
-```python
-def deep_learning_p1(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Deep learning.
-
-</Solution>

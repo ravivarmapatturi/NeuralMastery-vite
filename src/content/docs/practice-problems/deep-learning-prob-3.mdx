@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP Module 3: Problem 303"
-sidebar_position: 303
-description: "Curriculum Problem 303 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: CutMix Bounding Box Coordinate Generator"
+description: "Compute the rectangular crop coordinates for CutMix data augmentation preserving target area ratio."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP Module 3: Problem 303
+# CutMix Bounding Box Coordinate Generator
 
-**Rank #303** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-2`.
+## Overview
+
+Compute the rectangular crop coordinates for CutMix data augmentation preserving target area ratio.
+
+## Task
+
+Implement `cutmix_bbox(W, H, lam, cx, cy)`. Given image dimensions `W, H`, combination factor `lam` in `[0.0, 1.0]`, and center point `(cx, cy)`, compute the cut bounding box `[x1, y1, x2, y2]`. Calculate `cut_w = int(round(W * math.sqrt(1.0 - lam)))` and `cut_h = int(round(H * math.sqrt(1.0 - lam)))`. Then `x1 = max(0, cx - cut_w // 2)`, `y1 = max(0, cy - cut_h // 2)`, `x2 = min(W, cx + cut_w // 2)`, `y2 = min(H, cy + cut_h // 2)`. Return `[x1, y1, x2, y2]`.
 
 <PracticePlayground problemId="deep-learning-prob-3" />
-
-<Solution>
-
-```python
-def deep_learning_p3(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP / embeddings.
-
-</Solution>

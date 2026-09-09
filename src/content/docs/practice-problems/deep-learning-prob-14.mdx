@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 14: Problem 314"
-sidebar_position: 314
-description: "Curriculum Problem 314 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: WordPiece Greedy Subword Tokenization"
+description: "Segment a word into subwords using BERT WordPiece longest-prefix matching with '##' continuation prefixes."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 14: Problem 314
+# WordPiece Greedy Subword Tokenization
 
-**Rank #314** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-13`.
+## Overview
+
+Segment a word into subwords using BERT WordPiece longest-prefix matching with '##' continuation prefixes.
+
+## Task
+
+Implement `wordpiece_tokenize_word(word, vocab, unk_token)`. `vocab` is a list of allowed subwords. Start at index 0. Find the longest substring `word[start:end]` in `vocab` (if `start > 0`, prepend `'##'` to the candidate before checking `vocab`). If found, add the matched token and advance `start = end`. If at any point no valid subword prefix exists, return `[unk_token]`. Return the list of subword tokens.
 
 <PracticePlayground problemId="deep-learning-prob-14" />
-
-<Solution>
-
-```python
-def deep_learning_p14(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

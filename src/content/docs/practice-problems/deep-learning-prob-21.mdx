@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Deep learning Module 21: Problem 321"
-sidebar_position: 321
-description: "Curriculum Problem 321 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: Word Error Rate (WER) for Speech and NLP"
+description: "Compute the industry-standard Word Error Rate (WER = (S + D + I) / N) between reference and predicted token sequences."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Deep learning Module 21: Problem 321
+# Word Error Rate (WER) for Speech and NLP
 
-**Rank #321** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-20`.
+## Overview
+
+Compute the industry-standard Word Error Rate (WER = (S + D + I) / N) between reference and predicted token sequences.
+
+## Task
+
+Implement `word_error_rate(reference, hypothesis)`. Using token-level Levenshtein alignment (substitutions S, deletions D, insertions I each with cost 1), compute `WER = (S + D + I) / N` where `N = len(reference)`. If `N == 0` and hypothesis is empty, return 0.0; if `N == 0` and hypothesis is non-empty, return float(len(hypothesis)). Round result to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-21" />
-
-<Solution>
-
-```python
-def deep_learning_p21(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Deep learning.
-
-</Solution>

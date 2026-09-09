@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Deep learning Module 5: Problem 305"
-sidebar_position: 305
-description: "Curriculum Problem 305 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: Otsu Binarization Global Thresholding"
+description: "Calculate the optimal image threshold maximizing between-class variance across an intensity histogram."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Deep learning Module 5: Problem 305
+# Otsu Binarization Global Thresholding
 
-**Rank #305** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-4`.
+## Overview
+
+Calculate the optimal image threshold maximizing between-class variance across an intensity histogram.
+
+## Task
+
+Implement `otsu_threshold(hist)`. Given a 256-bin pixel intensity histogram `hist` (frequencies for intensities 0 to 255), find the threshold `t` (where `0 <= t < 255`) that maximizes the between-class variance `sigma_b^2 = w0 * w1 * (mu0 - mu1)^2`. `w0` and `w1` are probabilities of background (`<= t`) and foreground (`> t`). In case of ties, choose the smallest `t`.
 
 <PracticePlayground problemId="deep-learning-prob-5" />
-
-<Solution>
-
-```python
-def deep_learning_p5(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Deep learning.
-
-</Solution>

@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 26: Problem 326"
-sidebar_position: 326
-description: "Curriculum Problem 326 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: Pad Variable-Length Sequence Batch"
+description: "Pad ragged text sequences into a rectangular tensor and generate corresponding binary attention masks."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 26: Problem 326
+# Pad Variable-Length Sequence Batch
 
-**Rank #326** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-25`.
+## Overview
+
+Pad ragged text sequences into a rectangular tensor and generate corresponding binary attention masks.
+
+## Task
+
+Implement `pad_sequence_batch(sequences, pad_val)`. For a list of variable-length integer token lists `sequences`, find the maximum sequence length `max_len`. Right-pad each sequence with `pad_val` so all have length `max_len`. Also construct an attention mask matrix where real tokens are `1` and padding positions are `0`. Return tuple `(padded_sequences, attention_masks)`.
 
 <PracticePlayground problemId="deep-learning-prob-26" />
-
-<Solution>
-
-```python
-def deep_learning_p26(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

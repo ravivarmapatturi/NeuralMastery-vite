@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Deep learning Module 29: Problem 329"
-sidebar_position: 329
-description: "Curriculum Problem 329 (Stage 6: Deep Learning, CNNs & Sequence Models): Master Deep learning."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: CTC Greedy Best-Path Collapse"
+description: "Implement Connectionist Temporal Classification (CTC) greedy collapse to decode speech and handwriting alignments."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Deep learning Module 29: Problem 329
+# CTC Greedy Best-Path Collapse
 
-**Rank #329** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-28`.
+## Overview
+
+Implement Connectionist Temporal Classification (CTC) greedy collapse to decode speech and handwriting alignments.
+
+## Task
+
+Implement `ctc_collapse_repeats(tokens, blank_token)`. Given a sequence of frame-level predicted token IDs `tokens`: first, collapse consecutive duplicate tokens into a single token (e.g. `[1, 1, 0, 2, 2] -> [1, 0, 2]`). Then, remove all occurrences of `blank_token` (e.g. `[1, 0, 2] -> [1, 2]`). Return the resulting list of token IDs.
 
 <PracticePlayground problemId="deep-learning-prob-29" />
-
-<Solution>
-
-```python
-def deep_learning_p29(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Deep learning.
-
-</Solution>

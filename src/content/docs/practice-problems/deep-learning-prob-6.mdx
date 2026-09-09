@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 6: Problem 306"
-sidebar_position: 306
-description: "Curriculum Problem 306 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: Generalized Intersection over Union (GIoU)"
+description: "Compute Generalized IoU between two bounding boxes to provide gradient signal even for non-overlapping boxes."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 6: Problem 306
+# Generalized Intersection over Union (GIoU)
 
-**Rank #306** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-5`.
+## Overview
+
+Compute Generalized IoU between two bounding boxes to provide gradient signal even for non-overlapping boxes.
+
+## Task
+
+Implement `giou_2d(box1, box2)`. Bounding boxes are `[x1, y1, x2, y2]`. GIoU is `IoU - (area(C) - area(union)) / area(C)`, where `C` is the smallest convex enclosing box containing both boxes. If `area(C) == 0`, return 1.0. Round result to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-6" />
-
-<Solution>
-
-```python
-def deep_learning_p6(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

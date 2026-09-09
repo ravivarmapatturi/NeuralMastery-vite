@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: CNN Module 22: Problem 322"
-sidebar_position: 322
-description: "Curriculum Problem 322 (Stage 6: Deep Learning, CNNs & Sequence Models): Master CNN / computer vision."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: FastText Character N-Gram Extractor"
+description: "Extract character n-grams with word boundary tags for FastText subword embedding models."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# CNN Module 22: Problem 322
+# FastText Character N-Gram Extractor
 
-**Rank #322** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-21`.
+## Overview
+
+Extract character n-grams with word boundary tags for FastText subword embedding models.
+
+## Task
+
+Implement `fasttext_ngrams(word, min_n, max_n)`. Enclose the word with boundary characters: `wrapped = '<' + word + '>'`. For every length `n` from `min_n` to `max_n` (inclusive), extract all substrings of length `n` in order of increasing `n` and left-to-right position. Finally, append the special full wrapped token `wrapped` if it was not already included. Return the list of unique n-grams in order of first appearance.
 
 <PracticePlayground problemId="deep-learning-prob-22" />
-
-<Solution>
-
-```python
-def deep_learning_p22(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in CNN / computer vision.
-
-</Solution>

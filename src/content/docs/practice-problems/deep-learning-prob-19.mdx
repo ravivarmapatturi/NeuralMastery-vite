@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP Module 19: Problem 319"
-sidebar_position: 319
-description: "Curriculum Problem 319 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP / embeddings."
-difficulty: easy
-topic: deep-learning-vision/nlp
+title: "Practice: Levenshtein Minimum Edit Distance"
+description: "Compute parameterized Levenshtein edit distance using 2D dynamic programming for NLP spelling and evaluation."
+difficulty: "medium"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP Module 19: Problem 319
+# Levenshtein Minimum Edit Distance
 
-**Rank #319** · Difficulty: **Easy** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-18`.
+## Overview
+
+Compute parameterized Levenshtein edit distance using 2D dynamic programming for NLP spelling and evaluation.
+
+## Task
+
+Implement `levenshtein_distance(s1, s2, ins_cost, del_cost, sub_cost)`. Compute the minimum cost to transform string `s1` into string `s2` using character insertions (`ins_cost`), deletions (`del_cost`), and substitutions (`sub_cost`). If characters match, cost is 0. Return the minimum integer cost.
 
 <PracticePlayground problemId="deep-learning-prob-19" />
-
-<Solution>
-
-```python
-def deep_learning_p19(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP / embeddings.
-
-</Solution>

@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: NLP evaluation Module 28: Problem 328"
-sidebar_position: 328
-description: "Curriculum Problem 328 (Stage 6: Deep Learning, CNNs & Sequence Models): Master NLP evaluation."
-difficulty: medium
-topic: deep-learning-vision/nlp
+title: "Practice: Scheduled Sampling Teacher Forcing Ratio Decay"
+description: "Calculate scheduled sampling teacher forcing probability across training steps to combat exposure bias in autoregressive generation."
+difficulty: "easy"
+topic: "Deep Learning & Vision/NLP"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# NLP evaluation Module 28: Problem 328
+# Scheduled Sampling Teacher Forcing Ratio Decay
 
-**Rank #328** · Difficulty: **Medium** · Stage: **Stage 6: Deep Learning, CNNs & Sequence Models** · Category: **Deep Learning & Vision/NLP**
+**Track**: Deep Learning & Vision/NLP | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `deep-learning-prob-27`.
+## Overview
+
+Calculate scheduled sampling teacher forcing probability across training steps to combat exposure bias in autoregressive generation.
+
+## Task
+
+Implement `teacher_forcing_ratio_decay(initial_ratio, decay_rate, step, mode)`. If `mode == 'exponential'`, ratio is `initial_ratio * (decay_rate ** step)`. If `mode == 'linear'`, ratio is `max(0.0, initial_ratio - decay_rate * step)`. If `mode == 'inverse_sigmoid'`, ratio is `decay_rate / (decay_rate + math.exp(step / decay_rate))`. Clamp the output to `[0.0, 1.0]` and round to 4 decimal places.
 
 <PracticePlayground problemId="deep-learning-prob-28" />
-
-<Solution>
-
-```python
-def deep_learning_p28(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in NLP evaluation.
-
-</Solution>
