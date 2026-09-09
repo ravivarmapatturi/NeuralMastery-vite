@@ -62,6 +62,14 @@ export interface CanvasSpec {
   initialEdges?: CanvasInitialEdge[];
 }
 
+export interface GuidedStep {
+  title: string;
+  prompt: string;
+  code: string;
+  starterSnippet?: string;
+  explanation?: string;
+}
+
 export interface PracticeProblem {
   id: string;
   title: string;
@@ -92,6 +100,7 @@ export interface PracticeProblem {
   stageNumber?: number;
   points?: number;
   canvasSpec?: CanvasSpec;
+  guidedSteps?: GuidedStep[];
 }
 
 export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
@@ -601,6 +610,80 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
         },
       ],
     },
+    guidedSteps: [
+      {
+        title: 'Step 1: Handle Final Answer & Loop Termination',
+        prompt: 'Check if "Final Answer:" is in agent_output. If found, extract the text after "Final Answer:", strip whitespace, and return the termination dictionary: {"status": "finished", "final_answer": final_ans, "observation": None}.',
+        code: `import re
+
+def react_agent_step(agent_output, available_tools):
+    """
+    Parses agent_output for Action: <name> and Action Input: <input>.
+    Executes function from available_tools dict if present.
+    Return dict {"status": "continue"|"finished"|"error", "observation": str, "final_answer": str|None}
+    """
+    if "Final Answer:" in agent_output:
+        final_ans = agent_output.split("Final Answer:")[1].strip()
+        return {"status": "finished", "final_answer": final_ans, "observation": None}`,
+        starterSnippet: `    # Check if "Final Answer:" is in agent_output
+    if "Final Answer:" in agent_output:
+        final_ans = agent_output.split("Final Answer:")[1].strip()
+        return {"status": "finished", "final_answer": final_ans, "observation": None}`,
+        explanation: 'ReAct agent loops must terminate immediately once the reasoner reaches a Final Answer, returning the conclusion without making further tool calls.',
+      },
+      {
+        title: 'Step 2: Parse Action and Action Input with Regex',
+        prompt: 'Use re.search to parse agent_output for "Action:\\s*([^\\n]+)" and "Action Input:\\s*([^\\n]+)". If either pattern is not matched, return {"status": "error", "observation": "Error: Invalid ReAct format. Missing Action or Action Input."}.',
+        code: `    action_match = re.search(r"Action:\\s*([^\\n]+)", agent_output)
+    input_match = re.search(r"Action Input:\\s*([^\\n]+)", agent_output)
+
+    if not action_match or not input_match:
+        return {"status": "error", "observation": "Error: Invalid ReAct format. Missing Action or Action Input."}`,
+        starterSnippet: `    action_match = re.search(r"Action:\\s*([^\\n]+)", agent_output)
+    input_match = re.search(r"Action Input:\\s*([^\\n]+)", agent_output)
+
+    if not action_match or not input_match:
+        return {"status": "error", "observation": "Error: Invalid ReAct format. Missing Action or Action Input."}`,
+        explanation: 'The ReAct syntax requires both an Action and an Action Input to invoke tools. Regex safely extracts single-line tool names and arguments.',
+      },
+      {
+        title: 'Step 3: Extract Strings and Verify Tool Registry',
+        prompt: 'Extract action and action_input using .group(1).strip(). Verify that action is present in available_tools. If not found, return {"status": "error", "observation": f"Error: Tool \'{action}\' not found in registry."}.',
+        code: `    action = action_match.group(1).strip()
+    action_input = input_match.group(1).strip()
+
+    if action not in available_tools:
+        return {"status": "error", "observation": f"Error: Tool '{action}' not found in registry."}`,
+        starterSnippet: `    action = action_match.group(1).strip()
+    action_input = input_match.group(1).strip()
+
+    if action not in available_tools:
+        return {"status": "error", "observation": f"Error: Tool '{action}' not found in registry."}`,
+        explanation: 'Safeguard against hallucinated tool names before invocation by verifying membership in the registered tool dictionary.',
+      },
+      {
+        title: 'Step 4: Execute Tool with Safe Exception Handling',
+        prompt: 'Look up tool_fn from available_tools[action] and call it with action_input. Wrap invocation in a try...except Exception block to catch errors and return {"status": "error", "observation": f"Error executing tool \'{action}\': {str(e)}"}.',
+        code: `    try:
+        tool_fn = available_tools[action]
+        result = tool_fn(action_input)
+    except Exception as e:
+        return {"status": "error", "observation": f"Error executing tool '{action}': {str(e)}"}`,
+        starterSnippet: `    try:
+        tool_fn = available_tools[action]
+        result = tool_fn(action_input)
+    except Exception as e:
+        return {"status": "error", "observation": f"Error executing tool '{action}': {str(e)}"}`,
+        explanation: 'External tools (web APIs, interpreters, calculators) can throw unexpected exceptions. Catching them protects the agent loop from crashing.',
+      },
+      {
+        title: 'Step 5: Return Loop Observation and Continue Status',
+        prompt: 'Assemble and return the continuation dictionary: {"status": "continue", "observation": f"Observation: {result}"} to feed the observation back into the reasoner prompt.',
+        code: `    return {"status": "continue", "observation": f"Observation: {result}"}`,
+        starterSnippet: `    return {"status": "continue", "observation": f"Observation: {result}"}`,
+        explanation: 'Formatting the return value as "Observation: <result>" completes the ReAct step so the agent can inspect the result in the next iteration.',
+      },
+    ],
   },
   'dpo-loss': {
     id: 'dpo-loss',
