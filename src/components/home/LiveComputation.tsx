@@ -20,7 +20,14 @@ export function getLiveConceptForTopic(topic?: string, title?: string): Concept 
 
   if (combined.includes('attention') || combined.includes('transformer') || combined.includes('qkv') || combined.includes('head')) return 'attention';
   if (combined.includes('rag') || combined.includes('retriev') || combined.includes('vector search') || combined.includes('embedding') || combined.includes('chunk')) return 'rag';
-  if (combined.includes('agent') || combined.includes('mcp') || combined.includes('tool use') || combined.includes('planning') || combined.includes('workflow')) return 'agent';
+  // Deliberately narrow: the 'agent' scene depicts ONE specific thing (the
+  // goal/plan/tool/observe operating loop), so it must only match problems
+  // that are actually about that loop -- not the bare word "agent", which
+  // matches nearly every topic in the huge agent-engineering catalogue
+  // (Memory, Security, Planning-as-reasoning, Multi-Agent, MCP protocol
+  // internals, etc.) and previously showed this identical scene on all of
+  // them regardless of what the problem was actually about.
+  if (combined.includes('agent loop') || combined.includes('react agent') || combined.includes('operating loop') || combined.includes('orchestrat')) return 'agent';
   if (combined.includes('llm') || combined.includes('logit') || combined.includes('decoding') || combined.includes('sampling') || combined.includes('prompt') || combined.includes('temperature') || combined.includes('generation')) return 'llm';
   if (combined.includes('gradient') || combined.includes('backprop') || combined.includes('loss') || combined.includes('sgd') || combined.includes('regression') || combined.includes('optimizer') || combined.includes('adam')) return 'gradient';
   if (combined.includes('algebra') || combined.includes('vector') || combined.includes('matrix') || combined.includes('dot product') || combined.includes('cosine') || combined.includes('math') || combined.includes('numpy') || combined.includes('tensor')) return 'algebra';

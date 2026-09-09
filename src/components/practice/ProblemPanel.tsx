@@ -30,6 +30,84 @@ function getDsaExplorerForTopic(topic?: string): DsaExplorer | null {
   return null;
 }
 
+/** Real, mechanically-generated, per-problem "how to solve" steps built
+ * from problem.hints -- the one piece of "how to solve this" content
+ * guaranteed to be problem-specific for all 1,549+ problems, unlike
+ * LiveComputation's 6 shared AI-concept scenes (which only fit a narrow
+ * slice of problems and must never be shown as a stand-in for problems
+ * they don't actually match). */
+function StepByStepWalkthrough({ problem }: { problem: PracticeProblem }) {
+  return (
+    <div>
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+          color: 'var(--nm-accent-secondary)',
+          marginBottom: 10,
+        }}
+      >
+        How to Solve This, Step by Step
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div
+          style={{
+            padding: '10px 12px',
+            borderRadius: 6,
+            background: 'var(--nm-surface-alt)',
+            border: '1px solid var(--nm-border)',
+            borderLeft: '3px solid var(--nm-accent-secondary)',
+          }}
+        >
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-accent-secondary)', marginBottom: 3 }}>
+            Step 1: Frame the Goal &amp; Invariants
+          </div>
+          <div style={{ fontSize: 12.5, color: 'var(--nm-text-primary)', lineHeight: 1.5 }}>
+            {problem.hints?.small ?? 'Identify the exact inputs and return shapes expected by the signature.'}
+          </div>
+        </div>
+
+        <div
+          style={{
+            padding: '10px 12px',
+            borderRadius: 6,
+            background: 'var(--nm-surface-alt)',
+            border: '1px solid var(--nm-border)',
+            borderLeft: '3px solid var(--nm-accent-teal)',
+          }}
+        >
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-accent-teal)', marginBottom: 3 }}>
+            Step 2: Implementation Walkthrough
+          </div>
+          <div style={{ fontSize: 12.5, color: 'var(--nm-text-primary)', lineHeight: 1.5 }}>
+            {problem.hints?.strong ?? 'Iterate through the required operations and accumulate or transform intermediate values.'}
+          </div>
+        </div>
+
+        <div
+          style={{
+            padding: '10px 12px',
+            borderRadius: 6,
+            background: 'var(--nm-surface-alt)',
+            border: '1px solid var(--nm-border)',
+            borderLeft: '3px solid var(--nm-accent-purple)',
+          }}
+        >
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-accent-purple)', marginBottom: 3 }}>
+            Step 3: Core Concept &amp; Numerical Properties
+          </div>
+          <div style={{ fontSize: 12.5, color: 'var(--nm-text-primary)', lineHeight: 1.5 }}>
+            {problem.hints?.concept ?? `Fundamental computation applied in ${problem.topic}.`}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 interface ProblemPanelProps {
   problem: PracticeProblem;
   mdxContent?: React.ReactNode;
@@ -357,7 +435,19 @@ export default function ProblemPanel({
                   <GraphTreeTraversalExplorer />
                 </Suspense>
               </div>
-            ) : null}
+            ) : (
+              <div
+                style={{
+                  marginBottom: 20,
+                  padding: '14px 16px',
+                  borderRadius: 8,
+                  background: 'var(--nm-surface)',
+                  border: '1px solid var(--nm-border)',
+                }}
+              >
+                <StepByStepWalkthrough problem={problem} />
+              </div>
+            )}
 
             {/* Mission Box: Whitespace and typographic discipline */}
             <div
@@ -566,74 +656,7 @@ export default function ProblemPanel({
 
                 {/* Step-by-Step Walkthrough */}
                 <div style={{ marginTop: 18 }}>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.06em',
-                      color: 'var(--nm-accent-secondary)',
-                      marginBottom: 10,
-                    }}
-                  >
-                    How to Solve This, Step by Step
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    {/* Step 1: Direction & Framing */}
-                    <div
-                      style={{
-                        padding: '10px 12px',
-                        borderRadius: 6,
-                        background: 'var(--nm-surface-alt)',
-                        border: '1px solid var(--nm-border)',
-                        borderLeft: '3px solid var(--nm-accent-secondary)',
-                      }}
-                    >
-                      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-accent-secondary)', marginBottom: 3 }}>
-                        Step 1: Frame the Goal &amp; Invariants
-                      </div>
-                      <div style={{ fontSize: 12.5, color: 'var(--nm-text-primary)', lineHeight: 1.5 }}>
-                        {problem.hints?.small ?? 'Identify the exact inputs and return shapes expected by the signature.'}
-                      </div>
-                    </div>
-
-                    {/* Step 2: Implementation Walkthrough */}
-                    <div
-                      style={{
-                        padding: '10px 12px',
-                        borderRadius: 6,
-                        background: 'var(--nm-surface-alt)',
-                        border: '1px solid var(--nm-border)',
-                        borderLeft: '3px solid var(--nm-accent-teal)',
-                      }}
-                    >
-                      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-accent-teal)', marginBottom: 3 }}>
-                        Step 2: Implementation Walkthrough
-                      </div>
-                      <div style={{ fontSize: 12.5, color: 'var(--nm-text-primary)', lineHeight: 1.5 }}>
-                        {problem.hints?.strong ?? 'Iterate through the required operations and accumulate or transform intermediate values.'}
-                      </div>
-                    </div>
-
-                    {/* Step 3: Core Algorithm Concept */}
-                    <div
-                      style={{
-                        padding: '10px 12px',
-                        borderRadius: 6,
-                        background: 'var(--nm-surface-alt)',
-                        border: '1px solid var(--nm-border)',
-                        borderLeft: '3px solid var(--nm-accent-purple)',
-                      }}
-                    >
-                      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-accent-purple)', marginBottom: 3 }}>
-                        Step 3: Core Concept &amp; Numerical Properties
-                      </div>
-                      <div style={{ fontSize: 12.5, color: 'var(--nm-text-primary)', lineHeight: 1.5 }}>
-                        {problem.hints?.concept ?? `Fundamental computation applied in ${problem.topic}.`}
-                      </div>
-                    </div>
-                  </div>
+                  <StepByStepWalkthrough problem={problem} />
                 </div>
 
                 {/* Constraints Reminder */}

@@ -1,4 +1,7 @@
 {
+  "/docs/agents/react-agent-production": "2026-09-09T18:19:49+05:30",
+  "/docs/agents/agent-architectures": "2026-09-09T18:05:41+05:30",
+  "/docs/agents/roadmap": "2026-09-09T18:05:41+05:30",
   "/docs/practice-problems/llm-internals-prob-41": "2026-09-09T12:03:14+05:30",
   "/docs/practice-problems/llm-internals-prob-42": "2026-09-09T12:03:14+05:30",
   "/docs/practice-problems/llm-internals-prob-43": "2026-09-09T12:03:14+05:30",
@@ -1611,7 +1614,6 @@
   "/docs/visual-lab/ridge-regression-studio": "2026-09-05T15:45:16+05:30",
   "/docs/visual-lab/roadmap": "2026-09-05T15:45:16+05:30",
   "/docs/agents/browser-automation": "2026-09-05T15:22:10+05:30",
-  "/docs/agents/roadmap": "2026-09-05T15:22:10+05:30",
   "/docs/deep-learning/autoencoders": "2026-09-05T15:22:10+05:30",
   "/docs/deep-learning/neural-network-fundamentals": "2026-09-05T15:22:10+05:30",
   "/docs/interview-prep/roadmap": "2026-09-05T15:22:10+05:30",
@@ -1724,7 +1726,6 @@
   "/docs/projects/problem-statement-atlas": "2026-09-05T11:39:23+05:30",
   "/docs/reinforcement-learning/advanced-rl": "2026-09-05T11:39:23+05:30",
   "/docs/reinforcement-learning/rl-fundamentals": "2026-09-05T11:39:23+05:30",
-  "/docs/agents/agent-architectures": "2026-09-05T11:25:46+05:30",
   "/docs/agents/plan-and-execute": "2026-09-05T11:25:46+05:30",
   "/docs/cli-reference/cloud-cli-aws-azure-gcp": "2026-09-05T11:25:46+05:30",
   "/docs/deep-learning/bert": "2026-09-05T11:25:46+05:30",
