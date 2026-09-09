@@ -132546,6 +132546,1616 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'swiglu-mlp': {
+    id: 'swiglu-mlp',
+    title: 'Practice: SwiGLU MLP Block From Scratch',
+    difficulty: 'medium',
+    topic: 'LLMs & GenAI',
+    estimatedTime: '15–20 min',
+    functionName: 'swiglu_mlp',
+    functionSignature: 'swiglu_mlp(x: list[list[float]], W1: list[list[float]], W3: list[list[float]], W2: list[list[float]]) -> list[list[float]]',
+    starterCode: `import numpy as np
+
+def swiglu_mlp(x, W1, W3, W2):
+    """Compute the SwiGLU MLP forward pass: (silu(x @ W1) * (x @ W3)) @ W2.
+    Return output as list of lists.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement the SwiGLU gated activation MLP block used in modern LLMs like LLaMA and PaLM.',
+    taskDescription: 'Implement `swiglu_mlp(x, W1, W3, W2)`. With silu(z) = z / (1 + exp(-z)), compute `(silu(x @ W1) * (x @ W3)) @ W2`. Return output rounded to 6 decimal places.',
+    constraints: [
+      "x has shape (batch_size, d_model)",
+      "W1 and W3 have shape (d_model, d_ff)",
+      "W2 has shape (d_ff, d_model)"
+],
+    hints: {
+      small: 'Compute gate = silu(x @ W1) and val = x @ W3.',
+      strong: 'Elementwise multiply gate * val, then matrix-multiply by W2.',
+      concept: 'Gated Linear Units provide superior empirical performance by modulating feature activations via learned gating.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Small 1x2 batch and weights',
+        input: {
+            "x": [
+              [
+                1.0,
+                2.0
+              ]
+            ],
+            "W1": [
+              [
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0
+              ]
+            ],
+            "W3": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                1.0
+              ]
+            ],
+            "W2": [
+              [
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              2.193176,
+              5.284782
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Zero inputs produce zero activations',
+        input: {
+            "x": [
+              [
+                0.0,
+                0.0
+              ]
+            ],
+            "W1": [
+              [
+                1.0,
+                2.0
+              ],
+              [
+                3.0,
+                4.0
+              ]
+            ],
+            "W3": [
+              [
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0
+              ]
+            ],
+            "W2": [
+              [
+                1.0,
+                1.0
+              ],
+              [
+                1.0,
+                1.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              0.0,
+              0.0
+            ]
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'rotary-positional-embedding': {
+    id: 'rotary-positional-embedding',
+    title: 'Practice: Rotary Positional Embedding (RoPE) From Scratch',
+    difficulty: 'medium',
+    topic: 'LLMs & GenAI',
+    estimatedTime: '15–20 min',
+    functionName: 'rope',
+    functionSignature: 'rope(x: list[float], position: int, base: float = 10000.0) -> list[float]',
+    starterCode: `import numpy as np
+
+def rope(x, position, base=10000.0):
+    """Apply Rotary Positional Embedding (RoPE) to 1D vector x at position m.
+    Return transformed vector as list of floats.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement Rotary Position Embeddings (RoPE) to inject relative position information into attention query and key vectors.',
+    taskDescription: 'Implement `rope(x, position, base=10000.0)`. Rotate consecutive 2D pairs (x[2i], x[2i+1]) by angle theta_i = position * base^(-2i / d).',
+    constraints: [
+      "len(x) is an even integer d >= 2",
+      "position >= 0",
+      "Return list of floats rounded to 6 decimal places"
+],
+    hints: {
+      small: 'For each dimension pair i in 0..d//2 - 1, compute theta = position * (base ** (-2*i / d)).',
+      strong: 'Rotated pair: [x1*cos - x2*sin, x1*sin + x2*cos].',
+      concept: 'RoPE allows dot product attention between rotated q and k to depend strictly on relative distance (m - n).',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Position 0 leaves vector unchanged',
+        input: {
+            "x": [
+              1.0,
+              2.0,
+              3.0,
+              4.0
+            ],
+            "position": 0
+          },
+        expectedOutput: [
+            1.0,
+            2.0,
+            3.0,
+            4.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Position 1 with standard rotation',
+        input: {
+            "x": [
+              1.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "position": 1
+          },
+        expectedOutput: [
+            0.540302,
+            0.841471,
+            -0.01,
+            0.99995
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Higher position with base 10000',
+        input: {
+            "x": [
+              2.0,
+              -1.0
+            ],
+            "position": 5,
+            "base": 10000.0
+          },
+        expectedOutput: [
+            -0.3916,
+            -2.201511
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'alibi-positional-bias': {
+    id: 'alibi-positional-bias',
+    title: 'Practice: ALiBi (Attention with Linear Biases) From Scratch',
+    difficulty: 'medium',
+    topic: 'LLMs & GenAI',
+    estimatedTime: '15–20 min',
+    functionName: 'alibi_bias',
+    functionSignature: 'alibi_bias(num_heads: int, seq_len: int) -> list[list[list[float]]]',
+    starterCode: `import numpy as np
+
+def alibi_bias(num_heads, seq_len):
+    """Compute ALiBi attention bias matrix of shape (num_heads, seq_len, seq_len).
+    Return 3D list of floats.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement ALiBi attention biases to enable transformer context window length extrapolation without position embeddings.',
+    taskDescription: 'Implement `alibi_bias(num_heads, seq_len)`. For head h in 0..H-1, slope = 2^(-8*(h+1)/H). For positions i, j, bias = slope * min(-(i - j), 0).',
+    constraints: [
+      "num_heads >= 1",
+      "seq_len >= 1",
+      "Returns 3D list [H][S][S]"
+],
+    hints: {
+      small: 'Compute geometric head slopes: 2 ** (-8 * (h + 1) / num_heads).',
+      strong: 'Causal distance is min(-(i - j), 0) which is 0 for j >= i and negative for past tokens j < i.',
+      concept: 'ALiBi penalizes distant keys linearly, enabling zero-shot context length extrapolation at test time.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Single head seq_len 2',
+        input: {
+            "num_heads": 1,
+            "seq_len": 2
+          },
+        expectedOutput: [
+            [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                -0.003906,
+                0.0
+              ]
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Two heads seq_len 3',
+        input: {
+            "num_heads": 2,
+            "seq_len": 3
+          },
+        expectedOutput: [
+            [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                -0.0625,
+                0.0,
+                0.0
+              ],
+              [
+                -0.125,
+                -0.0625,
+                0.0
+              ]
+            ],
+            [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                -0.003906,
+                0.0,
+                0.0
+              ],
+              [
+                -0.007812,
+                -0.003906,
+                0.0
+              ]
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Single token trivial bias 0',
+        input: {
+            "num_heads": 4,
+            "seq_len": 1
+          },
+        expectedOutput: [
+            [
+              [
+                0.0
+              ]
+            ],
+            [
+              [
+                0.0
+              ]
+            ],
+            [
+              [
+                0.0
+              ]
+            ],
+            [
+              [
+                0.0
+              ]
+            ]
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'grouped-query-attention': {
+    id: 'grouped-query-attention',
+    title: 'Practice: Grouped Query Attention (GQA) From Scratch',
+    difficulty: 'hard',
+    topic: 'LLMs & GenAI',
+    estimatedTime: '20–25 min',
+    functionName: 'grouped_query_attention',
+    functionSignature: 'grouped_query_attention(Q: list[list[list[float]]], K: list[list[list[float]]], V: list[list[list[float]]], num_kv_groups: int) -> list[list[list[float]]]',
+    starterCode: `import numpy as np
+
+def grouped_query_attention(Q, K, V, num_kv_groups):
+    """Compute Grouped Query Attention where Q has num_heads and K, V have num_kv_groups.
+    Return attention output matching shape of Q.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement Grouped Query Attention (GQA), balancing multi-query attention efficiency with multi-head attention expressivity.',
+    taskDescription: 'Implement `grouped_query_attention(Q, K, V, num_kv_groups)`. Map each query head h to its KV group g = h // (num_heads // num_kv_groups).',
+    constraints: [
+      "Q has shape (num_heads, seq_len, d)",
+      "K and V have shape (num_kv_groups, seq_len, d)",
+      "num_heads % num_kv_groups == 0"
+],
+    hints: {
+      small: 'Calculate heads_per_group = num_heads // num_kv_groups. For head h, group is g = h // heads_per_group.',
+      strong: 'Compute scaled dot-product attention scores = Q[h] @ K[g].T / sqrt(d), apply stable softmax along axis=-1, then multiply by V[g].',
+      concept: 'GQA reduces KV cache memory consumption proportionally to the reduction in KV heads without degrading generation quality.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: '2 Q heads sharing 1 KV group',
+        input: {
+            "Q": [
+              [
+                [
+                  1.0,
+                  0.0
+                ]
+              ],
+              [
+                [
+                  0.0,
+                  1.0
+                ]
+              ]
+            ],
+            "K": [
+              [
+                [
+                  1.0,
+                  0.0
+                ]
+              ]
+            ],
+            "V": [
+              [
+                [
+                  5.0,
+                  10.0
+                ]
+              ]
+            ],
+            "num_kv_groups": 1
+          },
+        expectedOutput: [
+            [
+              [
+                5.0,
+                10.0
+              ]
+            ],
+            [
+              [
+                5.0,
+                10.0
+              ]
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: '4 Q heads across 2 KV groups seq_len 2',
+        input: {
+            "Q": [
+              [
+                [
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0
+                ]
+              ],
+              [
+                [
+                  1.0,
+                  1.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ],
+              [
+                [
+                  0.5,
+                  0.5
+                ],
+                [
+                  1.0,
+                  0.0
+                ]
+              ],
+              [
+                [
+                  0.0,
+                  1.0
+                ],
+                [
+                  1.0,
+                  1.0
+                ]
+              ]
+            ],
+            "K": [
+              [
+                [
+                  1.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  1.0
+                ]
+              ],
+              [
+                [
+                  1.0,
+                  1.0
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            ],
+            "V": [
+              [
+                [
+                  1.0,
+                  2.0
+                ],
+                [
+                  3.0,
+                  4.0
+                ]
+              ],
+              [
+                [
+                  5.0,
+                  6.0
+                ],
+                [
+                  7.0,
+                  8.0
+                ]
+              ]
+            ],
+            "num_kv_groups": 2
+          },
+        expectedOutput: [
+            [
+              [
+                1.660477,
+                2.660477
+              ],
+              [
+                2.339523,
+                3.339523
+              ]
+            ],
+            [
+              [
+                2.0,
+                3.0
+              ],
+              [
+                2.0,
+                3.0
+              ]
+            ],
+            [
+              [
+                5.660477,
+                6.660477
+              ],
+              [
+                5.660477,
+                6.660477
+              ]
+            ],
+            [
+              [
+                5.660477,
+                6.660477
+              ],
+              [
+                5.391141,
+                6.391141
+              ]
+            ]
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'moe-top-k-gating': {
+    id: 'moe-top-k-gating',
+    title: 'Practice: Mixture-of-Experts Top-K Gating From Scratch',
+    difficulty: 'medium',
+    topic: 'LLMs & GenAI',
+    estimatedTime: '15–20 min',
+    functionName: 'moe_top_k_gating',
+    functionSignature: 'moe_top_k_gating(logits: list[float], k: int) -> tuple[list[int], list[float]]',
+    starterCode: `import numpy as np
+
+def moe_top_k_gating(logits, k):
+    """Select top-k expert indices and compute normalized softmax weights.
+    Return (top_indices, normalized_weights).
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement sparse top-k gating for Mixture of Experts (MoE) architectures, routing tokens to specialized feedforward sub-networks.',
+    taskDescription: 'Implement `moe_top_k_gating(logits, k)`. Select the k largest logit indices, apply numerically stable softmax over these k values, and return `[top_indices, normalized_weights]`.',
+    constraints: [
+      "len(logits) >= k >= 1",
+      "Normalized weights sum to 1.0",
+      "Sorted descending by gating logit"
+],
+    hints: {
+      small: 'Find top-k indices using np.argsort(logits)[::-1][:k].',
+      strong: 'top_logits = logits[top_idx] - max(logits[top_idx]), weights = exp(top_logits) / sum(exp(top_logits)).',
+      concept: 'Top-k gating activates only a small subset of total model parameters per token, drastically cutting inference FLOPs.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Top-2 from 4 experts',
+        input: {
+            "logits": [
+              2.0,
+              5.0,
+              1.0,
+              8.0
+            ],
+            "k": 2
+          },
+        expectedOutput: [
+            [
+              3,
+              1
+            ],
+            [
+              0.952574,
+              0.047426
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Top-1 winner-take-all',
+        input: {
+            "logits": [
+              10.0,
+              2.0,
+              3.0
+            ],
+            "k": 1
+          },
+        expectedOutput: [
+            [
+              0
+            ],
+            [
+              1.0
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Uniform logits top-2',
+        input: {
+            "logits": [
+              3.0,
+              3.0,
+              3.0
+            ],
+            "k": 2
+          },
+        expectedOutput: [
+            [
+              2,
+              1
+            ],
+            [
+              0.5,
+              0.5
+            ]
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'lora-linear-layer': {
+    id: 'lora-linear-layer',
+    title: 'Practice: LoRA Linear Layer Forward Pass From Scratch',
+    difficulty: 'medium',
+    topic: 'LLMs & GenAI',
+    estimatedTime: '15–20 min',
+    functionName: 'lora_linear',
+    functionSignature: 'lora_linear(x: list[list[float]], W0: list[list[float]], A: list[list[float]], B: list[list[float]], alpha: float, r: int) -> list[list[float]]',
+    starterCode: `import numpy as np
+
+def lora_linear(x, W0, A, B, alpha, r):
+    """Compute LoRA forward pass: x @ W0.T + (alpha / r) * (x @ A.T) @ B.T.
+    Return output as list of lists.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement Low-Rank Adaptation (LoRA) forward computation, decomposing weight updates into rank-r adapter matrices.',
+    taskDescription: 'Implement `lora_linear(x, W0, A, B, alpha, r)`. Compute base = x @ W0.T and delta = (alpha / r) * (x @ A.T) @ B.T. Return base + delta.',
+    constraints: [
+      "x shape (batch_size, in_features)",
+      "W0 shape (out_features, in_features)",
+      "A shape (r, in_features)",
+      "B shape (out_features, r)",
+      "alpha > 0, r >= 1"
+],
+    hints: {
+      small: 'Compute base forward pass x @ W0.T first.',
+      strong: 'Low rank branch is (x @ A.T) @ B.T * (alpha / r). Add to base output.',
+      concept: 'LoRA freezes pre-trained model weights W0 and trains low-rank factorized matrices A and B, cutting trainable parameters by over 99%.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Zero adapter B gives identical output to base layer',
+        input: {
+            "x": [
+              [
+                1.0,
+                2.0
+              ]
+            ],
+            "W0": [
+              [
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0
+              ]
+            ],
+            "A": [
+              [
+                1.0,
+                1.0
+              ]
+            ],
+            "B": [
+              [
+                0.0
+              ],
+              [
+                0.0
+              ]
+            ],
+            "alpha": 16.0,
+            "r": 1
+          },
+        expectedOutput: [
+            [
+              1.0,
+              2.0
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Active low-rank adapter contribution',
+        input: {
+            "x": [
+              [
+                2.0,
+                3.0
+              ]
+            ],
+            "W0": [
+              [
+                1.0,
+                1.0
+              ]
+            ],
+            "A": [
+              [
+                1.0,
+                0.0
+              ]
+            ],
+            "B": [
+              [
+                2.0
+              ]
+            ],
+            "alpha": 4.0,
+            "r": 1
+          },
+        expectedOutput: [
+            [
+              21.0
+            ]
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'top-p-sampling': {
+    id: 'top-p-sampling',
+    title: 'Practice: Top-p (Nucleus) Sampling From Scratch',
+    difficulty: 'medium',
+    topic: 'LLMs & GenAI',
+    estimatedTime: '15–20 min',
+    functionName: 'top_p_filter',
+    functionSignature: 'top_p_filter(probs: list[float], p: float) -> list[float]',
+    starterCode: `import numpy as np
+
+def top_p_filter(probs, p):
+    """Filter vocabulary probabilities to nucleus with cumulative mass >= p.
+    Zero out excluded tokens and re-normalize remaining probabilities to sum to 1.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement nucleus (top-p) sampling filtering, dynamically trimming the probability distribution tail based on cumulative confidence.',
+    taskDescription: 'Implement `top_p_filter(probs, p)`. Sort tokens descending by probability, select the minimal prefix whose cumulative probability sum is >= p, set all other probabilities to 0, and renormalize to sum to 1.0.',
+    constraints: [
+      "probs is a valid probability distribution summing to 1.0",
+      "0.0 < p <= 1.0",
+      "Return list of filtered and renormalized probabilities"
+],
+    hints: {
+      small: 'Sort probabilities descending with order = np.argsort(probs)[::-1].',
+      strong: 'Find cutoff index using np.cumsum(sorted_probs). Zero out tokens beyond cutoff and renormalize by dividing by the sum.',
+      concept: 'Nucleus sampling truncates the unreliable tail of the distribution while allowing dynamic candidate pool size based on model confidence.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Top token already covers p=0.5',
+        input: {
+            "probs": [
+              0.6,
+              0.2,
+              0.1,
+              0.1
+            ],
+            "p": 0.5
+          },
+        expectedOutput: [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Requires top two tokens to cover p=0.8',
+        input: {
+            "probs": [
+              0.5,
+              0.3,
+              0.15,
+              0.05
+            ],
+            "p": 0.8
+          },
+        expectedOutput: [
+            0.625,
+            0.375,
+            0.0,
+            0.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Full distribution needed for p=1.0',
+        input: {
+            "probs": [
+              0.4,
+              0.3,
+              0.3
+            ],
+            "p": 1.0
+          },
+        expectedOutput: [
+            0.4,
+            0.3,
+            0.3
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'parallel-sum-reduction': {
+    id: 'parallel-sum-reduction',
+    title: 'Practice: Parallel Sum Reduction (WebGPU)',
+    difficulty: 'medium',
+    topic: 'MLOps',
+    estimatedTime: '15–20 min',
+    functionName: 'parallel_sum_reduction',
+    functionSignature: 'parallel_sum_reduction(arr: list[float]) -> float',
+    starterCode: `def parallel_sum_reduction(arr):
+    """Simulate parallel tree sum reduction in O(log n) stages.
+    Return total sum.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement parallel binary tree sum reduction, the core reduction pattern executed by GPU workgroups and CUDA kernels.',
+    taskDescription: 'Implement `parallel_sum_reduction(arr)`. Simulate hierarchical pairwise reduction: at stride s = 1, 2, 4..., add elements pair-by-pair until a single scalar sum remains. Return 0.0 if empty.',
+    constraints: [
+      "arr is a list of numbers",
+      "Simulates tree reduction stages",
+      "Return scalar float rounded to 6 decimal places"
+],
+    hints: {
+      small: 'At each step, pairs at stride s combine: arr[i] += arr[i + s].',
+      strong: 'Alternatively, halve the array length at each reduction step until len == 1.',
+      concept: 'Tree reduction reduces O(N) sequential additions into O(log N) parallel steps across GPU threads.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Power of two length array',
+        input: {
+            "arr": [
+              1.0,
+              2.0,
+              3.0,
+              4.0,
+              5.0,
+              6.0,
+              7.0,
+              8.0
+            ]
+          },
+        expectedOutput: 36.0,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Odd length array requiring boundary checks',
+        input: {
+            "arr": [
+              2.5,
+              3.5,
+              4.0
+            ]
+          },
+        expectedOutput: 10.0,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Empty array returns 0.0',
+        input: {
+            "arr": []
+          },
+        expectedOutput: 0.0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'int8-quantization': {
+    id: 'int8-quantization',
+    title: 'Practice: INT8 Weight Quantization From Scratch',
+    difficulty: 'medium',
+    topic: 'MLOps',
+    estimatedTime: '15–20 min',
+    functionName: 'quantize_int8',
+    functionSignature: 'quantize_int8(W: list[list[float]]) -> tuple[list[list[int]], float]',
+    starterCode: `import numpy as np
+
+def quantize_int8(W):
+    """Compute symmetric INT8 weight quantization.
+    scale = max(abs(W)) / 127.0 (or 1.0 if zero).
+    Return (quantized_matrix_as_int, scale_float).
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement symmetric absolute maximum INT8 quantization to compress neural network weights with minimal accuracy degradation.',
+    taskDescription: 'Implement `quantize_int8(W)`. Compute scale = max(|W|) / 127.0. Round W / scale to nearest integer clipped to [-127, 127]. Return `[quantized_W, scale]`.',
+    constraints: [
+      "W is a 2D matrix of floats",
+      "Quantized values in integer range [-127, 127]",
+      "Symmetric zero-point at 0"
+],
+    hints: {
+      small: 'Find scale = np.max(np.abs(W)) / 127.0. If scale == 0, use 1.0.',
+      strong: 'q = np.clip(np.round(W / scale), -127, 127).astype(int).',
+      concept: 'Symmetric quantization maps continuous FP32 weights into 8-bit integers, reducing memory footprint by 4x.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Symmetric extrema matrix',
+        input: {
+            "W": [
+              [
+                -127.0,
+                0.0
+              ],
+              [
+                63.5,
+                127.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              [
+                -127,
+                0
+              ],
+              [
+                64,
+                127
+              ]
+            ],
+            1.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Uniform small weights',
+        input: {
+            "W": [
+              [
+                0.5,
+                -0.5
+              ],
+              [
+                0.25,
+                0.1
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              [
+                127,
+                -127
+              ],
+              [
+                64,
+                25
+              ]
+            ],
+            0.003937
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'All zero matrix edge case',
+        input: {
+            "W": [
+              [
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0
+              ]
+            ]
+          },
+        expectedOutput: [
+            [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            1.0
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python', 'numpy'] },
+  },
+
+  'speculative-decoding-verification': {
+    id: 'speculative-decoding-verification',
+    title: 'Practice: Speculative Decoding Verification Step From Scratch',
+    difficulty: 'medium',
+    topic: 'MLOps',
+    estimatedTime: '15–20 min',
+    functionName: 'speculative_verify',
+    functionSignature: 'speculative_verify(draft_prob: float, target_prob: float, r: float) -> tuple[bool, float]',
+    starterCode: `def speculative_verify(draft_prob, target_prob, r):
+    """Verify speculative token using rejection sampling:
+    accept_prob = min(1.0, target_prob / draft_prob)
+    accepted = r <= accept_prob
+    Return (accepted, accept_prob).
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement speculative decoding verification using rejection sampling to accelerate LLM inference without altering output distribution.',
+    taskDescription: 'Implement `speculative_verify(draft_prob, target_prob, r)`. Compute acceptance probability accept_prob = min(1.0, target_prob / draft_prob). Token is accepted if random draw r <= accept_prob. Return `[accepted, accept_prob]`.',
+    constraints: [
+      "draft_prob > 0",
+      "target_prob >= 0",
+      "0.0 <= r <= 1.0"
+],
+    hints: {
+      small: 'Compute accept_prob = min(1.0, target_prob / draft_prob).',
+      strong: 'accepted = (r <= accept_prob). Return [accepted, round(accept_prob, 6)].',
+      concept: 'Rejection sampling guarantees the verified token sequence matches the target model\'s exact probability distribution.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Target model agrees with or prefers draft token',
+        input: {
+            "draft_prob": 0.4,
+            "target_prob": 0.6,
+            "r": 0.8
+          },
+        expectedOutput: [
+            true,
+            1.0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Target model assigns lower probability, accept via small r',
+        input: {
+            "draft_prob": 0.8,
+            "target_prob": 0.4,
+            "r": 0.3
+          },
+        expectedOutput: [
+            true,
+            0.5
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Target model assigns lower probability, reject via large r',
+        input: {
+            "draft_prob": 0.8,
+            "target_prob": 0.4,
+            "r": 0.9
+          },
+        expectedOutput: [
+            false,
+            0.5
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'design-challenge-rag-system': {
+    id: 'design-challenge-rag-system',
+    title: 'System Design: A RAG System Over 100M Enterprise Documents',
+    difficulty: 'hard',
+    topic: 'ML System Design',
+    estimatedTime: '20–30 min',
+    functionName: 'design_challenge_rag_system',
+    functionSignature: 'design_challenge_rag_system(query: str, documents: list[dict], top_k: int = 2) -> dict',
+    starterCode: `def design_challenge_rag_system(query, documents, top_k=2):
+    """Retrieve and format relevant document context for enterprise RAG.
+    Each doc has 'id', 'text', 'metadata'.
+    Return dict with 'retrieved_ids' and 'context_str'.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Architect a high-throughput retrieval-augmented generation pipeline over 100M enterprise documents.',
+    taskDescription: 'Implement `design_challenge_rag_system(query, documents, top_k=2)`. Rank documents by keyword match overlap with query terms (case-insensitive), select top_k documents, and construct combined context string.',
+    constraints: [
+      "documents is a list of dicts with 'id' and 'text'",
+      "top_k >= 1",
+      "Ties broken by document id ascending"
+],
+    hints: {
+      small: 'Tokenize query into lowercase words.',
+      strong: 'Count how many query words appear in doc[\'text\'].lower(). Sort by (-score, doc[\'id\']).',
+      concept: 'Hybrid search combining lexical overlap with vector retrieval provides optimal recall for domain-specific terminology.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Select top document with highest query keyword overlap',
+        input: {
+            "query": "financial earnings quarterly report",
+            "documents": [
+              {
+                "id": "doc1",
+                "text": "Annual sustainability update and carbon metrics"
+              },
+              {
+                "id": "doc2",
+                "text": "Q3 quarterly financial earnings report overview"
+              },
+              {
+                "id": "doc3",
+                "text": "HR policy update for remote work"
+              }
+            ],
+            "top_k": 1
+          },
+        expectedOutput: {
+            "retrieved_ids": [
+              "doc2"
+            ],
+            "context_str": "Q3 quarterly financial earnings report overview"
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Top 2 retrieval with tie breaking',
+        input: {
+            "query": "security patch",
+            "documents": [
+              {
+                "id": "sec_b",
+                "text": "Critical security patch released"
+              },
+              {
+                "id": "sec_a",
+                "text": "Routine security patch update"
+              },
+              {
+                "id": "other",
+                "text": "Coffee machine instructions"
+              }
+            ],
+            "top_k": 2
+          },
+        expectedOutput: {
+            "retrieved_ids": [
+              "sec_a",
+              "sec_b"
+            ],
+            "context_str": "Routine security patch update | Critical security patch released"
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'design-challenge-fraud-detection': {
+    id: 'design-challenge-fraud-detection',
+    title: 'System Design: Real-Time Fraud Detection at 100K Events/Sec',
+    difficulty: 'hard',
+    topic: 'ML System Design',
+    estimatedTime: '20–30 min',
+    functionName: 'design_challenge_fraud_detection',
+    functionSignature: 'design_challenge_fraud_detection(transaction: dict, velocity_history: list[dict], rules: dict) -> dict',
+    starterCode: `def design_challenge_fraud_detection(transaction, velocity_history, rules):
+    """Evaluate real-time transaction for fraud indicators.
+    transaction: {'id', 'user_id', 'amount', 'timestamp'}
+    rules: {'max_amount', 'max_velocity_1h'}
+    Return {'action': 'approve' | 'review' | 'block', 'risk_score': float}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Design low-latency fraud detection rules and velocity scoring for real-time payments at 100K events/second.',
+    taskDescription: 'Implement `design_challenge_fraud_detection(transaction, velocity_history, rules)`. Count transactions by same user within 3600s window. If amount > rules[\'max_amount\'] or count > rules[\'max_velocity_1h\'], return \'block\'. If amount > 0.7*max_amount, return \'review\'. Otherwise return \'approve\'.',
+    constraints: [
+      "Evaluates transaction under 10ms budget constraints",
+      "Action is one of 'approve', 'review', 'block'"
+],
+    hints: {
+      small: 'Count transactions in velocity_history with same user_id and timestamp within [tx_time - 3600, tx_time].',
+      strong: 'Check block threshold first, then review threshold, else approve.',
+      concept: 'Real-time sliding window aggregations in Redis or Apache Flink detect account takeovers and card testing attacks.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Normal small transaction approved',
+        input: {
+            "transaction": {
+              "id": "tx1",
+              "user_id": "u1",
+              "amount": 50.0,
+              "timestamp": 10000
+            },
+            "velocity_history": [],
+            "rules": {
+              "max_amount": 1000.0,
+              "max_velocity_1h": 5
+            }
+          },
+        expectedOutput: {
+            "action": "approve",
+            "risk_score": 0.1
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'High velocity burst triggered block',
+        input: {
+            "transaction": {
+              "id": "tx6",
+              "user_id": "u1",
+              "amount": 20.0,
+              "timestamp": 10000
+            },
+            "velocity_history": [
+              {
+                "id": "tx_1",
+                "user_id": "u1",
+                "amount": 10.0,
+                "timestamp": 9900
+              },
+              {
+                "id": "tx_2",
+                "user_id": "u1",
+                "amount": 10.0,
+                "timestamp": 9800
+              },
+              {
+                "id": "tx_3",
+                "user_id": "u1",
+                "amount": 10.0,
+                "timestamp": 9700
+              },
+              {
+                "id": "tx_4",
+                "user_id": "u1",
+                "amount": 10.0,
+                "timestamp": 9600
+              },
+              {
+                "id": "tx_5",
+                "user_id": "u1",
+                "amount": 10.0,
+                "timestamp": 9500
+              }
+            ],
+            "rules": {
+              "max_amount": 1000.0,
+              "max_velocity_1h": 5
+            }
+          },
+        expectedOutput: {
+            "action": "block",
+            "risk_score": 0.95
+          },
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Large transaction requires manual review',
+        input: {
+            "transaction": {
+              "id": "tx_rev",
+              "user_id": "u2",
+              "amount": 800.0,
+              "timestamp": 10000
+            },
+            "velocity_history": [],
+            "rules": {
+              "max_amount": 1000.0,
+              "max_velocity_1h": 5
+            }
+          },
+        expectedOutput: {
+            "action": "review",
+            "risk_score": 0.65
+          },
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'design-challenge-support-agent': {
+    id: 'design-challenge-support-agent',
+    title: 'System Design: A Support Agent That Can Actually Take Actions',
+    difficulty: 'hard',
+    topic: 'ML System Design',
+    estimatedTime: '20–30 min',
+    functionName: 'design_challenge_support_agent',
+    functionSignature: 'design_challenge_support_agent(intent: str, refund_amount: float, max_auto_refund: float = 50.0) -> dict',
+    starterCode: `def design_challenge_support_agent(intent, refund_amount, max_auto_refund=50.0):
+    """Determine autonomous agent action authorization.
+    intent: 'query_order' | 'issue_refund' | 'escalate_human'
+    Return {'status': 'executed' | 'escalated' | 'denied', 'message': str}.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Build governance safeguards and human-in-the-loop escalation gates for autonomous AI action-taking agents.',
+    taskDescription: 'Implement `design_challenge_support_agent(intent, refund_amount, max_auto_refund=50.0)`. Queries execute automatically. Refunds <= max_auto_refund execute; refunds above threshold escalate to human reviewer. Unknown intents are denied.',
+    constraints: [
+      "refund_amount >= 0.0",
+      "max_auto_refund >= 0.0"
+],
+    hints: {
+      small: 'Check intent against allowed categories.',
+      strong: 'If intent == \'issue_refund\', compare refund_amount against max_auto_refund.',
+      concept: 'Financial action gates prevent autonomous LLM agents from issuing unauthorized payouts or mutating critical state without oversight.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard order query executed directly',
+        input: {
+            "intent": "query_order",
+            "refund_amount": 0.0
+          },
+        expectedOutput: {
+            "status": "executed",
+            "message": "Order details retrieved successfully"
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Micro-refund below threshold approved automatically',
+        input: {
+            "intent": "issue_refund",
+            "refund_amount": 25.0,
+            "max_auto_refund": 50.0
+          },
+        expectedOutput: {
+            "status": "executed",
+            "message": "Refund of 25.0 processed"
+          },
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Large refund escalated to supervisor',
+        input: {
+            "intent": "issue_refund",
+            "refund_amount": 250.0,
+            "max_auto_refund": 50.0
+          },
+        expectedOutput: {
+            "status": "escalated",
+            "message": "Refund of 250.0 exceeds autonomous threshold 50.0"
+          },
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Unknown intent rejected safely',
+        input: {
+            "intent": "delete_database",
+            "refund_amount": 0.0
+          },
+        expectedOutput: {
+            "status": "denied",
+            "message": "Unauthorized action intent: delete_database"
+          },
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'design-challenge-recommendations': {
+    id: 'design-challenge-recommendations',
+    title: 'System Design: Personalized Recommendations for a 50M-Item Catalog',
+    difficulty: 'hard',
+    topic: 'ML System Design',
+    estimatedTime: '20–30 min',
+    functionName: 'design_challenge_recommendations',
+    functionSignature: 'design_challenge_recommendations(user_history: list[str], catalog: list[dict], top_n: int = 3) -> list[str]',
+    starterCode: `def design_challenge_recommendations(user_history, catalog, top_n=3):
+    """Retrieve top_n recommendations based on category affinity and popularity.
+    catalog items have 'id', 'category', 'popularity'.
+    Exclude already-viewed items in user_history.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Design candidate generation and ranking architecture for high-cardinality multi-million item catalogs.',
+    taskDescription: 'Implement `design_challenge_recommendations(user_history, catalog, top_n=3)`. Exclude items in user_history. Score remaining items by popularity bonus (+2.0 if category matches any category in user_history history). Return top_n item ids sorted descending by score.',
+    constraints: [
+      "catalog is list of dicts with 'id', 'category', 'popularity'",
+      "user_history is list of item ids already interacted with",
+      "top_n >= 1"
+],
+    hints: {
+      small: 'Collect user\'s interacted categories from catalog items matching user_history.',
+      strong: 'Score candidates: popularity + (2.0 if item[\'category\'] in interacted else 0.0). Sort by (-score, item[\'id\']).',
+      concept: 'Multi-stage recommendation pipelines filter billions of pairs down to thousands via approximate retrieval before applying heavy rankers.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Recommend items prioritizing interacted category',
+        input: {
+            "user_history": [
+              "item_1"
+            ],
+            "catalog": [
+              {
+                "id": "item_1",
+                "category": "electronics",
+                "popularity": 10.0
+              },
+              {
+                "id": "item_2",
+                "category": "electronics",
+                "popularity": 5.0
+              },
+              {
+                "id": "item_3",
+                "category": "books",
+                "popularity": 6.0
+              },
+              {
+                "id": "item_4",
+                "category": "electronics",
+                "popularity": 4.0
+              }
+            ],
+            "top_n": 2
+          },
+        expectedOutput: [
+            "item_2",
+            "item_3"
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Cold start user with no history falls back to pure popularity',
+        input: {
+            "user_history": [],
+            "catalog": [
+              {
+                "id": "a",
+                "category": "sports",
+                "popularity": 1.0
+              },
+              {
+                "id": "b",
+                "category": "music",
+                "popularity": 9.0
+              },
+              {
+                "id": "c",
+                "category": "news",
+                "popularity": 4.0
+              }
+            ],
+            "top_n": 2
+          },
+        expectedOutput: [
+            "b",
+            "c"
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';
