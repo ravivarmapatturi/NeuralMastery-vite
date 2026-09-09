@@ -9,7 +9,7 @@ import { AuthProvider } from './AuthContext'
 const STORAGE_KEY = 'neural-mastery-gamification'
 
 function Harness() {
-  const { points, weeklyPoints, streak, awardMarkUnderstood, awardProblemCompleted, awardSystemDesignCompleted, awardFlashcardRevealed } = useGamification()
+  const { points, weeklyPoints, streak, awardMarkUnderstood, awardProblemCompleted, awardSystemDesignCompleted, awardFlashcardRevealed, awardArchitectureCompleted } = useGamification()
   return (
     <div>
       <div data-testid="points">{points}</div>
@@ -24,6 +24,7 @@ function Harness() {
       <button onClick={() => awardSystemDesignCompleted('/docs/practice-problems/design-challenge-rag-system')}>complete-design-challenge</button>
       <button onClick={() => awardFlashcardRevealed('flashcard:home-kv-cache')}>reveal-flashcard</button>
       <button onClick={() => awardFlashcardRevealed('flashcard:other-card')}>reveal-other-flashcard</button>
+      <button onClick={() => awardArchitectureCompleted('/practice/react-agent-loop')}>complete-architecture</button>
     </div>
   )
 }
@@ -133,6 +134,17 @@ describe('GamificationContext: signed-out (localStorage only)', () => {
     const user = userEvent.setup()
     await user.click(screen.getByText('complete-design-challenge'))
     expect(screen.getByTestId('points')).toHaveTextContent('100')
+  })
+
+  it('awards points for completing architecture canvas and enforces de-duplication', async () => {
+    setup()
+    const user = userEvent.setup()
+    await user.click(screen.getByText('complete-architecture'))
+    expect(screen.getByTestId('points')).toHaveTextContent('50')
+
+    // Repeated clicks should NOT double-award
+    await user.click(screen.getByText('complete-architecture'))
+    expect(screen.getByTestId('points')).toHaveTextContent('50')
   })
 
   it('never double-awards the same page for the same kind, even if clicked repeatedly', async () => {

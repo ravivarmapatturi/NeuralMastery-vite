@@ -26,6 +26,42 @@ export interface RuntimeCapabilities {
   capabilities: Array<'python' | 'numpy' | 'pytorch' | 'gpu'>;
 }
 
+export type CanvasNodeType = 'reasoner' | 'tool' | 'memory' | 'database' | 'final_answer';
+
+export interface CanvasComponentDefinition {
+  type: CanvasNodeType;
+  label: string;
+  role: string;
+  description: string;
+  badge?: string;
+  icon?: string;
+  isHub?: boolean;
+}
+
+export interface CanvasInitialNode {
+  id: string;
+  type: CanvasNodeType;
+  label: string;
+  position: { x: number; y: number };
+  role?: string;
+  description?: string;
+}
+
+export interface CanvasInitialEdge {
+  id: string;
+  source: string;
+  target: string;
+  label?: string;
+}
+
+export interface CanvasSpec {
+  title: string;
+  description: string;
+  availableComponents: CanvasComponentDefinition[];
+  initialNodes: CanvasInitialNode[];
+  initialEdges?: CanvasInitialEdge[];
+}
+
 export interface PracticeProblem {
   id: string;
   title: string;
@@ -55,6 +91,7 @@ export interface PracticeProblem {
   stage?: string;
   stageNumber?: number;
   points?: number;
+  canvasSpec?: CanvasSpec;
 }
 
 export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
@@ -475,6 +512,95 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
       { id: 'final', label: 'Final Answer Detection', input: { agent_output: 'Thought: I know the answer.\nFinal Answer: 42', available_tools: {} }, expectedOutput: { status: 'finished', final_answer: '42', observation: null }, hidden: false },
     ],
     runtime: { language: 'python', capabilities: ['python'] },
+    canvasSpec: {
+      title: 'ReAct Agent Topology',
+      description: 'Design a production-grade ReAct agent architecture by dragging and connecting the central LLM Reasoner, Tools, Memory, Database, and Final Answer exit condition.',
+      availableComponents: [
+        {
+          type: 'reasoner',
+          label: 'LLM Reasoner',
+          role: 'Core Reasoning Hub',
+          badge: 'LLM HUB',
+          icon: '🧠',
+          isHub: true,
+          description: 'The central LLM engine: executes Thought steps, selects actions/tools, analyzes observations, and decides when to exit with a Final Answer.',
+        },
+        {
+          type: 'tool',
+          label: 'Tool Router',
+          role: 'Action & Observation',
+          badge: 'EXTERNAL',
+          icon: '🛠️',
+          description: 'Dispatches tool executions (Search, Calculator, APIs) from the Reasoner and feeds Observation returns back into model context.',
+        },
+        {
+          type: 'memory',
+          label: 'Memory / Context Store',
+          role: 'State & Working Buffer',
+          badge: 'STATE',
+          icon: '💾',
+          description: 'Maintains conversational state, scratchpad thoughts, and intermediate observations across loop iterations.',
+        },
+        {
+          type: 'database',
+          label: 'Database',
+          role: 'Long-term Persistence',
+          badge: 'PERSISTENCE',
+          icon: '🗄️',
+          description: 'Long-term persistence across sessions (e.g. LangGraph checkpointers). Must interface strictly through Memory, never raw Reasoner.',
+        },
+        {
+          type: 'final_answer',
+          label: 'Final Answer',
+          role: 'Loop-Exit Condition',
+          badge: 'TERMINATION',
+          icon: '🎯',
+          description: 'Terminal condition reached when the LLM Reasoner concludes no further external tool actions are needed.',
+        },
+      ],
+      initialNodes: [
+        {
+          id: 'node-reasoner',
+          type: 'reasoner',
+          label: 'LLM Reasoner',
+          role: 'Core Reasoning Hub',
+          position: { x: 260, y: 140 },
+          description: 'The central hub executing ReAct Thought steps and deciding Actions vs Final Answer.',
+        },
+        {
+          id: 'node-tool',
+          type: 'tool',
+          label: 'Tool Router',
+          role: 'Action & Observation',
+          position: { x: 560, y: 60 },
+          description: 'Dispatches tool calls and returns observation output back to the Reasoner.',
+        },
+        {
+          id: 'node-memory',
+          type: 'memory',
+          label: 'Memory / Context Store',
+          role: 'State & Working Buffer',
+          position: { x: 260, y: 340 },
+          description: 'Buffers conversational context and working scratchpad state across steps.',
+        },
+        {
+          id: 'node-database',
+          type: 'database',
+          label: 'Database',
+          role: 'Long-term Persistence',
+          position: { x: 560, y: 340 },
+          description: 'Checkpoints session memory. Must connect via Memory, not direct Reasoner.',
+        },
+        {
+          id: 'node-final',
+          type: 'final_answer',
+          label: 'Final Answer',
+          role: 'Loop-Exit Condition',
+          position: { x: 20, y: 140 },
+          description: 'Loop termination exit node reached when agent reasoning completes.',
+        },
+      ],
+    },
   },
   'dpo-loss': {
     id: 'dpo-loss',

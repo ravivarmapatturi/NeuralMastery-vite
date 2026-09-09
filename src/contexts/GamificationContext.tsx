@@ -5,6 +5,7 @@ import {
   MARK_UNDERSTOOD_POINTS,
   pointsForDifficulty,
   SYSTEM_DESIGN_CHALLENGE_POINTS,
+  ARCHITECTURE_COMPLETED_POINTS,
   FLASHCARD_REVEAL_POINTS,
   DAILY_SIGNIN_POINTS,
   REVIEW_COMPLETED_POINTS,
@@ -104,6 +105,8 @@ interface GamificationContextValue {
    * (see ExpandableDepth.tsx) -- same first-reveal-only contract as
    * awardFlashcardRevealed. */
   awardDepthRevealed: (id: string) => void;
+  /** Awards points for correctly designing and verifying an agent architecture canvas. */
+  awardArchitectureCompleted: (permalink: string, points?: number) => void;
 }
 
 const GamificationContext = createContext<GamificationContextValue | null>(null);
@@ -440,6 +443,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
         review: { title: 'Review Complete!', icon: '🔁' },
         depth: { title: 'Went Deeper!', icon: '🔍' },
         flashcard: { title: 'Flashcard Revealed!', icon: '💡' },
+        architecture: { title: 'Architecture Verified!', icon: '📐' },
       };
       const toastMeta = TOAST_BY_KIND[kind];
       showRewardToast({
@@ -482,6 +486,11 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
   const awardDepthRevealed = useCallback((id: string) => award(id, 'depth', DEPTH_REVEAL_POINTS), [award]);
   const awardSystemDesignCompleted = useCallback(
     (permalink: string) => award(permalink, 'design', SYSTEM_DESIGN_CHALLENGE_POINTS),
+    [award],
+  );
+  const awardArchitectureCompleted = useCallback(
+    (permalink: string, points: number = ARCHITECTURE_COMPLETED_POINTS) =>
+      award(permalink, 'architecture', points),
     [award],
   );
   // Synthetic, non-URL permalink encoding today's real local date -- the
@@ -546,6 +555,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
     awardDailySignIn,
     awardReviewCompleted,
     awardDepthRevealed,
+    awardArchitectureCompleted,
   };
 
   return <GamificationContext.Provider value={value}>{children}</GamificationContext.Provider>;

@@ -20,6 +20,8 @@ import {
   PROBLEM_COMPLETED_POINTS_DEFAULT,
   pointsForDifficulty,
   computeRLValuation,
+  getArchitectureAward,
+  ARCHITECTURE_COMPLETED_POINTS,
   type AwardEvent,
 } from './gamification'
 
@@ -301,6 +303,32 @@ describe('computeRLValuation', () => {
     expect(easyVal.immediateReward).toBe(25)
     expect(hardVal.immediateReward).toBe(100)
     expect(hardVal.discountedReturn).toBeGreaterThan(easyVal.discountedReturn)
+  })
+
+  it('handles architecture action kind in RL valuation', () => {
+    const archVal = computeRLValuation('architecture', undefined, [], [])
+    expect(archVal.immediateReward).toBe(ARCHITECTURE_COMPLETED_POINTS)
+    expect(archVal.immediateReward).toBe(50)
+  })
+})
+
+describe('getArchitectureAward', () => {
+  it('finds architecture award by permalink', () => {
+    const events: AwardEvent[] = [
+      { permalink: '/practice/react-agent-loop', kind: 'architecture', date: '2026-09-09', points: 50 },
+      { permalink: '/practice/react-agent-loop', kind: 'complete', date: '2026-09-09', points: 100 },
+    ]
+    const award = getArchitectureAward(events, '/practice/react-agent-loop')
+    expect(award).toBeDefined()
+    expect(award?.kind).toBe('architecture')
+    expect(award?.points).toBe(50)
+  })
+
+  it('returns undefined if no architecture award exists', () => {
+    const events: AwardEvent[] = [
+      { permalink: '/practice/react-agent-loop', kind: 'complete', date: '2026-09-09', points: 100 },
+    ]
+    expect(getArchitectureAward(events, '/practice/react-agent-loop')).toBeUndefined()
   })
 })
 

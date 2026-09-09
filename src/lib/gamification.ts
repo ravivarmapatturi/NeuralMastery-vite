@@ -12,7 +12,7 @@ import { SECTION_META, SECTION_ORDER, getGroupForSubsection } from '../data/sect
 // histories is a plain, safe set union (see mergeEvents) instead of a
 // bespoke reconciliation for a mutable counter.
 
-export type AwardKind = 'mark' | 'complete' | 'design' | 'flashcard' | 'signin' | 'review' | 'depth';
+export type AwardKind = 'mark' | 'complete' | 'design' | 'flashcard' | 'signin' | 'review' | 'depth' | 'architecture';
 
 export interface AwardEvent {
   permalink: string;
@@ -69,6 +69,10 @@ export function pointsForDifficulty(difficulty: string | undefined): number {
 // walkthrough) is the deepest engagement this site can currently measure,
 // genuinely more than a single practice problem's narrower scope.
 export const SYSTEM_DESIGN_CHALLENGE_POINTS = 100;
+
+/** Real difficulty-scaled point value for correctly wiring a production agent architecture.
+ * Matches medium difficulty practice reward, awarded via 'architecture' kind. */
+export const ARCHITECTURE_COMPLETED_POINTS = 50;
 
 /** Tiny, first-reveal-only award for the homepage's "Test yourself"
  * interview-question flashcards (see Home.tsx) -- deliberately much
@@ -129,6 +133,10 @@ export function hasAward(events: AwardEvent[], permalink: string, kind: AwardKin
 
 export function getProblemAward(events: AwardEvent[], permalink: string): AwardEvent | undefined {
   return events.find((e) => e.permalink === permalink && (e.kind === 'complete' || e.kind === 'design'));
+}
+
+export function getArchitectureAward(events: AwardEvent[], permalink: string): AwardEvent | undefined {
+  return events.find((e) => e.permalink === permalink && e.kind === 'architecture');
 }
 
 export type MasteryTier = 'gold' | 'bronze';
@@ -377,6 +385,7 @@ export function computeRLValuation(
   let immediateReward = MARK_UNDERSTOOD_POINTS;
   if (actionKind === 'complete') immediateReward = pointsForDifficulty(difficulty);
   else if (actionKind === 'design') immediateReward = SYSTEM_DESIGN_CHALLENGE_POINTS;
+  else if (actionKind === 'architecture') immediateReward = ARCHITECTURE_COMPLETED_POINTS;
   else if (actionKind === 'flashcard') immediateReward = FLASHCARD_REVEAL_POINTS;
 
   const streak = computeStreak(activeDates, today);

@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import ProblemPanel from './ProblemPanel';
 import CodeEditorPane from './CodeEditorPane';
 import TestResultsPane from './TestResultsPane';
+import CanvasAgentBuilder from '../canvas/CanvasAgentBuilder';
 import { getPracticeProblem, type PracticeTestCase } from '../../lib/practiceProblem';
 import {
   loadSavedCode,
@@ -65,7 +66,83 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
   const [lastAction, setLastAction] = useState<'run' | 'submit' | null>(null);
 
   const [isMobile, setIsMobile] = useState<boolean>(() => typeof window !== 'undefined' && window.innerWidth < 768);
-  const [mobileTab, setMobileTab] = useState<'problem' | 'code' | 'results'>('problem');
+  const [mobileTab, setMobileTab] = useState<'problem' | 'code' | 'results' | 'canvas'>('problem');
+
+  // Canvas / Python mode state
+  const hasCanvas = Boolean(problem?.canvasSpec);
+  const [workspaceMode, setWorkspaceMode] = useState<'canvas' | 'python'>(() => (hasCanvas ? 'canvas' : 'python'));
+
+  useEffect(() => {
+    if (hasCanvas) {
+      setWorkspaceMode('canvas');
+    } else {
+      setWorkspaceMode('python');
+    }
+  }, [hasCanvas, problemId]);
+
+  const modeToggle = hasCanvas ? (
+    <div
+      role="tablist"
+      aria-label="Workspace mode"
+      data-testid="canvas-python-toggle"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        padding: 2,
+        background: 'rgba(255, 255, 255, 0.06)',
+        border: '1px solid var(--nm-border, rgba(255, 255, 255, 0.12))',
+        borderRadius: 6,
+        gap: 2,
+      }}
+    >
+      <button
+        type="button"
+        role="tab"
+        aria-selected={workspaceMode === 'canvas'}
+        data-testid="toggle-canvas-mode"
+        onClick={() => setWorkspaceMode('canvas')}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 5,
+          padding: '3px 9px',
+          fontSize: 12,
+          fontWeight: 700,
+          borderRadius: 4,
+          border: 'none',
+          cursor: 'pointer',
+          background: workspaceMode === 'canvas' ? 'var(--nm-accent-primary, #3DDC97)' : 'transparent',
+          color: workspaceMode === 'canvas' ? '#0A0A0B' : 'var(--nm-text-secondary, #ABABB3)',
+          transition: 'all 0.15s ease',
+        }}
+      >
+        <span>🎨</span> Canvas
+      </button>
+      <button
+        type="button"
+        role="tab"
+        aria-selected={workspaceMode === 'python'}
+        data-testid="toggle-python-mode"
+        onClick={() => setWorkspaceMode('python')}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 5,
+          padding: '3px 9px',
+          fontSize: 12,
+          fontWeight: 700,
+          borderRadius: 4,
+          border: 'none',
+          cursor: 'pointer',
+          background: workspaceMode === 'python' ? 'var(--nm-accent-primary, #3DDC97)' : 'transparent',
+          color: workspaceMode === 'python' ? '#0A0A0B' : 'var(--nm-text-secondary, #ABABB3)',
+          transition: 'all 0.15s ease',
+        }}
+      >
+        <span>🐍</span> Python
+      </button>
+    </div>
+  ) : null;
 
   useEffect(() => {
     const handleResize = () => {
@@ -479,9 +556,35 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
           >
             Problem
           </button>
+          {hasCanvas && (
+            <button
+              type="button"
+              onClick={() => {
+                setWorkspaceMode('canvas');
+                setMobileTab('canvas');
+              }}
+              style={{
+                flex: 1,
+                padding: '6px 10px',
+                fontSize: 12,
+                fontWeight: 600,
+                borderRadius: 6,
+                border: 'none',
+                background: mobileTab === 'canvas' ? 'var(--nm-surface)' : 'transparent',
+                color: mobileTab === 'canvas' ? 'var(--nm-text-primary)' : 'var(--nm-text-secondary)',
+                boxShadow: mobileTab === 'canvas' ? '0 1px 2px rgba(0,0,0,0.15)' : 'none',
+                cursor: 'pointer',
+              }}
+            >
+              Canvas
+            </button>
+          )}
           <button
             type="button"
-            onClick={() => setMobileTab('code')}
+            onClick={() => {
+              setWorkspaceMode('python');
+              setMobileTab('code');
+            }}
             style={{
               flex: 1,
               padding: '6px 10px',
@@ -582,108 +685,131 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
           onMouseLeave={(e) => ((e.target as HTMLElement).style.background = 'var(--nm-border)')}
         />
 
-        {/* Right: Coding & Testing Workspace */}
-        <div
-          ref={splitBRef}
-          style={{
-            height: '100%',
-            display: isMobile
-              ? mobileTab !== 'problem'
-                ? 'flex'
-                : 'none'
-              : 'grid',
-            flexDirection: isMobile ? 'column' : undefined,
-            gridTemplateRows: isMobile
-              ? undefined
-              : focusMode === 'editor'
-                ? '1fr 0px 0px'
-                : focusMode === 'results'
-                  ? '0px 0px 1fr'
-                  : `${topHeightPct}% 6px 1fr`,
-            overflow: 'hidden',
-            background: 'var(--nm-surface-alt)',
-          }}
-        >
-          {/* Top: Code Editor Pane */}
+        {/* Right: Coding & Testing Workspace OR Canvas Agent Builder */}
+        {hasCanvas && workspaceMode === 'canvas' && problem?.canvasSpec ? (
           <div
             style={{
               height: '100%',
-              flex: isMobile ? 1 : undefined,
-              overflow: 'hidden',
               display: isMobile
-                ? mobileTab === 'code'
-                  ? 'block'
+                ? mobileTab === 'canvas' || mobileTab === 'code'
+                  ? 'flex'
                   : 'none'
-                : focusMode === 'results'
-                  ? 'none'
-                  : 'block',
+                : 'flex',
+              overflow: 'hidden',
+              background: 'var(--nm-surface-alt)',
             }}
           >
-            <CodeEditorPane
-              code={code}
-              onChangeCode={handleCodeChange}
-              onRun={handleRun}
-              onSubmit={handleSubmit}
-              onReset={handleReset}
-              onStop={handleStop}
-              isBusy={isBusy}
-              status={status}
-              saveStatus={saveStatus}
-              isFullscreen={focusMode === 'editor'}
-              onToggleFullscreen={() => setFocusMode(focusMode === 'editor' ? 'normal' : 'editor')}
+            <CanvasAgentBuilder
+              canvasSpec={problem.canvasSpec}
+              problemId={problemId}
+              permalink={permalink}
+              modeToggle={modeToggle}
             />
           </div>
-
-          {/* Splitter B (Vertical Divider) */}
+        ) : (
           <div
-            role="separator"
-            aria-orientation="horizontal"
-            aria-label="Resize code editor and test results panels"
-            onPointerDown={onPointerDownB}
-            onPointerMove={onPointerMoveB}
-            onPointerUp={onPointerUpB}
-            style={{
-              background: 'var(--nm-border)',
-              cursor: 'row-resize',
-              position: 'relative',
-              zIndex: 10,
-              transition: 'background 0.15s ease',
-              display: isMobile || focusMode !== 'normal' ? 'none' : 'block',
-            }}
-            onMouseEnter={(e) => ((e.target as HTMLElement).style.background = 'var(--nm-accent-secondary)')}
-            onMouseLeave={(e) => ((e.target as HTMLElement).style.background = 'var(--nm-border)')}
-          />
-
-          {/* Bottom: Test Results Pane */}
-          <div
+            ref={splitBRef}
             style={{
               height: '100%',
-              flex: isMobile ? 1 : undefined,
-              overflow: 'hidden',
               display: isMobile
-                ? mobileTab === 'results'
-                  ? 'block'
+                ? mobileTab !== 'problem'
+                  ? 'flex'
                   : 'none'
+                : 'grid',
+              flexDirection: isMobile ? 'column' : undefined,
+              gridTemplateRows: isMobile
+                ? undefined
                 : focusMode === 'editor'
-                  ? 'none'
-                  : 'block',
+                  ? '1fr 0px 0px'
+                  : focusMode === 'results'
+                    ? '0px 0px 1fr'
+                    : `${topHeightPct}% 6px 1fr`,
+              overflow: 'hidden',
+              background: 'var(--nm-surface-alt)',
             }}
           >
-            <TestResultsPane
-              testCases={problem.testCases}
-              customTestCases={customTestCases}
-              onAddCustomTest={handleAddCustomTest}
-              onRemoveCustomTest={handleRemoveCustomTest}
-              result={result}
-              lastAction={lastAction}
-              submissions={submissions}
-              onLoadSubmissionCode={(c) => {
-                setCode(c);
-                saveUserCode(problemId, c);
+            {/* Top: Code Editor Pane */}
+            <div
+              style={{
+                height: '100%',
+                flex: isMobile ? 1 : undefined,
+                overflow: 'hidden',
+                display: isMobile
+                  ? mobileTab === 'code'
+                    ? 'block'
+                    : 'none'
+                  : focusMode === 'results'
+                    ? 'none'
+                    : 'block',
               }}
+            >
+              <CodeEditorPane
+                code={code}
+                onChangeCode={handleCodeChange}
+                onRun={handleRun}
+                onSubmit={handleSubmit}
+                onReset={handleReset}
+                onStop={handleStop}
+                isBusy={isBusy}
+                status={status}
+                saveStatus={saveStatus}
+                isFullscreen={focusMode === 'editor'}
+                onToggleFullscreen={() => setFocusMode(focusMode === 'editor' ? 'normal' : 'editor')}
+                modeToggle={modeToggle}
+              />
+            </div>
+
+            {/* Splitter B (Vertical Divider) */}
+            <div
+              role="separator"
+              aria-orientation="horizontal"
+              aria-label="Resize code editor and test results panels"
+              onPointerDown={onPointerDownB}
+              onPointerMove={onPointerMoveB}
+              onPointerUp={onPointerUpB}
+              style={{
+                background: 'var(--nm-border)',
+                cursor: 'row-resize',
+                position: 'relative',
+                zIndex: 10,
+                transition: 'background 0.15s ease',
+                display: isMobile || focusMode !== 'normal' ? 'none' : 'block',
+              }}
+              onMouseEnter={(e) => ((e.target as HTMLElement).style.background = 'var(--nm-accent-secondary)')}
+              onMouseLeave={(e) => ((e.target as HTMLElement).style.background = 'var(--nm-border)')}
             />
+
+            {/* Bottom: Test Results Pane */}
+            <div
+              style={{
+                height: '100%',
+                flex: isMobile ? 1 : undefined,
+                overflow: 'hidden',
+                display: isMobile
+                  ? mobileTab === 'results'
+                    ? 'block'
+                    : 'none'
+                  : focusMode === 'editor'
+                    ? 'none'
+                    : 'block',
+              }}
+            >
+              <TestResultsPane
+                testCases={problem.testCases}
+                customTestCases={customTestCases}
+                onAddCustomTest={handleAddCustomTest}
+                onRemoveCustomTest={handleRemoveCustomTest}
+                result={result}
+                lastAction={lastAction}
+                submissions={submissions}
+                onLoadSubmissionCode={(c) => {
+                  setCode(c);
+                  saveUserCode(problemId, c);
+                }}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

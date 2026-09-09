@@ -16,6 +16,7 @@ interface CodeEditorPaneProps {
   saveStatus: 'saved' | 'saving';
   onToggleFullscreen?: () => void;
   isFullscreen?: boolean;
+  modeToggle?: React.ReactNode;
 }
 
 export default function CodeEditorPane({
@@ -31,6 +32,7 @@ export default function CodeEditorPane({
   saveStatus,
   onToggleFullscreen,
   isFullscreen,
+  modeToggle,
 }: CodeEditorPaneProps) {
   const t = useVizTokens();
 
@@ -82,9 +84,13 @@ export default function CodeEditorPane({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', color: t.accentTeal }}>
-            Python3
-          </span>
+          {modeToggle ? (
+            modeToggle
+          ) : (
+            <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', color: t.accentTeal }}>
+              Python3
+            </span>
+          )}
 
           <span style={{ fontSize: 11, color: saveStatus === 'saving' ? '#f59e0b' : '#10b981', fontWeight: 500 }}>
             {saveStatus === 'saving' ? 'Saving…' : 'Saved ✓'}
