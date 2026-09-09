@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #226. Advanced RAG & Agentic RAG Module 4: Problem 16"
-description: "Master #226. Advanced RAG & Agentic RAG Module 4: Problem 16 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Detect Ambiguous Query Needing Clarification"
+description: "Implement query-ambiguity detection, catching a real case where an agentic RAG system should ask a clarifying question rather than silently guessing which real-world entity the user meant."
 difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #226. Advanced RAG & Agentic RAG Module 4: Problem 16
+# Detect Ambiguous Query Needing Clarification
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #226 of 1072 | **Points**: 60 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#226. Advanced RAG & Agentic RAG Module 4: Problem 16` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement query-ambiguity detection, catching a real case where an agentic RAG system should ask a clarifying question rather than silently guessing which real-world entity the user meant.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_4_problem_16`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_query_ambiguous(entity_name, entity_candidates)`. `entity_candidates` maps an entity name to the list of distinct real-world entities it could refer to (e.g. `'Washington' -> ['George Washington', 'Washington State', 'Washington D.C.']`). Return `True` if `entity_name` maps to MORE THAN ONE candidate.
 
 <PracticePlayground problemId="agentic-rag-prob-16" />

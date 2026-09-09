@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #229. Advanced RAG & Agentic RAG Module 4: Problem 19"
-description: "Master #229. Advanced RAG & Agentic RAG Module 4: Problem 19 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Self-Ask: Parse Follow-Up Question Pattern"
+description: "Implement Self-Ask prompting's step-line parser, extracting structured meaning from the real, distinctive output format of the Self-Ask technique for decomposed multi-hop reasoning."
 difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #229. Advanced RAG & Agentic RAG Module 4: Problem 19
+# Self-Ask: Parse Follow-Up Question Pattern
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #229 of 1072 | **Points**: 60 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#229. Advanced RAG & Agentic RAG Module 4: Problem 19` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement Self-Ask prompting's step-line parser, extracting structured meaning from the real, distinctive output format of the Self-Ask technique for decomposed multi-hop reasoning.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_4_problem_19`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `parse_self_ask_step(line)`. If `line` starts with `'Follow up: '`, return `{"type": "follow_up", "content": line[len('Follow up: '):]}`. If it starts with `'Intermediate answer: '`, return `{"type": "intermediate_answer", "content": line[len('Intermediate answer: '):]}`. If it starts with `'So the final answer is: '`, return `{"type": "final_answer", "content": line[len('So the final answer is: '):]}`. Otherwise return `{"type": "unknown", "content": line}`.
 
 <PracticePlayground problemId="agentic-rag-prob-19" />

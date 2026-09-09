@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #228. Advanced RAG & Agentic RAG Module 4: Problem 18"
-description: "Master #228. Advanced RAG & Agentic RAG Module 4: Problem 18 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Allocate Retrieval Budget Across a Multi-Step Plan"
+description: "Implement retrieval-budget allocation across a multi-step agentic RAG plan, distributing a limited total number of retrieval calls proportionally to each step's real complexity."
 difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #228. Advanced RAG & Agentic RAG Module 4: Problem 18
+# Allocate Retrieval Budget Across a Multi-Step Plan
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #228 of 1072 | **Points**: 60 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#228. Advanced RAG & Agentic RAG Module 4: Problem 18` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement retrieval-budget allocation across a multi-step agentic RAG plan, distributing a limited total number of retrieval calls proportionally to each step's real complexity.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_4_problem_18`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `allocate_retrieval_budget(step_complexity, total_budget)`. Each step's raw share is `total_budget * complexity / sum(all_complexities)`, floored to an int. Any leftover (from flooring) goes to the step with the HIGHEST complexity (ties broken by step name ascending). Every step gets at least the floored share (which may be 0).
 
 <PracticePlayground problemId="agentic-rag-prob-18" />

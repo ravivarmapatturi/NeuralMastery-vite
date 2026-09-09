@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #216. Advanced RAG & Agentic RAG Module 2: Problem 6"
-description: "Master #216. Advanced RAG & Agentic RAG Module 2: Problem 6 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Decompose a Compound Question Into Subquestions"
+description: "Implement real query decomposition, splitting a compound multi-part question into independently-retrievable subquestions -- a real, standard technique for questions naive single-shot retrieval handles poorly."
+difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #216. Advanced RAG & Agentic RAG Module 2: Problem 6
+# Decompose a Compound Question Into Subquestions
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #216 of 1072 | **Points**: 40 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#216. Advanced RAG & Agentic RAG Module 2: Problem 6` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement real query decomposition, splitting a compound multi-part question into independently-retrievable subquestions -- a real, standard technique for questions naive single-shot retrieval handles poorly.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_2_problem_6`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `decompose_question(question)`. Split on the literal string `' and '` (case-sensitive, surrounded by spaces). Strip whitespace from each part and drop any empty results. If there's no `' and '` in the question, return `[question]` unchanged (a single-part question).
 
 <PracticePlayground problemId="agentic-rag-prob-6" />

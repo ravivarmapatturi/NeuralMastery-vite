@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #219. Advanced RAG & Agentic RAG Module 2: Problem 9"
-description: "Master #219. Advanced RAG & Agentic RAG Module 2: Problem 9 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Answer Verification Loop Decision"
+description: "Implement a real answer-verification decision, an agentic RAG loop's self-check step deciding whether to accept a generated answer, regenerate it, or retrieve fresh context."
+difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #219. Advanced RAG & Agentic RAG Module 2: Problem 9
+# Answer Verification Loop Decision
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #219 of 1072 | **Points**: 40 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#219. Advanced RAG & Agentic RAG Module 2: Problem 9` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real answer-verification decision, an agentic RAG loop's self-check step deciding whether to accept a generated answer, regenerate it, or retrieve fresh context.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_2_problem_9`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `verification_action(faithfulness_score, relevance_score, faithfulness_threshold, relevance_threshold)`. If both scores meet their thresholds, return `'accept'`. If faithfulness fails but relevance is fine (the retrieved context is good but the generation didn't use it well), return `'regenerate'`. Otherwise (relevance itself is poor), return `'retrieve_again'`.
 
 <PracticePlayground problemId="agentic-rag-prob-9" />

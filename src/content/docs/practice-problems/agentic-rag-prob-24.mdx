@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #234. Advanced RAG & Agentic RAG Module 5: Problem 24"
-description: "Master #234. Advanced RAG & Agentic RAG Module 5: Problem 24 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Select Best Multi-Vector Representation for a Document"
+description: "Implement multi-vector representation selection, choosing WHICH of a document's several stored embeddings (full text, summary, hypothetical questions it answers) best matches a given query."
+difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #234. Advanced RAG & Agentic RAG Module 5: Problem 24
+# Select Best Multi-Vector Representation for a Document
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #234 of 1072 | **Points**: 90 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#234. Advanced RAG & Agentic RAG Module 5: Problem 24` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement multi-vector representation selection, choosing WHICH of a document's several stored embeddings (full text, summary, hypothetical questions it answers) best matches a given query.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_5_problem_24`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `select_best_representation(query_embedding, doc_representations)`. `doc_representations` maps a representation name (e.g. `'full_text'`, `'summary'`, `'hypothetical_question'`) to its embedding vector. Return the representation name with the HIGHEST cosine similarity to `query_embedding`; ties broken by name ascending.
 
 <PracticePlayground problemId="agentic-rag-prob-24" />

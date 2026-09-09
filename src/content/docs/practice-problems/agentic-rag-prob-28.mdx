@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #238. Advanced RAG & Agentic RAG Module 6: Problem 28"
-description: "Master #238. Advanced RAG & Agentic RAG Module 6: Problem 28 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Determine Multi-Hop Reasoning Chain Completion"
+description: "Implement multi-hop reasoning-chain completion checking, the real stopping condition for an agentic RAG loop performing iterative multi-hop retrieval."
+difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #238. Advanced RAG & Agentic RAG Module 6: Problem 28
+# Determine Multi-Hop Reasoning Chain Completion
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #238 of 1072 | **Points**: 90 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#238. Advanced RAG & Agentic RAG Module 6: Problem 28` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement multi-hop reasoning-chain completion checking, the real stopping condition for an agentic RAG loop performing iterative multi-hop retrieval.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_6_problem_28`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `is_chain_complete(collected_entities, required_entities)`: return `True` if `required_entities` is a SUBSET of `collected_entities` (every entity needed to answer has been found across all hops so far).
 
 <PracticePlayground problemId="agentic-rag-prob-28" />

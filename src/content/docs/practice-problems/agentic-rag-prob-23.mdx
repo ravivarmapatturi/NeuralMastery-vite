@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #233. Advanced RAG & Agentic RAG Module 5: Problem 23"
-description: "Master #233. Advanced RAG & Agentic RAG Module 5: Problem 23 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: RAG Answer Abstention Decision"
+description: "Implement RAG abstention, a real, honest 'I don't know' policy for when retrieval genuinely found nothing good enough to answer from, rather than forcing a generation from weak/irrelevant context."
+difficulty: "easy"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #233. Advanced RAG & Agentic RAG Module 5: Problem 23
+# RAG Answer Abstention Decision
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #233 of 1072 | **Points**: 90 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#233. Advanced RAG & Agentic RAG Module 5: Problem 23` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement RAG abstention, a real, honest 'I don't know' policy for when retrieval genuinely found nothing good enough to answer from, rather than forcing a generation from weak/irrelevant context.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_5_problem_23`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `should_abstain(top_retrieval_score, abstention_threshold)`: return `True` (abstain, don't answer) if `top_retrieval_score < abstention_threshold`.
 
 <PracticePlayground problemId="agentic-rag-prob-23" />

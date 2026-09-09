@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #215. Advanced RAG & Agentic RAG Module 1: Problem 5"
-description: "Master #215. Advanced RAG & Agentic RAG Module 1: Problem 5 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: RAG-Fusion: Reciprocal Rank Fusion Across Query Variants"
+description: "Implement RAG-Fusion's Reciprocal Rank Fusion, combining retrieval results from MULTIPLE generated query variants of the same original question into one robust ranked list."
+difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #215. Advanced RAG & Agentic RAG Module 1: Problem 5
+# RAG-Fusion: Reciprocal Rank Fusion Across Query Variants
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #215 of 1072 | **Points**: 40 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#215. Advanced RAG & Agentic RAG Module 1: Problem 5` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement RAG-Fusion's Reciprocal Rank Fusion, combining retrieval results from MULTIPLE generated query variants of the same original question into one robust ranked list.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_1_problem_5`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `rag_fusion_rrf(result_lists, k)`. Each inner list is one query variant's ranked document ids (best first). Score `doc_id` = `sum(1/(k + rank) for each list it appears in)`, where `rank` is its 0-indexed position in that list. Return document ids sorted by total score descending, ties broken by id ascending.
 
 <PracticePlayground problemId="agentic-rag-prob-5" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #222. Advanced RAG & Agentic RAG Module 3: Problem 12"
-description: "Master #222. Advanced RAG & Agentic RAG Module 3: Problem 12 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Combine Retrieval Score With Cross-Encoder Rerank Score"
+description: "Implement retrieval/rerank score blending, the real final scoring step of a two-stage retrieval pipeline (cheap bi-encoder retrieval, then expensive cross-encoder reranking of the top candidates)."
 difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #222. Advanced RAG & Agentic RAG Module 3: Problem 12
+# Combine Retrieval Score With Cross-Encoder Rerank Score
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #222 of 1072 | **Points**: 60 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#222. Advanced RAG & Agentic RAG Module 3: Problem 12` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement retrieval/rerank score blending, the real final scoring step of a two-stage retrieval pipeline (cheap bi-encoder retrieval, then expensive cross-encoder reranking of the top candidates).
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_3_problem_12`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `combine_rerank_score(retrieval_score, rerank_score, rerank_weight)`: return `(1-rerank_weight)*retrieval_score + rerank_weight*rerank_score`.
 
 <PracticePlayground problemId="agentic-rag-prob-12" />

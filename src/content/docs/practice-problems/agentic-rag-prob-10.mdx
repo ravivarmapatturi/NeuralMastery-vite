@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #220. Advanced RAG & Agentic RAG Module 2: Problem 10"
-description: "Master #220. Advanced RAG & Agentic RAG Module 2: Problem 10 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Parent-Document Retrieval: Map Chunk Hit to Parent"
+description: "Implement parent-document retrieval's core lookup: retrieve using small precise chunks for search accuracy, but return the LARGER parent chunk for generation context."
 difficulty: "easy"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #220. Advanced RAG & Agentic RAG Module 2: Problem 10
+# Parent-Document Retrieval: Map Chunk Hit to Parent
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #220 of 1072 | **Points**: 40 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#220. Advanced RAG & Agentic RAG Module 2: Problem 10` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement parent-document retrieval's core lookup: retrieve using small precise chunks for search accuracy, but return the LARGER parent chunk for generation context.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_2_problem_10`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `resolve_parent_chunk(child_chunk_id, child_to_parent)`: return `child_to_parent.get(child_chunk_id, child_chunk_id)` -- if no parent mapping exists, the chunk itself has no parent (it's already top-level).
 
 <PracticePlayground problemId="agentic-rag-prob-10" />

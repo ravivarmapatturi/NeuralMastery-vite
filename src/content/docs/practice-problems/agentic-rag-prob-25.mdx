@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #235. Advanced RAG & Agentic RAG Module 5: Problem 25"
-description: "Master #235. Advanced RAG & Agentic RAG Module 5: Problem 25 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Compute Pipeline Ablation Score Delta"
+description: "Implement ablation-score-delta computation, the real, standard way to measure how much a specific RAG pipeline component (reranking, query rewriting, compression) actually contributes to overall quality."
+difficulty: "easy"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #235. Advanced RAG & Agentic RAG Module 5: Problem 25
+# Compute Pipeline Ablation Score Delta
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #235 of 1072 | **Points**: 90 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#235. Advanced RAG & Agentic RAG Module 5: Problem 25` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement ablation-score-delta computation, the real, standard way to measure how much a specific RAG pipeline component (reranking, query rewriting, compression) actually contributes to overall quality.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_5_problem_25`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `ablation_delta(full_pipeline_score, ablated_pipeline_score)`: return `full_pipeline_score - ablated_pipeline_score` (a positive delta means the ablated component genuinely helps; negative or near-zero means it may not be worth its added cost/latency).
 
 <PracticePlayground problemId="agentic-rag-prob-25" />

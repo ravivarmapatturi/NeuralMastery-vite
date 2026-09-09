@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #214. Advanced RAG & Agentic RAG Module 1: Problem 4"
-description: "Master #214. Advanced RAG & Agentic RAG Module 1: Problem 4 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Iterative Retrieval Stopping via Information Gain"
+description: "Implement iterative-retrieval stopping logic, a real decision an agentic RAG loop makes each round: keep retrieving more context, or is additional retrieval no longer worth it."
+difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #214. Advanced RAG & Agentic RAG Module 1: Problem 4
+# Iterative Retrieval Stopping via Information Gain
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #214 of 1072 | **Points**: 40 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#214. Advanced RAG & Agentic RAG Module 1: Problem 4` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement iterative-retrieval stopping logic, a real decision an agentic RAG loop makes each round: keep retrieving more context, or is additional retrieval no longer worth it.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_1_problem_4`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `should_stop_retrieving(new_info_overlap, min_new_info_threshold, iterations_done, max_iterations)`. `new_info_overlap` is the fraction of the LATEST retrieved chunk's content already covered by prior chunks (higher = more redundant, less new info). Return `True` (stop) if `iterations_done >= max_iterations` OR `new_info_overlap >= (1 - min_new_info_threshold)`.
 
 <PracticePlayground problemId="agentic-rag-prob-4" />

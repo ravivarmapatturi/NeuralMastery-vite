@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #236. Advanced RAG & Agentic RAG Module 6: Problem 26"
-description: "Master #236. Advanced RAG & Agentic RAG Module 6: Problem 26 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Self-RAG: Parse ISREL/ISSUP/ISUSE Critique Tokens"
+description: "Implement Self-RAG's real critique-token decoding, translating the paper's three distinct reflection signals (relevance, support, utility) into one combined accept/reject decision."
 difficulty: "hard"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #236. Advanced RAG & Agentic RAG Module 6: Problem 26
+# Self-RAG: Parse ISREL/ISSUP/ISUSE Critique Tokens
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #236 of 1072 | **Points**: 90 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#236. Advanced RAG & Agentic RAG Module 6: Problem 26` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement Self-RAG's real critique-token decoding, translating the paper's three distinct reflection signals (relevance, support, utility) into one combined accept/reject decision.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_6_problem_26`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `parse_critique_tokens(isrel, issup, isuse)`. `isrel` is `'[Relevant]'` or `'[Irrelevant]'`. `issup` is `'[Fully supported]'`, `'[Partially supported]'`, or `'[No support]'`. `isuse` is an int `1-5` (utility rating). Return `{"accept": bool, "reason": str}`: reject with reason `'irrelevant'` if `isrel == '[Irrelevant]'`; reject with reason `'unsupported'` if `issup == '[No support]'`; reject with reason `'low_utility'` if `isuse < 3`; otherwise accept with reason `'accepted'`. Check in this priority order.
 
 <PracticePlayground problemId="agentic-rag-prob-26" />

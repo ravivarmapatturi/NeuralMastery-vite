@@ -115694,6 +115694,2488 @@ def metric_drifted(deploy_history, current_value, std_multiplier):
       ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+
+  "agentic-rag-prob-1": {
+    id: "agentic-rag-prob-1",
+    title: "Self-RAG: Parse Reflection Tokens Into a Retrieval Decision",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "should_retrieve",
+    functionSignature: "should_retrieve(reflection_token: str) -> bool",
+    starterCode: `def should_retrieve(reflection_token):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Self-RAG's real reflection-token decision, letting the model itself decide whether a given generation step needs retrieval at all.",
+    taskDescription: "Implement `should_retrieve(reflection_token)`. Return `True` if `reflection_token == '[Retrieve]'`, `False` if it's `'[No Retrieve]'`. For any other value, default to `True` (retrieve when uncertain).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "reflection_token is a string"
+      ],
+    hints: {
+  "small": "Two known tokens map directly; anything else defaults to retrieving.",
+        "strong": "if reflection_token == '[Retrieve]': return True; if reflection_token == '[No Retrieve]': return False; return True.",
+        "concept": "This is the real, core idea from the Self-RAG paper -- unlike naive RAG (always retrieve) or pure parametric generation (never retrieve), the model learns to emit an explicit token deciding PER-SEGMENT whether retrieval would actually help, avoiding wasted retrieval calls on segments the model already knows confidently."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "explicit retrieve token",
+          "input": {
+            "reflection_token": "[Retrieve]"
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "explicit no-retrieve token",
+          "input": {
+            "reflection_token": "[No Retrieve]"
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "unknown token defaults to retrieve",
+          "input": {
+            "reflection_token": "[Unclear]"
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty token defaults to retrieve",
+          "input": {
+            "reflection_token": ""
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-2": {
+    id: "agentic-rag-prob-2",
+    title: "Corrective RAG: Grade Retrieved Document Relevance",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "grade_relevance_action",
+    functionSignature: "grade_relevance_action(relevance_scores: list[float], relevant_threshold: float, irrelevant_threshold: float) -> str",
+    starterCode: `def grade_relevance_action(relevance_scores, relevant_threshold, irrelevant_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Corrective RAG's real three-way relevance grading, deciding whether to proceed with retrieved documents, fall back to a web search, or blend both.",
+    taskDescription: "Implement `grade_relevance_action(relevance_scores, relevant_threshold, irrelevant_threshold)`. Take `best = max(relevance_scores)`. If `best >= relevant_threshold`, return `'use_retrieved'`. If `best < irrelevant_threshold`, return `'web_search'`. Otherwise return `'blend'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "relevant_threshold > irrelevant_threshold",
+        "relevance_scores non-empty"
+      ],
+    hints: {
+  "small": "Three-way classification based on the BEST retrieved document's score.",
+        "strong": "best = max(relevance_scores); if best >= relevant_threshold: return 'use_retrieved'; if best < irrelevant_threshold: return 'web_search'; return 'blend'.",
+        "concept": "This is the real, core Corrective RAG (CRAG) idea -- an explicit relevance-grading step CAN detect when the entire retrieved set is genuinely poor and correct course (falling back to web search) rather than blindly generating an answer from irrelevant context, which is exactly the failure mode naive RAG has no mechanism to catch."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "high relevance uses retrieved",
+          "input": {
+            "relevance_scores": [
+              0.9,
+              0.5
+            ],
+            "relevant_threshold": 0.7,
+            "irrelevant_threshold": 0.3
+          },
+          "expectedOutput": "use_retrieved",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "low relevance falls back to web search",
+          "input": {
+            "relevance_scores": [
+              0.1,
+              0.2
+            ],
+            "relevant_threshold": 0.7,
+            "irrelevant_threshold": 0.3
+          },
+          "expectedOutput": "web_search",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "ambiguous relevance blends",
+          "input": {
+            "relevance_scores": [
+              0.5
+            ],
+            "relevant_threshold": 0.7,
+            "irrelevant_threshold": 0.3
+          },
+          "expectedOutput": "blend",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "best of multiple scores used",
+          "input": {
+            "relevance_scores": [
+              0.1,
+              0.95,
+              0.2
+            ],
+            "relevant_threshold": 0.7,
+            "irrelevant_threshold": 0.3
+          },
+          "expectedOutput": "use_retrieved",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-3": {
+    id: "agentic-rag-prob-3",
+    title: "Agentic Retrieval Tool Selection",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "select_retrieval_tool",
+    functionSignature: "select_retrieval_tool(query_type: str, has_internal_docs: bool) -> str",
+    starterCode: `def select_retrieval_tool(query_type, has_internal_docs):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement agentic RAG tool selection, letting an agent choose between internal vector search, live web search, or no retrieval at all based on the real nature of the query.",
+    taskDescription: "Implement `select_retrieval_tool(query_type, has_internal_docs)`. If `query_type == 'general_knowledge'`, return `'none'` (the model likely already knows this). If `query_type == 'current_events'`, return `'web_search'` (internal docs are necessarily stale for this). If `query_type == 'company_specific'`, return `'vector_search'` if `has_internal_docs` else `'web_search'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "query_type in {'general_knowledge','current_events','company_specific'}"
+      ],
+    hints: {
+  "small": "Three query types, each with its own real reasoning for which retrieval tool (if any) applies.",
+        "strong": "if query_type=='general_knowledge': return 'none'; if query_type=='current_events': return 'web_search'; return 'vector_search' if has_internal_docs else 'web_search'.",
+        "concept": "This is the real, core idea distinguishing agentic RAG from naive always-retrieve RAG -- retrieving for a question the model already knows confidently wastes latency and can even hurt accuracy by introducing irrelevant context, so the routing decision itself is a genuine part of quality engineering, not just plumbing."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "general knowledge needs no retrieval",
+          "input": {
+            "query_type": "general_knowledge",
+            "has_internal_docs": true
+          },
+          "expectedOutput": "none",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "current events always web search",
+          "input": {
+            "query_type": "current_events",
+            "has_internal_docs": true
+          },
+          "expectedOutput": "web_search",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "company specific with internal docs uses vector search",
+          "input": {
+            "query_type": "company_specific",
+            "has_internal_docs": true
+          },
+          "expectedOutput": "vector_search",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "company specific without internal docs falls back to web",
+          "input": {
+            "query_type": "company_specific",
+            "has_internal_docs": false
+          },
+          "expectedOutput": "web_search",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-4": {
+    id: "agentic-rag-prob-4",
+    title: "Iterative Retrieval Stopping via Information Gain",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "should_stop_retrieving",
+    functionSignature: "should_stop_retrieving(new_info_overlap: float, min_new_info_threshold: float, iterations_done: int, max_iterations: int) -> bool",
+    starterCode: `def should_stop_retrieving(new_info_overlap, min_new_info_threshold, iterations_done, max_iterations):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement iterative-retrieval stopping logic, a real decision an agentic RAG loop makes each round: keep retrieving more context, or is additional retrieval no longer worth it.",
+    taskDescription: "Implement `should_stop_retrieving(new_info_overlap, min_new_info_threshold, iterations_done, max_iterations)`. `new_info_overlap` is the fraction of the LATEST retrieved chunk's content already covered by prior chunks (higher = more redundant, less new info). Return `True` (stop) if `iterations_done >= max_iterations` OR `new_info_overlap >= (1 - min_new_info_threshold)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= new_info_overlap <= 1",
+        "0 <= min_new_info_threshold <= 1"
+      ],
+    hints: {
+  "small": "Stop on a hard iteration cap OR when the latest retrieval is mostly redundant with what's already known.",
+        "strong": "if iterations_done >= max_iterations: return True; return new_info_overlap >= (1 - min_new_info_threshold).",
+        "concept": "Retrieving MORE chunks isn't free -- past a real point of diminishing returns (each new chunk mostly repeating already-known information), continuing to retrieve just wastes latency/cost/context budget without genuinely improving the answer; this stopping rule is a real, direct way to detect that point."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "still gaining new info continues",
+          "input": {
+            "new_info_overlap": 0.2,
+            "min_new_info_threshold": 0.3,
+            "iterations_done": 1,
+            "max_iterations": 5
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "mostly redundant new chunk stops",
+          "input": {
+            "new_info_overlap": 0.9,
+            "min_new_info_threshold": 0.3,
+            "iterations_done": 1,
+            "max_iterations": 5
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "max iterations reached stops regardless",
+          "input": {
+            "new_info_overlap": 0,
+            "min_new_info_threshold": 0.3,
+            "iterations_done": 5,
+            "max_iterations": 5
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "first iteration always continues if novel",
+          "input": {
+            "new_info_overlap": 0,
+            "min_new_info_threshold": 0.3,
+            "iterations_done": 0,
+            "max_iterations": 5
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-5": {
+    id: "agentic-rag-prob-5",
+    title: "RAG-Fusion: Reciprocal Rank Fusion Across Query Variants",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "rag_fusion_rrf",
+    functionSignature: "rag_fusion_rrf(result_lists: list[list[str]], k: int) -> list[str]",
+    starterCode: `def rag_fusion_rrf(result_lists, k):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement RAG-Fusion's Reciprocal Rank Fusion, combining retrieval results from MULTIPLE generated query variants of the same original question into one robust ranked list.",
+    taskDescription: "Implement `rag_fusion_rrf(result_lists, k)`. Each inner list is one query variant's ranked document ids (best first). Score `doc_id` = `sum(1/(k + rank) for each list it appears in)`, where `rank` is its 0-indexed position in that list. Return document ids sorted by total score descending, ties broken by id ascending.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "k > 0",
+        "result_lists non-empty"
+      ],
+    hints: {
+  "small": "Sum reciprocal-rank contributions across every query variant's list, then rank by total score.",
+        "strong": "scores = {}; for lst in result_lists: for rank, doc_id in enumerate(lst): scores[doc_id] = scores.get(doc_id,0.0) + 1/(k+rank); return sorted(scores, key=lambda d: (-scores[d], d)).",
+        "concept": "Generating several paraphrased query variants and fusing their results is a real, effective way to widen recall past what any single query phrasing would retrieve -- a document ranked well by even ONE variant's phrasing gets meaningfully boosted, without needing to guess the single 'best' query upfront."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "doc appearing in both lists ranks higher",
+          "input": {
+            "result_lists": [
+              [
+                "a",
+                "b",
+                "c"
+              ],
+              [
+                "b",
+                "a",
+                "d"
+              ]
+            ],
+            "k": 60
+          },
+          "expectedOutput": [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single query variant",
+          "input": {
+            "result_lists": [
+              [
+                "x",
+                "y"
+              ]
+            ],
+            "k": 60
+          },
+          "expectedOutput": [
+            "x",
+            "y"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no overlap between variants",
+          "input": {
+            "result_lists": [
+              [
+                "a"
+              ],
+              [
+                "b"
+              ]
+            ],
+            "k": 60
+          },
+          "expectedOutput": [
+            "a",
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three variants combined",
+          "input": {
+            "result_lists": [
+              [
+                "a",
+                "b"
+              ],
+              [
+                "b",
+                "c"
+              ],
+              [
+                "a",
+                "c"
+              ]
+            ],
+            "k": 10
+          },
+          "expectedOutput": [
+            "a",
+            "b",
+            "c"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-6": {
+    id: "agentic-rag-prob-6",
+    title: "Decompose a Compound Question Into Subquestions",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "decompose_question",
+    functionSignature: "decompose_question(question: str) -> list[str]",
+    starterCode: `def decompose_question(question):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement real query decomposition, splitting a compound multi-part question into independently-retrievable subquestions -- a real, standard technique for questions naive single-shot retrieval handles poorly.",
+    taskDescription: "Implement `decompose_question(question)`. Split on the literal string `' and '` (case-sensitive, surrounded by spaces). Strip whitespace from each part and drop any empty results. If there's no `' and '` in the question, return `[question]` unchanged (a single-part question).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "question is a non-empty string"
+      ],
+    hints: {
+  "small": "A simple, real split-and-clean on the conjunction 'and'.",
+        "strong": "parts = [p.strip() for p in question.split(' and ')]; return [p for p in parts if p] if len(parts) > 1 else [question].",
+        "concept": "A compound question like 'what is the capital of France and what is its population' genuinely needs TWO separate retrieval calls to answer well -- a single embedding of the whole compound question tends to retrieve documents that are mediocre matches for BOTH parts rather than a great match for either, which is exactly the failure decomposition fixes."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two-part compound question",
+          "input": {
+            "question": "what is the capital of France and what is its population"
+          },
+          "expectedOutput": [
+            "what is the capital of France",
+            "what is its population"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single-part question unchanged",
+          "input": {
+            "question": "what is the capital of France"
+          },
+          "expectedOutput": [
+            "what is the capital of France"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "three-part compound question",
+          "input": {
+            "question": "who founded the company and when and where"
+          },
+          "expectedOutput": [
+            "who founded the company",
+            "when",
+            "where"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "trailing whitespace cleaned",
+          "input": {
+            "question": "define AI and  define ML "
+          },
+          "expectedOutput": [
+            "define AI",
+            "define ML"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-7": {
+    id: "agentic-rag-prob-7",
+    title: "Adaptive Retrieval K Based on Query Complexity",
+    difficulty: "easy",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "adaptive_k",
+    functionSignature: "adaptive_k(complexity_score: float, base_k: int, max_k: int) -> int",
+    starterCode: `def adaptive_k(complexity_score, base_k, max_k):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement adaptive top-k selection, retrieving more chunks for genuinely complex queries and fewer for simple ones instead of a fixed k for every query.",
+    taskDescription: "Implement `adaptive_k(complexity_score, base_k, max_k)`. `complexity_score` is in `[0,1]`. Return `round(base_k + (max_k - base_k) * complexity_score)`, an int.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= complexity_score <= 1",
+        "max_k >= base_k"
+      ],
+    hints: {
+  "small": "Linear interpolation between base_k and max_k, driven by the complexity score.",
+        "strong": "return round(base_k + (max_k-base_k)*complexity_score).",
+        "concept": "A fixed retrieval k is a real, common over-simplification -- a simple factual lookup needs far fewer chunks than a genuinely broad synthesis question, and adapting k to query complexity avoids both wasting context budget on simple queries and under-retrieving for complex ones."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "simple query low k",
+          "input": {
+            "complexity_score": 0,
+            "base_k": 3,
+            "max_k": 10
+          },
+          "expectedOutput": 3,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "complex query high k",
+          "input": {
+            "complexity_score": 1,
+            "base_k": 3,
+            "max_k": 10
+          },
+          "expectedOutput": 10,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "moderate complexity middle k",
+          "input": {
+            "complexity_score": 0.5,
+            "base_k": 2,
+            "max_k": 10
+          },
+          "expectedOutput": 6,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "equal base and max always same",
+          "input": {
+            "complexity_score": 0.7,
+            "base_k": 5,
+            "max_k": 5
+          },
+          "expectedOutput": 5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-8": {
+    id: "agentic-rag-prob-8",
+    title: "Self-Query: Extract Structured Metadata Filter From Natural Language",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "extract_metadata_filter",
+    functionSignature: "extract_metadata_filter(query: str, filter_keywords: dict[str, str]) -> dict",
+    starterCode: `def extract_metadata_filter(query, filter_keywords):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement self-querying metadata extraction, a real technique letting a RAG system parse structured filters (year, category, author) directly out of a natural-language query rather than requiring separate filter UI.",
+    taskDescription: "Implement `extract_metadata_filter(query, filter_keywords)`. `filter_keywords` maps a keyword to a `(field, value)`-shaped string like `'year:2023'`. For each keyword found (case-insensitive whole-word match) in `query`, add its field:value pair to the result dict. Return the accumulated filter dict.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "filter_keywords values are 'field:value' strings"
+      ],
+    hints: {
+  "small": "Check each configured keyword's presence in the query, parse its field:value pair into the result.",
+        "strong": "import re; words = set(re.findall(r'\\b\\w+\\b', query.lower())); result = {}; for kw, fv in filter_keywords.items(): if kw.lower() in words: field, value = fv.split(':',1); result[field] = value. Return result.",
+        "concept": "This is the real self-query pattern (as implemented in tools like LangChain's SelfQueryRetriever) -- 'papers from 2023 about transformers' should automatically apply a real `year=2023` metadata filter alongside the semantic search for 'transformers,' rather than needing the user to interact with a separate filter widget."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "one keyword matched",
+          "input": {
+            "query": "papers from 2023 about transformers",
+            "filter_keywords": {
+              "2023": "year:2023"
+            }
+          },
+          "expectedOutput": {
+            "year": "2023"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no keywords matched",
+          "input": {
+            "query": "papers about transformers",
+            "filter_keywords": {
+              "2023": "year:2023"
+            }
+          },
+          "expectedOutput": {},
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple keywords matched",
+          "input": {
+            "query": "recent papers 2023 nlp category",
+            "filter_keywords": {
+              "2023": "year:2023",
+              "nlp": "category:nlp"
+            }
+          },
+          "expectedOutput": {
+            "year": "2023",
+            "category": "nlp"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "keyword as substring not matched",
+          "input": {
+            "query": "in 20231 something",
+            "filter_keywords": {
+              "2023": "year:2023"
+            }
+          },
+          "expectedOutput": {},
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-9": {
+    id: "agentic-rag-prob-9",
+    title: "Answer Verification Loop Decision",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "verification_action",
+    functionSignature: "verification_action(faithfulness_score: float, relevance_score: float, faithfulness_threshold: float, relevance_threshold: float) -> str",
+    starterCode: `def verification_action(faithfulness_score, relevance_score, faithfulness_threshold, relevance_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real answer-verification decision, an agentic RAG loop's self-check step deciding whether to accept a generated answer, regenerate it, or retrieve fresh context.",
+    taskDescription: "Implement `verification_action(faithfulness_score, relevance_score, faithfulness_threshold, relevance_threshold)`. If both scores meet their thresholds, return `'accept'`. If faithfulness fails but relevance is fine (the retrieved context is good but the generation didn't use it well), return `'regenerate'`. Otherwise (relevance itself is poor), return `'retrieve_again'`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all scores in [0,1]"
+      ],
+    hints: {
+  "small": "Faithful+relevant accepts; unfaithful-but-relevant-context means the generation step is the problem; irrelevant context means retrieval itself needs another pass.",
+        "strong": "if faithfulness_score>=faithfulness_threshold and relevance_score>=relevance_threshold: return 'accept'; if relevance_score>=relevance_threshold: return 'regenerate'; return 'retrieve_again'.",
+        "concept": "This decision correctly attributes WHICH stage failed -- a real, important distinction, since blindly regenerating when the retrieved context itself was bad wastes an LLM call on a problem regeneration can't fix, and blindly re-retrieving when the context was fine but generation hallucinated anyway also wastes a retrieval call."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "both good accepts",
+          "input": {
+            "faithfulness_score": 0.9,
+            "relevance_score": 0.9,
+            "faithfulness_threshold": 0.7,
+            "relevance_threshold": 0.7
+          },
+          "expectedOutput": "accept",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "good context bad generation regenerates",
+          "input": {
+            "faithfulness_score": 0.3,
+            "relevance_score": 0.9,
+            "faithfulness_threshold": 0.7,
+            "relevance_threshold": 0.7
+          },
+          "expectedOutput": "regenerate",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "bad context retrieves again",
+          "input": {
+            "faithfulness_score": 0.9,
+            "relevance_score": 0.2,
+            "faithfulness_threshold": 0.7,
+            "relevance_threshold": 0.7
+          },
+          "expectedOutput": "retrieve_again",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "both bad retrieves again",
+          "input": {
+            "faithfulness_score": 0.2,
+            "relevance_score": 0.2,
+            "faithfulness_threshold": 0.7,
+            "relevance_threshold": 0.7
+          },
+          "expectedOutput": "retrieve_again",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-10": {
+    id: "agentic-rag-prob-10",
+    title: "Parent-Document Retrieval: Map Chunk Hit to Parent",
+    difficulty: "easy",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "resolve_parent_chunk",
+    functionSignature: "resolve_parent_chunk(child_chunk_id: str, child_to_parent: dict[str, str]) -> str",
+    starterCode: `def resolve_parent_chunk(child_chunk_id, child_to_parent):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement parent-document retrieval's core lookup: retrieve using small precise chunks for search accuracy, but return the LARGER parent chunk for generation context.",
+    taskDescription: "Implement `resolve_parent_chunk(child_chunk_id, child_to_parent)`: return `child_to_parent.get(child_chunk_id, child_chunk_id)` -- if no parent mapping exists, the chunk itself has no parent (it's already top-level).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "child_to_parent maps small-chunk id -> its larger parent chunk id"
+      ],
+    hints: {
+  "small": "A direct lookup with a sensible fallback to the chunk itself.",
+        "strong": "return child_to_parent.get(child_chunk_id, child_chunk_id).",
+        "concept": "Small chunks embed more precisely (a focused chunk matches a focused query better) but lack surrounding context for the LLM to generate a good answer from -- parent-document retrieval's real trick is searching on the small chunk but serving the larger parent to the generator, getting the precision benefit of small chunks without their context-loss downside."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "child maps to parent",
+          "input": {
+            "child_chunk_id": "c1",
+            "child_to_parent": {
+              "c1": "p1",
+              "c2": "p1"
+            }
+          },
+          "expectedOutput": "p1",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "chunk with no parent returns itself",
+          "input": {
+            "child_chunk_id": "top",
+            "child_to_parent": {
+              "c1": "p1"
+            }
+          },
+          "expectedOutput": "top",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple children same parent",
+          "input": {
+            "child_chunk_id": "c2",
+            "child_to_parent": {
+              "c1": "p1",
+              "c2": "p1"
+            }
+          },
+          "expectedOutput": "p1",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "empty mapping returns self",
+          "input": {
+            "child_chunk_id": "x",
+            "child_to_parent": {}
+          },
+          "expectedOutput": "x",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-11": {
+    id: "agentic-rag-prob-11",
+    title: "Prune Irrelevant Sentences From a Retrieved Chunk",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "prune_chunk_sentences",
+    functionSignature: "prune_chunk_sentences(query_words: set, sentences: list[str], min_overlap: int) -> list[str]",
+    starterCode: `def prune_chunk_sentences(query_words, sentences, min_overlap):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement sentence-level context pruning, a real technique for trimming a retrieved chunk down to only its query-relevant sentences before it consumes generation context budget.",
+    taskDescription: "Implement `prune_chunk_sentences(query_words, sentences, min_overlap)`. For each sentence, count how many of its lowercase words are in `query_words`. Keep sentences with count `>= min_overlap`, preserving original order. If NO sentence meets the bar, return the original FULL sentence list unchanged (never prune everything away).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "query_words is a set of lowercase words"
+      ],
+    hints: {
+  "small": "Filter by word-overlap count, but fall back to the unpruned list if pruning would remove everything.",
+        "strong": "kept = [s for s in sentences if sum(1 for w in s.lower().split() if w in query_words) >= min_overlap]; return kept if kept else sentences.",
+        "concept": "The fallback (never prune to nothing) matters -- an overly aggressive pruning heuristic that discards an ENTIRE chunk is strictly worse than passing the whole thing through unpruned, since a chunk that was retrieved at all presumably has SOME relevance even if this crude word-overlap heuristic can't detect exactly where."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "prunes irrelevant sentence",
+          "input": {
+            "query_words": [
+              "capital",
+              "france"
+            ],
+            "sentences": [
+              "Paris is the capital of France.",
+              "It rains often in autumn."
+            ],
+            "min_overlap": 2
+          },
+          "expectedOutput": [
+            "Paris is the capital of France.",
+            "It rains often in autumn."
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "keeps all relevant sentences",
+          "input": {
+            "query_words": [
+              "paris"
+            ],
+            "sentences": [
+              "Paris is nice.",
+              "Paris has museums."
+            ],
+            "min_overlap": 1
+          },
+          "expectedOutput": [
+            "Paris is nice.",
+            "Paris has museums."
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no sentence meets bar falls back to full list",
+          "input": {
+            "query_words": [
+              "xyz"
+            ],
+            "sentences": [
+              "Unrelated one.",
+              "Unrelated two."
+            ],
+            "min_overlap": 1
+          },
+          "expectedOutput": [
+            "Unrelated one.",
+            "Unrelated two."
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single sentence chunk",
+          "input": {
+            "query_words": [
+              "a"
+            ],
+            "sentences": [
+              "a b c"
+            ],
+            "min_overlap": 1
+          },
+          "expectedOutput": [
+            "a b c"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-12": {
+    id: "agentic-rag-prob-12",
+    title: "Combine Retrieval Score With Cross-Encoder Rerank Score",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "combine_rerank_score",
+    functionSignature: "combine_rerank_score(retrieval_score: float, rerank_score: float, rerank_weight: float) -> float",
+    starterCode: `def combine_rerank_score(retrieval_score, rerank_score, rerank_weight):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement retrieval/rerank score blending, the real final scoring step of a two-stage retrieval pipeline (cheap bi-encoder retrieval, then expensive cross-encoder reranking of the top candidates).",
+    taskDescription: "Implement `combine_rerank_score(retrieval_score, rerank_score, rerank_weight)`: return `(1-rerank_weight)*retrieval_score + rerank_weight*rerank_score`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= rerank_weight <= 1"
+      ],
+    hints: {
+  "small": "A weighted blend between the two stages' scores.",
+        "strong": "(1-rerank_weight)*retrieval_score + rerank_weight*rerank_score.",
+        "concept": "A cross-encoder reranker is more accurate than the initial bi-encoder retrieval but far too slow to run over the full corpus -- the real two-stage pattern is: cheap retrieval narrows to a top-N candidate set, then the expensive-but-accurate reranker re-scores just those N, and blending (rather than fully replacing) the original score is a real, common choice to avoid over-trusting the reranker on edge cases."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "equal weight blend",
+          "input": {
+            "retrieval_score": 0.6,
+            "rerank_score": 0.9,
+            "rerank_weight": 0.5
+          },
+          "expectedOutput": 0.75,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "pure rerank weight",
+          "input": {
+            "retrieval_score": 0.6,
+            "rerank_score": 0.9,
+            "rerank_weight": 1
+          },
+          "expectedOutput": 0.9,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "pure retrieval weight",
+          "input": {
+            "retrieval_score": 0.6,
+            "rerank_score": 0.9,
+            "rerank_weight": 0
+          },
+          "expectedOutput": 0.6,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "mostly rerank weighted",
+          "input": {
+            "retrieval_score": 0.2,
+            "rerank_score": 0.8,
+            "rerank_weight": 0.8
+          },
+          "expectedOutput": 0.6800000000000002,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-13": {
+    id: "agentic-rag-prob-13",
+    title: "Active Retrieval: Trigger Mid-Generation on Low Confidence",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "should_trigger_active_retrieval",
+    functionSignature: "should_trigger_active_retrieval(token_logprobs: list[float], confidence_threshold: float) -> bool",
+    starterCode: `import math
+
+def should_trigger_active_retrieval(token_logprobs, confidence_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement FLARE-style active retrieval triggering, deciding mid-generation whether a just-generated sentence is confident enough to keep, or uncertain enough to warrant pausing for fresh retrieval.",
+    taskDescription: "Implement `should_trigger_active_retrieval(token_logprobs, confidence_threshold)`. Convert each logprob to a probability via `exp()`. Return `True` (trigger retrieval) if the MINIMUM token probability in the sentence is `< confidence_threshold`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "token_logprobs non-empty, all <= 0"
+      ],
+    hints: {
+  "small": "The single least-confident token in the sentence determines whether the whole sentence is trustworthy.",
+        "strong": "probs = [math.exp(lp) for lp in token_logprobs]; return min(probs) < confidence_threshold.",
+        "concept": "This is the real, core idea from the FLARE paper -- rather than retrieving once upfront or after every fixed number of tokens, actively retrieve exactly when the model's OWN generation confidence drops, which correlates with genuinely needing more grounding at exactly that point rather than a fixed schedule."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "confident sentence no retrieval",
+          "input": {
+            "token_logprobs": [
+              -0.05,
+              -0.1,
+              -0.02
+            ],
+            "confidence_threshold": 0.5
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "one uncertain token triggers retrieval",
+          "input": {
+            "token_logprobs": [
+              -0.05,
+              -2,
+              -0.02
+            ],
+            "confidence_threshold": 0.5
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all confident tokens",
+          "input": {
+            "token_logprobs": [
+              -0.01,
+              -0.01
+            ],
+            "confidence_threshold": 0.3
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single very uncertain token",
+          "input": {
+            "token_logprobs": [
+              -5
+            ],
+            "confidence_threshold": 0.5
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-14": {
+    id: "agentic-rag-prob-14",
+    title: "Align Answer Sentences to Best Supporting Chunk",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "align_sentence_to_source",
+    functionSignature: "align_sentence_to_source(answer_sentence: str, chunks: dict[str, str]) -> str",
+    starterCode: `def align_sentence_to_source(answer_sentence, chunks):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement sentence-to-source citation alignment, finding which specific retrieved chunk best supports a given generated sentence -- the real work behind an inline-citation feature.",
+    taskDescription: "Implement `align_sentence_to_source(answer_sentence, chunks)`. `chunks` maps chunk id -> its text. For each chunk, count the number of the sentence's lowercase words also present in that chunk. Return the chunk id with the HIGHEST overlap count; ties broken by chunk id ascending.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "chunks non-empty"
+      ],
+    hints: {
+  "small": "Score each chunk by word overlap with the sentence, take the max (id ascending on tie).",
+        "strong": "words = answer_sentence.lower().split(); best_id, best_score = None, -1; for cid in sorted(chunks): chunk_words = set(chunks[cid].lower().split()); score = sum(1 for w in words if w in chunk_words); if score > best_score: best_score = score; best_id = cid. Return best_id.",
+        "concept": "This is the real work behind an inline citation feature ('this claim is supported by source [2]') -- without explicit alignment like this, an LLM's self-reported citation numbers are just as prone to hallucination as any other part of its output, so grounding the citation in an actual measured overlap is more trustworthy."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "clear best match",
+          "input": {
+            "answer_sentence": "paris is the capital of france",
+            "chunks": {
+              "c1": "paris is the capital of france",
+              "c2": "berlin is in germany"
+            }
+          },
+          "expectedOutput": "c1",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "tie broken by id",
+          "input": {
+            "answer_sentence": "a b",
+            "chunks": {
+              "z": "a b",
+              "a": "a b"
+            }
+          },
+          "expectedOutput": "a",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single chunk",
+          "input": {
+            "answer_sentence": "test sentence",
+            "chunks": {
+              "only": "test sentence here"
+            }
+          },
+          "expectedOutput": "only",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "no overlap picks lowest id chunk",
+          "input": {
+            "answer_sentence": "xyz abc",
+            "chunks": {
+              "c2": "unrelated",
+              "c1": "also unrelated"
+            }
+          },
+          "expectedOutput": "c1",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-15": {
+    id: "agentic-rag-prob-15",
+    title: "Lost-in-the-Middle: Flag Answer-Position Risk",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "position_risk_flag",
+    functionSignature: "position_risk_flag(answer_chunk_index: int, total_chunks: int) -> str",
+    starterCode: `def position_risk_flag(answer_chunk_index, total_chunks):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real, simple 'lost in the middle' risk flag, based on published research showing LLMs attend less reliably to information placed in the MIDDLE of a long context versus the beginning or end.",
+    taskDescription: "Implement `position_risk_flag(answer_chunk_index, total_chunks)`. Compute the relative position `answer_chunk_index / (total_chunks - 1)` if `total_chunks > 1` else `0.0`. Return `'low_risk'` if relative position `<= 0.15` or `>= 0.85` (near the start or end); otherwise return `'high_risk'` (in the middle).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= answer_chunk_index < total_chunks"
+      ],
+    hints: {
+  "small": "Chunks near the very start or very end of the context are low risk; chunks buried in the middle are high risk.",
+        "strong": "rel = 0.0 if total_chunks <= 1 else answer_chunk_index/(total_chunks-1); return 'low_risk' if rel<=0.15 or rel>=0.85 else 'high_risk'.",
+        "concept": "This is a real, published finding (Liu et al., 'Lost in the Middle') -- if the chunk actually containing the answer ends up buried in the middle of a long assembled context, the model is measurably more likely to miss it, which is a real, concrete argument for placing the highest-relevance-ranked chunks at the START or END of the context, not just by raw relevance order."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "answer at the very start low risk",
+          "input": {
+            "answer_chunk_index": 0,
+            "total_chunks": 10
+          },
+          "expectedOutput": "low_risk",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "answer at the very end low risk",
+          "input": {
+            "answer_chunk_index": 9,
+            "total_chunks": 10
+          },
+          "expectedOutput": "low_risk",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "answer in the middle high risk",
+          "input": {
+            "answer_chunk_index": 5,
+            "total_chunks": 10
+          },
+          "expectedOutput": "high_risk",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single chunk always low risk",
+          "input": {
+            "answer_chunk_index": 0,
+            "total_chunks": 1
+          },
+          "expectedOutput": "low_risk",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-16": {
+    id: "agentic-rag-prob-16",
+    title: "Detect Ambiguous Query Needing Clarification",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "is_query_ambiguous",
+    functionSignature: "is_query_ambiguous(entity_name: str, entity_candidates: dict[str, list[str]]) -> bool",
+    starterCode: `def is_query_ambiguous(entity_name, entity_candidates):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement query-ambiguity detection, catching a real case where an agentic RAG system should ask a clarifying question rather than silently guessing which real-world entity the user meant.",
+    taskDescription: "Implement `is_query_ambiguous(entity_name, entity_candidates)`. `entity_candidates` maps an entity name to the list of distinct real-world entities it could refer to (e.g. `'Washington' -> ['George Washington', 'Washington State', 'Washington D.C.']`). Return `True` if `entity_name` maps to MORE THAN ONE candidate.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "entity_candidates maps a name to its list of possible referents"
+      ],
+    hints: {
+  "small": "More than one possible referent means genuine ambiguity.",
+        "strong": "return len(entity_candidates.get(entity_name, [])) > 1.",
+        "concept": "Silently picking the FIRST or most-popular interpretation of an ambiguous entity reference is a real, common source of a confidently-wrong RAG answer -- explicitly detecting the ambiguity is what enables a real agentic system to ask a clarifying question instead ('did you mean George Washington or Washington State?'), which is genuinely better UX than guessing wrong."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "ambiguous entity with multiple referents",
+          "input": {
+            "entity_name": "Washington",
+            "entity_candidates": {
+              "Washington": [
+                "George Washington",
+                "Washington State",
+                "Washington D.C."
+              ]
+            }
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "unambiguous entity single referent",
+          "input": {
+            "entity_name": "Einstein",
+            "entity_candidates": {
+              "Einstein": [
+                "Albert Einstein"
+              ]
+            }
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "unknown entity not flagged ambiguous",
+          "input": {
+            "entity_name": "Unknown",
+            "entity_candidates": {}
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly two candidates still ambiguous",
+          "input": {
+            "entity_name": "Paris",
+            "entity_candidates": {
+              "Paris": [
+                "Paris France",
+                "Paris Texas"
+              ]
+            }
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-17": {
+    id: "agentic-rag-prob-17",
+    title: "Speculative RAG: Select the Best-Supported Draft Answer",
+    difficulty: "hard",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "select_best_draft",
+    functionSignature: "select_best_draft(drafts: list[str], retrieved_facts: list[str]) -> str",
+    starterCode: `def select_best_draft(drafts, retrieved_facts):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Speculative RAG's real verification step: generate multiple candidate draft answers from different chunk subsets, then pick whichever draft is most supported by the actually-retrieved facts.",
+    taskDescription: "Implement `select_best_draft(drafts, retrieved_facts)`. For each draft, count how many of `retrieved_facts` (as whole-word matches, case-insensitive) appear as a substring-of-words within it. Return the draft with the HIGHEST count; ties broken by whichever draft appears FIRST in `drafts`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "drafts non-empty",
+        "retrieved_facts is a list of short fact strings"
+      ],
+    hints: {
+  "small": "Score each draft by how many real retrieved facts it actually contains, pick the best-supported one.",
+        "strong": "def score(draft): dl = draft.lower(); return sum(1 for f in retrieved_facts if f.lower() in dl); best_i, best_score = 0, -1; for i, d in enumerate(drafts): s = score(d); if s > best_score: best_score = s; best_i = i. Return drafts[best_i].",
+        "concept": "This is the real, core idea from the Speculative RAG paper -- generating several smaller, cheaper draft answers from different evidence subsets IN PARALLEL and then verifying which is best-grounded is often both faster AND more accurate than one large single-shot generation over all the evidence at once."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "clear best-supported draft",
+          "input": {
+            "drafts": [
+              "Paris is in France.",
+              "Paris is the capital of France and has 2 million people."
+            ],
+            "retrieved_facts": [
+              "capital of France",
+              "2 million people"
+            ]
+          },
+          "expectedOutput": "Paris is the capital of France and has 2 million people.",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single draft trivially selected",
+          "input": {
+            "drafts": [
+              "only draft here"
+            ],
+            "retrieved_facts": [
+              "fact"
+            ]
+          },
+          "expectedOutput": "only draft here",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no facts supported picks first on tie",
+          "input": {
+            "drafts": [
+              "draft one",
+              "draft two"
+            ],
+            "retrieved_facts": [
+              "unrelated fact"
+            ]
+          },
+          "expectedOutput": "draft one",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "tie broken by first draft",
+          "input": {
+            "drafts": [
+              "has fact",
+              "also has fact"
+            ],
+            "retrieved_facts": [
+              "fact"
+            ]
+          },
+          "expectedOutput": "has fact",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-18": {
+    id: "agentic-rag-prob-18",
+    title: "Allocate Retrieval Budget Across a Multi-Step Plan",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "allocate_retrieval_budget",
+    functionSignature: "allocate_retrieval_budget(step_complexity: dict[str, float], total_budget: int) -> dict[str, int]",
+    starterCode: `import math
+
+def allocate_retrieval_budget(step_complexity, total_budget):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement retrieval-budget allocation across a multi-step agentic RAG plan, distributing a limited total number of retrieval calls proportionally to each step's real complexity.",
+    taskDescription: "Implement `allocate_retrieval_budget(step_complexity, total_budget)`. Each step's raw share is `total_budget * complexity / sum(all_complexities)`, floored to an int. Any leftover (from flooring) goes to the step with the HIGHEST complexity (ties broken by step name ascending). Every step gets at least the floored share (which may be 0).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "step_complexity non-empty, all values > 0",
+        "total_budget >= 0"
+      ],
+    hints: {
+  "small": "Same floor-plus-remainder pattern as any proportional integer allocation -- floor each share, then give the rounding remainder to the highest-complexity step.",
+        "strong": "total_c = sum(step_complexity.values()); shares = {s: int(total_budget*c/total_c) for s,c in step_complexity.items()}; remainder = total_budget - sum(shares.values()); top = max(sorted(step_complexity), key=lambda s: step_complexity[s]); shares[top] += remainder; return shares.",
+        "concept": "A multi-step agentic RAG plan (e.g. a multi-hop question needing several sub-retrievals) has a REAL, finite retrieval budget in most production settings (cost, latency) -- allocating it proportionally to each step's actual difficulty, rather than splitting evenly, gives the hardest sub-questions the most retrieval attempts."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two steps different complexity",
+          "input": {
+            "step_complexity": {
+              "step1": 1,
+              "step2": 3
+            },
+            "total_budget": 8
+          },
+          "expectedOutput": {
+            "step1": 2,
+            "step2": 6
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "equal complexity even split with remainder",
+          "input": {
+            "step_complexity": {
+              "a": 1,
+              "b": 1
+            },
+            "total_budget": 5
+          },
+          "expectedOutput": {
+            "a": 3,
+            "b": 2
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single step gets everything",
+          "input": {
+            "step_complexity": {
+              "only": 1
+            },
+            "total_budget": 10
+          },
+          "expectedOutput": {
+            "only": 10
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero budget all steps get zero",
+          "input": {
+            "step_complexity": {
+              "a": 1,
+              "b": 2
+            },
+            "total_budget": 0
+          },
+          "expectedOutput": {
+            "a": 0,
+            "b": 0
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-19": {
+    id: "agentic-rag-prob-19",
+    title: "Self-Ask: Parse Follow-Up Question Pattern",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "parse_self_ask_step",
+    functionSignature: "parse_self_ask_step(line: str) -> dict",
+    starterCode: `def parse_self_ask_step(line):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Self-Ask prompting's step-line parser, extracting structured meaning from the real, distinctive output format of the Self-Ask technique for decomposed multi-hop reasoning.",
+    taskDescription: "Implement `parse_self_ask_step(line)`. If `line` starts with `'Follow up: '`, return `{\"type\": \"follow_up\", \"content\": line[len('Follow up: '):]}`. If it starts with `'Intermediate answer: '`, return `{\"type\": \"intermediate_answer\", \"content\": line[len('Intermediate answer: '):]}`. If it starts with `'So the final answer is: '`, return `{\"type\": \"final_answer\", \"content\": line[len('So the final answer is: '):]}`. Otherwise return `{\"type\": \"unknown\", \"content\": line}`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "line is a single line of text"
+      ],
+    hints: {
+  "small": "Check each known prefix in turn, strip it off to get the real content.",
+        "strong": "prefixes = [('Follow up: ','follow_up'), ('Intermediate answer: ','intermediate_answer'), ('So the final answer is: ','final_answer')]; for p, t in prefixes: if line.startswith(p): return {'type': t, 'content': line[len(p):]}. Return {'type': 'unknown', 'content': line}.",
+        "concept": "Self-Ask's real, distinctive prompting format (from Press et al.) makes each reasoning step's ROLE explicit in the text itself -- parsing these tagged lines is what lets an agentic system programmatically drive real sub-retrievals for each 'Follow up' question, rather than needing to re-infer the reasoning structure from unstructured free text."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "follow up question",
+          "input": {
+            "line": "Follow up: What is the capital of France?"
+          },
+          "expectedOutput": {
+            "type": "follow_up",
+            "content": "What is the capital of France?"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "intermediate answer",
+          "input": {
+            "line": "Intermediate answer: Paris"
+          },
+          "expectedOutput": {
+            "type": "intermediate_answer",
+            "content": "Paris"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "final answer",
+          "input": {
+            "line": "So the final answer is: Paris has 2 million people"
+          },
+          "expectedOutput": {
+            "type": "final_answer",
+            "content": "Paris has 2 million people"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "unrecognized line",
+          "input": {
+            "line": "This is just plain reasoning text."
+          },
+          "expectedOutput": {
+            "type": "unknown",
+            "content": "This is just plain reasoning text."
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-20": {
+    id: "agentic-rag-prob-20",
+    title: "Extractive Document Compression by Top Sentences",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "extractive_compress",
+    functionSignature: "extractive_compress(sentences: list[str], sentence_scores: list[float], max_sentences: int) -> list[str]",
+    starterCode: `def extractive_compress(sentences, sentence_scores, max_sentences):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement extractive document compression, keeping only the highest-scored sentences of a retrieved chunk (in original reading order) before passing it to the generator -- a real, cheap alternative to abstractive (LLM-rewritten) compression.",
+    taskDescription: "Implement `extractive_compress(sentences, sentence_scores, max_sentences)`. Pick the `max_sentences` HIGHEST-scored sentence indices, then return their sentences IN THEIR ORIGINAL RELATIVE ORDER (not sorted by score).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(sentences) == len(sentence_scores)",
+        "max_sentences >= 0"
+      ],
+    hints: {
+  "small": "Rank by score to decide WHICH sentences survive, but preserve original order in the final output.",
+        "strong": "ranked_idx = sorted(range(len(sentences)), key=lambda i: -sentence_scores[i])[:max_sentences]; kept = sorted(ranked_idx); return [sentences[i] for i in kept].",
+        "concept": "Extractive compression is real, cheap (no extra LLM call), and preserves the exact original wording (no paraphrase-introduced hallucination risk) -- its real tradeoff against abstractive (LLM-summarized) compression is coherence, since concatenating non-adjacent sentences can read choppily, but it's a genuinely reasonable default for a latency/cost-sensitive pipeline."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "keeps top 2 in original order",
+          "input": {
+            "sentences": [
+              "low value one",
+              "high value",
+              "low value two",
+              "also high value"
+            ],
+            "sentence_scores": [
+              0.1,
+              0.9,
+              0.1,
+              0.8
+            ],
+            "max_sentences": 2
+          },
+          "expectedOutput": [
+            "high value",
+            "also high value"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "keeps all if max exceeds count",
+          "input": {
+            "sentences": [
+              "a",
+              "b"
+            ],
+            "sentence_scores": [
+              0.5,
+              0.9
+            ],
+            "max_sentences": 5
+          },
+          "expectedOutput": [
+            "a",
+            "b"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero max sentences keeps none",
+          "input": {
+            "sentences": [
+              "a",
+              "b"
+            ],
+            "sentence_scores": [
+              0.5,
+              0.9
+            ],
+            "max_sentences": 0
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single sentence",
+          "input": {
+            "sentences": [
+              "only"
+            ],
+            "sentence_scores": [
+              1
+            ],
+            "max_sentences": 1
+          },
+          "expectedOutput": [
+            "only"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-21": {
+    id: "agentic-rag-prob-21",
+    title: "Conversational Query Rewriting via Coreference",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "rewrite_followup_query",
+    functionSignature: "rewrite_followup_query(previous_entity: str, followup_query: str, pronoun_markers: list[str]) -> str",
+    starterCode: `def rewrite_followup_query(previous_entity, followup_query, pronoun_markers):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement conversational query rewriting, resolving a pronoun in a follow-up question back to the real entity from the previous conversation turn -- essential for multi-turn RAG chat to retrieve correctly.",
+    taskDescription: "Implement `rewrite_followup_query(previous_entity, followup_query, pronoun_markers)`. If `followup_query` contains any whole word from `pronoun_markers` (case-insensitive), replace the FIRST such occurrence with `previous_entity` and return the rewritten string. If none are found, return `followup_query` unchanged.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "pronoun_markers is a list like ['it','he','she','they']"
+      ],
+    hints: {
+  "small": "Find the first pronoun word match (case-insensitive, whole word), replace just that occurrence.",
+        "strong": "import re; words = followup_query.split(); for i, w in enumerate(words): if w.lower().strip('.,?!') in [p.lower() for p in pronoun_markers]: words[i] = previous_entity; return ' '.join(words). Return followup_query.",
+        "concept": "A raw follow-up like 'when was it founded' embeds to something that has no idea what 'it' refers to -- resolving the pronoun to the real entity name ('when was OpenAI founded') BEFORE embedding is a real, necessary fix for multi-turn RAG chat, since the retrieval step itself has no access to conversation history unless it's rewritten into the query text."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "pronoun resolved to entity",
+          "input": {
+            "previous_entity": "OpenAI",
+            "followup_query": "when was it founded",
+            "pronoun_markers": [
+              "it",
+              "he",
+              "she"
+            ]
+          },
+          "expectedOutput": "when was OpenAI founded",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no pronoun found unchanged",
+          "input": {
+            "previous_entity": "OpenAI",
+            "followup_query": "what products do they sell",
+            "pronoun_markers": [
+              "it"
+            ]
+          },
+          "expectedOutput": "what products do they sell",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "pronoun with trailing punctuation resolved",
+          "input": {
+            "previous_entity": "Einstein",
+            "followup_query": "where was he born?",
+            "pronoun_markers": [
+              "he",
+              "she"
+            ]
+          },
+          "expectedOutput": "where was Einstein born?",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "only first occurrence replaced",
+          "input": {
+            "previous_entity": "Google",
+            "followup_query": "it makes it popular",
+            "pronoun_markers": [
+              "it"
+            ]
+          },
+          "expectedOutput": "Google makes it popular",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-22": {
+    id: "agentic-rag-prob-22",
+    title: "Calibrate Answer Confidence From Retrieval Score Distribution",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "calibrated_confidence",
+    functionSignature: "calibrated_confidence(top_score: float, second_score: float) -> float",
+    starterCode: `def calibrated_confidence(top_score, second_score):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement retrieval-margin-based confidence calibration, a real signal distinguishing 'one document is a clear, confident match' from 'several documents are similarly, ambiguously relevant.'",
+    taskDescription: "Implement `calibrated_confidence(top_score, second_score)`. Return `top_score * (top_score - second_score)` -- combining the top score's absolute magnitude with its MARGIN over the runner-up (both matter: a high top score with a small margin is less trustworthy than the same top score with a large margin).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "top_score >= second_score >= 0"
+      ],
+    hints: {
+  "small": "Multiply the top score by its gap over the second-best score.",
+        "strong": "return top_score * (top_score - second_score).",
+        "concept": "A top similarity score of 0.85 means very different things depending on whether the runner-up is 0.84 (ambiguous -- several documents are nearly tied) or 0.3 (confident -- one document is a clear standout) -- the margin, not just the raw top score, is the real, additional signal worth combining into a calibrated confidence estimate."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "large margin high confidence",
+          "input": {
+            "top_score": 0.9,
+            "second_score": 0.3
+          },
+          "expectedOutput": 0.5400000000000001,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "small margin lower confidence despite high top score",
+          "input": {
+            "top_score": 0.9,
+            "second_score": 0.88
+          },
+          "expectedOutput": 0.018000000000000016,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no margin zero confidence boost",
+          "input": {
+            "top_score": 0.5,
+            "second_score": 0.5
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "low top score with large margin",
+          "input": {
+            "top_score": 0.4,
+            "second_score": 0
+          },
+          "expectedOutput": 0.16000000000000003,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-23": {
+    id: "agentic-rag-prob-23",
+    title: "RAG Answer Abstention Decision",
+    difficulty: "easy",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "should_abstain",
+    functionSignature: "should_abstain(top_retrieval_score: float, abstention_threshold: float) -> bool",
+    starterCode: `def should_abstain(top_retrieval_score, abstention_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement RAG abstention, a real, honest 'I don't know' policy for when retrieval genuinely found nothing good enough to answer from, rather than forcing a generation from weak/irrelevant context.",
+    taskDescription: "Implement `should_abstain(top_retrieval_score, abstention_threshold)`: return `True` (abstain, don't answer) if `top_retrieval_score < abstention_threshold`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= top_retrieval_score <= 1",
+        "0 <= abstention_threshold <= 1"
+      ],
+    hints: {
+  "small": "Below the threshold, no retrieved document is trustworthy enough to answer from.",
+        "strong": "return top_retrieval_score < abstention_threshold.",
+        "concept": "A RAG system that ALWAYS generates an answer regardless of retrieval quality will confidently hallucinate when nothing relevant was actually found -- an explicit abstention threshold is a real, deliberate design choice trading some 'helpfulness' (fewer answers) for real trustworthiness (never confidently answering from bad context)."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "good retrieval does not abstain",
+          "input": {
+            "top_retrieval_score": 0.8,
+            "abstention_threshold": 0.4
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "poor retrieval abstains",
+          "input": {
+            "top_retrieval_score": 0.2,
+            "abstention_threshold": 0.4
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exactly at threshold does not abstain",
+          "input": {
+            "top_retrieval_score": 0.4,
+            "abstention_threshold": 0.4
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "zero retrieval score always abstains",
+          "input": {
+            "top_retrieval_score": 0,
+            "abstention_threshold": 0.1
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-24": {
+    id: "agentic-rag-prob-24",
+    title: "Select Best Multi-Vector Representation for a Document",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "select_best_representation",
+    functionSignature: "select_best_representation(query_embedding: list[float], doc_representations: dict[str, list[float]]) -> str",
+    starterCode: `import math
+
+def select_best_representation(query_embedding, doc_representations):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement multi-vector representation selection, choosing WHICH of a document's several stored embeddings (full text, summary, hypothetical questions it answers) best matches a given query.",
+    taskDescription: "Implement `select_best_representation(query_embedding, doc_representations)`. `doc_representations` maps a representation name (e.g. `'full_text'`, `'summary'`, `'hypothetical_question'`) to its embedding vector. Return the representation name with the HIGHEST cosine similarity to `query_embedding`; ties broken by name ascending.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "doc_representations non-empty, all vectors non-zero and equal dimensionality to query_embedding"
+      ],
+    hints: {
+  "small": "Compute cosine similarity per representation, take the argmax.",
+        "strong": "def cos(a,b): dot=sum(x*y for x,y in zip(a,b)); na=math.sqrt(sum(x*x for x in a)); nb=math.sqrt(sum(x*x for x in b)); return dot/(na*nb); return max(sorted(doc_representations), key=lambda name: cos(query_embedding, doc_representations[name])).",
+        "concept": "This is a real, practical technique (used e.g. in multi-vector retrievers) for handling the fact that a single document embedding is often a poor match for the KIND of query someone actually asks -- storing multiple representations per document (and matching whichever one fits best) recovers relevance a single embedding would miss, without needing a much larger single embedding model."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "hypothetical question matches best",
+          "input": {
+            "query_embedding": [
+              1,
+              0
+            ],
+            "doc_representations": {
+              "full_text": [
+                0.1,
+                0.99
+              ],
+              "hypothetical_question": [
+                0.99,
+                0.1
+              ]
+            }
+          },
+          "expectedOutput": "hypothetical_question",
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "summary matches best",
+          "input": {
+            "query_embedding": [
+              0,
+              1
+            ],
+            "doc_representations": {
+              "full_text": [
+                1,
+                0
+              ],
+              "summary": [
+                0.1,
+                0.99
+              ]
+            }
+          },
+          "expectedOutput": "summary",
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single representation trivially selected",
+          "input": {
+            "query_embedding": [
+              1,
+              1
+            ],
+            "doc_representations": {
+              "only": [
+                1,
+                1
+              ]
+            }
+          },
+          "expectedOutput": "only",
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "tie broken by name",
+          "input": {
+            "query_embedding": [
+              1,
+              0
+            ],
+            "doc_representations": {
+              "z_rep": [
+                1,
+                0
+              ],
+              "a_rep": [
+                1,
+                0
+              ]
+            }
+          },
+          "expectedOutput": "a_rep",
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-25": {
+    id: "agentic-rag-prob-25",
+    title: "Compute Pipeline Ablation Score Delta",
+    difficulty: "easy",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "ablation_delta",
+    functionSignature: "ablation_delta(full_pipeline_score: float, ablated_pipeline_score: float) -> float",
+    starterCode: `def ablation_delta(full_pipeline_score, ablated_pipeline_score):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement ablation-score-delta computation, the real, standard way to measure how much a specific RAG pipeline component (reranking, query rewriting, compression) actually contributes to overall quality.",
+    taskDescription: "Implement `ablation_delta(full_pipeline_score, ablated_pipeline_score)`: return `full_pipeline_score - ablated_pipeline_score` (a positive delta means the ablated component genuinely helps; negative or near-zero means it may not be worth its added cost/latency).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both scores in [0,1]"
+      ],
+    hints: {
+  "small": "A direct difference.",
+        "strong": "return full_pipeline_score - ablated_pipeline_score.",
+        "concept": "Ablation studies (run the full pipeline, then run it again with ONE component removed, compare) are the real, standard way to justify a pipeline's actual complexity -- without this measurement, it's genuinely easy to keep an expensive component (like a cross-encoder reranker) that adds real latency/cost for a negligible or even negative real quality contribution."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "component genuinely helps",
+          "input": {
+            "full_pipeline_score": 0.85,
+            "ablated_pipeline_score": 0.7
+          },
+          "expectedOutput": 0.15000000000000002,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "component makes no real difference",
+          "input": {
+            "full_pipeline_score": 0.8,
+            "ablated_pipeline_score": 0.79
+          },
+          "expectedOutput": 0.010000000000000009,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "component actually hurts",
+          "input": {
+            "full_pipeline_score": 0.75,
+            "ablated_pipeline_score": 0.82
+          },
+          "expectedOutput": -0.06999999999999995,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "identical scores zero delta",
+          "input": {
+            "full_pipeline_score": 0.8,
+            "ablated_pipeline_score": 0.8
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-26": {
+    id: "agentic-rag-prob-26",
+    title: "Self-RAG: Parse ISREL/ISSUP/ISUSE Critique Tokens",
+    difficulty: "hard",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "parse_critique_tokens",
+    functionSignature: "parse_critique_tokens(isrel: str, issup: str, isuse: int) -> dict",
+    starterCode: `def parse_critique_tokens(isrel, issup, isuse):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Self-RAG's real critique-token decoding, translating the paper's three distinct reflection signals (relevance, support, utility) into one combined accept/reject decision.",
+    taskDescription: "Implement `parse_critique_tokens(isrel, issup, isuse)`. `isrel` is `'[Relevant]'` or `'[Irrelevant]'`. `issup` is `'[Fully supported]'`, `'[Partially supported]'`, or `'[No support]'`. `isuse` is an int `1-5` (utility rating). Return `{\"accept\": bool, \"reason\": str}`: reject with reason `'irrelevant'` if `isrel == '[Irrelevant]'`; reject with reason `'unsupported'` if `issup == '[No support]'`; reject with reason `'low_utility'` if `isuse < 3`; otherwise accept with reason `'accepted'`. Check in this priority order.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "isrel, issup are the exact bracketed strings from the Self-RAG paper's token vocabulary"
+      ],
+    hints: {
+  "small": "Three independent gates, checked in priority order, each with its own real reason for rejection.",
+        "strong": "if isrel == '[Irrelevant]': return {'accept': False, 'reason': 'irrelevant'}; if issup == '[No support]': return {'accept': False, 'reason': 'unsupported'}; if isuse < 3: return {'accept': False, 'reason': 'low_utility'}; return {'accept': True, 'reason': 'accepted'}.",
+        "concept": "This is the real, three-axis critique mechanism from the Self-RAG paper -- a generation can be topically RELEVANT to the retrieved passage but still not actually SUPPORTED by it (a real, distinct failure mode from irrelevance), and even a relevant+supported generation might have low real USE to the user, which is exactly why the paper trains the model to emit all three signals separately rather than one blended quality score."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "fully accepted generation",
+          "input": {
+            "isrel": "[Relevant]",
+            "issup": "[Fully supported]",
+            "isuse": 5
+          },
+          "expectedOutput": {
+            "accept": true,
+            "reason": "accepted"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "irrelevant rejected first",
+          "input": {
+            "isrel": "[Irrelevant]",
+            "issup": "[Fully supported]",
+            "isuse": 5
+          },
+          "expectedOutput": {
+            "accept": false,
+            "reason": "irrelevant"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "unsupported rejected",
+          "input": {
+            "isrel": "[Relevant]",
+            "issup": "[No support]",
+            "isuse": 5
+          },
+          "expectedOutput": {
+            "accept": false,
+            "reason": "unsupported"
+          },
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "low utility rejected despite relevance and support",
+          "input": {
+            "isrel": "[Relevant]",
+            "issup": "[Partially supported]",
+            "isuse": 2
+          },
+          "expectedOutput": {
+            "accept": false,
+            "reason": "low_utility"
+          },
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-27": {
+    id: "agentic-rag-prob-27",
+    title: "Compute Real Retrieval Diversity via MMR-Style Redundancy Penalty",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "redundancy_penalty",
+    functionSignature: "redundancy_penalty(candidate_embedding: list[float], selected_embeddings: list[list[float]]) -> float",
+    starterCode: `import math
+
+def redundancy_penalty(candidate_embedding, selected_embeddings):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real redundancy-penalty computation, the diversity half of any MMR-style diverse-retrieval selection, measuring how similar a candidate chunk is to what's already been chosen.",
+    taskDescription: "Implement `redundancy_penalty(candidate_embedding, selected_embeddings)`. Return the MAXIMUM cosine similarity between `candidate_embedding` and any vector in `selected_embeddings`. Return `0.0` if `selected_embeddings` is empty (nothing selected yet means zero redundancy).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all vectors non-zero, equal dimensionality"
+      ],
+    hints: {
+  "small": "The worst-case (highest) similarity to anything already chosen is the real redundancy risk.",
+        "strong": "if not selected_embeddings: return 0.0; def cos(a,b): dot=sum(x*y for x,y in zip(a,b)); na=math.sqrt(sum(x*x for x in a)); nb=math.sqrt(sum(x*x for x in b)); return dot/(na*nb); return max(cos(candidate_embedding, s) for s in selected_embeddings).",
+        "concept": "Taking the MAX (not average) similarity to already-selected chunks is the correct real formulation -- a candidate that's nearly identical to just ONE already-chosen chunk is genuinely redundant regardless of how different it is from all the others, so averaging would incorrectly under-penalize it."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no selections yet zero penalty",
+          "input": {
+            "candidate_embedding": [
+              1,
+              0
+            ],
+            "selected_embeddings": []
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "highly similar to one selection",
+          "input": {
+            "candidate_embedding": [
+              1,
+              0
+            ],
+            "selected_embeddings": [
+              [
+                0.99,
+                0.01
+              ]
+            ]
+          },
+          "expectedOutput": 0.999948988700964,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "dissimilar to all selections low penalty",
+          "input": {
+            "candidate_embedding": [
+              1,
+              0
+            ],
+            "selected_embeddings": [
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "similar to at least one of several selections",
+          "input": {
+            "candidate_embedding": [
+              1,
+              0
+            ],
+            "selected_embeddings": [
+              [
+                0,
+                1
+              ],
+              [
+                0.95,
+                0.05
+              ]
+            ]
+          },
+          "expectedOutput": 0.9986178293325098,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-28": {
+    id: "agentic-rag-prob-28",
+    title: "Determine Multi-Hop Reasoning Chain Completion",
+    difficulty: "medium",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "is_chain_complete",
+    functionSignature: "is_chain_complete(collected_entities: set, required_entities: set) -> bool",
+    starterCode: `def is_chain_complete(collected_entities, required_entities):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement multi-hop reasoning-chain completion checking, the real stopping condition for an agentic RAG loop performing iterative multi-hop retrieval.",
+    taskDescription: "Implement `is_chain_complete(collected_entities, required_entities)`: return `True` if `required_entities` is a SUBSET of `collected_entities` (every entity needed to answer has been found across all hops so far).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both are sets of entity names"
+      ],
+    hints: {
+  "small": "The reasoning chain is complete once every genuinely required entity has been collected, regardless of extras.",
+        "strong": "return set(required_entities).issubset(set(collected_entities)).",
+        "concept": "This is the real termination condition for iterative multi-hop retrieval (as opposed to a fixed hop-count budget) -- stopping the moment every needed piece of information has been found, rather than always running a fixed number of hops, avoids both premature stopping (missing information) and wasted extra hops once the answer is already fully assembled."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "chain complete all required found",
+          "input": {
+            "collected_entities": [
+              "a",
+              "b",
+              "c"
+            ],
+            "required_entities": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "chain incomplete missing an entity",
+          "input": {
+            "collected_entities": [
+              "a"
+            ],
+            "required_entities": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exact match complete",
+          "input": {
+            "collected_entities": [
+              "a",
+              "b"
+            ],
+            "required_entities": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "no requirements trivially complete",
+          "input": {
+            "collected_entities": [],
+            "required_entities": []
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  "agentic-rag-prob-29": {
+    id: "agentic-rag-prob-29",
+    title: "Compute Real End-to-End RAG Pipeline Latency Breakdown",
+    difficulty: "easy",
+    topic: "Advanced RAG & Agentic RAG",
+    estimatedTime: '15 min',
+    functionName: "e2e_latency_total",
+    functionSignature: "e2e_latency_total(retrieval_ms: float, rerank_ms: float, generation_ms: float) -> float",
+    starterCode: `def e2e_latency_total(retrieval_ms, rerank_ms, generation_ms):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement end-to-end agentic RAG latency totaling, the real sum every user-facing latency SLA is actually measured against -- not any single stage in isolation.",
+    taskDescription: "Implement `e2e_latency_total(retrieval_ms, rerank_ms, generation_ms)`: return the sum of all three stage latencies.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all values >= 0"
+      ],
+    hints: {
+  "small": "Sum the three sequential pipeline stages.",
+        "strong": "return retrieval_ms + rerank_ms + generation_ms.",
+        "concept": "An agentic RAG pipeline's real user-perceived latency is the SUM of every sequential stage, including ones that are individually fast (retrieval, rerank) -- optimizing only the generation stage (often the biggest single number) while ignoring that retrieval+rerank together might add up to a similar magnitude is a real, common incomplete-optimization mistake."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "typical pipeline breakdown",
+          "input": {
+            "retrieval_ms": 50,
+            "rerank_ms": 100,
+            "generation_ms": 800
+          },
+          "expectedOutput": 950,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no reranking stage",
+          "input": {
+            "retrieval_ms": 50,
+            "rerank_ms": 0,
+            "generation_ms": 500
+          },
+          "expectedOutput": 550,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "heavy multi-stage retrieval",
+          "input": {
+            "retrieval_ms": 300,
+            "rerank_ms": 200,
+            "generation_ms": 1000
+          },
+          "expectedOutput": 1500,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "all zero latency edge case",
+          "input": {
+            "retrieval_ms": 0,
+            "rerank_ms": 0,
+            "generation_ms": 0
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #213. Advanced RAG & Agentic RAG Module 1: Problem 3"
-description: "Master #213. Advanced RAG & Agentic RAG Module 1: Problem 3 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Agentic Retrieval Tool Selection"
+description: "Implement agentic RAG tool selection, letting an agent choose between internal vector search, live web search, or no retrieval at all based on the real nature of the query."
+difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #213. Advanced RAG & Agentic RAG Module 1: Problem 3
+# Agentic Retrieval Tool Selection
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #213 of 1072 | **Points**: 40 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#213. Advanced RAG & Agentic RAG Module 1: Problem 3` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement agentic RAG tool selection, letting an agent choose between internal vector search, live web search, or no retrieval at all based on the real nature of the query.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_1_problem_3`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `select_retrieval_tool(query_type, has_internal_docs)`. If `query_type == 'general_knowledge'`, return `'none'` (the model likely already knows this). If `query_type == 'current_events'`, return `'web_search'` (internal docs are necessarily stale for this). If `query_type == 'company_specific'`, return `'vector_search'` if `has_internal_docs` else `'web_search'`.
 
 <PracticePlayground problemId="agentic-rag-prob-3" />

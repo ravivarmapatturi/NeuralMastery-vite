@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #212. Advanced RAG & Agentic RAG Module 1: Problem 2"
-description: "Master #212. Advanced RAG & Agentic RAG Module 1: Problem 2 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "easy"
+title: "Practice: Corrective RAG: Grade Retrieved Document Relevance"
+description: "Implement Corrective RAG's real three-way relevance grading, deciding whether to proceed with retrieved documents, fall back to a web search, or blend both."
+difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #212. Advanced RAG & Agentic RAG Module 1: Problem 2
+# Corrective RAG: Grade Retrieved Document Relevance
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #212 of 1072 | **Points**: 40 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#212. Advanced RAG & Agentic RAG Module 1: Problem 2` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement Corrective RAG's real three-way relevance grading, deciding whether to proceed with retrieved documents, fall back to a web search, or blend both.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_1_problem_2`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `grade_relevance_action(relevance_scores, relevant_threshold, irrelevant_threshold)`. Take `best = max(relevance_scores)`. If `best >= relevant_threshold`, return `'use_retrieved'`. If `best < irrelevant_threshold`, return `'web_search'`. Otherwise return `'blend'`.
 
 <PracticePlayground problemId="agentic-rag-prob-2" />

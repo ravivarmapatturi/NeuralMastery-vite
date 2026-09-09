@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #237. Advanced RAG & Agentic RAG Module 6: Problem 27"
-description: "Master #237. Advanced RAG & Agentic RAG Module 6: Problem 27 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
-difficulty: "hard"
+title: "Practice: Compute Real Retrieval Diversity via MMR-Style Redundancy Penalty"
+description: "Implement a real redundancy-penalty computation, the diversity half of any MMR-style diverse-retrieval selection, measuring how similar a candidate chunk is to what's already been chosen."
+difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #237. Advanced RAG & Agentic RAG Module 6: Problem 27
+# Compute Real Retrieval Diversity via MMR-Style Redundancy Penalty
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #237 of 1072 | **Points**: 90 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#237. Advanced RAG & Agentic RAG Module 6: Problem 27` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement a real redundancy-penalty computation, the diversity half of any MMR-style diverse-retrieval selection, measuring how similar a candidate chunk is to what's already been chosen.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_6_problem_27`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `redundancy_penalty(candidate_embedding, selected_embeddings)`. Return the MAXIMUM cosine similarity between `candidate_embedding` and any vector in `selected_embeddings`. Return `0.0` if `selected_embeddings` is empty (nothing selected yet means zero redundancy).
 
 <PracticePlayground problemId="agentic-rag-prob-27" />

@@ -1,23 +1,22 @@
 ---
-placeholder: true
-title: "Practice: #230. Advanced RAG & Agentic RAG Module 4: Problem 20"
-description: "Master #230. Advanced RAG & Agentic RAG Module 4: Problem 20 in the Advanced RAG & Agentic RAG track of the 1,000+ problem Neural Mastery AI Engineering curriculum."
+title: "Practice: Extractive Document Compression by Top Sentences"
+description: "Implement extractive document compression, keeping only the highest-scored sentences of a retrieved chunk (in original reading order) before passing it to the generator -- a real, cheap alternative to abstractive (LLM-rewritten) compression."
 difficulty: "medium"
 topic: "Advanced RAG & Agentic RAG"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
 
-# #230. Advanced RAG & Agentic RAG Module 4: Problem 20
+# Extractive Document Compression by Top Sentences
 
-**Track**: Advanced RAG & Agentic RAG | **Rank**: #230 of 1072 | **Points**: 60 XP
+**Track**: Advanced RAG & Agentic RAG | **Points**: 40 XP
 
 ## Overview
 
-Implement `#230. Advanced RAG & Agentic RAG Module 4: Problem 20` to advance your mastery in **Advanced RAG & Agentic RAG**. This problem is part of Neural Mastery's 1,000+ problem AI Engineering curriculum.
+Implement extractive document compression, keeping only the highest-scored sentences of a retrieved chunk (in original reading order) before passing it to the generator -- a real, cheap alternative to abstractive (LLM-rewritten) compression.
 
 ## Task
 
-Implement the function `advanced_rag_and_agentic_rag_module_4_problem_20`. Your solution must handle core execution semantics, boundary conditions, and error recovery cleanly.
+Implement `extractive_compress(sentences, sentence_scores, max_sentences)`. Pick the `max_sentences` HIGHEST-scored sentence indices, then return their sentences IN THEIR ORIGINAL RELATIVE ORDER (not sorted by score).
 
 <PracticePlayground problemId="agentic-rag-prob-20" />
