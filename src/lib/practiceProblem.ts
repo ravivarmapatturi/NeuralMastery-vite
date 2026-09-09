@@ -134156,6 +134156,2523 @@ def quantize_int8(W):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'pair-with-target-sum': {
+    id: 'pair-with-target-sum',
+    title: 'Practice: Pair With Target Sum',
+    difficulty: 'easy',
+    topic: 'Interview Prep',
+    estimatedTime: '10–15 min',
+    functionName: 'pair_with_target_sum',
+    functionSignature: 'pair_with_target_sum(arr: list[int], target: int) -> list[int]',
+    starterCode: `def pair_with_target_sum(arr, target):
+    """arr is sorted ascending. Return [i, j], i < j, with arr[i] + arr[j] == target.
+    Raise ValueError if no pair exists.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Use the two-pointer pattern on a sorted array to locate the unique pair summing to target in O(n) time.',
+    taskDescription: 'Implement `pair_with_target_sum(arr, target)`. `arr` is sorted in ascending order. Return `[i, j]` such that `i < j` and `arr[i] + arr[j] == target`. Raise `ValueError` if no pair exists.',
+    constraints: [
+      "arr is sorted in ascending order",
+      "len(arr) >= 2",
+      "O(n) time and O(1) space"
+],
+    hints: {
+      small: 'Initialize two pointers: left = 0 and right = len(arr) - 1.',
+      strong: 'If sum < target, increment left; if sum > target, decrement right; else return [left, right].',
+      concept: 'Sorted array monotonicity ensures inward pointer traversal never skips the target solution.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard pair in middle',
+        input: {
+            "arr": [
+              1,
+              2,
+              3,
+              4,
+              6
+            ],
+            "target": 6
+          },
+        expectedOutput: [
+            1,
+            3
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Pair at boundaries',
+        input: {
+            "arr": [
+              2,
+              5,
+              9,
+              11
+            ],
+            "target": 11
+          },
+        expectedOutput: [
+            0,
+            2
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Negative numbers',
+        input: {
+            "arr": [
+              -3,
+              0,
+              1,
+              2,
+              5
+            ],
+            "target": 2
+          },
+        expectedOutput: [
+            0,
+            4
+          ],
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'No pair raises ValueError',
+        input: {
+            "arr": [
+              1,
+              2,
+              3
+            ],
+            "target": 10
+          },
+        expectError: 'ValueError',
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'longest-unique-run': {
+    id: 'longest-unique-run',
+    title: 'Practice: Longest Run of Unique Characters',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'longest_unique_run',
+    functionSignature: 'longest_unique_run(s: str) -> int',
+    starterCode: `def longest_unique_run(s):
+    """Find the length of the longest substring with all distinct characters.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement dynamic sliding window with a hash map to find the longest substring of unique characters in O(n) time.',
+    taskDescription: 'Implement `longest_unique_run(s)`. Return the length of the longest substring containing no repeating characters.',
+    constraints: [
+      "0 <= len(s) <= 10^5",
+      "s contains ASCII characters"
+],
+    hints: {
+      small: 'Maintain a hash map `last_seen` storing the most recent index of each character.',
+      strong: 'When character s[i] was seen at or after window_start, slide window_start to last_seen[s[i]] + 1.',
+      concept: 'Fast-forwarding window start using last seen indices guarantees each character is processed in amortized O(1).',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Classic repeating pattern \'abcabcbb\'',
+        input: {
+            "s": "abcabcbb"
+          },
+        expectedOutput: 3,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'All identical characters',
+        input: {
+            "s": "bbbbb"
+          },
+        expectedOutput: 1,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Entire string is unique',
+        input: {
+            "s": "neural"
+          },
+        expectedOutput: 6,
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Empty string',
+        input: {
+            "s": ""
+          },
+        expectedOutput: 0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'find-rotation-point': {
+    id: 'find-rotation-point',
+    title: 'Practice: Find the Rotation Point',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'find_rotation_point',
+    functionSignature: 'find_rotation_point(arr: list) -> int',
+    starterCode: `def find_rotation_point(arr):
+    """Find the index of the smallest element in a rotated sorted array.
+    O(log n) time complexity required.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Use binary search on a rotated sorted array to locate the inflection point (minimum element) in logarithmic time.',
+    taskDescription: 'Implement `find_rotation_point(arr)`. Return the index of the minimum element in a sorted list that has been circularly shifted.',
+    constraints: [
+      "1 <= len(arr) <= 10^5",
+      "All elements are distinct",
+      "O(log n) time complexity"
+],
+    hints: {
+      small: 'Compare arr[mid] with arr[hi].',
+      strong: 'If arr[mid] > arr[hi], the inflection is to the right (lo = mid + 1); otherwise hi = mid.',
+      concept: 'Even though global sorted order is broken by rotation, one half of the partition always remains sorted.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Rotated integer array',
+        input: {
+            "arr": [
+              4,
+              5,
+              6,
+              7,
+              0,
+              1,
+              2
+            ]
+          },
+        expectedOutput: 4,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Rotated alphabetical words list',
+        input: {
+            "arr": [
+              "ptolemaic",
+              "retrograde",
+              "supplant",
+              "undulate",
+              "xenoepist",
+              "asymptote",
+              "babka",
+              "banoffee"
+            ]
+          },
+        expectedOutput: 5,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Already sorted (0 rotations)',
+        input: {
+            "arr": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+        expectedOutput: 0,
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Single element array',
+        input: {
+            "arr": [
+              42
+            ]
+          },
+        expectedOutput: 0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'max-non-adjacent-sum': {
+    id: 'max-non-adjacent-sum',
+    title: 'Practice: Maximum Non-Adjacent Sum',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'max_non_adjacent_sum',
+    functionSignature: 'max_non_adjacent_sum(nums: list[int]) -> int',
+    starterCode: `def max_non_adjacent_sum(nums):
+    """Find maximum sum of a subsequence such that no two elements are adjacent.
+    O(n) time, O(1) space.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement House Robber dynamic programming with constant space to find the maximum sum of non-adjacent numbers.',
+    taskDescription: 'Implement `max_non_adjacent_sum(nums)`. Return the maximum sum of non-adjacent elements in `nums`. If empty, return 0.',
+    constraints: [
+      "0 <= len(nums) <= 10^5",
+      "Numbers can be non-negative integers",
+      "O(1) auxiliary space"
+],
+    hints: {
+      small: 'Keep two variables: include (sum including current element) and exclude (sum excluding current element).',
+      strong: 'new_incl = excl + num, new_excl = max(incl, excl). Update incl, excl at each step.',
+      concept: 'Optimal substructure: choosing an element forbids its immediate predecessor, reducing state to a two-step recurrence.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard sequence [2, 4, 6, 2, 5]',
+        input: {
+            "nums": [
+              2,
+              4,
+              6,
+              2,
+              5
+            ]
+          },
+        expectedOutput: 13,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Alternating values [5, 1, 1, 5]',
+        input: {
+            "nums": [
+              5,
+              1,
+              1,
+              5
+            ]
+          },
+        expectedOutput: 10,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Single element',
+        input: {
+            "nums": [
+              7
+            ]
+          },
+        expectedOutput: 7,
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Empty list',
+        input: {
+            "nums": []
+          },
+        expectedOutput: 0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'lone-number': {
+    id: 'lone-number',
+    title: 'Practice: The Lone Number',
+    difficulty: 'easy',
+    topic: 'Interview Prep',
+    estimatedTime: '10–15 min',
+    functionName: 'lone_number',
+    functionSignature: 'lone_number(nums: list[int]) -> int',
+    starterCode: `def lone_number(nums):
+    """Every element appears twice except one. Find that single number in O(n) time and O(1) space.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Leverage bitwise XOR properties to isolate the single unique number in an array of duplicates with zero auxiliary memory.',
+    taskDescription: 'Implement `lone_number(nums)`. Every number in `nums` appears twice except for one. Return that lone number in O(n) time and O(1) space.',
+    constraints: [
+      "1 <= len(nums) <= 10^5",
+      "Exactly one element appears once; all others appear twice",
+      "O(1) extra space"
+],
+    hints: {
+      small: 'Recall that x ^ x == 0 and x ^ 0 == x.',
+      strong: 'XOR all elements together. The duplicate pairs cancel out, leaving the lone number.',
+      concept: 'XOR is associative and commutative with self-inversion, functioning as an order-independent parity filter.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Lone number 4 among duplicates',
+        input: {
+            "nums": [
+              2,
+              2,
+              1,
+              4,
+              1
+            ]
+          },
+        expectedOutput: 4,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Single element array',
+        input: {
+            "nums": [
+              99
+            ]
+          },
+        expectedOutput: 99,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Negative numbers',
+        input: {
+            "nums": [
+              -1,
+              2,
+              -1,
+              3,
+              2
+            ]
+          },
+        expectedOutput: 3,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'gap-in-the-sequence': {
+    id: 'gap-in-the-sequence',
+    title: 'Practice: The Gap in the Sequence',
+    difficulty: 'easy',
+    topic: 'Interview Prep',
+    estimatedTime: '10–15 min',
+    functionName: 'find_missing_number',
+    functionSignature: 'find_missing_number(nums: list[int]) -> int',
+    starterCode: `def find_missing_number(nums):
+    """nums contains n distinct numbers from 0..n with one missing. Find it in O(n) time, O(1) space.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Find the missing number in an arithmetic sequence using Gauss\'s summation formula in O(1) auxiliary space.',
+    taskDescription: 'Implement `find_missing_number(nums)`. `nums` contains n distinct integers taken from the range [0, n]. Return the single number missing from the range.',
+    constraints: [
+      "n == len(nums)",
+      "1 <= n <= 10^5",
+      "All numbers in nums are unique and in range [0, n]"
+],
+    hints: {
+      small: 'The sum of integers from 0 to n is n * (n + 1) // 2.',
+      strong: 'Subtract sum(nums) from the expected sum to find the missing integer.',
+      concept: 'Closed-form arithmetic series summation solves missing-element problems in constant space without sorting.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Missing 2 from [3, 0, 1]',
+        input: {
+            "nums": [
+              3,
+              0,
+              1
+            ]
+          },
+        expectedOutput: 2,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Missing 8 from 0..9',
+        input: {
+            "nums": [
+              9,
+              6,
+              4,
+              2,
+              3,
+              5,
+              7,
+              0,
+              1
+            ]
+          },
+        expectedOutput: 8,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Missing 0 from [1]',
+        input: {
+            "nums": [
+              1
+            ]
+          },
+        expectedOutput: 0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'largest-rectangle-in-skyline': {
+    id: 'largest-rectangle-in-skyline',
+    title: 'Practice: Largest Rectangle in a Skyline',
+    difficulty: 'hard',
+    topic: 'Interview Prep',
+    estimatedTime: '20–25 min',
+    functionName: 'largest_rectangle_area',
+    functionSignature: 'largest_rectangle_area(heights: list[int]) -> int',
+    starterCode: `def largest_rectangle_area(heights):
+    """Find the area of the largest rectangle in the histogram in O(n) time.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Apply a monotonic increasing stack to determine the maximum rectangular area formed by histogram bars in linear time.',
+    taskDescription: 'Implement `largest_rectangle_area(heights)`. Given a list of non-negative bar heights, find the area of the largest rectangle possible within the histogram.',
+    constraints: [
+      "0 <= len(heights) <= 10^5",
+      "0 <= heights[i] <= 10^4",
+      "O(n) time complexity"
+],
+    hints: {
+      small: 'Maintain a stack of indices with monotonically non-decreasing heights.',
+      strong: 'When heights[i] < heights[stack[-1]], pop and compute area with width = (i if not stack else i - stack[-1] - 1).',
+      concept: 'Monotonic stacks identify the left and right boundaries where a bar remains the minimum height.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard histogram [2, 1, 5, 6, 2, 3]',
+        input: {
+            "heights": [
+              2,
+              1,
+              5,
+              6,
+              2,
+              3
+            ]
+          },
+        expectedOutput: 10,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Monotonically increasing heights',
+        input: {
+            "heights": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+        expectedOutput: 9,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Uniform height bars',
+        input: {
+            "heights": [
+              4,
+              4,
+              4,
+              4
+            ]
+          },
+        expectedOutput: 16,
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Empty heights list',
+        input: {
+            "heights": []
+          },
+        expectedOutput: 0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'design-min-stack': {
+    id: 'design-min-stack',
+    title: 'Practice: Design a Min Stack',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'min_stack_ops',
+    functionSignature: 'min_stack_ops(operations: list[list]) -> list',
+    starterCode: `def min_stack_ops(operations):
+    """Simulate a MinStack supporting 'push', 'pop', 'top', 'get_min'.
+    operations: list of ['push', val], ['pop'], ['top'], ['get_min'].
+    Return list of return values for 'pop', 'top', 'get_min' (None for push).
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Design a stack supporting push, pop, top, and retrieving the minimum element, all in O(1) time.',
+    taskDescription: 'Implement `min_stack_ops(operations)`. Each operation is `[\'push\', val]`, `[\'pop\']`, `[\'top\']`, or `[\'get_min\']`. Return a list of outputs for each operation (`None` for push, popped value for pop, top value for top, min value for get_min).',
+    constraints: [
+      "All operations must execute in O(1) time",
+      "operations is non-empty list"
+],
+    hints: {
+      small: 'Keep an auxiliary stack tracking the minimum value seen so far.',
+      strong: 'On push, append min(val, min_stack[-1]) to min_stack. Pop from both stacks synchronously.',
+      concept: 'Tracking running minimums per depth preserves O(1) min lookup through arbitrary push/pop sequences.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Basic push, get_min, pop, top sequence',
+        input: {
+            "operations": [
+              [
+                "push",
+                -2
+              ],
+              [
+                "push",
+                0
+              ],
+              [
+                "push",
+                -3
+              ],
+              [
+                "get_min"
+              ],
+              [
+                "pop"
+              ],
+              [
+                "top"
+              ],
+              [
+                "get_min"
+              ]
+            ]
+          },
+        expectedOutput: [
+            null,
+            null,
+            null,
+            -3,
+            -3,
+            0,
+            -2
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Monotonically increasing elements',
+        input: {
+            "operations": [
+              [
+                "push",
+                10
+              ],
+              [
+                "push",
+                20
+              ],
+              [
+                "get_min"
+              ],
+              [
+                "pop"
+              ],
+              [
+                "get_min"
+              ]
+            ]
+          },
+        expectedOutput: [
+            null,
+            null,
+            10,
+            20,
+            10
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'merge-k-sorted-lists': {
+    id: 'merge-k-sorted-lists',
+    title: 'Practice: Merge K Sorted Lists',
+    difficulty: 'hard',
+    topic: 'Interview Prep',
+    estimatedTime: '20–25 min',
+    functionName: 'merge_k_sorted',
+    functionSignature: 'merge_k_sorted(lists: list[list[int]]) -> list[int]',
+    starterCode: `import heapq
+
+def merge_k_sorted(lists):
+    """Merge k sorted lists into one sorted list in O(N log k) time.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Merge k sorted lists into a single sorted list efficiently in O(N log k) time using a min-heap.',
+    taskDescription: 'Implement `merge_k_sorted(lists)`. Merge `k` ascending sorted lists into one combined sorted list. Use a priority queue / min-heap.',
+    constraints: [
+      "k == len(lists) >= 0",
+      "Total elements N <= 10^5",
+      "O(N log k) time complexity"
+],
+    hints: {
+      small: 'Insert the first element of each non-empty list into a min-heap with tuple (val, list_idx, elem_idx).',
+      strong: 'Pop the smallest element, append to result, and push the next element from the same list into the heap.',
+      concept: 'The min-heap bounds priority comparison overhead to log(k) rather than scanning all k lists.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: '3 lists of equal length',
+        input: {
+            "lists": [
+              [
+                1,
+                4,
+                5
+              ],
+              [
+                1,
+                3,
+                4
+              ],
+              [
+                2,
+                6
+              ]
+            ]
+          },
+        expectedOutput: [
+            1,
+            1,
+            2,
+            3,
+            4,
+            4,
+            5,
+            6
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Empty lists in input',
+        input: {
+            "lists": [
+              [],
+              [
+                1,
+                3
+              ],
+              []
+            ]
+          },
+        expectedOutput: [
+            1,
+            3
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Single non-empty list',
+        input: {
+            "lists": [
+              [
+                1,
+                2,
+                3
+              ]
+            ]
+          },
+        expectedOutput: [
+            1,
+            2,
+            3
+          ],
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Empty input lists',
+        input: {
+            "lists": []
+          },
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'shortest-path-bfs': {
+    id: 'shortest-path-bfs',
+    title: 'Practice: Shortest Path in an Unweighted Graph',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'shortest_path_length',
+    functionSignature: 'shortest_path_length(graph: dict, start: str, end: str) -> int',
+    starterCode: `from collections import deque
+
+def shortest_path_length(graph, start, end):
+    """Find shortest path distance between start and end in unweighted graph.
+    Return distance, or -1 if unreachable.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement Breadth-First Search (BFS) to find the shortest path length between two vertices in an unweighted graph.',
+    taskDescription: 'Implement `shortest_path_length(graph, start, end)`. `graph` is an adjacency list `{node: [neighbors]}`. Return minimum edge distance from `start` to `end`, or -1 if unreachable.',
+    constraints: [
+      "Graph is unweighted",
+      "start and end are nodes in graph",
+      "Return 0 if start == end"
+],
+    hints: {
+      small: 'Use collections.deque with (node, distance) tuples.',
+      strong: 'Track visited nodes with a set. The first time end is dequeued or discovered, return its distance.',
+      concept: 'BFS explores vertices in order of increasing distance, guaranteeing the first discovery is the shortest path.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Path of length 2',
+        input: {
+            "graph": {
+              "A": [
+                "B",
+                "C"
+              ],
+              "B": [
+                "D"
+              ],
+              "C": [
+                "D"
+              ],
+              "D": []
+            },
+            "start": "A",
+            "end": "D"
+          },
+        expectedOutput: 2,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Start equals end returns 0',
+        input: {
+            "graph": {
+              "X": [
+                "Y"
+              ]
+            },
+            "start": "X",
+            "end": "X"
+          },
+        expectedOutput: 0,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Disconnected target returns -1',
+        input: {
+            "graph": {
+              "A": [
+                "B"
+              ],
+              "B": [],
+              "C": []
+            },
+            "start": "A",
+            "end": "C"
+          },
+        expectedOutput: -1,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'count-islands': {
+    id: 'count-islands',
+    title: 'Practice: Count Islands (Connected Components)',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'count_islands',
+    functionSignature: 'count_islands(grid: list[list[int]]) -> int',
+    starterCode: `def count_islands(grid):
+    """Count connected components of 1s in a 2D binary grid.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Count connected components of 1s on a 2D grid using depth-first search (DFS) or breadth-first search (BFS).',
+    taskDescription: 'Implement `count_islands(grid)`. A 1 represents land and 0 represents water. Islands are formed by connecting adjacent lands horizontally or vertically.',
+    constraints: [
+      "grid is 2D list of 0s and 1s",
+      "4-directional connectivity (up, down, left, right)"
+],
+    hints: {
+      small: 'Iterate through each cell (r, c). When a 1 is found, increment count and visit all connected land cells.',
+      strong: 'Sink visited land by setting grid[r][c] = 0 or tracking in a visited set.',
+      concept: 'Grid flood fill translates spatial component labeling into graph connected components.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'One large connected island',
+        input: {
+            "grid": [
+              [
+                1,
+                1,
+                1,
+                1,
+                0
+              ],
+              [
+                1,
+                1,
+                0,
+                1,
+                0
+              ],
+              [
+                1,
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ]
+          },
+        expectedOutput: 1,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Three separate islands',
+        input: {
+            "grid": [
+              [
+                1,
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                1,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1,
+                1
+              ]
+            ]
+          },
+        expectedOutput: 3,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'All water returns 0',
+        input: {
+            "grid": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ]
+          },
+        expectedOutput: 0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'detect-cycle-directed-graph': {
+    id: 'detect-cycle-directed-graph',
+    title: 'Practice: Detect a Cycle in a Directed Graph',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'has_cycle',
+    functionSignature: 'has_cycle(graph: dict) -> bool',
+    starterCode: `def has_cycle(graph):
+    """Detect if directed graph contains a cycle using 3-color DFS.
+    graph: {node: [neighbors]}.
+    Return True if cycle exists, False otherwise.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Detect cycles in a directed graph using tri-color depth-first search (White-Gray-Black coloring).',
+    taskDescription: 'Implement `has_cycle(graph)`. Return True if the directed graph contains at least one cycle, False otherwise.',
+    constraints: [
+      "graph is an adjacency dict {node: [neighbors]}",
+      "Directed edges"
+],
+    hints: {
+      small: 'Use 3 states: 0 = unvisited (white), 1 = visiting (gray, currently on DFS call stack), 2 = visited (black).',
+      strong: 'A cycle exists if and only if a neighbor is currently gray (back edge).',
+      concept: 'Back edges to ancestors on the active recursion stack identify directed cycles unambiguously.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Graph with 3-node cycle',
+        input: {
+            "graph": {
+              "A": [
+                "B"
+              ],
+              "B": [
+                "C"
+              ],
+              "C": [
+                "A"
+              ]
+            }
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'DAG with no cycle',
+        input: {
+            "graph": {
+              "A": [
+                "B",
+                "C"
+              ],
+              "B": [
+                "D"
+              ],
+              "C": [
+                "D"
+              ],
+              "D": []
+            }
+          },
+        expectedOutput: false,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Self-loop single cycle',
+        input: {
+            "graph": {
+              "A": [
+                "A"
+              ]
+            }
+          },
+        expectedOutput: true,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'level-order-traversal': {
+    id: 'level-order-traversal',
+    title: 'Practice: Level-Order Traversal (BFS)',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'level_order',
+    functionSignature: 'level_order(root: dict | None) -> list[int]',
+    starterCode: `from collections import deque
+
+
+def _get_val(node):
+    return node['val'] if isinstance(node, dict) else getattr(node, 'val', None)
+def _get_left(node):
+    return node.get('left') if isinstance(node, dict) else getattr(node, 'left', None)
+def _get_right(node):
+    return node.get('right') if isinstance(node, dict) else getattr(node, 'right', None)
+
+def level_order(root):
+    """root: dict with 'val', 'left', 'right', or None.
+    Return list of node values in breadth-first level order.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Perform breadth-first level-order traversal on a binary tree using a FIFO queue.',
+    taskDescription: 'Implement `level_order(root)`. Return a list of node values visited level by level from top to bottom, left to right.',
+    constraints: [
+      "root is a dict {'val', 'left', 'right'} or None",
+      "Returns list of values"
+],
+    hints: {
+      small: 'Use collections.deque initialized with [root] if root is not None.',
+      strong: 'Pop left from queue, append val to result, then enqueue left and right children if present.',
+      concept: 'Breadth-first search traverses tree nodes ordered strictly by depth.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: '3-level binary tree',
+        input: {
+            "root": {
+              "val": 3,
+              "left": {
+                "val": 9,
+                "left": null,
+                "right": null
+              },
+              "right": {
+                "val": 20,
+                "left": {
+                  "val": 15,
+                  "left": null,
+                  "right": null
+                },
+                "right": {
+                  "val": 7,
+                  "left": null,
+                  "right": null
+                }
+              }
+            }
+          },
+        expectedOutput: [
+            3,
+            9,
+            20,
+            15,
+            7
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Empty tree returns empty list',
+        input: {
+            "root": null
+          },
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Single node tree',
+        input: {
+            "root": {
+              "val": 1,
+              "left": null,
+              "right": null
+            }
+          },
+        expectedOutput: [
+            1
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'validate-bst': {
+    id: 'validate-bst',
+    title: 'Practice: Validate a Binary Search Tree',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'is_valid_bst',
+    functionSignature: 'is_valid_bst(root: dict | None, low: float = float(\'-inf\'), high: float = float(\'inf\')) -> bool',
+    starterCode: `
+def _get_val(node):
+    return node['val'] if isinstance(node, dict) else getattr(node, 'val', None)
+def _get_left(node):
+    return node.get('left') if isinstance(node, dict) else getattr(node, 'left', None)
+def _get_right(node):
+    return node.get('right') if isinstance(node, dict) else getattr(node, 'right', None)
+
+def is_valid_bst(root, low=float('-inf'), high=float('inf')):
+    """Validate if binary tree satisfies Binary Search Tree properties.
+    All nodes in left subtree must be < root.val, right subtree > root.val.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Validate the global ordering invariants of a Binary Search Tree using bounded range recursion.',
+    taskDescription: 'Implement `is_valid_bst(root, low=-inf, high=inf)`. Return True if the tree satisfies BST constraints across all nodes, False otherwise.',
+    constraints: [
+      "Tree nodes have unique values",
+      "Values strictly within (low, high)"
+],
+    hints: {
+      small: 'It is not sufficient to check immediate children: every node in the entire left subtree must be less than its ancestor.',
+      strong: 'Pass down valid (low, high) bounds: recurse left with (low, node.val) and right with (node.val, high).',
+      concept: 'Inherited interval bounds enforce global ordering in O(n) single-pass recursion.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Valid 3-node BST',
+        input: {
+            "root": {
+              "val": 2,
+              "left": {
+                "val": 1,
+                "left": null,
+                "right": null
+              },
+              "right": {
+                "val": 3,
+                "left": null,
+                "right": null
+              }
+            }
+          },
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Invalid BST (right child of left subtree exceeds root)',
+        input: {
+            "root": {
+              "val": 5,
+              "left": {
+                "val": 1,
+                "left": null,
+                "right": {
+                  "val": 6,
+                  "left": null,
+                  "right": null
+                }
+              },
+              "right": {
+                "val": 4,
+                "left": null,
+                "right": null
+              }
+            }
+          },
+        expectedOutput: false,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Empty tree is valid BST',
+        input: {
+            "root": null
+          },
+        expectedOutput: true,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'lowest-common-ancestor': {
+    id: 'lowest-common-ancestor',
+    title: 'Practice: Lowest Common Ancestor in a Binary Tree',
+    difficulty: 'hard',
+    topic: 'Interview Prep',
+    estimatedTime: '20–25 min',
+    functionName: 'lowest_common_ancestor',
+    functionSignature: 'lowest_common_ancestor(root: dict | None, p_val: int, q_val: int) -> dict | None',
+    starterCode: `
+def _get_val(node):
+    return node['val'] if isinstance(node, dict) else getattr(node, 'val', None)
+def _get_left(node):
+    return node.get('left') if isinstance(node, dict) else getattr(node, 'left', None)
+def _get_right(node):
+    return node.get('right') if isinstance(node, dict) else getattr(node, 'right', None)
+
+def lowest_common_ancestor(root, p_val, q_val):
+    """Return the node dict that is the lowest common ancestor of p_val and q_val.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Find the lowest common ancestor node in a general binary tree without BST ordering.',
+    taskDescription: 'Implement `lowest_common_ancestor(root, p_val, q_val)`. Return the deepest node dictionary that contains both `p_val` and `q_val` in its subtree.',
+    constraints: [
+      "All node values in the tree are unique",
+      "p_val and q_val exist in the tree",
+      "A node can be a descendant of itself"
+],
+    hints: {
+      small: 'If root matches p_val or q_val, return root immediately.',
+      strong: 'Recurse on left and right. If both return non-None, root is the LCA. Otherwise return the non-None branch.',
+      concept: 'Bottom-up divide-and-conquer converges at the lowest node where search paths intersect.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'LCA splits left and right subtrees',
+        input: {
+            "root": {
+              "val": 1,
+              "left": {
+                "val": 2,
+                "left": {
+                  "val": 4,
+                  "left": null,
+                  "right": null
+                },
+                "right": {
+                  "val": 5,
+                  "left": null,
+                  "right": null
+                }
+              },
+              "right": {
+                "val": 3,
+                "left": null,
+                "right": {
+                  "val": 6,
+                  "left": null,
+                  "right": null
+                }
+              }
+            },
+            "p_val": 4,
+            "q_val": 5
+          },
+        expectedOutput: {
+            "val": 2,
+            "left": {
+              "val": 4,
+              "left": null,
+              "right": null
+            },
+            "right": {
+              "val": 5,
+              "left": null,
+              "right": null
+            }
+          },
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'LCA where one node is ancestor of the other',
+        input: {
+            "root": {
+              "val": 1,
+              "left": {
+                "val": 2,
+                "left": {
+                  "val": 4,
+                  "left": null,
+                  "right": null
+                },
+                "right": null
+              },
+              "right": null
+            },
+            "p_val": 1,
+            "q_val": 4
+          },
+        expectedOutput: {
+            "val": 1,
+            "left": {
+              "val": 2,
+              "left": {
+                "val": 4,
+                "left": null,
+                "right": null
+              },
+              "right": null
+            },
+            "right": null
+          },
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'three-sum-zero': {
+    id: 'three-sum-zero',
+    title: 'Practice: Three Sum to Zero',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'three_sum_zero',
+    functionSignature: 'three_sum_zero(nums: list[int]) -> list[list[int]]',
+    starterCode: `def three_sum_zero(nums):
+    """Find all unique triplets [a, b, c] that sum to 0 in O(n^2) time.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Find all unique triplets summing to zero in O(n^2) time using sorting and two pointers while eliminating duplicate results.',
+    taskDescription: 'Implement `three_sum_zero(nums)`. Return all unique triplets `[nums[i], nums[j], nums[k]]` such that `i < j < k` and `nums[i] + nums[j] + nums[k] == 0`.',
+    constraints: [
+      "0 <= len(nums) <= 3000",
+      "Output must not contain duplicate triplets",
+      "O(n^2) time complexity"
+],
+    hints: {
+      small: 'Sort the array first. Iterate i as the anchor, and use two pointers left and right for the remaining two numbers.',
+      strong: 'Skip duplicate values for i, and skip duplicates for left and right after recording a valid triplet.',
+      concept: 'Anchoring one variable reduces 3-Sum to the O(n) Two-Sum Two-Pointers problem on sorted inputs.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard array with multiple triplets',
+        input: {
+            "nums": [
+              -1,
+              0,
+              1,
+              2,
+              -1,
+              -4
+            ]
+          },
+        expectedOutput: [
+            [
+              -1,
+              -1,
+              2
+            ],
+            [
+              -1,
+              0,
+              1
+            ]
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'No triplets sum to zero',
+        input: {
+            "nums": [
+              0,
+              1,
+              1
+            ]
+          },
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'All zeros triplet',
+        input: {
+            "nums": [
+              0,
+              0,
+              0
+            ]
+          },
+        expectedOutput: [
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Fewer than 3 elements',
+        input: {
+            "nums": [
+              1,
+              -1
+            ]
+          },
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'min-window-substring': {
+    id: 'min-window-substring',
+    title: 'Practice: Minimum Window Substring',
+    difficulty: 'hard',
+    topic: 'Interview Prep',
+    estimatedTime: '20–25 min',
+    functionName: 'min_window_substring',
+    functionSignature: 'min_window_substring(s: str, t: str) -> str',
+    starterCode: `def min_window_substring(s, t):
+    """Find the minimum window in s that contains all characters of t in O(n) time.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Apply the variable-size sliding window pattern with frequency counters to find the minimum covering substring in O(|s| + |t|) time.',
+    taskDescription: 'Implement `min_window_substring(s, t)`. Return the minimum window substring of `s` such that every character in `t` (including duplicates) is included. Return empty string if no such window exists.',
+    constraints: [
+      "1 <= len(s), len(t) <= 10^5",
+      "O(|s| + |t|) time complexity"
+],
+    hints: {
+      small: 'Track character requirements with a Counter and count `missing` characters still needed.',
+      strong: 'Expand right until missing == 0. Then contract left as much as possible while maintaining all characters.',
+      concept: 'Two pointers expand greedily until valid, then contract minimally to achieve global optimality.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard example \'ADOBECODEBANC\' with t=\'ABC\'',
+        input: {
+            "s": "ADOBECODEBANC",
+            "t": "ABC"
+          },
+        expectedOutput: "BANC",
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Target character is single character \'a\'',
+        input: {
+            "s": "a",
+            "t": "a"
+          },
+        expectedOutput: "a",
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Impossible target returns empty string',
+        input: {
+            "s": "a",
+            "t": "aa"
+          },
+        expectedOutput: "",
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'search-rotated-array': {
+    id: 'search-rotated-array',
+    title: 'Practice: Search in a Rotated Sorted Array',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'search_rotated',
+    functionSignature: 'search_rotated(arr: list[int], target: int) -> int',
+    starterCode: `def search_rotated(arr, target):
+    """Search for target in rotated sorted array in O(log n) time.
+    Return index or -1 if not found.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Execute binary search on an array rotated at an unknown pivot to locate a target element in logarithmic time.',
+    taskDescription: 'Implement `search_rotated(arr, target)`. Return the 0-indexed position of `target` in `arr`, or -1 if it does not exist.',
+    constraints: [
+      "All elements in arr are distinct",
+      "O(log n) time complexity"
+],
+    hints: {
+      small: 'In any rotated array, at least one of the two halves [lo..mid] or [mid..hi] is always normally sorted.',
+      strong: 'If left half is sorted (arr[lo] <= arr[mid]), check if target lies in [arr[lo]..arr[mid]). Otherwise inspect right half.',
+      concept: 'Binary search halves the search space by identifying which partition preserves order monotonicity.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Target found in right partition',
+        input: {
+            "arr": [
+              4,
+              5,
+              6,
+              7,
+              0,
+              1,
+              2
+            ],
+            "target": 0
+          },
+        expectedOutput: 4,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Target not present returns -1',
+        input: {
+            "arr": [
+              4,
+              5,
+              6,
+              7,
+              0,
+              1,
+              2
+            ],
+            "target": 3
+          },
+        expectedOutput: -1,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Single element array found',
+        input: {
+            "arr": [
+              1
+            ],
+            "target": 1
+          },
+        expectedOutput: 0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'longest-increasing-subsequence': {
+    id: 'longest-increasing-subsequence',
+    title: 'Practice: Longest Increasing Subsequence',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'longest_increasing_subsequence',
+    functionSignature: 'longest_increasing_subsequence(nums: list[int]) -> int',
+    starterCode: `import bisect
+
+def longest_increasing_subsequence(nums):
+    """Find length of longest strictly increasing subsequence in O(n log n) time.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Compute the length of the Longest Increasing Subsequence (LIS) in O(n log n) time using patience sorting and binary search.',
+    taskDescription: 'Implement `longest_increasing_subsequence(nums)`. Return the maximum length of a strictly increasing subsequence.',
+    constraints: [
+      "0 <= len(nums) <= 10^5",
+      "O(n log n) time complexity"
+],
+    hints: {
+      small: 'Maintain `tails`, where tails[i] stores the smallest tail of all increasing subsequences of length i+1.',
+      strong: 'For each num, use bisect.bisect_left(tails, num). If idx == len(tails), append; else replace tails[idx] = num.',
+      concept: 'Patience sorting greedily minimizes endpoint values, maintaining invariant sorted tails for binary search.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Classic sequence [10, 9, 2, 5, 3, 7, 101, 18]',
+        input: {
+            "nums": [
+              10,
+              9,
+              2,
+              5,
+              3,
+              7,
+              101,
+              18
+            ]
+          },
+        expectedOutput: 4,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Non-decreasing duplicates ignored for strictly increasing',
+        input: {
+            "nums": [
+              7,
+              7,
+              7,
+              7
+            ]
+          },
+        expectedOutput: 1,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Already strictly increasing',
+        input: {
+            "nums": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+        expectedOutput: 5,
+        hidden: true
+      },
+      {
+        id: 'tc4',
+        label: 'Empty array returns 0',
+        input: {
+            "nums": []
+          },
+        expectedOutput: 0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'two-lone-numbers': {
+    id: 'two-lone-numbers',
+    title: 'Practice: The Two Lone Numbers',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'two_lone_numbers',
+    functionSignature: 'two_lone_numbers(nums: list[int]) -> list[int]',
+    starterCode: `def two_lone_numbers(nums):
+    """Every element appears twice except two. Find them in O(n) time, O(1) space.
+    Return [a, b] sorted ascending.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Isolate two unique numbers in an array of duplicates using bitmask partitioning and XOR properties.',
+    taskDescription: 'Implement `two_lone_numbers(nums)`. Every number in `nums` appears twice except two distinct numbers. Find them and return `[a, b]` sorted in ascending order.',
+    constraints: [
+      "2 <= len(nums) <= 10^5",
+      "Exactly two elements appear once; all others appear twice",
+      "O(1) auxiliary space"
+],
+    hints: {
+      small: 'XOR of all numbers yields xor_all = a ^ b.',
+      strong: 'Find the lowest set bit diff_bit = xor_all & (-xor_all). Partition nums into two groups based on diff_bit and XOR each group.',
+      concept: 'Any set bit in a ^ b indicates that a and b differ at that bit position, splitting the universe into two independent single-number problems.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Two lone numbers 3 and 5',
+        input: {
+            "nums": [
+              1,
+              2,
+              1,
+              3,
+              2,
+              5
+            ]
+          },
+        expectedOutput: [
+            3,
+            5
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Negative numbers',
+        input: {
+            "nums": [
+              -1,
+              0
+            ]
+          },
+        expectedOutput: [
+            -1,
+            0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Lone numbers at opposite ends',
+        input: {
+            "nums": [
+              10,
+              4,
+              2,
+              4,
+              2,
+              20
+            ]
+          },
+        expectedOutput: [
+            10,
+            20
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'find-duplicates': {
+    id: 'find-duplicates',
+    title: 'Practice: Find All Duplicates in an Array',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'find_duplicates',
+    functionSignature: 'find_duplicates(nums: list[int]) -> list[int]',
+    starterCode: `def find_duplicates(nums):
+    """nums of length n with elements in range 1..n. Each appears 1 or 2 times.
+    Find all elements appearing twice in O(n) time, O(1) extra space.
+    Return sorted list of duplicates.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Identify duplicate numbers in an array using array indices as an in-place sign-inversion hash table.',
+    taskDescription: 'Implement `find_duplicates(nums)`. Given an array of integers where 1 <= nums[i] <= n and each appears once or twice, return all elements that appear twice sorted ascending.',
+    constraints: [
+      "n == len(nums)",
+      "1 <= nums[i] <= n",
+      "O(n) time, O(1) auxiliary space"
+],
+    hints: {
+      small: 'Use the array itself as a hash table by negating the value at index abs(num) - 1.',
+      strong: 'If nums[abs(num) - 1] is already negative, abs(num) has been seen before.',
+      concept: 'In-place sign negation encodes presence information without extra memory allocation.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Duplicates [2, 3] from [4, 3, 2, 7, 8, 2, 3, 1]',
+        input: {
+            "nums": [
+              4,
+              3,
+              2,
+              7,
+              8,
+              2,
+              3,
+              1
+            ]
+          },
+        expectedOutput: [
+            2,
+            3
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Duplicates [1] from [1, 1, 2]',
+        input: {
+            "nums": [
+              1,
+              1,
+              2
+            ]
+          },
+        expectedOutput: [
+            1
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'No duplicates returns empty list',
+        input: {
+            "nums": [
+              1
+            ]
+          },
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'daily-temperatures': {
+    id: 'daily-temperatures',
+    title: 'Practice: Daily Temperatures',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'days_until_warmer',
+    functionSignature: 'days_until_warmer(temps: list[int]) -> list[int]',
+    starterCode: `def days_until_warmer(temps):
+    """For each day, compute days until a warmer temperature in O(n) time.
+    Return 0 if no future day is warmer.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Use a monotonic decreasing stack to determine the number of days until a higher temperature for every entry in linear time.',
+    taskDescription: 'Implement `days_until_warmer(temps)`. Return an array `answer` where `answer[i]` is the number of days you have to wait after the i-th day to get a warmer temperature. If no warmer day exists, `answer[i] = 0`.',
+    constraints: [
+      "1 <= len(temps) <= 10^5",
+      "O(n) time complexity"
+],
+    hints: {
+      small: 'Use a monotonic stack storing indices of temperatures that haven\'t found a warmer day yet.',
+      strong: 'While temps[stack[-1]] < temps[i], pop prev = stack.pop() and set result[prev] = i - prev.',
+      concept: 'Next-greater-element queries are resolved in linear time using a monotonic stack.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard week temps',
+        input: {
+            "temps": [
+              73,
+              74,
+              75,
+              71,
+              69,
+              72,
+              76,
+              73
+            ]
+          },
+        expectedOutput: [
+            1,
+            1,
+            4,
+            2,
+            1,
+            1,
+            0,
+            0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Monotonically increasing temperatures',
+        input: {
+            "temps": [
+              30,
+              40,
+              50,
+              60
+            ]
+          },
+        expectedOutput: [
+            1,
+            1,
+            1,
+            0
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Monotonically decreasing temperatures',
+        input: {
+            "temps": [
+              30,
+              60,
+              90
+            ]
+          },
+        expectedOutput: [
+            1,
+            1,
+            0
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'design-lru-cache': {
+    id: 'design-lru-cache',
+    title: 'Practice: Design an LRU Cache',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'lru_cache_ops',
+    functionSignature: 'lru_cache_ops(capacity: int, operations: list[list]) -> list',
+    starterCode: `def lru_cache_ops(capacity, operations):
+    """Simulate LRUCache supporting 'get' and 'put' in O(1) average time.
+    operations: list of ['put', key, val] or ['get', key].
+    Return list of results (None for put, val or -1 for get).
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Implement a Least Recently Used (LRU) Cache eviction policy with O(1) get and put operations.',
+    taskDescription: 'Implement `lru_cache_ops(capacity, operations)`. When the cache exceeds capacity upon insertion, evict the least recently used key. `get(key)` returns value or -1 and marks key as recently used.',
+    constraints: [
+      "capacity >= 1",
+      "operations is non-empty list of ['put', k, v] or ['get', k]"
+],
+    hints: {
+      small: 'Use an OrderedDict or hash map with order list to maintain recency.',
+      strong: 'On get: move key to end. On put: update and move to end; if len > capacity, pop oldest key.',
+      concept: 'LRU caches power database buffer pools and neural model KV cache eviction.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Standard LRU sequence with eviction',
+        input: {
+            "capacity": 2,
+            "operations": [
+              [
+                "put",
+                1,
+                1
+              ],
+              [
+                "put",
+                2,
+                2
+              ],
+              [
+                "get",
+                1
+              ],
+              [
+                "put",
+                3,
+                3
+              ],
+              [
+                "get",
+                2
+              ],
+              [
+                "put",
+                4,
+                4
+              ],
+              [
+                "get",
+                1
+              ],
+              [
+                "get",
+                3
+              ],
+              [
+                "get",
+                4
+              ]
+            ]
+          },
+        expectedOutput: [
+            null,
+            null,
+            1,
+            null,
+            -1,
+            null,
+            -1,
+            3,
+            4
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Capacity 1 eviction',
+        input: {
+            "capacity": 1,
+            "operations": [
+              [
+                "put",
+                10,
+                100
+              ],
+              [
+                "get",
+                10
+              ],
+              [
+                "put",
+                20,
+                200
+              ],
+              [
+                "get",
+                10
+              ],
+              [
+                "get",
+                20
+              ]
+            ]
+          },
+        expectedOutput: [
+            null,
+            100,
+            null,
+            -1,
+            200
+          ],
+        hidden: false
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'smallest-range-k-lists': {
+    id: 'smallest-range-k-lists',
+    title: 'Practice: Smallest Range Covering Elements from K Lists',
+    difficulty: 'hard',
+    topic: 'Interview Prep',
+    estimatedTime: '20–25 min',
+    functionName: 'smallest_range',
+    functionSignature: 'smallest_range(lists: list[list[int]]) -> list[int]',
+    starterCode: `import heapq
+
+def smallest_range(lists):
+    """Find the smallest range [a, b] that includes at least one number from each of the k lists.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Find the smallest range covering at least one element from each of k sorted lists using a multi-way min-heap.',
+    taskDescription: 'Implement `smallest_range(lists)`. Return `[start, end]` representing the smallest range `b - a` (breaking ties by smaller `a`) covering at least one number from every list.',
+    constraints: [
+      "k == len(lists) >= 1",
+      "Each list is sorted in ascending order"
+],
+    hints: {
+      small: 'Keep a min-heap containing one element from each list, and track current_max.',
+      strong: 'Pop minimum val, update best range (current_max - val), and push the next element from the popped element\'s list.',
+      concept: 'The heap tracks the active bounding interval across all k lists simultaneously.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: '3 lists covering range [20, 24]',
+        input: {
+            "lists": [
+              [
+                4,
+                10,
+                15,
+                24,
+                26
+              ],
+              [
+                0,
+                9,
+                12,
+                20
+              ],
+              [
+                5,
+                18,
+                22,
+                30
+              ]
+            ]
+          },
+        expectedOutput: [
+            20,
+            24
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Single list smallest range is element itself',
+        input: {
+            "lists": [
+              [
+                1,
+                2,
+                3
+              ]
+            ]
+          },
+        expectedOutput: [
+            1,
+            1
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'All lists contain identical overlap',
+        input: {
+            "lists": [
+              [
+                1,
+                5
+              ],
+              [
+                5,
+                10
+              ],
+              [
+                5,
+                20
+              ]
+            ]
+          },
+        expectedOutput: [
+            5,
+            5
+          ],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'rotting-oranges': {
+    id: 'rotting-oranges',
+    title: 'Practice: Rotting Oranges (Multi-Source BFS)',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'minutes_to_rot_all',
+    functionSignature: 'minutes_to_rot_all(grid: list[list[int]]) -> int',
+    starterCode: `from collections import deque
+
+def minutes_to_rot_all(grid):
+    """Compute minimum minutes until no fresh oranges remain using multi-source BFS.
+    0 = empty, 1 = fresh, 2 = rotten. Return -1 if impossible.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Simulate multi-source BFS contamination spread across a 2D grid to compute total infection time.',
+    taskDescription: 'Implement `minutes_to_rot_all(grid)`. Return the minimum number of minutes that must elapse until no cell has a fresh orange. If impossible, return -1.',
+    constraints: [
+      "grid values in {0, 1, 2}",
+      "4-directional spread"
+],
+    hints: {
+      small: 'Enqueue all initial rotten oranges (value 2) at time t=0 into a queue simultaneously.',
+      strong: 'Pop from queue, rot adjacent fresh oranges, decrement fresh count, and enqueue with t+1.',
+      concept: 'Multi-source BFS models concurrent wave propagation across spatial grids.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'All oranges rot in 4 minutes',
+        input: {
+            "grid": [
+              [
+                2,
+                1,
+                1
+              ],
+              [
+                1,
+                1,
+                0
+              ],
+              [
+                0,
+                1,
+                1
+              ]
+            ]
+          },
+        expectedOutput: 4,
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Isolated fresh orange impossible to rot',
+        input: {
+            "grid": [
+              [
+                2,
+                1,
+                1
+              ],
+              [
+                0,
+                1,
+                1
+              ],
+              [
+                1,
+                0,
+                1
+              ]
+            ]
+          },
+        expectedOutput: -1,
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Zero fresh oranges returns 0',
+        input: {
+            "grid": [
+              [
+                0,
+                2
+              ]
+            ]
+          },
+        expectedOutput: 0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'right-side-view': {
+    id: 'right-side-view',
+    title: 'Practice: Right Side View of a Binary Tree',
+    difficulty: 'medium',
+    topic: 'Interview Prep',
+    estimatedTime: '15–20 min',
+    functionName: 'right_side_view',
+    functionSignature: 'right_side_view(root: dict | None) -> list[int]',
+    starterCode: `from collections import deque
+
+
+def _get_val(node):
+    return node['val'] if isinstance(node, dict) else getattr(node, 'val', None)
+def _get_left(node):
+    return node.get('left') if isinstance(node, dict) else getattr(node, 'left', None)
+def _get_right(node):
+    return node.get('right') if isinstance(node, dict) else getattr(node, 'right', None)
+
+def right_side_view(root):
+    """Return values of nodes visible from the right side of the binary tree.
+    """
+    # Your code here
+    pass
+`,
+    mission: 'Extract the rightmost visible node at every level of a binary tree using breadth-first traversal.',
+    taskDescription: 'Implement `right_side_view(root)`. Return the values of the nodes you can see ordered from top to bottom when standing on the right side of the tree.',
+    constraints: [
+      "root is a dict {'val', 'left', 'right'} or None",
+      "Returns list of integers"
+],
+    hints: {
+      small: 'Use level-order BFS tracking level size.',
+      strong: 'The last node popped in each level\'s iteration loop is the rightmost visible node.',
+      concept: 'Level-order batch processing isolates the rightmost frontier at each depth tier.',
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: 'tc1',
+        label: 'Right side view with 3 levels',
+        input: {
+            "root": {
+              "val": 1,
+              "left": {
+                "val": 2,
+                "left": null,
+                "right": {
+                  "val": 5,
+                  "left": null,
+                  "right": null
+                }
+              },
+              "right": {
+                "val": 3,
+                "left": null,
+                "right": {
+                  "val": 4,
+                  "left": null,
+                  "right": null
+                }
+              }
+            }
+          },
+        expectedOutput: [
+            1,
+            3,
+            4
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc2',
+        label: 'Left subtree deeper than right',
+        input: {
+            "root": {
+              "val": 1,
+              "left": {
+                "val": 2,
+                "left": {
+                  "val": 4,
+                  "left": null,
+                  "right": null
+                },
+                "right": null
+              },
+              "right": {
+                "val": 3,
+                "left": null,
+                "right": null
+              }
+            }
+          },
+        expectedOutput: [
+            1,
+            3,
+            4
+          ],
+        hidden: false
+      },
+      {
+        id: 'tc3',
+        label: 'Empty tree returns empty list',
+        input: {
+            "root": null
+          },
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';
