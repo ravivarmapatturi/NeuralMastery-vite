@@ -140,6 +140,16 @@
       "topic": null,
       "placeholder": false
     },
+    "/docs/agents/react-agent-production": {
+      "slug": "agents/react-agent-production",
+      "section": "agents",
+      "title": "ReAct Agents in Production",
+      "sidebarPosition": 4.1,
+      "description": "The engineering reality of the Thought-Action-Observation loop: tool execution contracts, context window growth, loop guards, observability, and a runnable control loop.",
+      "difficulty": null,
+      "topic": null,
+      "placeholder": false
+    },
     "/docs/agents/reflection-self-critique": {
       "slug": "agents/reflection-self-critique",
       "section": "agents",

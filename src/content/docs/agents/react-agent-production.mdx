@@ -1,0 +1,428 @@
+---
+title: "ReAct Agents in Production"
+sidebar_position: 4.1
+description: "The engineering reality of the Thought-Action-Observation loop: tool execution contracts, context window growth, loop guards, observability, and a runnable control loop."
+---
+
+import reactLoopDark from './img/react-loop.png';
+import reactLoopLight from './img/react-loop-light.png';
+import { ELI5, GoDeeper } from '../../../components/content/ExpandableDepth';
+import RunnableCode from '../../../components/content/RunnableCode';
+
+# ReAct Agents in Production
+
+[Agent Architectures](/docs/agents/agent-architectures#react-reasoning-acting) introduces the ReAct pattern — interleaving reasoning with action, one step at a time. Formalized by [Yao et al. (2022)](https://arxiv.org/abs/2210.03629), ReAct is the workhorse control loop of autonomous AI systems. While a toy script can demonstrate the loop in 20 lines, taking a ReAct agent to production requires solving hard distributed systems problems: enforcing strict tool-calling schemas, recovering from malformed model outputs without crashing, managing the quadratic token cost of accumulating transcripts, preventing runaway loop thrashing, and capturing structured traces for observability.
+
+Its sibling architecture, [Plan-and-Execute](/docs/agents/plan-and-execute), plans all steps upfront; ReAct decides exactly one step at a time, making it the superior architecture when each action's observation determines what the next action should even be.
+
+<ELI5>
+
+Imagine diagnosing a car that won't start.
+
+A rigid script would say: *"Replace spark plugs, replace battery, replace starter motor."* You might swap a brand-new battery simply because it was step two on the checklist.
+
+A pure reflex system would just turn keys and hit buttons randomly with zero diagnostic reasoning.
+
+ReAct is how a master mechanic actually works:
+1. **Thought**: *"The starter motor turns, but the engine won't catch. That means the electrical starting circuit is fine; the issue is either fuel or ignition. Let me test fuel rail pressure first."*
+2. **Action**: Connect fuel pressure gauge and turn the key.
+3. **Observation**: *Pressure reads 45 PSI (nominal).*
+4. **Thought**: *"Fuel delivery is working normally. The problem must be ignition. Let me inspect spark plug #1 for spark."*
+5. **Action**: Pull spark plug #1 and test for spark.
+6. **Observation**: *No spark detected.*
+7. **Final Answer**: *"Root cause identified: ignition circuit failure (no spark at cylinder 1)."*
+
+Every single move is chosen only **after** seeing what the previous diagnostic step returned. If a tool fails or an unexpected result appears, the agent doesn't crash or blindly forge ahead — it reasons through the surprise and adapts.
+
+</ELI5>
+
+## 1. The Loop Mechanics: Thought, Action, Observation
+
+The foundational ReAct cycle consists of three repeating phases:
+
+- **Thought (Reasoning Trace)**: The model articulates its current understanding of the task, evaluates past observations, identifies what information is still missing, and decides on a tactical sub-goal. This step grounds the agent and prevents the model from jumping blindly into destructive actions.
+- **Action (Tool Invocation)**: The model issues a structured instruction to call an external tool (such as a database query, web search, calculator, or API call) with specific arguments.
+- **Observation (Environment Feedback)**: The host harness executes the selected tool in the real world and feeds the resulting string or structured payload back into the model's conversation history as ground truth.
+
+<ThemedImage alt="ReAct loop: Thought, Action, Observation, repeating until enough information to answer" sources={{light: reactLoopLight, dark: reactLoopDark}} />
+
+### The Termination Condition
+
+A ReAct agent does not loop indefinitely; it runs until one of two conditions is met:
+1. **Convergence (Final Answer)**: The model determines that the accumulated observations contain enough facts to answer the user's original query. Instead of emitting another tool call, it produces a user-facing response, terminating the loop.
+2. **Safety Abort (Guard Triggered)**: The orchestration harness steps in and terminates the loop because a hard limit was reached — such as a maximum iteration ceiling, an execution timeout, or a token spend budget.
+
+### Prompt Anatomy: Text Scraping vs. Native Chat Roles
+
+In the original 2022 research paper, ReAct was driven entirely by raw text prompting with custom stop sequences:
+```text
+Question: What is the elevation of the city where the 2024 Summer Olympics took place?
+Thought 1: I need to find the host city of the 2024 Summer Olympics.
+Action 1: Search[2024 Summer Olympics host city]
+Observation 1: The 2024 Summer Olympics were held in Paris, France.
+Thought 2: Now I need to find the elevation of Paris.
+Action 2: Search[elevation of Paris]
+Observation 2: Paris has an average elevation of 35 meters above sea level.
+Thought 3: I have the answer.
+Final Answer: The 2024 Summer Olympics took place in Paris, which has an average elevation of 35 meters.
+```
+
+In production systems, this raw text format is obsolete. Modern foundation models use **native structured message roles**:
+- `system`: System instructions defining the agent's identity, allowed capabilities, and schemas for all available tools.
+- `user`: The initial request from the user.
+- `assistant`: The model's response containing both reasoning text and native `tool_calls` payloads with unique `id` handles.
+- `tool`: The execution environment's response, explicitly linked to the calling step via `tool_call_id`.
+
+## 2. The Tool-Calling Contract & Parse Failure Recovery
+
+In a production harness, the model never directly executes code or contacts external networks. Instead, the model acts strictly as a **structured argument generator**, and the host runtime acts as the **privileged executor**.
+
+```
+┌─────────────────┐             tool_calls: { name, args }              ┌──────────────────────┐
+│                 │ ──────────────────────────────────────────────────> │  Host Harness Engine │
+│                 │                                                     │  - Schema Validation │
+│      Model      │ <────────────────────────────────────────────────── │  - Timeout & Sandbox │
+│  (LLM Engine)   │       tool message: { tool_call_id, content }       │  - Network Execution │
+└─────────────────┘                                                     └──────────────────────┘
+```
+
+### JSON Schema Enforcement
+
+Every tool exposed to a ReAct agent is defined using JSON Schema. This schema defines the parameters, their required data types (`string`, `number`, `boolean`, `array`, `object`), descriptions that the model's attention mechanism uses to select appropriate inputs, and any enum constraints:
+
+```json
+{
+  "name": "lookup_customer_order",
+  "description": "Fetch shipping and fulfillment details for an e-commerce order.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "order_id": {
+        "type": "string",
+        "pattern": "^ORD-[0-9]{4,6}$",
+        "description": "The unique customer order identifier, formatted as ORD-XXXXX."
+      },
+      "include_tracking": {
+        "type": "boolean",
+        "description": "Whether to query real-time carrier tracking telemetry."
+      }
+    },
+    "required": ["order_id"]
+  }
+}
+```
+
+### Parse-Failure Handling: The Self-Correction Loop
+
+Foundation models will occasionally emit malformed JSON, omit a required parameter, hallucinate a tool name that does not exist, or pass a string where an integer was demanded.
+
+In a brittle system, this unhandled exception crashes the runtime. In a production ReAct harness, **parse and validation failures are caught and fed back to the model as an Observation**:
+
+```
+Model Thought:  "Looking up order details."
+Model Action:   lookup_customer_order(id="ORD-1234")   <-- Error: schema expected 'order_id', not 'id'
+Runtime Catch:  Catches ValidationError('Missing required field: order_id')
+Observation:    "ValidationError: Missing required property 'order_id'. Accepted schema: {'order_id': string, 'include_tracking': boolean}."
+Model Thought:  "My previous call failed because I passed 'id' instead of 'order_id'. Correcting parameter."
+Model Action:   lookup_customer_order(order_id="ORD-1234")  <-- Succeeded
+```
+
+Because the error message is placed directly into the model's context window as the next observation, the model uses its next reasoning step to identify its syntax or semantic mistake and self-correct.
+
+## 3. Context & Memory Across Iterations
+
+At each step $k$ of a ReAct loop, the host appends the latest Thought, Action, and Observation to the transcript and sends the **entire cumulative history** back to the model. This creates two distinct production bottlenecks: quadratic token accumulation and observation bloat.
+
+### The Quadratic Token Accumulation Problem
+
+Every iteration re-submits all previous steps. If $C_0$ is the initial system and user prompt token count, and each iteration adds an average of $\bar{S}$ tokens of model output and $\bar{O}$ tokens of tool observation:
+
+$$\text{Tokens Processed at Step } k = C_0 + (k - 1)(\bar{S} + \bar{O})$$
+
+Across a run of $K$ iterations, the cumulative input tokens billed and processed scale quadratically:
+
+$$\text{Total Input Tokens}(K) = \sum_{k=1}^K \left[ C_0 + (k - 1)(\bar{S} + \bar{O}) \right] = K \cdot C_0 + \frac{K(K - 1)}{2}(\bar{S} + \bar{O})$$
+
+For an agent running 10 iterations with a 2,000-token system prompt and 500 tokens per step, the total token consumption is not $2,000 + 10 \times 500 = 7,000$ tokens — it is **29,500 tokens**. Cost and time-to-first-token (TTFT) both scale with this quadratic curve.
+
+### Observation Bloat
+
+A single tool call that fetches an unfiltered webpage or dumps a SQL database table can easily return 15,000 to 50,000 tokens of raw text. Injecting that payload directly into the transcript:
+1. Consumes a massive fraction of the context window.
+2. Degrades model reasoning via the "lost-in-the-middle" attention phenomenon, where models fail to retrieve subtle clues buried in large contexts.
+3. Accelerates the quadratic token cost for all subsequent iterations.
+
+### Production Mitigation Strategies
+
+Real-world ReAct engines implement three complementary defenses:
+
+- **Ingestion-Time Filtering**: Never return raw HTML or raw database dumps. Strip boilerplate, parse tables into concise markdown, filter columns, and truncate text payloads at a fixed ceiling (e.g., 2,000 characters per observation) before injecting them into the transcript.
+- **Transcript Pruning / Sliding Windows**: Retain the system prompt and original user prompt permanently, but compress or summarize intermediate Thought/Action/Observation triplets that occurred more than $M$ steps ago into a single high-level note (e.g., *"Step 2: Queried customer database; verified account #409 is in good standing."*).
+- **Offloading Payloads to Artifact Storage**: Large datasets (CSV files, search results, images) are persisted to an external object store. The observation returned to the agent contains only a metadata summary and an artifact ID, along with targeted query tools (e.g., `inspect_csv_headers`, `filter_csv_rows`) so the agent can request specific slices on demand.
+
+<GoDeeper title="Go deeper: why naive FIFO truncation breaks ReAct loops">
+
+A common beginner mistake is applying naive First-In, First-Out (FIFO) message truncation: when the context window fills up, drop the oldest messages in the array.
+
+In a ReAct agent, naive FIFO is fatal. Dropping the earliest messages removes either the user's original task description or the first exploratory tool observations that established key entities (such as account numbers, session tokens, or error codes). The agent suffers catastrophic amnesia, forgets what problem it was solving, and begins re-running tools it already executed.
+
+Production compactors use **causal-preserving compaction**:
+1. **Root Pinning**: The System Prompt and original User Query are pinned and never removed.
+2. **Intermediate Pruning**: Completed tool calls from middle iterations are collapsed into 1-sentence summaries.
+3. **Recent Window**: The most recent 2–3 iterations are preserved verbatim so the model has immediate conversational continuity.
+
+</GoDeeper>
+
+## 4. Production Hardening Checklist
+
+Deploying a ReAct agent to user-facing production requires defensive engineering around non-deterministic model behavior. Every production harness must implement this hardening checklist:
+
+| Hardening Requirement | Risk Without It | Production Solution |
+| :--- | :--- | :--- |
+| **1. Max-Iteration Loop Guard** | Infinite looping / agent thrashing on impossible tasks, burning API credits | Set a hard limit (`max_iterations = 8-12`). Return a clean fallback response if reached. |
+| **2. Tool Execution Timeouts** | Zombie agent processes hanging indefinitely on unresponsive third-party APIs | Wrap every tool invocation in a hard timeout (`asyncio.wait_for(..., timeout=10.0)`). |
+| **3. Retry Policy with Jitter** | Transient network blips aborting otherwise successful multi-step workflows | Retry transient HTTP 429/503 errors with exponential backoff and randomized jitter. |
+| **4. Idempotency on Side Effects** | Double-charging credit cards or sending duplicate emails upon network retries | Require `idempotency_key` headers and human-in-the-loop approval on mutating actions. |
+| **5. Session Budget Limits** | Runaway query causing unexpected thousands of dollars in cloud LLM billing | Enforce hard session-level token caps and kill execution if dollar spend exceeds threshold. |
+
+### Idempotency: Read-Only Tools vs. Mutating Actions
+
+The most dangerous bug in autonomous agents is retrying a side-effecting action after a timeout. If an agent invokes `charge_credit_card(amount=50)` and the network connection drops before the HTTP 200 response returns:
+- A naive agent assumes the action failed, retries on the next iteration, and charges the customer twice.
+- A hardened agent requires all state-mutating tools to supply an **idempotency key** derived from the task session and step number (`idempotency_key="req_sess99_step3"`). If the payment processor receives a duplicate key, it safely returns the existing transaction status without re-charging.
+
+## 5. Observability & Tracing
+
+In standard web services, a request produces a linear sequence of logs: `Started GET /order` → `Query DB` → `Render 200 OK`. 
+
+A ReAct agent does not produce a flat log stream. It produces a **hierarchical tree of non-deterministic, nested decisions**: an initial goal branches into multiple model calls, which generate parallel or sequential tool invocations, each with its own latency, token consumption, and payload size.
+
+### What a Production Trace Must Record
+
+To diagnose agent regressions and monitor costs in production, every step must record structured telemetry:
+1. **Span Context**: Trace ID, Span ID, Parent Span ID, and Iteration Index.
+2. **Model Metrics**: Exact model version, temperature, prompt tokens, completion tokens, cached tokens, and Time-to-First-Token (TTFT).
+3. **Raw Payloads**: Unedited system prompt, tool call arguments, raw tool output string, and parse error tracebacks.
+4. **Cost Accounting**: Exact calculated dollar cost for the step based on active vendor token pricing.
+
+### Industry Standard Tooling
+
+- **LangSmith**: Native tracing for LangChain and LangGraph applications. Visualizes the full multi-step graph execution, inspects intermediate tool outputs, and enables one-click capture of production failures into regression test suites.
+- **OpenTelemetry & OpenInference**: The vendor-neutral open standard. Uses standardized semantic conventions (`gen_ai.system`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`) to export agent traces directly into enterprise APM platforms like Datadog, Honeycomb, or Jaeger.
+- **Langfuse & Arize Phoenix**: Dedicated open-source LLM engineering platforms providing latency histograms, cost analytics, automated evaluations, and user feedback tagging.
+
+## 6. Run the Control Loop For Real
+
+A production ReAct harness is not an LLM feature; it is an orchestration algorithm written in host code.
+
+Below is a complete, unsimplified ReAct orchestration engine. In this runnable demo, `mock_llm` and `mock_tools` serve as deterministic stand-ins so the trace is reproducible in-browser. The orchestration loop itself (`run_react_agent`) is the real thing: it validates tool arguments, catches parse errors, feeds failures back into the transcript as observations, accumulates token counts, and enforces a hard max-iteration safety guard.
+
+Step through the execution below to see the agent recover from a validation error on Step 2 before arriving at its final answer:
+
+<RunnableCode code={`import json
+
+def mock_tools(name, args):
+    """Deterministic mock tools representing external APIs."""
+    if name == "get_order_status":
+        order_id = args.get("order_id")
+        if order_id == "ORD-991":
+            return {"status": "shipped", "carrier": "FedEx", "tracking_number": "TRK-4402"}
+        return {"error": "Order not found"}
+    elif name == "query_shipping_carrier":
+        tracking_num = args.get("tracking_number")
+        if tracking_num == "TRK-4402":
+            return {"status": "in_transit", "estimated_delivery": "2026-09-12", "hub": "Memphis, TN"}
+        return {"error": "Tracking number not found"}
+    raise ValueError(f"Unknown tool: {name}")
+
+def mock_llm(transcript):
+    """Deterministic LLM simulator demonstrating the Thought/Action cycle,
+    including a malformed call and self-correction upon receiving error feedback."""
+    step = len(transcript)
+    if step == 0:
+        return {
+            "thought": "User wants delivery date for ORD-991. First step: retrieve order status.",
+            "action": {"name": "get_order_status", "args": {"order_id": "ORD-991"}}
+        }
+    elif step == 1:
+        # Step 1: Model attempts to query carrier, but makes a malformed call (omits tracking_number)
+        return {
+            "thought": "Order is shipped via FedEx. Querying carrier for tracking details.",
+            "action": {"name": "query_shipping_carrier", "args": {}}
+        }
+    elif step == 2:
+        # Step 2: Model receives the ValidationError observation and self-corrects
+        return {
+            "thought": "Previous tool call failed due to missing tracking_number. Fixing argument using TRK-4402.",
+            "action": {"name": "query_shipping_carrier", "args": {"tracking_number": "TRK-4402"}}
+        }
+    else:
+        # Final step: Model produces final user-facing answer
+        return {
+            "thought": "I have verified delivery date is 2026-09-12 from Memphis hub. Ready to answer.",
+            "final_answer": "Order ORD-991 has shipped via FedEx (tracking: TRK-4402) and is estimated to arrive on September 12, 2026."
+        }
+
+def run_react_agent(query, llm_fn, tool_fn, max_iterations=6):
+    """Production ReAct control loop:
+    1. Interleave Thought -> Action -> Observation
+    2. Enforce schema checks; catch exceptions and feed back as Observations
+    3. Track quadratic token accumulation
+    4. Terminate on final answer or max_iterations guard."""
+    transcript = []
+    total_tokens = 0
+    
+    for iteration in range(1, max_iterations + 1):
+        # 1. Invoke model with current transcript
+        step_response = llm_fn(transcript)
+        # Token accounting: initial prompt (~150 tokens) + history accumulation
+        total_tokens += 150 + (len(transcript) * 60)
+        
+        # 2. Check for termination condition
+        if "final_answer" in step_response:
+            return {
+                "status": "completed",
+                "final_answer": step_response["final_answer"],
+                "iterations": iteration,
+                "transcript": transcript,
+                "total_tokens": total_tokens
+            }
+            
+        thought = step_response.get("thought", "")
+        action = step_response.get("action", {})
+        tool_name = action.get("name")
+        tool_args = action.get("args", {})
+        
+        # 3. Execute tool with error isolation
+        try:
+            if not tool_name:
+                raise ValueError("Action payload must specify a tool name")
+            if tool_name == "query_shipping_carrier" and "tracking_number" not in tool_args:
+                raise ValueError("Missing required schema parameter: 'tracking_number'")
+            result = tool_fn(tool_name, tool_args)
+            observation = json.dumps(result)
+        except Exception as e:
+            # Crucial: errors become observations for the model to reason over, not crashes
+            observation = f"ValidationError: {e}"
+            
+        transcript.append({
+            "step": iteration,
+            "thought": thought,
+            "action": action,
+            "observation": observation
+        })
+        
+    return {
+        "status": "max_iterations_reached",
+        "final_answer": "Execution terminated: maximum iteration safety limit reached.",
+        "iterations": max_iterations,
+        "transcript": transcript,
+        "total_tokens": total_tokens
+    }
+
+# Execute the agent
+result = run_react_agent("When will order ORD-991 arrive?", mock_llm, mock_tools)
+
+print(f"Agent Status: {result['status']}")
+print(f"Total Iterations: {result['iterations']}")
+print(f"Total Tokens Processed: {result['total_tokens']}\n")
+
+print("Execution Transcript:")
+for step in result["transcript"]:
+    print(f"  [Step {step['step']}]")
+    print(f"    Thought:     {step['thought']}")
+    print(f"    Action:      {step['action']['name']}({step['action']['args']})")
+    print(f"    Observation: {step['observation']}")
+
+print(f"\nFinal Response to User:\n\"{result['final_answer']}\"")
+`} />
+
+### Implement the ReAct Orchestration Loop Yourself
+
+In this exercise, implement the core control loop:
+- Call `llm_fn(transcript)` at each iteration.
+- If the response contains `"final_answer"`, return immediately with `status: "completed"`.
+- Otherwise, execute the tool. If an exception occurs, catch it and convert it into an observation string starting with `"Error: "`.
+- If the loop exceeds `max_iterations`, abort and return `status: "max_iterations_reached"`.
+
+<RunnableCode
+  code={`import json
+
+def mock_tools(name, args):
+    if name == "get_order_status":
+        return {"status": "shipped", "tracking_number": "TRK-4402"}
+    elif name == "query_shipping_carrier":
+        if "tracking_number" not in args:
+            raise ValueError("Missing tracking_number")
+        return {"status": "in_transit", "estimated_delivery": "2026-09-12"}
+    raise ValueError(f"Unknown tool: {name}")
+
+def mock_llm(transcript):
+    step = len(transcript)
+    if step == 0:
+        return {"thought": "Check status", "action": {"name": "get_order_status", "args": {"order_id": "ORD-991"}}}
+    elif step == 1:
+        return {"thought": "Query carrier", "action": {"name": "query_shipping_carrier", "args": {}}}
+    elif step == 2:
+        return {"thought": "Fix argument", "action": {"name": "query_shipping_carrier", "args": {"tracking_number": "TRK-4402"}}}
+    return {"thought": "Done", "final_answer": "Arriving September 12, 2026."}
+
+def run_react_agent(query, llm_fn, tool_fn, max_iterations=5):
+    """Execute the ReAct loop.
+    Return a dict with keys: 'status', 'final_answer', 'iterations', 'transcript'."""
+    # Your implementation here
+    pass
+`}
+  tests={`# Test 1: Successful multi-step completion with error recovery
+res = run_react_agent("order status", mock_llm, mock_tools, max_iterations=5)
+assert res["status"] == "completed"
+assert res["iterations"] == 4
+assert len(res["transcript"]) == 3
+assert "Error" in res["transcript"][1]["observation"]
+assert "September 12" in res["final_answer"]
+
+# Test 2: Max iterations safety guard halts runaway loops
+res_capped = run_react_agent("order status", mock_llm, mock_tools, max_iterations=2)
+assert res_capped["status"] == "max_iterations_reached"
+assert len(res_capped["transcript"]) == 2`}
+/>
+
+## 7. How Real Frameworks Implement This
+
+Modern agent frameworks have moved away from basic prompt templates toward explicit state graphs:
+
+### LangChain: `AgentExecutor` and `create_react_agent`
+
+The original LangChain ReAct implementation centered on `AgentExecutor`:
+- An agent prompt formatted the full tool catalog and formatted previous steps into an `agent_scratchpad` string variable.
+- An output parser (`ReActSingleInputOutputParser` or `JSONAgentOutputParser`) converted model text into an `AgentAction` or `AgentFinish` object.
+- `AgentExecutor` executed a Python `while` loop: invoke model → parse output → execute tool via `tool.run()` → append result to scratchpad → repeat.
+
+*Production note*: LangChain has officially placed `AgentExecutor` into legacy/maintenance mode in favor of LangGraph. A monolithic `while` loop could not cleanly support state resumption, graph checkpoints, parallel sub-agents, or human-in-the-loop pause/resume breakpoints.
+
+### LangGraph: The Prebuilt ReAct Agent (`create_react_agent`)
+
+In [LangGraph](https://langchain-ai.github.io/langgraph/), the ReAct loop is modeled as a compiled **State Graph** consisting of two nodes and a conditional edge:
+
+1. **State**: The graph state is stored as a list of chat messages (`MessagesState`), where each interaction appends either an `AIMessage` (with `tool_calls`) or a `ToolMessage`.
+2. **`agent` Node**: Calls the model with the current message history and tool schemas bound.
+3. **`tools_condition` (Conditional Edge)**: Inspects the last message generated by the model. If `AIMessage.tool_calls` is non-empty, execution routes to the `tools` node. If empty, the model has delivered its final response, and routing exits to `END`.
+4. **`tools` Node (`ToolNode`)**: Executes the requested tool calls and appends `ToolMessage` results. It routes unconditionally back to `agent` to complete the cycle.
+5. **Durable Checkpointing**: By attaching a checkpointer (such as `MemorySaver` or `PostgresSaver`), LangGraph records the full state at every turn. If a tool call requires human authorization or a container crashes mid-task, execution can resume from the exact last checkpoint without re-running earlier steps.
+
+## When to Reach for ReAct
+
+- **ReAct's Dominant Domain**: Dynamic, exploratory tasks where the outcome of step $N$ determines what step $N+1$ should even be (e.g., automated debugging, customer service triage, interactive SQL investigations).
+- **When to Choose [Plan-and-Execute](/docs/agents/plan-and-execute)**: Structured, predictable multi-step tasks (e.g., *"Search three competitor websites, download their pricing PDFs, and generate a markdown table"*). Upfront planning eliminates the latency and token cost of invoking a heavy reasoning model after every single action.
+- **When to Choose [Reflection / Self-Critique](/docs/agents/reflection-self-critique)**: Complex content generation or code generation where the agent must evaluate its own work against a strict quality rubric before marking the task complete.
+
+## References
+
+- Yao et al., ["ReAct: Synergizing Reasoning and Acting in Language Models"](https://arxiv.org/abs/2210.03629) — arXiv:2210.03629, the seminal 2022 paper formalizing interleaved reasoning and acting.
+- [LangGraph Documentation: ReAct Agent Architecture](https://langchain-ai.github.io/langgraph/) — the prebuilt state graph implementation, ToolNode mechanics, and persistence patterns.
+- [LangChain, "Plan-and-Execute Agents"](https://www.langchain.com/blog/planning-agents) — analysis of per-step ReAct loops versus upfront planning architectures.
+- [Agent Architectures](/docs/agents/agent-architectures#react-reasoning-acting) — the comprehensive evolution from single prompts to agent graphs.
+- [Plan-and-Execute](/docs/agents/plan-and-execute) — the sibling deep-dive covering upfront multi-step planning and replanning on failure.
+- [Loops and Graphs: The Actual Anatomy](/docs/agents/loops-and-graphs) — formalizing loops, real vs. fake edges, and state machine gates.
+
+Next: [Plan-and-Execute](/docs/agents/plan-and-execute) — inverting the loop to plan all steps upfront and execute with minimal per-step reasoning.
