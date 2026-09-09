@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { PracticeProblem } from '../../lib/practiceProblem';
 import type { DocPage } from '../../lib/contentTree';
@@ -11,6 +11,24 @@ import {
   BookOpenIcon,
 } from '../icons/PracticeIcons';
 import type { MasteryTier } from '../../lib/gamification';
+
+const TwoPointersSlidingWindowExplorer = lazy(() => import('../../viz/TwoPointersSlidingWindowExplorer'));
+const GraphTreeTraversalExplorer = lazy(() => import('../../viz/GraphTreeTraversalExplorer'));
+
+/** DSA topics (two pointers/sliding window, trees, graphs) don't fit any of
+ * LiveComputation's 6 AI/ML concepts -- mapping them there would mislabel
+ * a real algorithm as "Attention" or "Gradient descent". These topics
+ * already have real, general-purpose Visual Lab explorers (shipped
+ * separately for /docs/visual-lab) that need no problem-specific props, so
+ * they're reused here rather than forcing an inaccurate AI-concept match or
+ * showing nothing. */
+type DsaExplorer = 'two-pointers' | 'graph-tree';
+function getDsaExplorerForTopic(topic?: string): DsaExplorer | null {
+  const t = (topic || '').toLowerCase();
+  if (t.includes('two pointer') || t.includes('sliding window') || t.includes('arrays / hashing')) return 'two-pointers';
+  if (t.includes('tree') || t.includes('binary search') || t.includes('graph')) return 'graph-tree';
+  return null;
+}
 
 interface ProblemPanelProps {
   problem: PracticeProblem;
@@ -46,6 +64,7 @@ export default function ProblemPanel({
   const difficultyColor = DIFFICULTY_ACCENT[problem.difficulty] ?? 'var(--nm-accent-danger)';
   const vectorOpSpec = getVectorOpSpec(problem);
   const liveConcept = getLiveConceptForTopic(problem.topic, problem.title);
+  const dsaExplorer = !vectorOpSpec && !liveConcept ? getDsaExplorerForTopic(problem.topic) : null;
 
   const handleSelectHintLevel = (level: number) => {
     setHintLevel(level);
@@ -325,6 +344,18 @@ export default function ProblemPanel({
             ) : liveConcept ? (
               <div style={{ marginBottom: 20 }}>
                 <LiveComputation lockConcept={liveConcept} hideTabs />
+              </div>
+            ) : dsaExplorer === 'two-pointers' ? (
+              <div style={{ marginBottom: 20 }}>
+                <Suspense fallback={<div style={{ padding: '2rem 0', color: 'var(--nm-text-muted)' }}>Loading visualization…</div>}>
+                  <TwoPointersSlidingWindowExplorer />
+                </Suspense>
+              </div>
+            ) : dsaExplorer === 'graph-tree' ? (
+              <div style={{ marginBottom: 20 }}>
+                <Suspense fallback={<div style={{ padding: '2rem 0', color: 'var(--nm-text-muted)' }}>Loading visualization…</div>}>
+                  <GraphTreeTraversalExplorer />
+                </Suspense>
               </div>
             ) : null}
 
