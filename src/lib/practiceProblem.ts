@@ -141032,6 +141032,6807 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  'memory-prob-1': {
+    id: "memory-prob-1",
+    title: "#151. Sliding window context truncation",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "sliding_window_context",
+    functionSignature: "sliding_window_context(messages: list[dict], max_tokens: int) -> list[dict]",
+    starterCode: `def sliding_window_context(messages, max_tokens):
+    """Truncate conversation history using a sliding window.
+    
+    If messages[0]['role'] == 'system', preserve it (deducting its tokens).
+    Retain the most recent messages from the end that fit in the remaining budget.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Truncate multi-turn conversation context to fit strict LLM token limits while preserving critical system instructions.",
+    taskDescription: "Implement `sliding_window_context(messages, max_tokens)`. Each message is a dict `{'role': str, 'content': str, 'tokens': int}`. If `messages[0]['role'] == 'system'`, preserve it (deducting its tokens from `max_tokens`). Then retain the most recent messages from the suffix that fit within the remaining token budget. Return the selected messages in chronological order.",
+    constraints: [
+      "0 <= len(messages) <= 100",
+      "max_tokens >= 0",
+      "Chronological order must be maintained"
+],
+    hints: {
+      small: "Check if messages[0]['role'] == 'system' first to allocate its tokens.",
+      strong: "Iterate backwards from the end of messages[1:] (or messages) accumulating token counts until the budget would be exceeded.",
+      concept: "Sliding window truncation retains the most immediate conversational context while preventing context-window overflow errors.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "System message preserved with recent dialogue",
+        input: {
+          "messages": [
+                    {
+                              "role": "system",
+                              "content": "You are helpful.",
+                              "tokens": 10
+                    },
+                    {
+                              "role": "user",
+                              "content": "Turn 1",
+                              "tokens": 15
+                    },
+                    {
+                              "role": "assistant",
+                              "content": "Reply 1",
+                              "tokens": 20
+                    },
+                    {
+                              "role": "user",
+                              "content": "Turn 2",
+                              "tokens": 12
+                    },
+                    {
+                              "role": "assistant",
+                              "content": "Reply 2",
+                              "tokens": 18
+                    }
+          ],
+          "max_tokens": 45
+},
+        expectedOutput: [
+          {
+                    "role": "system",
+                    "content": "You are helpful.",
+                    "tokens": 10
+          },
+          {
+                    "role": "user",
+                    "content": "Turn 2",
+                    "tokens": 12
+          },
+          {
+                    "role": "assistant",
+                    "content": "Reply 2",
+                    "tokens": 18
+          }
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "No system message, all fit in budget",
+        input: {
+          "messages": [
+                    {
+                              "role": "user",
+                              "content": "Hello",
+                              "tokens": 5
+                    },
+                    {
+                              "role": "assistant",
+                              "content": "Hi there!",
+                              "tokens": 8
+                    }
+          ],
+          "max_tokens": 50
+},
+        expectedOutput: [
+          {
+                    "role": "user",
+                    "content": "Hello",
+                    "tokens": 5
+          },
+          {
+                    "role": "assistant",
+                    "content": "Hi there!",
+                    "tokens": 8
+          }
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "System message alone exceeds budget",
+        input: {
+          "messages": [
+                    {
+                              "role": "system",
+                              "content": "Very long prompt",
+                              "tokens": 100
+                    },
+                    {
+                              "role": "user",
+                              "content": "Query",
+                              "tokens": 10
+                    }
+          ],
+          "max_tokens": 50
+},
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-2': {
+    id: "memory-prob-2",
+    title: "#152. Token budget enforcement",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "enforce_token_budget",
+    functionSignature: "enforce_token_budget(sections: dict[str, int], total_budget: int, priorities: list[str]) -> dict[str, int]",
+    starterCode: `def enforce_token_budget(sections, total_budget, priorities):
+    """Allocate token budget across context sections according to strict priorities.
+    
+    sections: {section_name: requested_tokens}
+    priorities: [highest_priority_section, ...]
+    """
+    # Your code here
+    pass
+`,
+    mission: "Partition a constrained prompt token budget across competing agent context sections based on strict priority rankings.",
+    taskDescription: "Implement `enforce_token_budget(sections, total_budget, priorities)`. `sections` maps section name -> requested tokens. `priorities` lists section names in descending order of priority. Allocate up to each section's requested tokens in priority order while remaining within `total_budget`. Return a dictionary of allocated tokens for all sections in `sections`.",
+    constraints: [
+      "total_budget >= 0",
+      "Requested tokens are non-negative integers",
+      "Unallocated sections receive 0 tokens"
+],
+    hints: {
+      small: "Initialize all sections with 0 allocated tokens.",
+      strong: "Iterate through priorities and compute alloc = min(sections[s], remaining_budget).",
+      concept: "Prioritized budget enforcement guarantees mission-critical sections (like tool schemas and system instructions) are never truncated.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Full budget allocation with priority exhaustion",
+        input: {
+          "sections": {
+                    "system": 200,
+                    "tools": 300,
+                    "memory": 400,
+                    "chat": 500
+          },
+          "total_budget": 750,
+          "priorities": [
+                    "system",
+                    "tools",
+                    "memory",
+                    "chat"
+          ]
+},
+        expectedOutput: {
+          "system": 200,
+          "tools": 300,
+          "memory": 250,
+          "chat": 0
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Abundant budget gives all sections full request",
+        input: {
+          "sections": {
+                    "system": 100,
+                    "history": 200
+          },
+          "total_budget": 500,
+          "priorities": [
+                    "system",
+                    "history"
+          ]
+},
+        expectedOutput: {
+          "system": 100,
+          "history": 200
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Zero budget allocates zero to all",
+        input: {
+          "sections": {
+                    "system": 100,
+                    "docs": 200
+          },
+          "total_budget": 0,
+          "priorities": [
+                    "system",
+                    "docs"
+          ]
+},
+        expectedOutput: {
+          "system": 0,
+          "docs": 0
+},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-3': {
+    id: "memory-prob-3",
+    title: "#153. Semantic memory retrieval (top-K by cosine sim)",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "semantic_memory_retrieval",
+    functionSignature: "semantic_memory_retrieval(query_embedding: list[float], memory_store: list[dict], k: int) -> list[str]",
+    starterCode: `def semantic_memory_retrieval(query_embedding, memory_store, k):
+    """Retrieve top-K memory IDs from memory_store based on cosine similarity to query_embedding.
+    
+    Tie-break equal similarity scores alphabetically by memory ID.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Retrieve the top-K semantically relevant memories from an agent's memory bank using cosine similarity ranking.",
+    taskDescription: "Implement `semantic_memory_retrieval(query_embedding, memory_store, k)`. Each memory in `memory_store` has `{'id': str, 'embedding': list[float], 'text': str}`. Calculate cosine similarity `dot(q, e) / (norm(q) * norm(e))`. If either vector norm <= 1e-9, similarity is 0.0. Rank memories by similarity descending, tie-breaking by `id` ascending. Return the top `k` memory `id`s.",
+    constraints: [
+      "1 <= len(query_embedding) <= 128",
+      "0 <= k <= len(memory_store)",
+      "Handles zero vectors without DivisionByZeroError"
+],
+    hints: {
+      small: "Compute dot product and Euclidean norms separately for each vector pair.",
+      strong: "Sort with key=lambda x: (-x[0], x[1]) where x[0] is similarity and x[1] is id.",
+      concept: "Dense vector retrieval identifies memories with equivalent conceptual semantics despite lexical variation.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Distinct 3D vectors top-2 retrieval",
+        input: {
+          "query_embedding": [
+                    1.0,
+                    0.0,
+                    0.0
+          ],
+          "memory_store": [
+                    {
+                              "id": "mem_a",
+                              "embedding": [
+                                        0.9,
+                                        0.1,
+                                        0.0
+                              ],
+                              "text": "agent design"
+                    },
+                    {
+                              "id": "mem_b",
+                              "embedding": [
+                                        0.0,
+                                        1.0,
+                                        0.0
+                              ],
+                              "text": "database config"
+                    },
+                    {
+                              "id": "mem_c",
+                              "embedding": [
+                                        0.7,
+                                        0.7,
+                                        0.0
+                              ],
+                              "text": "hybrid agent"
+                    }
+          ],
+          "k": 2
+},
+        expectedOutput: [
+          "mem_a",
+          "mem_c"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Tie-break alphabetically by ID",
+        input: {
+          "query_embedding": [
+                    0.0,
+                    1.0
+          ],
+          "memory_store": [
+                    {
+                              "id": "mem_z",
+                              "embedding": [
+                                        0.0,
+                                        1.0
+                              ],
+                              "text": "exact match 1"
+                    },
+                    {
+                              "id": "mem_a",
+                              "embedding": [
+                                        0.0,
+                                        1.0
+                              ],
+                              "text": "exact match 2"
+                    }
+          ],
+          "k": 2
+},
+        expectedOutput: [
+          "mem_a",
+          "mem_z"
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Zero vector in store handled safely",
+        input: {
+          "query_embedding": [
+                    1.0,
+                    2.0
+          ],
+          "memory_store": [
+                    {
+                              "id": "m1",
+                              "embedding": [
+                                        0.0,
+                                        0.0
+                              ],
+                              "text": "empty vector"
+                    },
+                    {
+                              "id": "m2",
+                              "embedding": [
+                                        2.0,
+                                        4.0
+                              ],
+                              "text": "parallel vector"
+                    }
+          ],
+          "k": 1
+},
+        expectedOutput: [
+          "m2"
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-4': {
+    id: "memory-prob-4",
+    title: "#154. Episodic memory store/retrieve (recency-weighted)",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "episodic_memory_retrieve",
+    functionSignature: "episodic_memory_retrieve(query_embedding: list[float], memories: list[dict], current_step: int, decay_factor: float, alpha: float, k: int) -> list[str]",
+    starterCode: `def episodic_memory_retrieve(query_embedding, memories, current_step, decay_factor, alpha, k):
+    """Retrieve top-K memories scoring by alpha * recency + (1 - alpha) * relevance.
+    
+    recency = decay_factor ** (current_step - memory['timestamp'])
+    relevance = cosine_similarity(query_embedding, memory['embedding'])
+    """
+    # Your code here
+    pass
+`,
+    mission: "Balance semantic relevance and exponential temporal recency decay in agent episodic recall.",
+    taskDescription: "Implement `episodic_memory_retrieve(query_embedding, memories, current_step, decay_factor, alpha, k)`. Each memory has `{'id': str, 'embedding': list[float], 'timestamp': int}`. Compute recency as `decay_factor ** (current_step - memory['timestamp'])` and relevance as cosine similarity between embeddings. Combined score is `alpha * recency + (1 - alpha) * relevance`. Sort descending by score, tie-breaking by `id` ascending. Return top `k` memory IDs.",
+    constraints: [
+      "0.0 <= alpha <= 1.0",
+      "0.0 < decay_factor <= 1.0",
+      "current_step >= memory['timestamp']"
+],
+    hints: {
+      small: "Compute recency with exponentiation and relevance with cosine similarity.",
+      strong: "Combined score = alpha * recency + (1 - alpha) * relevance. Handle tie-breaks by sorting on (-score, id).",
+      concept: "Inspired by Generative Agents (Park et al., 2023), episodic retrieval weights recent events alongside semantic alignment.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Recent event outweighs older higher-similarity event",
+        input: {
+          "query_embedding": [
+                    1.0,
+                    0.0
+          ],
+          "memories": [
+                    {
+                              "id": "recent_partial",
+                              "embedding": [
+                                        0.7,
+                                        0.7
+                              ],
+                              "timestamp": 10
+                    },
+                    {
+                              "id": "old_exact",
+                              "embedding": [
+                                        1.0,
+                                        0.0
+                              ],
+                              "timestamp": 2
+                    }
+          ],
+          "current_step": 10,
+          "decay_factor": 0.5,
+          "alpha": 0.6,
+          "k": 1
+},
+        expectedOutput: [
+          "recent_partial"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Alpha = 0 reduces to pure semantic search",
+        input: {
+          "query_embedding": [
+                    1.0,
+                    0.0
+          ],
+          "memories": [
+                    {
+                              "id": "m1",
+                              "embedding": [
+                                        0.0,
+                                        1.0
+                              ],
+                              "timestamp": 10
+                    },
+                    {
+                              "id": "m2",
+                              "embedding": [
+                                        1.0,
+                                        0.0
+                              ],
+                              "timestamp": 1
+                    }
+          ],
+          "current_step": 10,
+          "decay_factor": 0.9,
+          "alpha": 0.0,
+          "k": 1
+},
+        expectedOutput: [
+          "m2"
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Alpha = 1 reduces to pure chronological recency",
+        input: {
+          "query_embedding": [
+                    0.5,
+                    0.5
+          ],
+          "memories": [
+                    {
+                              "id": "step_5",
+                              "embedding": [
+                                        1.0,
+                                        0.0
+                              ],
+                              "timestamp": 5
+                    },
+                    {
+                              "id": "step_9",
+                              "embedding": [
+                                        0.0,
+                                        1.0
+                              ],
+                              "timestamp": 9
+                    },
+                    {
+                              "id": "step_2",
+                              "embedding": [
+                                        0.5,
+                                        0.5
+                              ],
+                              "timestamp": 2
+                    }
+          ],
+          "current_step": 10,
+          "decay_factor": 0.8,
+          "alpha": 1.0,
+          "k": 2
+},
+        expectedOutput: [
+          "step_9",
+          "step_5"
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-5': {
+    id: "memory-prob-5",
+    title: "#155. Working memory buffer FIFO eviction",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "fifo_working_memory",
+    functionSignature: "fifo_working_memory(operations: list[dict], max_capacity: int) -> list[str]",
+    starterCode: `def fifo_working_memory(operations, max_capacity):
+    """Simulate a fixed-capacity working memory buffer with FIFO eviction.
+    
+    operations: list of {'action': 'add', 'item': str} or {'action': 'clear'}
+    """
+    # Your code here
+    pass
+`,
+    mission: "Maintain an active working memory scratchpad with bounded capacity and FIFO eviction semantics.",
+    taskDescription: "Implement `fifo_working_memory(operations, max_capacity)`. Simulate a working memory queue of strings with maximum size `max_capacity`. On `'add'`, if the buffer is at `max_capacity`, evict the oldest item (front) before appending the new item. On `'clear'`, empty the buffer. Return the final contents of the buffer as a list of strings in arrival order.",
+    constraints: [
+      "max_capacity >= 1",
+      "0 <= len(operations) <= 500",
+      "actions are 'add' or 'clear'"
+],
+    hints: {
+      small: "Use a Python list or collections.deque to store items.",
+      strong: "When buffer length equals max_capacity upon 'add', pop index 0 before appending.",
+      concept: "Working memory holds transient scratchpad notes and observations during multi-step tool reasoning chains.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "FIFO eviction when capacity is exceeded",
+        input: {
+          "operations": [
+                    {
+                              "action": "add",
+                              "item": "note_1"
+                    },
+                    {
+                              "action": "add",
+                              "item": "note_2"
+                    },
+                    {
+                              "action": "add",
+                              "item": "note_3"
+                    },
+                    {
+                              "action": "add",
+                              "item": "note_4"
+                    }
+          ],
+          "max_capacity": 3
+},
+        expectedOutput: [
+          "note_2",
+          "note_3",
+          "note_4"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Clear action resets buffer",
+        input: {
+          "operations": [
+                    {
+                              "action": "add",
+                              "item": "a"
+                    },
+                    {
+                              "action": "add",
+                              "item": "b"
+                    },
+                    {
+                              "action": "clear"
+                    },
+                    {
+                              "action": "add",
+                              "item": "c"
+                    }
+          ],
+          "max_capacity": 2
+},
+        expectedOutput: [
+          "c"
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Capacity of 1 acts as a single-slot register",
+        input: {
+          "operations": [
+                    {
+                              "action": "add",
+                              "item": "first"
+                    },
+                    {
+                              "action": "add",
+                              "item": "second"
+                    },
+                    {
+                              "action": "add",
+                              "item": "third"
+                    }
+          ],
+          "max_capacity": 1
+},
+        expectedOutput: [
+          "third"
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-6': {
+    id: "memory-prob-6",
+    title: "#156. Memory consolidation (compress similar entries)",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "consolidate_memories",
+    functionSignature: "consolidate_memories(memories: list[dict], similarity_threshold: float) -> list[dict]",
+    starterCode: `def consolidate_memories(memories, similarity_threshold):
+    """Consolidate incoming memories by merging entries with cosine similarity >= similarity_threshold.
+    
+    Merge rule:
+    - text: cluster_text + " | " + new_text
+    - weight: cluster_weight + new_weight
+    - embedding: weighted average rounded to 4 decimals
+    """
+    # Your code here
+    pass
+`,
+    mission: "Consolidate an agent's memory bank by clustering and merging semantically redundant observations.",
+    taskDescription: "Implement `consolidate_memories(memories, similarity_threshold)`. Process each memory `{'id': str, 'text': str, 'embedding': list[float], 'weight': int}` in order. Compare its cosine similarity against existing clusters. If the maximum similarity >= `similarity_threshold`, merge into the best matching cluster: concatenate text with `' | '`, sum weights, and update the embedding with the weighted average (rounded to 4 decimals). Otherwise, create a new cluster with this memory. Return the list of consolidated memory dicts.",
+    constraints: [
+      "0.0 <= similarity_threshold <= 1.0",
+      "weight >= 1",
+      "Preserve first-seen cluster IDs"
+],
+    hints: {
+      small: "Iterate through memories maintaining a list of consolidated cluster dicts.",
+      strong: "Weighted average formula: (c_emb * c_wt + m_emb * m_wt) / (c_wt + m_wt).",
+      concept: "Sleep-like memory consolidation compresses repetitive experiences into generalized semantic representations.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Two similar entries merge into one cluster",
+        input: {
+          "memories": [
+                    {
+                              "id": "m1",
+                              "text": "User likes Python",
+                              "embedding": [
+                                        1.0,
+                                        0.0
+                              ],
+                              "weight": 1
+                    },
+                    {
+                              "id": "m2",
+                              "text": "User prefers Python",
+                              "embedding": [
+                                        0.98,
+                                        0.1
+                              ],
+                              "weight": 1
+                    },
+                    {
+                              "id": "m3",
+                              "text": "User lives in Seattle",
+                              "embedding": [
+                                        0.0,
+                                        1.0
+                              ],
+                              "weight": 1
+                    }
+          ],
+          "similarity_threshold": 0.95
+},
+        expectedOutput: [
+          {
+                    "id": "m1",
+                    "text": "User likes Python | User prefers Python",
+                    "embedding": [
+                              0.99,
+                              0.05
+                    ],
+                    "weight": 2
+          },
+          {
+                    "id": "m3",
+                    "text": "User lives in Seattle",
+                    "embedding": [
+                              0.0,
+                              1.0
+                    ],
+                    "weight": 1
+          }
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "High threshold prevents merging",
+        input: {
+          "memories": [
+                    {
+                              "id": "a",
+                              "text": "Alpha",
+                              "embedding": [
+                                        0.7,
+                                        0.7
+                              ],
+                              "weight": 1
+                    },
+                    {
+                              "id": "b",
+                              "text": "Beta",
+                              "embedding": [
+                                        0.6,
+                                        0.8
+                              ],
+                              "weight": 1
+                    }
+          ],
+          "similarity_threshold": 0.999
+},
+        expectedOutput: [
+          {
+                    "id": "a",
+                    "text": "Alpha",
+                    "embedding": [
+                              0.7,
+                              0.7
+                    ],
+                    "weight": 1
+          },
+          {
+                    "id": "b",
+                    "text": "Beta",
+                    "embedding": [
+                              0.6,
+                              0.8
+                    ],
+                    "weight": 1
+          }
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Three identical items merge cumulatively",
+        input: {
+          "memories": [
+                    {
+                              "id": "c1",
+                              "text": "fact 1",
+                              "embedding": [
+                                        0.0,
+                                        2.0
+                              ],
+                              "weight": 2
+                    },
+                    {
+                              "id": "c2",
+                              "text": "fact 2",
+                              "embedding": [
+                                        0.0,
+                                        3.0
+                              ],
+                              "weight": 3
+                    }
+          ],
+          "similarity_threshold": 0.99
+},
+        expectedOutput: [
+          {
+                    "id": "c1",
+                    "text": "fact 1 | fact 2",
+                    "embedding": [
+                              0.0,
+                              2.6
+                    ],
+                    "weight": 5
+          }
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-7': {
+    id: "memory-prob-7",
+    title: "#157. Memory retrieval scoring (BM25-style)",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "bm25_memory_retrieval",
+    functionSignature: "bm25_memory_retrieval(query: str, documents: list[str], k: int) -> list[int]",
+    starterCode: `def bm25_memory_retrieval(query, documents, k):
+    """Score and retrieve top-k document indices using Okapi BM25 (k1=1.5, b=0.75).
+    
+    Tokens are lowercase alphanumeric words (re.findall(r'\\w+', text.lower())).
+    Tie-break equal scores by document index ascending.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Rank memory documents using BM25 lexical term frequency and inverse document frequency scoring.",
+    taskDescription: "Implement `bm25_memory_retrieval(query, documents, k)`. Tokenize text using `re.findall(r'\\w+', text.lower())`. Compute Okapi BM25 with `k1 = 1.5` and `b = 0.75`. IDF formula: `math.log((N - df + 0.5) / (df + 0.5) + 1.0)`. Return the top `k` document indices sorted by descending BM25 score, tie-breaking by index ascending.",
+    constraints: [
+      "k1 = 1.5, b = 0.75",
+      "0 <= k <= len(documents)",
+      "Empty document list returns []"
+],
+    hints: {
+      small: "Compute avgdl across all documents first before scoring individual queries.",
+      strong: "Denominator for term score is tf + k1 * (1 - b + b * (dl / avgdl)).",
+      concept: "BM25 provides exact keyword matching robust to document length variations, complementing dense semantic search.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Document with exact keyword repetition ranks highest",
+        input: {
+          "query": "vector database",
+          "documents": [
+                    "We use a vector database for semantic memory search.",
+                    "A relational database stores user accounts and passwords.",
+                    "Vector embeddings are high dimensional representations."
+          ],
+          "k": 2
+},
+        expectedOutput: [
+          0,
+          2
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "No matching tokens yields 0 score tie-break by index",
+        input: {
+          "query": "quantum computing",
+          "documents": [
+                    "Agent context engineering",
+                    "Prompt optimization techniques"
+          ],
+          "k": 1
+},
+        expectedOutput: [
+          0
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Length normalization penalizes bloated docs",
+        input: {
+          "query": "apple",
+          "documents": [
+                    "apple apple apple word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word ",
+                    "apple apple"
+          ],
+          "k": 1
+},
+        expectedOutput: [
+          1
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-8': {
+    id: "memory-prob-8",
+    title: "#158. Context window packing (bin packing)",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "pack_context_windows",
+    functionSignature: "pack_context_windows(item_tokens: list[int], max_window_tokens: int) -> list[list[int]]",
+    starterCode: `def pack_context_windows(item_tokens, max_window_tokens):
+    """Pack context item token counts into minimum windows using First-Fit Decreasing.
+    
+    Sort items descending. For each item, place it into the first existing window
+    where it fits; if none, start a new window.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Pack discrete context items into bounded context windows using First-Fit Decreasing bin packing.",
+    taskDescription: "Implement `pack_context_windows(item_tokens, max_window_tokens)`. Given a list of context item token sizes, pack them into windows of maximum capacity `max_window_tokens` using First-Fit Decreasing (FFD): sort items in descending order, then place each item into the first existing window that can accommodate its tokens without exceeding `max_window_tokens`. If no such window exists, open a new window. Return the list of windows.",
+    constraints: [
+      "1 <= max_window_tokens <= 128000",
+      "Each item in item_tokens <= max_window_tokens",
+      "Returns list of lists of token sizes"
+],
+    hints: {
+      small: "Sort item_tokens descending with sorted(item_tokens, reverse=True).",
+      strong: "Iterate through existing windows checking sum(window) + item <= max_window_tokens.",
+      concept: "First-Fit Decreasing achieves within 11/9 OPT + 6/9 bins of optimal bin packing in polynomial time.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Pack 5 items into 2 windows",
+        input: {
+          "item_tokens": [
+                    100,
+                    250,
+                    400,
+                    150,
+                    300
+          ],
+          "max_window_tokens": 600
+},
+        expectedOutput: [
+          [
+                    400,
+                    150
+          ],
+          [
+                    300,
+                    250
+          ],
+          [
+                    100
+          ]
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Items fit exactly into single window",
+        input: {
+          "item_tokens": [
+                    50,
+                    50,
+                    50
+          ],
+          "max_window_tokens": 150
+},
+        expectedOutput: [
+          [
+                    50,
+                    50,
+                    50
+          ]
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Each item requires its own window",
+        input: {
+          "item_tokens": [
+                    500,
+                    600,
+                    700
+          ],
+          "max_window_tokens": 750
+},
+        expectedOutput: [
+          [
+                    700
+          ],
+          [
+                    600
+          ],
+          [
+                    500
+          ]
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-9': {
+    id: "memory-prob-9",
+    title: "#159. Summary-based memory compression",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "compress_memory_with_summary",
+    functionSignature: "compress_memory_with_summary(messages: list[dict], max_tokens: int, summary_token_cost: int) -> list[dict]",
+    starterCode: `def compress_memory_with_summary(messages, max_tokens, summary_token_cost):
+    """Compress conversation history when total tokens exceed max_tokens.
+    
+    Preserve initial system message if present. Replace the smallest prefix
+    of dialogue messages with a single summary message such that total tokens <= max_tokens.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Compress early conversation turns into a synthesized summary block when conversation context approaches token boundaries.",
+    taskDescription: "Implement `compress_memory_with_summary(messages, max_tokens, summary_token_cost)`. If total tokens <= `max_tokens`, return `messages`. Otherwise, preserve `messages[0]` if its role is `'system'`, and find the smallest prefix of `k` dialogue messages such that replacing them with a summary message `{'role': 'system', 'content': 'Summary: ' + '; '.join(contents), 'tokens': summary_token_cost}` brings total tokens <= `max_tokens`. Leave at least the last dialogue turn uncompressed if possible. Return the compressed message list.",
+    constraints: [
+      "summary_token_cost >= 1",
+      "max_tokens >= summary_token_cost",
+      "Role of generated summary is 'system'"
+],
+    hints: {
+      small: "Check total tokens first; if within budget, return messages immediately.",
+      strong: "Find the smallest prefix index k where sys_tokens + summary_cost + suffix_tokens <= max_tokens.",
+      concept: "Progressive summarization retains long-term semantic context in bounded prompt windows without dropping early user intents.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Early turns compressed into summary",
+        input: {
+          "messages": [
+                    {
+                              "role": "system",
+                              "content": "Act as coder.",
+                              "tokens": 10
+                    },
+                    {
+                              "role": "user",
+                              "content": "Need web app",
+                              "tokens": 15
+                    },
+                    {
+                              "role": "assistant",
+                              "content": "Use React",
+                              "tokens": 20
+                    },
+                    {
+                              "role": "user",
+                              "content": "Add auth",
+                              "tokens": 12
+                    },
+                    {
+                              "role": "assistant",
+                              "content": "Use Firebase",
+                              "tokens": 18
+                    }
+          ],
+          "max_tokens": 55,
+          "summary_token_cost": 8
+},
+        expectedOutput: [
+          {
+                    "role": "system",
+                    "content": "Act as coder.",
+                    "tokens": 10
+          },
+          {
+                    "role": "system",
+                    "content": "Summary: Need web app; Use React",
+                    "tokens": 8
+          },
+          {
+                    "role": "user",
+                    "content": "Add auth",
+                    "tokens": 12
+          },
+          {
+                    "role": "assistant",
+                    "content": "Use Firebase",
+                    "tokens": 18
+          }
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Within budget requires no compression",
+        input: {
+          "messages": [
+                    {
+                              "role": "user",
+                              "content": "Hi",
+                              "tokens": 5
+                    },
+                    {
+                              "role": "assistant",
+                              "content": "Hello",
+                              "tokens": 5
+                    }
+          ],
+          "max_tokens": 50,
+          "summary_token_cost": 10
+},
+        expectedOutput: [
+          {
+                    "role": "user",
+                    "content": "Hi",
+                    "tokens": 5
+          },
+          {
+                    "role": "assistant",
+                    "content": "Hello",
+                    "tokens": 5
+          }
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "No system prompt present",
+        input: {
+          "messages": [
+                    {
+                              "role": "user",
+                              "content": "Step 1",
+                              "tokens": 20
+                    },
+                    {
+                              "role": "assistant",
+                              "content": "Done 1",
+                              "tokens": 20
+                    },
+                    {
+                              "role": "user",
+                              "content": "Step 2",
+                              "tokens": 20
+                    }
+          ],
+          "max_tokens": 35,
+          "summary_token_cost": 10
+},
+        expectedOutput: [
+          {
+                    "role": "system",
+                    "content": "Summary: Step 1; Done 1",
+                    "tokens": 10
+          },
+          {
+                    "role": "user",
+                    "content": "Step 2",
+                    "tokens": 20
+          }
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-10': {
+    id: "memory-prob-10",
+    title: "#160. Memory deduplication",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "deduplicate_memories",
+    functionSignature: "deduplicate_memories(memories: list[str], jaccard_threshold: float) -> list[str]",
+    starterCode: `def deduplicate_memories(memories, jaccard_threshold):
+    """Filter out near-duplicate memories using Jaccard word-set similarity.
+    
+    Retain a memory only if its Jaccard similarity < jaccard_threshold
+    against all previously retained memories.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Deduplicate an agent's memory stream to prevent duplicate storage of near-identical facts.",
+    taskDescription: "Implement `deduplicate_memories(memories, jaccard_threshold)`. Tokenize memory strings into sets of lowercase words using `re.findall(r'\\w+', s.lower())`. Compute Jaccard similarity `len(A & B) / len(A | B)`. Iterate through `memories` in order; reject any memory whose Jaccard similarity with any already accepted memory is `>= jaccard_threshold`. Return the list of accepted memories.",
+    constraints: [
+      "0.0 < jaccard_threshold <= 1.0",
+      "0 <= len(memories) <= 200",
+      "Order of retained memories is preserved"
+],
+    hints: {
+      small: "Represent each string's vocabulary as a set of lowercase word tokens.",
+      strong: "Jaccard similarity = len(s1 & s2) / len(s1 | s2). Check against all previously accepted sets.",
+      concept: "Deduplication prevents retrieval degeneration where top-K results are occupied by minor variants of the same statement.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Near duplicate rejected",
+        input: {
+          "memories": [
+                    "User lives in San Francisco California",
+                    "User resides in San Francisco California",
+                    "User works as a software engineer"
+          ],
+          "jaccard_threshold": 0.7
+},
+        expectedOutput: [
+          "User lives in San Francisco California",
+          "User works as a software engineer"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "All completely distinct memories retained",
+        input: {
+          "memories": [
+                    "Apples are red fruit",
+                    "Database indexes improve query latency",
+                    "PyTorch supports GPU acceleration"
+          ],
+          "jaccard_threshold": 0.5
+},
+        expectedOutput: [
+          "Apples are red fruit",
+          "Database indexes improve query latency",
+          "PyTorch supports GPU acceleration"
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Threshold 1.0 removes only exact word-set duplicates",
+        input: {
+          "memories": [
+                    "fast blue car",
+                    "blue fast car",
+                    "red fast car"
+          ],
+          "jaccard_threshold": 1.0
+},
+        expectedOutput: [
+          "fast blue car",
+          "red fast car"
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-11': {
+    id: "memory-prob-11",
+    title: "#161. Hierarchical memory (short/long-term split)",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "hierarchical_memory_split",
+    functionSignature: "hierarchical_memory_split(memories: list[dict], min_access_count: int, min_importance: float) -> dict[str, list[str]]",
+    starterCode: `def hierarchical_memory_split(memories, min_access_count, min_importance):
+    """Partition memories into short_term and long_term tiers based on access frequency or importance.
+    
+    Promote to long_term if access_count >= min_access_count OR importance >= min_importance.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Classify memories into tiered short-term scratchpads versus persistent long-term storage.",
+    taskDescription: "Implement `hierarchical_memory_split(memories, min_access_count, min_importance)`. Each memory has `{'id': str, 'access_count': int, 'importance': float}`. Assign to `'long_term'` if `access_count >= min_access_count` or `importance >= min_importance`; otherwise assign to `'short_term'`. Return `{'short_term': list_of_ids, 'long_term': list_of_ids}` preserving order.",
+    constraints: [
+      "min_access_count >= 1",
+      "0.0 <= min_importance <= 10.0",
+      "Input order preserved in both lists"
+],
+    hints: {
+      small: "Check the logical OR condition for each memory.",
+      strong: "Append memory['id'] to long_term if access_count >= min_access_count or importance >= min_importance, else short_term.",
+      concept: "Tiered memory architectures mimic cognitive working memory vs. consolidated cortical long-term storage.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Promotion by high importance or frequent access",
+        input: {
+          "memories": [
+                    {
+                              "id": "m1",
+                              "access_count": 5,
+                              "importance": 2.0
+                    },
+                    {
+                              "id": "m2",
+                              "access_count": 1,
+                              "importance": 8.5
+                    },
+                    {
+                              "id": "m3",
+                              "access_count": 0,
+                              "importance": 1.2
+                    }
+          ],
+          "min_access_count": 4,
+          "min_importance": 7.0
+},
+        expectedOutput: {
+          "short_term": [
+                    "m3"
+          ],
+          "long_term": [
+                    "m1",
+                    "m2"
+          ]
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "All memories remain in short term",
+        input: {
+          "memories": [
+                    {
+                              "id": "t1",
+                              "access_count": 1,
+                              "importance": 2.0
+                    }
+          ],
+          "min_access_count": 10,
+          "min_importance": 9.0
+},
+        expectedOutput: {
+          "short_term": [
+                    "t1"
+          ],
+          "long_term": []
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Empty input handles gracefully",
+        input: {
+          "memories": [],
+          "min_access_count": 2,
+          "min_importance": 5.0
+},
+        expectedOutput: {
+          "short_term": [],
+          "long_term": []
+},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-12': {
+    id: "memory-prob-12",
+    title: "#162. Memory indexing by entity",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "build_entity_index",
+    functionSignature: "build_entity_index(memories: list[dict]) -> dict[str, list[str]]",
+    starterCode: `def build_entity_index(memories):
+    """Build an inverted index mapping lowercased entity names to sorted lists of memory IDs.
+    
+    Result dictionary must have sorted entity keys.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Build an entity-centric inverted index over agent memories for rapid named-entity recall.",
+    taskDescription: "Implement `build_entity_index(memories)`. Each memory has `{'id': str, 'entities': list[str], 'text': str}`. Normalize entity names to lowercase and strip whitespace. For each entity, collect unique memory IDs and sort them alphabetically. Return a dictionary sorted alphabetically by entity keys.",
+    constraints: [
+      "Entity names normalized via ent.lower().strip()",
+      "Unique memory IDs per entity sorted alphabetically",
+      "Dictionary keys sorted alphabetically"
+],
+    hints: {
+      small: "Use a defaultdict(set) to accumulate memory IDs per entity.",
+      strong: "Sort the IDs list for each entity and sort the dictionary keys when returning.",
+      concept: "Entity indexing enables agents to immediately look up all historical facts concerning a person, tool, or project.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Multiple memories share entity Alice and Python",
+        input: {
+          "memories": [
+                    {
+                              "id": "m1",
+                              "entities": [
+                                        "Alice",
+                                        "Python"
+                              ],
+                              "text": "Alice writes Python."
+                    },
+                    {
+                              "id": "m2",
+                              "entities": [
+                                        "Bob",
+                                        "Python"
+                              ],
+                              "text": "Bob also writes Python."
+                    },
+                    {
+                              "id": "m3",
+                              "entities": [
+                                        "alice"
+                              ],
+                              "text": "Alice lives in NYC."
+                    }
+          ]
+},
+        expectedOutput: {
+          "alice": [
+                    "m1",
+                    "m3"
+          ],
+          "bob": [
+                    "m2"
+          ],
+          "python": [
+                    "m1",
+                    "m2"
+          ]
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Whitespace and case normalization",
+        input: {
+          "memories": [
+                    {
+                              "id": "a",
+                              "entities": [
+                                        " Gemini "
+                              ],
+                              "text": "Model 1"
+                    },
+                    {
+                              "id": "b",
+                              "entities": [
+                                        "gemini"
+                              ],
+                              "text": "Model 2"
+                    }
+          ]
+},
+        expectedOutput: {
+          "gemini": [
+                    "a",
+                    "b"
+          ]
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Empty entities list produces empty index",
+        input: {
+          "memories": [
+                    {
+                              "id": "none1",
+                              "entities": [],
+                              "text": "No entity here."
+                    }
+          ]
+},
+        expectedOutput: {},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-13': {
+    id: "memory-prob-13",
+    title: "#163. Memory expiry (TTL-based eviction)",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "evict_expired_memories",
+    functionSignature: "evict_expired_memories(memories: list[dict], current_timestamp: int) -> list[str]",
+    starterCode: `def evict_expired_memories(memories, current_timestamp):
+    """Return IDs of unexpired memories where current_timestamp < created_at + ttl.
+    
+    Preserve relative order of active memories.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Purge stale short-lived memories by evaluating time-to-live expiration timestamps.",
+    taskDescription: "Implement `evict_expired_memories(memories, current_timestamp)`. Each memory has `{'id': str, 'created_at': int, 'ttl': int}`. A memory remains valid if `current_timestamp < created_at + ttl`. Return the list of valid memory IDs in their original input order.",
+    constraints: [
+      "ttl >= 0",
+      "current_timestamp >= 0",
+      "Preserve original input sequence"
+],
+    hints: {
+      small: "Check the condition current_timestamp < m['created_at'] + m['ttl'].",
+      strong: "Use a list comprehension filtering active memories by ID.",
+      concept: "TTL-based expiration prevents transient tool statuses or temporary tokens from cluttering long-term memory.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Mix of expired and active memories",
+        input: {
+          "memories": [
+                    {
+                              "id": "m1",
+                              "created_at": 100,
+                              "ttl": 50
+                    },
+                    {
+                              "id": "m2",
+                              "created_at": 120,
+                              "ttl": 100
+                    },
+                    {
+                              "id": "m3",
+                              "created_at": 140,
+                              "ttl": 10
+                    }
+          ],
+          "current_timestamp": 160
+},
+        expectedOutput: [
+          "m2"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "All memories expired",
+        input: {
+          "memories": [
+                    {
+                              "id": "old1",
+                              "created_at": 0,
+                              "ttl": 10
+                    }
+          ],
+          "current_timestamp": 100
+},
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Boundary condition: exactly created_at + ttl is expired",
+        input: {
+          "memories": [
+                    {
+                              "id": "exact",
+                              "created_at": 100,
+                              "ttl": 50
+                    }
+          ],
+          "current_timestamp": 150
+},
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-14': {
+    id: "memory-prob-14",
+    title: "#164. Cross-session memory persistence",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "sync_cross_session_memory",
+    functionSignature: "sync_cross_session_memory(persistent_state: dict, session_updates: dict, immutable_keys: list[str]) -> dict",
+    starterCode: `def sync_cross_session_memory(persistent_state, session_updates, immutable_keys):
+    """Merge session updates into persistent state while protecting existing immutable keys.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Synchronize ephemeral agent session observations into persistent state while protecting immutable profile attributes.",
+    taskDescription: "Implement `sync_cross_session_memory(persistent_state, session_updates, immutable_keys)`. Create a copy of `persistent_state` and apply key-value updates from `session_updates`. If a key already exists in `persistent_state` and is present in `immutable_keys`, do not overwrite it. If an immutable key is not yet present in `persistent_state`, it may be inserted from `session_updates`. Return the updated persistent state dictionary.",
+    constraints: [
+      "Original dictionaries must not be mutated in-place",
+      "immutable_keys protects existing keys from modification",
+      "Returns merged dictionary"
+],
+    hints: {
+      small: "Copy persistent_state with dict(persistent_state).",
+      strong: "Skip update if key in persistent_state and key in immutable_keys.",
+      concept: "Cross-session persistence allows agents to remember user preferences across distinct conversation threads.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Mutable keys updated, immutable key protected",
+        input: {
+          "persistent_state": {
+                    "user_id": "u123",
+                    "theme": "light",
+                    "score": 10
+          },
+          "session_updates": {
+                    "user_id": "u999",
+                    "theme": "dark",
+                    "level": 2
+          },
+          "immutable_keys": [
+                    "user_id"
+          ]
+},
+        expectedOutput: {
+          "user_id": "u123",
+          "theme": "dark",
+          "score": 10,
+          "level": 2
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "New immutable key inserted when absent",
+        input: {
+          "persistent_state": {
+                    "status": "active"
+          },
+          "session_updates": {
+                    "api_key": "sec_abc",
+                    "status": "idle"
+          },
+          "immutable_keys": [
+                    "api_key"
+          ]
+},
+        expectedOutput: {
+          "status": "idle",
+          "api_key": "sec_abc"
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Empty session updates leaves state unchanged",
+        input: {
+          "persistent_state": {
+                    "a": 1,
+                    "b": 2
+          },
+          "session_updates": {},
+          "immutable_keys": [
+                    "a"
+          ]
+},
+        expectedOutput: {
+          "a": 1,
+          "b": 2
+},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-15': {
+    id: "memory-prob-15",
+    title: "#165. Tool call result caching in memory",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "cache_tool_calls",
+    functionSignature: "cache_tool_calls(calls: list[dict], cache_ttl: int) -> list[dict]",
+    starterCode: `def cache_tool_calls(calls, cache_ttl):
+    """Cache tool call executions by (tool, sorted_args) within a TTL window.
+    
+    Each call has {'tool': str, 'args': dict, 'timestamp': int, 'result': any}.
+    Return [{'tool': str, 'result': any, 'cached': bool}, ...]
+    """
+    # Your code here
+    pass
+`,
+    mission: "Implement deterministic tool result caching in agent memory to eliminate redundant API invocations.",
+    taskDescription: "Implement `cache_tool_calls(calls, cache_ttl)`. For each call `{'tool': str, 'args': dict, 'timestamp': int, 'result': any}`, determine if an identical tool invocation (same tool name and same sorted key-value argument pairs) occurred within the last `cache_ttl` units of time (`current_timestamp - cached_timestamp <= cache_ttl`). If hit, return cached result with `cached: True`. Otherwise, store in cache and return with `cached: False`. Return list of result dicts.",
+    constraints: [
+      "cache_ttl >= 0",
+      "Tool args dictionaries compared by key-value equality",
+      "Chronological stream of calls"
+],
+    hints: {
+      small: "Use tuple(sorted(args.items())) as a hashable representation of dict arguments.",
+      strong: "Key = (tool, tuple(sorted(args.items()))). Store (result, timestamp).",
+      concept: "Tool caching significantly reduces agent execution latency and API token spend.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Repeated tool call within TTL hits cache",
+        input: {
+          "calls": [
+                    {
+                              "tool": "weather",
+                              "args": {
+                                        "city": "NYC"
+                              },
+                              "timestamp": 100,
+                              "result": "Sunny 75F"
+                    },
+                    {
+                              "tool": "weather",
+                              "args": {
+                                        "city": "NYC"
+                              },
+                              "timestamp": 130,
+                              "result": "Rain 60F"
+                    }
+          ],
+          "cache_ttl": 50
+},
+        expectedOutput: [
+          {
+                    "tool": "weather",
+                    "result": "Sunny 75F",
+                    "cached": false
+          },
+          {
+                    "tool": "weather",
+                    "result": "Sunny 75F",
+                    "cached": true
+          }
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Tool call beyond TTL expires and recomputes",
+        input: {
+          "calls": [
+                    {
+                              "tool": "search",
+                              "args": {
+                                        "q": "news"
+                              },
+                              "timestamp": 10,
+                              "result": "News A"
+                    },
+                    {
+                              "tool": "search",
+                              "args": {
+                                        "q": "news"
+                              },
+                              "timestamp": 100,
+                              "result": "News B"
+                    }
+          ],
+          "cache_ttl": 30
+},
+        expectedOutput: [
+          {
+                    "tool": "search",
+                    "result": "News A",
+                    "cached": false
+          },
+          {
+                    "tool": "search",
+                    "result": "News B",
+                    "cached": false
+          }
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Different args do not hit cache",
+        input: {
+          "calls": [
+                    {
+                              "tool": "calc",
+                              "args": {
+                                        "x": 1
+                              },
+                              "timestamp": 10,
+                              "result": 2
+                    },
+                    {
+                              "tool": "calc",
+                              "args": {
+                                        "x": 2
+                              },
+                              "timestamp": 15,
+                              "result": 4
+                    }
+          ],
+          "cache_ttl": 100
+},
+        expectedOutput: [
+          {
+                    "tool": "calc",
+                    "result": 2,
+                    "cached": false
+          },
+          {
+                    "tool": "calc",
+                    "result": 4,
+                    "cached": false
+          }
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-16': {
+    id: "memory-prob-16",
+    title: "#166. Belief state tracking",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "update_belief_state",
+    functionSignature: "update_belief_state(current_beliefs: dict, turn_deltas: list[dict]) -> dict",
+    starterCode: `def update_belief_state(current_beliefs, turn_deltas):
+    """Update agent dialogue belief state with slot deltas.
+    
+    turn_deltas: list of {'slot': str, 'action': 'set' | 'delete', 'value': any}
+    """
+    # Your code here
+    pass
+`,
+    mission: "Track and update agent slot-value belief states across multi-turn goal-oriented dialogue.",
+    taskDescription: "Implement `update_belief_state(current_beliefs, turn_deltas)`. Create a copy of `current_beliefs`. Apply each turn delta in `turn_deltas` in order: if `'action'` is `'set'`, assign `delta['value']` to `delta['slot']`; if `'action'` is `'delete'`, remove `delta['slot']` if present. Return the updated belief state dictionary.",
+    constraints: [
+      "Do not mutate current_beliefs in-place",
+      "action is either 'set' or 'delete'",
+      "Deleting non-existent slot does not raise an error"
+],
+    hints: {
+      small: "Use b.pop(slot, None) for safe deletion.",
+      strong: "Iterate through turn_deltas applying 'set' or 'delete' in order.",
+      concept: "Dialogue State Tracking (DST) models the agent's internal belief distribution regarding user constraints.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Set new slot and update existing",
+        input: {
+          "current_beliefs": {
+                    "cuisine": "Italian",
+                    "location": "Downtown"
+          },
+          "turn_deltas": [
+                    {
+                              "slot": "time",
+                              "action": "set",
+                              "value": "7pm"
+                    },
+                    {
+                              "slot": "cuisine",
+                              "action": "set",
+                              "value": "Thai"
+                    }
+          ]
+},
+        expectedOutput: {
+          "cuisine": "Thai",
+          "location": "Downtown",
+          "time": "7pm"
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Delete existing constraint",
+        input: {
+          "current_beliefs": {
+                    "seats": 4,
+                    "smoking": false
+          },
+          "turn_deltas": [
+                    {
+                              "slot": "smoking",
+                              "action": "delete"
+                    }
+          ]
+},
+        expectedOutput: {
+          "seats": 4
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Delete non-existent slot does not crash",
+        input: {
+          "current_beliefs": {},
+          "turn_deltas": [
+                    {
+                              "slot": "price",
+                              "action": "delete"
+                    },
+                    {
+                              "slot": "price",
+                              "action": "set",
+                              "value": "$$"
+                    }
+          ]
+},
+        expectedOutput: {
+          "price": "$$"
+},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-17': {
+    id: "memory-prob-17",
+    title: "#167. Contradiction detection in memories",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "detect_memory_contradictions",
+    functionSignature: "detect_memory_contradictions(facts: list[dict]) -> list[dict]",
+    starterCode: `def detect_memory_contradictions(facts):
+    """Detect conflicting facts having the same (subject, predicate) with different objects.
+    
+    facts: list of {'id': str, 'subject': str, 'predicate': str, 'object': str, 'timestamp': int}
+    Return conflicts sorted by (subject, predicate).
+    """
+    # Your code here
+    pass
+`,
+    mission: "Detect conflicting and contradictory propositional knowledge across an agent's memory stream.",
+    taskDescription: "Implement `detect_memory_contradictions(facts)`. Each fact is `{'id': str, 'subject': str, 'predicate': str, 'object': str, 'timestamp': int}`. Normalize `subject`, `predicate`, and `object` by `.lower().strip()`. If two facts share the same (subject, predicate) but have distinct objects, flag a contradiction between adjacent chronological facts: `{'subject': s, 'predicate': p, 'older_id': older['id'], 'newer_id': newer['id'], 'older_val': older['object'], 'newer_val': newer['object']}`. Sort the output list by `(subject, predicate)`.",
+    constraints: [
+      "Unique timestamp ordering per pair",
+      "Strings normalized via .lower().strip()",
+      "Returns list of conflict dicts"
+],
+    hints: {
+      small: "Group facts by normalized (subject, predicate) tuple.",
+      strong: "Sort each group by timestamp and check if adjacent objects differ.",
+      concept: "Contradiction detection triggers epistemic updates and memory reconciliation loops in cognitive agents.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Conflicting location attribute detected",
+        input: {
+          "facts": [
+                    {
+                              "id": "f1",
+                              "subject": "User",
+                              "predicate": "lives_in",
+                              "object": "Boston",
+                              "timestamp": 1
+                    },
+                    {
+                              "id": "f2",
+                              "subject": "User",
+                              "predicate": "lives_in",
+                              "object": "Seattle",
+                              "timestamp": 5
+                    }
+          ]
+},
+        expectedOutput: [
+          {
+                    "subject": "user",
+                    "predicate": "lives_in",
+                    "older_id": "f1",
+                    "newer_id": "f2",
+                    "older_val": "Boston",
+                    "newer_val": "Seattle"
+          }
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Identical objects with case variations do not conflict",
+        input: {
+          "facts": [
+                    {
+                              "id": "a",
+                              "subject": "Agent",
+                              "predicate": "model",
+                              "object": "Claude 3.5",
+                              "timestamp": 1
+                    },
+                    {
+                              "id": "b",
+                              "subject": "Agent",
+                              "predicate": "model",
+                              "object": "claude 3.5",
+                              "timestamp": 2
+                    }
+          ]
+},
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Distinct subjects have no conflict",
+        input: {
+          "facts": [
+                    {
+                              "id": "x1",
+                              "subject": "Alice",
+                              "predicate": "role",
+                              "object": "Dev",
+                              "timestamp": 1
+                    },
+                    {
+                              "id": "x2",
+                              "subject": "Bob",
+                              "predicate": "role",
+                              "object": "QA",
+                              "timestamp": 2
+                    }
+          ]
+},
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-18': {
+    id: "memory-prob-18",
+    title: "#168. Memory importance scoring",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "score_memory_importance",
+    functionSignature: "score_memory_importance(content: str, weights: dict[str, float], base_score: float) -> float",
+    starterCode: `def score_memory_importance(content, weights, base_score):
+    """Compute heuristic importance score for memory content clamped to [1.0, 10.0].
+    
+    content tokens: re.findall(r'\\w+', content.lower())
+    score = base_score + sum(weights.get(w, 0.0) for w in tokens)
+    """
+    # Your code here
+    pass
+`,
+    mission: "Compute a calibrated memory importance score based on keyword salience and base urgency weights.",
+    taskDescription: "Implement `score_memory_importance(content, weights, base_score)`. Extract lowercase word tokens with `re.findall(r'\\w+', content.lower())`. Compute raw score as `base_score + sum(weights.get(token, 0.0) for token in tokens)`. Clamp the final score to the interval `[1.0, 10.0]` and round to 2 decimal places.",
+    constraints: [
+      "Clamped to range [1.0, 10.0]",
+      "Output rounded to 2 decimal places",
+      "Tokens extracted case-insensitively"
+],
+    hints: {
+      small: "Use max(1.0, min(10.0, score)) to clamp.",
+      strong: "Tokenize with re.findall(r'\\w+', content.lower()) and sum corresponding weights.",
+      concept: "Importance ratings govern memory retention priority during memory consolidation and eviction.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "High-urgency keywords boost score",
+        input: {
+          "content": "Emergency: server database crash detected immediately",
+          "weights": {
+                    "emergency": 3.5,
+                    "crash": 2.5,
+                    "immediately": 1.0
+          },
+          "base_score": 2.0
+},
+        expectedOutput: 9.0,
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Low score clamped to floor 1.0",
+        input: {
+          "content": "The weather is cloudy today",
+          "weights": {
+                    "cloudy": -2.0
+          },
+          "base_score": 1.5
+},
+        expectedOutput: 1.0,
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "High score clamped to ceiling 10.0",
+        input: {
+          "content": "critical critical critical failure",
+          "weights": {
+                    "critical": 5.0,
+                    "failure": 4.0
+          },
+          "base_score": 5.0
+},
+        expectedOutput: 10.0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-19': {
+    id: "memory-prob-19",
+    title: "#169. Forgetting curve simulation (Ebbinghaus)",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "ebbinghaus_retention",
+    functionSignature: "ebbinghaus_retention(initial_strength: float, elapsed_hours: float, stability: float) -> float",
+    starterCode: `def ebbinghaus_retention(initial_strength, elapsed_hours, stability):
+    """Calculate Ebbinghaus memory retention: R = initial_strength * exp(-elapsed_hours / stability).
+    
+    Round result to 4 decimal places.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Simulate psychological memory decay using Hermann Ebbinghaus's exponential forgetting curve.",
+    taskDescription: "Implement `ebbinghaus_retention(initial_strength, elapsed_hours, stability)`. Compute retention strength `R = initial_strength * math.exp(-elapsed_hours / max(stability, 0.0001))`. Return the result rounded to 4 decimal places.",
+    constraints: [
+      "initial_strength >= 0.0",
+      "elapsed_hours >= 0.0",
+      "stability > 0.0",
+      "Returns float rounded to 4 decimals"
+],
+    hints: {
+      small: "Use math.exp(-elapsed_hours / stability).",
+      strong: "Multiply by initial_strength and round(R, 4).",
+      concept: "Ebbinghaus decay models natural memory degradation over temporal intervals unless reinforced by active recall.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Half-life decay over 24 hours",
+        input: {
+          "initial_strength": 1.0,
+          "elapsed_hours": 24.0,
+          "stability": 24.0
+},
+        expectedOutput: 0.3679,
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Zero elapsed time retains 100%",
+        input: {
+          "initial_strength": 0.85,
+          "elapsed_hours": 0.0,
+          "stability": 10.0
+},
+        expectedOutput: 0.85,
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Long elapsed time decays close to zero",
+        input: {
+          "initial_strength": 1.0,
+          "elapsed_hours": 200.0,
+          "stability": 10.0
+},
+        expectedOutput: 0.0,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-20': {
+    id: "memory-prob-20",
+    title: "#170. Attention-based memory selection",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "attention_memory_selection",
+    functionSignature: "attention_memory_selection(query: list[float], keys: list[list[float]]) -> list[float]",
+    starterCode: `def attention_memory_selection(query, keys):
+    """Calculate scaled dot-product attention weights over memory keys.
+    
+    score_i = (query . keys[i]) / sqrt(d)
+    weights = softmax(scores) rounded to 4 decimals
+    """
+    # Your code here
+    pass
+`,
+    mission: "Compute soft attention distributions over memory representations using scaled dot-product attention.",
+    taskDescription: "Implement `attention_memory_selection(query, keys)`. Let `d = len(query)`. Compute raw scaled attention logits `scores[i] = dot(query, keys[i]) / math.sqrt(d)`. Apply numerically stable softmax: subtract `max(scores)` before computing exponentials. Return the attention weight vector rounded to 4 decimal places.",
+    constraints: [
+      "1 <= len(query) == len(keys[i]) <= 128",
+      "len(keys) >= 1",
+      "Weights sum to approximately 1.0"
+],
+    hints: {
+      small: "Scaled dot product divides by math.sqrt(len(query)).",
+      strong: "Prevent numerical overflow by subtracting max(scores) before exponentiating.",
+      concept: "Neural Turing Machines and modern memory networks read content via differentiable soft attention distributions.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "2D vectors attention with clear winner",
+        input: {
+          "query": [
+                    1.0,
+                    0.0
+          ],
+          "keys": [
+                    [
+                              1.0,
+                              0.0
+                    ],
+                    [
+                              -1.0,
+                              0.0
+                    ]
+          ]
+},
+        expectedOutput: [
+          0.8044,
+          0.1956
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Orthogonal keys yield uniform weights",
+        input: {
+          "query": [
+                    1.0,
+                    1.0
+          ],
+          "keys": [
+                    [
+                              1.0,
+                              0.0
+                    ],
+                    [
+                              0.0,
+                              1.0
+                    ]
+          ]
+},
+        expectedOutput: [
+          0.5,
+          0.5
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Single key always gets weight 1.0",
+        input: {
+          "query": [
+                    3.0,
+                    4.0
+          ],
+          "keys": [
+                    [
+                              1.0,
+                              2.0
+                    ]
+          ]
+},
+        expectedOutput: [
+          1.0
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-21': {
+    id: "memory-prob-21",
+    title: "#171. Memory augmented generation prompt builder",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "build_rag_prompt",
+    functionSignature: "build_rag_prompt(system_prompt: str, retrieved_memories: list[str], user_query: str, max_context_chars: int) -> str",
+    starterCode: `def build_rag_prompt(system_prompt, retrieved_memories, user_query, max_context_chars):
+    """Assemble a structured memory-augmented prompt with strict character budget for context.
+    
+    Format:
+    [System]
+    {system_prompt}
+
+    [Context]
+    {newline-joined memories or 'None'}
+
+    [User]
+    {user_query}
+    """
+    # Your code here
+    pass
+`,
+    mission: "Assemble a structured memory-augmented generation prompt conforming to strict character budget limits.",
+    taskDescription: "Implement `build_rag_prompt(system_prompt, retrieved_memories, user_query, max_context_chars)`. Greedily include as many strings from `retrieved_memories` (in order) as fit within `max_context_chars` when joined by newlines. If no memories fit or `retrieved_memories` is empty, use `'None'`. Format and return the template:\n```\n[System]\n{system_prompt}\n\n[Context]\n{context}\n\n[User]\n{user_query}\n```",
+    constraints: [
+      "max_context_chars >= 0",
+      "Joined context length <= max_context_chars",
+      "Newline characters between memories count toward length"
+],
+    hints: {
+      small: "Keep a running total including the '\\n' delimiter between items.",
+      strong: "If selected memories is empty, context block is 'None'.",
+      concept: "Prompt builders synthesize disparate context streams into consistent structured prompt templates for model execution.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Two memories fit within context budget",
+        input: {
+          "system_prompt": "You are an assistant.",
+          "retrieved_memories": [
+                    "Fact 1: User likes tea.",
+                    "Fact 2: User lives in UK.",
+                    "Fact 3: User owns a cat."
+          ],
+          "user_query": "What should I drink?",
+          "max_context_chars": 50
+},
+        expectedOutput: "[System]\nYou are an assistant.\n\n[Context]\nFact 1: User likes tea.\nFact 2: User lives in UK.\n\n[User]\nWhat should I drink?",
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "No memories fit yields None context",
+        input: {
+          "system_prompt": "Answer queries.",
+          "retrieved_memories": [
+                    "Very long memory content that exceeds limit"
+          ],
+          "user_query": "Status?",
+          "max_context_chars": 10
+},
+        expectedOutput: "[System]\nAnswer queries.\n\n[Context]\nNone\n\n[User]\nStatus?",
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Empty memories list",
+        input: {
+          "system_prompt": "Sys",
+          "retrieved_memories": [],
+          "user_query": "Hi",
+          "max_context_chars": 100
+},
+        expectedOutput: "[System]\nSys\n\n[Context]\nNone\n\n[User]\nHi",
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-22': {
+    id: "memory-prob-22",
+    title: "#172. Conversation summary extraction",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "extract_conversation_summary",
+    functionSignature: "extract_conversation_summary(messages: list[dict]) -> dict",
+    starterCode: `def extract_conversation_summary(messages):
+    """Extract summary metrics: user_turns, assistant_turns, and list of user question texts.
+    
+    A user message is a question if it contains '?'.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Extract quantitative conversation metadata and user inquiry strings from dialogue message logs.",
+    taskDescription: "Implement `extract_conversation_summary(messages)`. For a list of messages `{'role': str, 'content': str}`, count the total number of `'user'` turns and `'assistant'` turns. Identify all user messages whose `content` contains a question mark `'?'`. Return `{'user_turns': int, 'assistant_turns': int, 'questions': list[str]}` in original order.",
+    constraints: [
+      "0 <= len(messages) <= 500",
+      "Role matches 'user' or 'assistant'",
+      "Preserve original order of questions"
+],
+    hints: {
+      small: "Count user and assistant turns with sum(1 for m in messages if m['role'] == ...).",
+      strong: "Filter questions with m['role'] == 'user' and '?' in m['content'].",
+      concept: "Extracting structured conversational metrics aids automated dialogue evaluation and turn budgeting.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "2 user turns with 1 question",
+        input: {
+          "messages": [
+                    {
+                              "role": "user",
+                              "content": "Hello there."
+                    },
+                    {
+                              "role": "assistant",
+                              "content": "How can I help you today?"
+                    },
+                    {
+                              "role": "user",
+                              "content": "Can you summarize this article?"
+                    },
+                    {
+                              "role": "assistant",
+                              "content": "Sure, here it is."
+                    }
+          ]
+},
+        expectedOutput: {
+          "user_turns": 2,
+          "assistant_turns": 2,
+          "questions": [
+                    "Can you summarize this article?"
+          ]
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "No questions asked",
+        input: {
+          "messages": [
+                    {
+                              "role": "user",
+                              "content": "Generate Python code."
+                    },
+                    {
+                              "role": "assistant",
+                              "content": "Done."
+                    }
+          ]
+},
+        expectedOutput: {
+          "user_turns": 1,
+          "assistant_turns": 1,
+          "questions": []
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Empty messages list",
+        input: {
+          "messages": []
+},
+        expectedOutput: {
+          "user_turns": 0,
+          "assistant_turns": 0,
+          "questions": []
+},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-23': {
+    id: "memory-prob-23",
+    title: "#173. Key-value memory store operations",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "execute_kv_operations",
+    functionSignature: "execute_kv_operations(operations: list[dict]) -> list",
+    starterCode: `def execute_kv_operations(operations):
+    """Execute sequence of SET, GET, DELETE, and EXISTS operations on an in-memory KV store.
+    
+    SET: returns "OK"
+    GET: returns value or None
+    DELETE: returns True if deleted, False otherwise
+    EXISTS: returns True if exists, False otherwise
+    """
+    # Your code here
+    pass
+`,
+    mission: "Execute an transactional key-value memory store supporting SET, GET, DELETE, and EXISTS operations.",
+    taskDescription: "Implement `execute_kv_operations(operations)`. Maintain an internal dict key-value store. Process each operation dict:\n- `{'op': 'SET', 'key': str, 'val': any}`: store value, append `'OK'`\n- `{'op': 'GET', 'key': str}`: return value or `None` if missing\n- `{'op': 'DELETE', 'key': str}`: delete key; return `True` if key existed, `False` otherwise\n- `{'op': 'EXISTS', 'key': str}`: return `True` if key exists, `False` otherwise\nReturn the list of operation results.",
+    constraints: [
+      "1 <= len(operations) <= 1000",
+      "Keys are strings, values are arbitrary JSON types",
+      "Operations executed sequentially"
+],
+    hints: {
+      small: "Use a standard Python dict as the backing storage.",
+      strong: "Handle del store[k] guarded by k in store.",
+      concept: "Fast key-value memory enables agents to register facts, state flags, and persistent configurations.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Basic CRUD lifecycle",
+        input: {
+          "operations": [
+                    {
+                              "op": "SET",
+                              "key": "agent_state",
+                              "val": "idle"
+                    },
+                    {
+                              "op": "EXISTS",
+                              "key": "agent_state"
+                    },
+                    {
+                              "op": "GET",
+                              "key": "agent_state"
+                    },
+                    {
+                              "op": "DELETE",
+                              "key": "agent_state"
+                    },
+                    {
+                              "op": "GET",
+                              "key": "agent_state"
+                    }
+          ]
+},
+        expectedOutput: [
+          "OK",
+          true,
+          "idle",
+          true,
+          null
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Delete non-existent key returns False",
+        input: {
+          "operations": [
+                    {
+                              "op": "DELETE",
+                              "key": "missing_key"
+                    },
+                    {
+                              "op": "EXISTS",
+                              "key": "missing_key"
+                    }
+          ]
+},
+        expectedOutput: [
+          false,
+          false
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Overwrite existing key with new value",
+        input: {
+          "operations": [
+                    {
+                              "op": "SET",
+                              "key": "x",
+                              "val": 10
+                    },
+                    {
+                              "op": "SET",
+                              "key": "x",
+                              "val": 20
+                    },
+                    {
+                              "op": "GET",
+                              "key": "x"
+                    }
+          ]
+},
+        expectedOutput: [
+          "OK",
+          "OK",
+          20
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-24': {
+    id: "memory-prob-24",
+    title: "#174. Entity-centric memory lookup",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "entity_centric_lookup",
+    functionSignature: "entity_centric_lookup(entity_graph: dict[str, dict], entity: str, relation: str) -> list[str]",
+    starterCode: `def entity_centric_lookup(entity_graph, entity, relation):
+    """Retrieve unique sorted target entities connected to an entity via a relation.
+    
+    entity_graph: {entity_name: {relation_name: [targets]}}
+    """
+    # Your code here
+    pass
+`,
+    mission: "Query knowledge-graph relational structures to extract target entities connected by specific relationship types.",
+    taskDescription: "Implement `entity_centric_lookup(entity_graph, entity, relation)`. `entity_graph` maps `entity -> {relation: [target_entities]}`. Return a sorted list of unique target entity strings connected to `entity` via `relation`. If `entity` or `relation` does not exist in the graph, return an empty list `[]`.",
+    constraints: [
+      "Returns unique entities sorted alphabetically",
+      "Handles missing entities and relations gracefully without KeyError"
+],
+    hints: {
+      small: "Use entity_graph.get(entity, {}).get(relation, []).",
+      strong: "Wrap results in sorted(list(set(...))).",
+      concept: "Entity graphs organize memories into structured triples enabling multi-hop associative queries.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Entity lookup with multiple targets",
+        input: {
+          "entity_graph": {
+                    "Google": {
+                              "develops": [
+                                        "Gemini",
+                                        "Android",
+                                        "Search"
+                              ],
+                              "headquarters": [
+                                        "Mountain View"
+                              ]
+                    }
+          },
+          "entity": "Google",
+          "relation": "develops"
+},
+        expectedOutput: [
+          "Android",
+          "Gemini",
+          "Search"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Missing entity returns empty list",
+        input: {
+          "entity_graph": {
+                    "Apple": {
+                              "develops": [
+                                        "iOS"
+                              ]
+                    }
+          },
+          "entity": "Microsoft",
+          "relation": "develops"
+},
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Duplicates in relation target list are deduped and sorted",
+        input: {
+          "entity_graph": {
+                    "User": {
+                              "knows": [
+                                        "Bob",
+                                        "Alice",
+                                        "Bob"
+                              ]
+                    }
+          },
+          "entity": "User",
+          "relation": "knows"
+},
+        expectedOutput: [
+          "Alice",
+          "Bob"
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-25': {
+    id: "memory-prob-25",
+    title: "#175. Memory capacity overflow handling",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "manage_memory_overflow",
+    functionSignature: "manage_memory_overflow(memories: list[dict], capacity: int, policy: str) -> list[str]",
+    starterCode: `def manage_memory_overflow(memories, capacity, policy):
+    """Evict excess memories down to capacity based on policy ('lru', 'lfu', 'importance').
+    
+    Return IDs of retained memories in their original input order.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Manage memory store capacity overflows by executing LRU, LFU, or importance-based eviction policies.",
+    taskDescription: "Implement `manage_memory_overflow(memories, capacity, policy)`. Each memory has `{'id': str, 'last_accessed': int, 'access_count': int, 'importance': float}`. If `len(memories) <= capacity`, return all memory IDs in order. Otherwise, evict `len(memories) - capacity` items according to `policy`:\n- `'lru'`: lowest `last_accessed` first (tie-break lowest `id`)\n- `'lfu'`: lowest `access_count` first (tie-break lowest `last_accessed`, then lowest `id`)\n- `'importance'`: lowest `importance` first (tie-break lowest `id`)\nReturn the retained memory IDs in their original relative input order.",
+    constraints: [
+      "capacity >= 0",
+      "policy in ['lru', 'lfu', 'importance']",
+      "Retained IDs maintain original input sequence"
+],
+    hints: {
+      small: "Sort memories by the policy's eviction criteria to identify items to drop.",
+      strong: "Put the evicted IDs into a set, then filter original memories list for items not in the set.",
+      concept: "Bounded capacity policies ensure agent memory footprint remains constant during indefinitely long execution runs.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "LRU policy evicts oldest accessed item",
+        input: {
+          "memories": [
+                    {
+                              "id": "m1",
+                              "last_accessed": 10,
+                              "access_count": 5,
+                              "importance": 8.0
+                    },
+                    {
+                              "id": "m2",
+                              "last_accessed": 5,
+                              "access_count": 10,
+                              "importance": 9.0
+                    },
+                    {
+                              "id": "m3",
+                              "last_accessed": 20,
+                              "access_count": 2,
+                              "importance": 7.0
+                    }
+          ],
+          "capacity": 2,
+          "policy": "lru"
+},
+        expectedOutput: [
+          "m1",
+          "m3"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "LFU policy evicts least accessed item",
+        input: {
+          "memories": [
+                    {
+                              "id": "a",
+                              "last_accessed": 100,
+                              "access_count": 1,
+                              "importance": 5.0
+                    },
+                    {
+                              "id": "b",
+                              "last_accessed": 10,
+                              "access_count": 20,
+                              "importance": 5.0
+                    }
+          ],
+          "capacity": 1,
+          "policy": "lfu"
+},
+        expectedOutput: [
+          "b"
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Importance policy evicts lowest importance item",
+        input: {
+          "memories": [
+                    {
+                              "id": "k1",
+                              "last_accessed": 1,
+                              "access_count": 1,
+                              "importance": 2.0
+                    },
+                    {
+                              "id": "k2",
+                              "last_accessed": 1,
+                              "access_count": 1,
+                              "importance": 9.0
+                    },
+                    {
+                              "id": "k3",
+                              "last_accessed": 1,
+                              "access_count": 1,
+                              "importance": 5.0
+                    }
+          ],
+          "capacity": 2,
+          "policy": "importance"
+},
+        expectedOutput: [
+          "k2",
+          "k3"
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-26': {
+    id: "memory-prob-26",
+    title: "#176. Memory read/write permissions check",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "check_memory_permission",
+    functionSignature: "check_memory_permission(user_role: str, action: str, memory_meta: dict) -> bool",
+    starterCode: `def check_memory_permission(user_role, action, memory_meta):
+    """Verify if user_role ('admin', 'editor', 'viewer') has permission to perform action ('read', 'write', 'delete').
+    
+    admin (level 3) has full access.
+    editor (level 2), viewer (level 1).
+    memory_meta: {'min_read_level': int, 'min_write_level': int, 'owner': str}
+    """
+    # Your code here
+    pass
+`,
+    mission: "Enforce multi-tenant role-based access control (RBAC) across shared agent memory stores.",
+    taskDescription: "Implement `check_memory_permission(user_role, action, memory_meta)`. Role hierarchy: `'admin'` (level 3), `'editor'` (level 2), `'viewer'` (level 1). `'admin'` is always authorized for all actions. For other roles:\n- `'read'`: permitted if role level >= `memory_meta.get('min_read_level', 1)`\n- `'write'`: permitted if role level >= `memory_meta.get('min_write_level', 2)`\n- `'delete'`: permitted only if `user_role == memory_meta.get('owner')`\nReturn `True` if allowed, `False` otherwise.",
+    constraints: [
+      "user_role in ['admin', 'editor', 'viewer', or unknown]",
+      "action in ['read', 'write', 'delete']",
+      "Returns bool"
+],
+    hints: {
+      small: "Map roles to numeric security levels with a dict.",
+      strong: "Check admin first, then branch on action type.",
+      concept: "RBAC protects sensitive multi-user memory partitions in collaborative and enterprise agent systems.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Viewer allowed to read but not write",
+        input: {
+          "user_role": "viewer",
+          "action": "write",
+          "memory_meta": {
+                    "min_read_level": 1,
+                    "min_write_level": 2,
+                    "owner": "editor"
+          }
+},
+        expectedOutput: false,
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Admin has permission for delete regardless of owner",
+        input: {
+          "user_role": "admin",
+          "action": "delete",
+          "memory_meta": {
+                    "min_read_level": 2,
+                    "min_write_level": 3,
+                    "owner": "editor"
+          }
+},
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Owner can delete own memory",
+        input: {
+          "user_role": "editor",
+          "action": "delete",
+          "memory_meta": {
+                    "min_read_level": 1,
+                    "min_write_level": 2,
+                    "owner": "editor"
+          }
+},
+        expectedOutput: true,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-27': {
+    id: "memory-prob-27",
+    title: "#177. Retrieval augmented reasoning step",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "retrieval_reasoning_step",
+    functionSignature: "retrieval_reasoning_step(hypothesis: str, evidence_snippets: list[dict], confidence_threshold: float) -> dict",
+    starterCode: `def retrieval_reasoning_step(hypothesis, evidence_snippets, confidence_threshold):
+    """Evaluate whether evidence supports hypothesis (accept >= 0.6, reject <= 0.4, else retrieve_more).
+    
+    Only snippets with relevance >= confidence_threshold are considered.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Evaluate evidence sufficiency and hypothesis support in multi-hop iterative retrieval reasoning loops.",
+    taskDescription: "Implement `retrieval_reasoning_step(hypothesis, evidence_snippets, confidence_threshold)`. Filter snippets where `relevance >= confidence_threshold`. If none pass, return `{'decision': 'retrieve_more', 'confidence': 0.0, 'supporting_ids': []}`. Otherwise, compute support ratio = `sum(relevance of supporting snippets) / sum(relevance of all filtered snippets)`. If ratio >= 0.6, decision is `'accept'`; if ratio <= 0.4, decision is `'reject'`; otherwise `'retrieve_more'`. Return `{'decision': str, 'confidence': round(ratio, 2), 'supporting_ids': list_of_ids}`.",
+    constraints: [
+      "0.0 <= confidence_threshold <= 1.0",
+      "Snippet relevance is non-negative float",
+      "Decision is one of 'accept', 'reject', 'retrieve_more'"
+],
+    hints: {
+      small: "Filter evidence_snippets with relevance >= confidence_threshold first.",
+      strong: "Compute weighted support ratio using relevance scores as weights.",
+      concept: "Iterative retrieval decision steps allow agents to halt retrieval early or trigger targeted follow-up queries.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Strong supporting evidence leads to accept",
+        input: {
+          "hypothesis": "Python is interpreted",
+          "evidence_snippets": [
+                    {
+                              "id": "doc1",
+                              "relevance": 0.9,
+                              "supports": true
+                    },
+                    {
+                              "id": "doc2",
+                              "relevance": 0.8,
+                              "supports": true
+                    },
+                    {
+                              "id": "doc3",
+                              "relevance": 0.2,
+                              "supports": false
+                    }
+          ],
+          "confidence_threshold": 0.5
+},
+        expectedOutput: {
+          "decision": "accept",
+          "confidence": 1.0,
+          "supporting_ids": [
+                    "doc1",
+                    "doc2"
+          ]
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Insufficient high-confidence evidence triggers retrieve_more",
+        input: {
+          "hypothesis": "Moon is made of cheese",
+          "evidence_snippets": [
+                    {
+                              "id": "s1",
+                              "relevance": 0.3,
+                              "supports": true
+                    }
+          ],
+          "confidence_threshold": 0.7
+},
+        expectedOutput: {
+          "decision": "retrieve_more",
+          "confidence": 0.0,
+          "supporting_ids": []
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Refuting evidence leads to reject",
+        input: {
+          "hypothesis": "Earth is flat",
+          "evidence_snippets": [
+                    {
+                              "id": "e1",
+                              "relevance": 0.95,
+                              "supports": false
+                    },
+                    {
+                              "id": "e2",
+                              "relevance": 0.85,
+                              "supports": false
+                    }
+          ],
+          "confidence_threshold": 0.5
+},
+        expectedOutput: {
+          "decision": "reject",
+          "confidence": 0.0,
+          "supporting_ids": []
+},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-28': {
+    id: "memory-prob-28",
+    title: "#178. Multi-modal memory type routing",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "route_multimodal_memory",
+    functionSignature: "route_multimodal_memory(observation: dict) -> str",
+    starterCode: `def route_multimodal_memory(observation):
+    """Route incoming observation dict to 'sensory', 'procedural', 'semantic', or 'episodic' memory.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Classify and route multimodal perception signals into appropriate cognitive memory subsystems.",
+    taskDescription: "Implement `route_multimodal_memory(observation)`. Route based on observation keys in priority order:\n1. If `'image_url'` or `'audio_clip'` in observation: return `'sensory'`\n2. Else if `'code'` or `'tool_execution'` in observation: return `'procedural'`\n3. Else if `'definition'` or `'axiom'` in observation: return `'semantic'`\n4. Else: return `'episodic'`",
+    constraints: [
+      "Returns one of 'sensory', 'procedural', 'semantic', 'episodic'",
+      "Deterministic key precedence rules applied in order"
+],
+    hints: {
+      small: "Use an if-elif-else chain checking key membership in observation.",
+      strong: "Check image_url/audio_clip first, then code/tool_execution, then definition/axiom, else episodic.",
+      concept: "Multi-modal agents separate raw perceptual buffers (sensory) from executable skills (procedural) and general facts (semantic).",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Image observation routes to sensory",
+        input: {
+          "observation": {
+                    "image_url": "https://img.example/1.png",
+                    "caption": "Cat on mat"
+          }
+},
+        expectedOutput: "sensory",
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Tool code observation routes to procedural",
+        input: {
+          "observation": {
+                    "code": "def run(): pass",
+                    "language": "python"
+          }
+},
+        expectedOutput: "procedural",
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "General conversation turn defaults to episodic",
+        input: {
+          "observation": {
+                    "user_input": "Hello",
+                    "timestamp": 12345
+          }
+},
+        expectedOutput: "episodic",
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-29': {
+    id: "memory-prob-29",
+    title: "#179. Memory provenance tracking",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "track_memory_provenance",
+    functionSignature: "track_memory_provenance(claim: str, sources: list[dict]) -> list[str]",
+    starterCode: `def track_memory_provenance(claim, sources):
+    """Find source IDs that provide evidence for claim (>= 2 overlapping words with len > 3).
+    
+    Return sorted list of source IDs.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Track provenance and citation links from agent assertion statements back to authoritative memory records.",
+    taskDescription: "Implement `track_memory_provenance(claim, sources)`. Extract significant words from `claim`: lowercase tokens with `len(w) > 3` using `re.findall(r'\\w+', claim.lower())`. Each source has `{'id': str, 'text': str}`. A source is cited if its word set shares at least 2 significant words with `claim`. Return a sorted list of cited source IDs.",
+    constraints: [
+      "Words must have length strictly greater than 3",
+      "Minimum 2 word overlap required to establish provenance",
+      "Returns sorted unique list of source IDs"
+],
+    hints: {
+      small: "Filter claim words with [w for w in re.findall(...) if len(w) > 3].",
+      strong: "Compute len(claim_words & source_words) >= 2 for each source.",
+      concept: "Provenance tracking establishes verifiable attribution chains for generated statements to mitigate hallucinations.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Source matches multiple significant keywords",
+        input: {
+          "claim": "Transformer models utilize self-attention mechanisms efficiently.",
+          "sources": [
+                    {
+                              "id": "paper_1",
+                              "text": "Self-attention mechanisms in transformer networks."
+                    },
+                    {
+                              "id": "paper_2",
+                              "text": "Convolutional neural networks for image classification."
+                    }
+          ]
+},
+        expectedOutput: [
+          "paper_1"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Only 1 matching word is insufficient to cite",
+        input: {
+          "claim": "Quantum computing enables exponential speedup.",
+          "sources": [
+                    {
+                              "id": "doc_a",
+                              "text": "Quantum mechanics explains particle physics."
+                    }
+          ]
+},
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "No significant words in short claim",
+        input: {
+          "claim": "It is a cat",
+          "sources": [
+                    {
+                              "id": "src_1",
+                              "text": "A cat sits here."
+                    }
+          ]
+},
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'memory-prob-30': {
+    id: "memory-prob-30",
+    title: "#180. Reflective memory self-review",
+    difficulty: "medium",
+    topic: "Agent Memory & Context Engineering",
+    estimatedTime: "15–20 min",
+    functionName: "synthesize_reflections",
+    functionSignature: "synthesize_reflections(memories: list[dict], min_frequency: int) -> list[dict]",
+    starterCode: `def synthesize_reflections(memories, min_frequency):
+    """Synthesize high-level reflections from memories grouped by category.
+    
+    Only categories with count >= min_frequency are included.
+    Return reflections sorted by count descending, then category ascending.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Synthesize recurring observations across episodic logs into generalized high-level reflections.",
+    taskDescription: "Implement `synthesize_reflections(memories, min_frequency)`. Each memory has `{'id': str, 'category': str, 'lesson': str}`. Group lessons by category. For each category with `len(lessons) >= min_frequency`, create a reflection object: `{'category': cat, 'count': len(lessons), 'key_lessons': sorted(list(set(lessons)))}`. Sort reflections by `count` descending, tie-breaking by `category` ascending. Return the list of reflections.",
+    constraints: [
+      "min_frequency >= 1",
+      "key_lessons contains deduplicated lessons sorted alphabetically",
+      "Output sorted by (-count, category)"
+],
+    hints: {
+      small: "Use a defaultdict(list) to group lessons by category.",
+      strong: "For categories meeting min_frequency, sort deduplicated lessons with sorted(list(set(lessons))).",
+      concept: "Reflexion loops allow agents to distill episodic traces into general rules to avoid repeating past errors.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Category meeting frequency threshold synthesized",
+        input: {
+          "memories": [
+                    {
+                              "id": "m1",
+                              "category": "tool_errors",
+                              "lesson": "Check API status before calling"
+                    },
+                    {
+                              "id": "m2",
+                              "category": "tool_errors",
+                              "lesson": "Validate payload schema"
+                    },
+                    {
+                              "id": "m3",
+                              "category": "code_style",
+                              "lesson": "Format with ruff"
+                    }
+          ],
+          "min_frequency": 2
+},
+        expectedOutput: [
+          {
+                    "category": "tool_errors",
+                    "count": 2,
+                    "key_lessons": [
+                              "Check API status before calling",
+                              "Validate payload schema"
+                    ]
+          }
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "No category meets frequency threshold",
+        input: {
+          "memories": [
+                    {
+                              "id": "a",
+                              "category": "math",
+                              "lesson": "Check division by zero"
+                    }
+          ],
+          "min_frequency": 5
+},
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Tie-break equal count by category alphabetically",
+        input: {
+          "memories": [
+                    {
+                              "id": "1",
+                              "category": "beta",
+                              "lesson": "b1"
+                    },
+                    {
+                              "id": "2",
+                              "category": "alpha",
+                              "lesson": "a1"
+                    }
+          ],
+          "min_frequency": 1
+},
+        expectedOutput: [
+          {
+                    "category": "alpha",
+                    "count": 1,
+                    "key_lessons": [
+                              "a1"
+                    ]
+          },
+          {
+                    "category": "beta",
+                    "count": 1,
+                    "key_lessons": [
+                              "b1"
+                    ]
+          }
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-1': {
+    id: "adv-ds-prob-1",
+    title: "#681. Trie insert and search",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "trie_insert_and_search",
+    functionSignature: "trie_insert_and_search(words_to_insert: list[str], words_to_search: list[str]) -> list[bool]",
+    starterCode: `def trie_insert_and_search(words_to_insert, words_to_search):
+    """Build a prefix tree (Trie) from words_to_insert, then search each word in words_to_search.
+    
+    Return a list of booleans indicating whether each search word is present in the Trie.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Implement a prefix tree (Trie) for efficient dictionary storage and exact string membership queries.",
+    taskDescription: "Implement `trie_insert_and_search(words_to_insert, words_to_search)`. Insert all words from `words_to_insert` into a Trie data structure. Then for each word in `words_to_search`, query the Trie to check if the exact word was previously inserted. Return a list of booleans corresponding to each search word.",
+    constraints: [
+      "Words consist of lowercase English letters",
+      "0 <= len(words_to_insert) <= 1000",
+      "1 <= len(words_to_search) <= 1000"
+],
+    hints: {
+      small: "Use nested dictionaries where each key is a character and '#' denotes the end of a word.",
+      strong: "Traverse the trie character by character; if a character is missing, return False.",
+      concept: "Tries provide O(m) search and insertion time proportional to string length, independent of dictionary size.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Insert 3 words and search present/absent words",
+        input: {
+          "words_to_insert": [
+                    "apple",
+                    "app",
+                    "banana"
+          ],
+          "words_to_search": [
+                    "app",
+                    "apple",
+                    "appl",
+                    "banana",
+                    "band"
+          ]
+},
+        expectedOutput: [
+          true,
+          true,
+          false,
+          true,
+          false
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Empty trie searches return False",
+        input: {
+          "words_to_insert": [],
+          "words_to_search": [
+                    "any"
+          ]
+},
+        expectedOutput: [
+          false
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Single character words",
+        input: {
+          "words_to_insert": [
+                    "a",
+                    "b"
+          ],
+          "words_to_search": [
+                    "a",
+                    "c",
+                    "b",
+                    "d"
+          ]
+},
+        expectedOutput: [
+          true,
+          false,
+          true,
+          false
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-2': {
+    id: "adv-ds-prob-2",
+    title: "#682. Trie prefix completion",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "trie_prefix_completion",
+    functionSignature: "trie_prefix_completion(words: list[str], prefix: str) -> list[str]",
+    starterCode: `def trie_prefix_completion(words, prefix):
+    """Find all words in the Trie starting with prefix, returned in alphabetical order.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Traverse a Trie to discover and return all vocabulary terms matching an autocomplete query prefix.",
+    taskDescription: "Implement `trie_prefix_completion(words, prefix)`. Build a Trie containing all strings from `words`. Find the node corresponding to `prefix` and collect all stored complete words that extend this prefix. Return the list of matching words in alphabetical order.",
+    constraints: [
+      "Words consist of lowercase English letters",
+      "0 <= len(words) <= 1000",
+      "Returns alphabetically sorted list of completions"
+],
+    hints: {
+      small: "Navigate to the prefix node in the Trie first; if any char is missing, return [].",
+      strong: "Run a depth-first search from the prefix node, sorting child keys alphabetically.",
+      concept: "Trie prefix completion powers LLM vocabulary decoding constraints and interactive code autocompletion.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Prefix 'app' matches apple, application, apply",
+        input: {
+          "words": [
+                    "apple",
+                    "application",
+                    "apply",
+                    "banana",
+                    "ape"
+          ],
+          "prefix": "app"
+},
+        expectedOutput: [
+          "apple",
+          "application",
+          "apply"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "No matches for unknown prefix",
+        input: {
+          "words": [
+                    "cat",
+                    "car",
+                    "cart"
+          ],
+          "prefix": "dog"
+},
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Empty prefix returns all words sorted",
+        input: {
+          "words": [
+                    "zebra",
+                    "apple",
+                    "mango"
+          ],
+          "prefix": ""
+},
+        expectedOutput: [
+          "apple",
+          "mango",
+          "zebra"
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-3': {
+    id: "adv-ds-prob-3",
+    title: "#683. Segment tree range sum query",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "segment_tree_range_sum",
+    functionSignature: "segment_tree_range_sum(arr: list[int], queries: list[list[int]]) -> list[int]",
+    starterCode: `def segment_tree_range_sum(arr, queries):
+    """Answer range sum queries [L, R] (inclusive) on arr using a Segment Tree in O(log N) time per query.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Construct a Segment Tree over a numerical sequence to answer arbitrary range sum queries in O(log N) time.",
+    taskDescription: "Implement `segment_tree_range_sum(arr, queries)`. Construct a binary Segment Tree representing the elements of `arr`. For each query `[L, R]` (0-indexed inclusive bounds, where `0 <= L <= R < len(arr)`), calculate the sum `sum(arr[L..R])`. Return the list of query answers.",
+    constraints: [
+      "1 <= len(arr) <= 10000",
+      "1 <= len(queries) <= 1000",
+      "0 <= L <= R < len(arr)"
+],
+    hints: {
+      small: "A segment tree node covers an interval [l, r] and stores the sum of its children.",
+      strong: "If the query completely covers the node interval, return node value; if disjoint, return 0; else recurse on left and right children.",
+      concept: "Segment trees partition arrays into dyadic canonical intervals, enabling logarithmic range aggregates.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Array of 5 numbers with 3 range queries",
+        input: {
+          "arr": [
+                    1,
+                    3,
+                    5,
+                    7,
+                    9,
+                    11
+          ],
+          "queries": [
+                    [
+                              0,
+                              2
+                    ],
+                    [
+                              1,
+                              4
+                    ],
+                    [
+                              0,
+                              5
+                    ]
+          ]
+},
+        expectedOutput: [
+          9,
+          24,
+          36
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Single element array",
+        input: {
+          "arr": [
+                    42
+          ],
+          "queries": [
+                    [
+                              0,
+                              0
+                    ]
+          ]
+},
+        expectedOutput: [
+          42
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Array with negative numbers",
+        input: {
+          "arr": [
+                    -2,
+                    0,
+                    3,
+                    -5,
+                    2,
+                    -1
+          ],
+          "queries": [
+                    [
+                              0,
+                              2
+                    ],
+                    [
+                              2,
+                              5
+                    ],
+                    [
+                              0,
+                              5
+                    ]
+          ]
+},
+        expectedOutput: [
+          1,
+          -1,
+          -3
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-4': {
+    id: "adv-ds-prob-4",
+    title: "#684. Segment tree point update",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "segment_tree_point_update",
+    functionSignature: "segment_tree_point_update(arr: list[int], operations: list[dict]) -> list[int]",
+    starterCode: `def segment_tree_point_update(arr, operations):
+    """Execute dynamic point updates and range sum queries on arr using a Segment Tree.
+    
+    operations: list of {'type': 'update', 'idx': int, 'val': int}
+             or {'type': 'query', 'left': int, 'right': int}
+    """
+    # Your code here
+    pass
+`,
+    mission: "Maintain a dynamic Segment Tree supporting O(log N) point updates alongside range sum queries.",
+    taskDescription: "Implement `segment_tree_point_update(arr, operations)`. Initialize a Segment Tree over `arr`. Process each operation dict:\n- `{'type': 'update', 'idx': int, 'val': int}`: update `arr[idx] = val` and refresh tree aggregates in O(log N)\n- `{'type': 'query', 'left': int, 'right': int}`: compute range sum `sum(arr[left..right])`\nReturn the list of query outputs in execution order.",
+    constraints: [
+      "1 <= len(arr) <= 10000",
+      "0 <= idx < len(arr)",
+      "0 <= left <= right < len(arr)"
+],
+    hints: {
+      small: "Point update recurses down to leaf l == r == idx, then pulls up sum = left_child + right_child.",
+      strong: "Execute queries and updates in chronological order, collecting only query results into the return list.",
+      concept: "Dynamic trees allow streaming online data updates while maintaining efficient logarithmic query access.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Query before and after point update",
+        input: {
+          "arr": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+          ],
+          "operations": [
+                    {
+                              "type": "query",
+                              "left": 0,
+                              "right": 2
+                    },
+                    {
+                              "type": "update",
+                              "idx": 1,
+                              "val": 10
+                    },
+                    {
+                              "type": "query",
+                              "left": 0,
+                              "right": 2
+                    }
+          ]
+},
+        expectedOutput: [
+          6,
+          14
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Consecutive updates on same index",
+        input: {
+          "arr": [
+                    10,
+                    20,
+                    30
+          ],
+          "operations": [
+                    {
+                              "type": "update",
+                              "idx": 0,
+                              "val": 5
+                    },
+                    {
+                              "type": "update",
+                              "idx": 0,
+                              "val": 15
+                    },
+                    {
+                              "type": "query",
+                              "left": 0,
+                              "right": 2
+                    }
+          ]
+},
+        expectedOutput: [
+          65
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Single element array update and query",
+        input: {
+          "arr": [
+                    100
+          ],
+          "operations": [
+                    {
+                              "type": "update",
+                              "idx": 0,
+                              "val": 50
+                    },
+                    {
+                              "type": "query",
+                              "left": 0,
+                              "right": 0
+                    }
+          ]
+},
+        expectedOutput: [
+          50
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-5': {
+    id: "adv-ds-prob-5",
+    title: "#685. Fenwick tree (BIT) prefix sum",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "fenwick_prefix_sum",
+    functionSignature: "fenwick_prefix_sum(arr: list[int], query_indices: list[int]) -> list[int]",
+    starterCode: `def fenwick_prefix_sum(arr, query_indices):
+    """Compute prefix sums sum(arr[0..idx]) for each 0-based idx in query_indices using a Binary Indexed Tree.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Implement a Binary Indexed Tree (Fenwick Tree) to compute cumulative prefix sums with low memory overhead.",
+    taskDescription: "Implement `fenwick_prefix_sum(arr, query_indices)`. Build a 1-indexed Fenwick Tree (Binary Indexed Tree) over `arr`. For each 0-indexed integer `idx` in `query_indices`, compute the prefix sum `sum(arr[0..idx])` by traversing least significant set bits (`i -= i & (-i)`). Return the list of prefix sums.",
+    constraints: [
+      "1 <= len(arr) <= 50000",
+      "0 <= idx < len(arr)",
+      "Space complexity O(N) auxiliary"
+],
+    hints: {
+      small: "Convert 0-based index to 1-based index: i = idx + 1.",
+      strong: "In Fenwick trees, parent index is computed with bitwise negation: i -= i & (-i).",
+      concept: "Fenwick trees store cumulative frequencies using implicit binary representation, halving the storage compared to segment trees.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Prefix sum queries on sequence 1..5",
+        input: {
+          "arr": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+          ],
+          "query_indices": [
+                    0,
+                    2,
+                    4
+          ]
+},
+        expectedOutput: [
+          1,
+          6,
+          15
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "All queries evaluate same index",
+        input: {
+          "arr": [
+                    10,
+                    20,
+                    30
+          ],
+          "query_indices": [
+                    1,
+                    1
+          ]
+},
+        expectedOutput: [
+          30,
+          30
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Array with zero and negative numbers",
+        input: {
+          "arr": [
+                    5,
+                    -3,
+                    0,
+                    7,
+                    -2
+          ],
+          "query_indices": [
+                    1,
+                    3,
+                    4
+          ]
+},
+        expectedOutput: [
+          2,
+          9,
+          7
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-6': {
+    id: "adv-ds-prob-6",
+    title: "#686. Fenwick tree update",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "fenwick_point_update",
+    functionSignature: "fenwick_point_update(arr: list[int], operations: list[dict]) -> list[int]",
+    starterCode: `def fenwick_point_update(arr, operations):
+    """Maintain Fenwick Tree under dynamic additions and prefix sum queries.
+    
+    operations: list of {'type': 'add', 'idx': int, 'delta': int}
+             or {'type': 'prefix_sum', 'idx': int}
+    """
+    # Your code here
+    pass
+`,
+    mission: "Execute point updates (additions) and prefix sum queries on a dynamic Binary Indexed Tree.",
+    taskDescription: "Implement `fenwick_point_update(arr, operations)`. Construct a Fenwick tree over `arr`. Process operations:\n- `{'type': 'add', 'idx': int, 'delta': int}`: increment `arr[idx]` by `delta` using `i += i & (-i)`\n- `{'type': 'prefix_sum', 'idx': int}`: compute prefix sum `sum(arr[0..idx])`\nReturn the list of prefix sum query answers.",
+    constraints: [
+      "1 <= len(arr) <= 50000",
+      "0 <= idx < len(arr)",
+      "Both add and prefix_sum operate in O(log N)"
+],
+    hints: {
+      small: "Update propagates forward: i += i & (-i); Query propagates backward: i -= i & (-i).",
+      strong: "Remember to offset 0-indexed idx to 1-indexed for bit array manipulation.",
+      concept: "Fenwick tree updates distribute changes across tree ancestors via binary power-of-two jumps.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Add delta to index 2 and query",
+        input: {
+          "arr": [
+                    1,
+                    2,
+                    3,
+                    4
+          ],
+          "operations": [
+                    {
+                              "type": "prefix_sum",
+                              "idx": 2
+                    },
+                    {
+                              "type": "add",
+                              "idx": 2,
+                              "delta": 5
+                    },
+                    {
+                              "type": "prefix_sum",
+                              "idx": 2
+                    },
+                    {
+                              "type": "prefix_sum",
+                              "idx": 3
+                    }
+          ]
+},
+        expectedOutput: [
+          6,
+          11,
+          15
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Multiple additions on index 0",
+        input: {
+          "arr": [
+                    0,
+                    10
+          ],
+          "operations": [
+                    {
+                              "type": "add",
+                              "idx": 0,
+                              "delta": 3
+                    },
+                    {
+                              "type": "add",
+                              "idx": 0,
+                              "delta": 7
+                    },
+                    {
+                              "type": "prefix_sum",
+                              "idx": 0
+                    }
+          ]
+},
+        expectedOutput: [
+          10
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Negative deltas decrements sum",
+        input: {
+          "arr": [
+                    10,
+                    10,
+                    10
+          ],
+          "operations": [
+                    {
+                              "type": "add",
+                              "idx": 1,
+                              "delta": -5
+                    },
+                    {
+                              "type": "prefix_sum",
+                              "idx": 2
+                    }
+          ]
+},
+        expectedOutput: [
+          25
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-7': {
+    id: "adv-ds-prob-7",
+    title: "#687. Skip list search",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "skip_list_search",
+    functionSignature: "skip_list_search(levels: list[list[int]], target: int) -> bool",
+    starterCode: `def skip_list_search(levels, target):
+    """Search for target in a multi-level Skip List representation.
+    
+    levels: list of sorted lists [level_k, ..., level_0] from top sparse to bottom dense.
+    Return True if target exists, False otherwise.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Traverse a hierarchical probabilistic Skip List data structure to locate elements in expected O(log N) time.",
+    taskDescription: "Implement `skip_list_search(levels, target)`. `levels` represents the levels of a Skip List ordered from top (sparsest highway level) to bottom (level 0 containing all sorted elements). Traverse levels from top to bottom, advancing horizontally through elements `<= target` before descending to finer levels. Return `True` if `target` is present in the Skip List, `False` otherwise.",
+    constraints: [
+      "Each level in levels is sorted in ascending order",
+      "1 <= len(levels) <= 32",
+      "Returns boolean"
+],
+    hints: {
+      small: "At each level, advance while current element < target; if element == target return True.",
+      strong: "If element exceeds target, drop down to the corresponding position at the lower level.",
+      concept: "Skip lists provide O(log N) expected search and insert operations without requiring complex tree rotations.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Target found on higher highway level",
+        input: {
+          "levels": [
+                    [
+                              1,
+                              9
+                    ],
+                    [
+                              1,
+                              5,
+                              9
+                    ],
+                    [
+                              1,
+                              3,
+                              5,
+                              7,
+                              9
+                    ]
+          ],
+          "target": 5
+},
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Target absent from skip list",
+        input: {
+          "levels": [
+                    [
+                              10,
+                              50
+                    ],
+                    [
+                              10,
+                              20,
+                              30,
+                              40,
+                              50
+                    ]
+          ],
+          "target": 25
+},
+        expectedOutput: false,
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Single level search",
+        input: {
+          "levels": [
+                    [
+                              2,
+                              4,
+                              6,
+                              8
+                    ]
+          ],
+          "target": 8
+},
+        expectedOutput: true,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-8': {
+    id: "adv-ds-prob-8",
+    title: "#688. Bloom filter add and check",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "bloom_filter_check",
+    functionSignature: "bloom_filter_check(capacity: int, items_to_add: list[str], items_to_check: list[str]) -> list[bool]",
+    starterCode: `def bloom_filter_check(capacity, items_to_add, items_to_check):
+    """Simulate a Bloom filter of bit length capacity using two standard hash functions:
+    - h1 (FNV-1a): init 2166136261, for ch: h ^= ord(ch), h = (h * 16777619) & 0xFFFFFFFF; return h % capacity
+    - h2 (DJB2): init 5381, for ch: h = (((h << 5) + h) + ord(ch)) & 0xFFFFFFFF; return h % capacity
+    """
+    # Your code here
+    pass
+`,
+    mission: "Implement a space-efficient probabilistic Bloom filter with dual hash mapping for fast set-membership testing.",
+    taskDescription: "Implement `bloom_filter_check(capacity, items_to_add, items_to_check)`. Initialize a boolean bit array of size `capacity` to False. Use two 32-bit hash functions:\n- `h1`: FNV-1a: initial hash `2166136261`, for each char `h = ((h ^ ord(ch)) * 16777619) & 0xFFFFFFFF`, return `h % capacity`\n- `h2`: DJB2: initial hash `5381`, for each char `h = (((h << 5) + h) + ord(ch)) & 0xFFFFFFFF`, return `h % capacity`\nSet bits for all `items_to_add`. Then check if both bits are set for each string in `items_to_check`. Return the list of booleans.",
+    constraints: [
+      "capacity >= 1",
+      "0 <= len(items_to_add) <= 1000",
+      "No false negatives: if added, check must return True"
+],
+    hints: {
+      small: "Keep bit array of size capacity as [False] * capacity.",
+      strong: "Perform bitwise 32-bit masking (& 0xFFFFFFFF) at each step of the hash functions.",
+      concept: "Bloom filters guarantee zero false negatives: if check returns False, item is definitely not in the set.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Items added report True, unadded distinct report False",
+        input: {
+          "capacity": 100,
+          "items_to_add": [
+                    "user:123",
+                    "user:456"
+          ],
+          "items_to_check": [
+                    "user:123",
+                    "user:999",
+                    "user:456"
+          ]
+},
+        expectedOutput: [
+          true,
+          false,
+          true
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Empty filter reports False for all checks",
+        input: {
+          "capacity": 50,
+          "items_to_add": [],
+          "items_to_check": [
+                    "hello",
+                    "world"
+          ]
+},
+        expectedOutput: [
+          false,
+          false
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Single char strings check",
+        input: {
+          "capacity": 200,
+          "items_to_add": [
+                    "a",
+                    "b",
+                    "c"
+          ],
+          "items_to_check": [
+                    "a",
+                    "z"
+          ]
+},
+        expectedOutput: [
+          true,
+          false
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-9': {
+    id: "adv-ds-prob-9",
+    title: "#689. Min-heap push/pop",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "min_heap_operations",
+    functionSignature: "min_heap_operations(operations: list[dict]) -> list",
+    starterCode: `def min_heap_operations(operations):
+    """Simulate sequence of min-heap operations:
+    {'op': 'push', 'val': int} -> pushes value
+    {'op': 'pop'} -> returns smallest value or None if empty
+    """
+    # Your code here
+    pass
+`,
+    mission: "Implement a priority queue using min-heap invariance for logarithmic insertion and minimum extraction.",
+    taskDescription: "Implement `min_heap_operations(operations)`. Maintain a binary min-heap initialized to empty. Process each operation dict:\n- `{'op': 'push', 'val': int}`: insert `val` into the heap\n- `{'op': 'pop'}`: extract and return the minimum element (or `None` if heap is empty)\nReturn the list of popped values in chronological order.",
+    constraints: [
+      "1 <= len(operations) <= 5000",
+      "Integer values",
+      "Empty pop returns None"
+],
+    hints: {
+      small: "Use Python's heapq module: heapq.heappush and heapq.heappop.",
+      strong: "Guard heappop with if heap: results.append(heappop(heap)) else results.append(None).",
+      concept: "Min-heaps maintain complete binary tree structure with parent <= children property in O(log N) operations.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Pushes in arbitrary order pop in sorted ascending order",
+        input: {
+          "operations": [
+                    {
+                              "op": "push",
+                              "val": 15
+                    },
+                    {
+                              "op": "push",
+                              "val": 3
+                    },
+                    {
+                              "op": "push",
+                              "val": 8
+                    },
+                    {
+                              "op": "pop"
+                    },
+                    {
+                              "op": "pop"
+                    }
+          ]
+},
+        expectedOutput: [
+          3,
+          8
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Pop from empty heap yields None",
+        input: {
+          "operations": [
+                    {
+                              "op": "pop"
+                    },
+                    {
+                              "op": "push",
+                              "val": 1
+                    },
+                    {
+                              "op": "pop"
+                    }
+          ]
+},
+        expectedOutput: [
+          null,
+          1
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Negative numbers pop correctly first",
+        input: {
+          "operations": [
+                    {
+                              "op": "push",
+                              "val": 5
+                    },
+                    {
+                              "op": "push",
+                              "val": -10
+                    },
+                    {
+                              "op": "push",
+                              "val": 0
+                    },
+                    {
+                              "op": "pop"
+                    },
+                    {
+                              "op": "pop"
+                    }
+          ]
+},
+        expectedOutput: [
+          -10,
+          0
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-10': {
+    id: "adv-ds-prob-10",
+    title: "#690. Priority queue for beam search",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "beam_search_top_k",
+    functionSignature: "beam_search_top_k(candidates: list[dict], beam_width: int) -> list[str]",
+    starterCode: `def beam_search_top_k(candidates, beam_width):
+    """Filter generation candidates for beam search expansion, selecting top beam_width items by score descending.
+    
+    candidates: list of {'id': str, 'score': float}
+    Tie-break equal scores by id ascending.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Maintain beam search hypotheses by pruning low-probability candidates using priority queue ranking.",
+    taskDescription: "Implement `beam_search_top_k(candidates, beam_width)`. Each candidate is `{'id': str, 'score': float}` (e.g. cumulative log-probability). Select the top `beam_width` candidate IDs ranked by `score` descending, tie-breaking by `id` ascending. Return the list of selected candidate IDs.",
+    constraints: [
+      "beam_width >= 1",
+      "Scores are finite floats",
+      "Returns up to beam_width candidate IDs"
+],
+    hints: {
+      small: "Sort candidates with key=lambda c: (-c['score'], c['id']).",
+      strong: "Slice [:beam_width] and extract IDs: [c['id'] for c in sorted_c[:beam_width]].",
+      concept: "Beam search limits combinatorial state space exploration in autoregressive LLM decoding and agent planning.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Top 2 beams extracted from 4 candidates",
+        input: {
+          "candidates": [
+                    {
+                              "id": "beam_a",
+                              "score": -1.5
+                    },
+                    {
+                              "id": "beam_b",
+                              "score": -0.8
+                    },
+                    {
+                              "id": "beam_c",
+                              "score": -2.1
+                    },
+                    {
+                              "id": "beam_d",
+                              "score": -0.5
+                    }
+          ],
+          "beam_width": 2
+},
+        expectedOutput: [
+          "beam_d",
+          "beam_b"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Equal scores tie-broken alphabetically",
+        input: {
+          "candidates": [
+                    {
+                              "id": "path_z",
+                              "score": 10.0
+                    },
+                    {
+                              "id": "path_a",
+                              "score": 10.0
+                    }
+          ],
+          "beam_width": 1
+},
+        expectedOutput: [
+          "path_a"
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Beam width larger than candidate pool",
+        input: {
+          "candidates": [
+                    {
+                              "id": "single",
+                              "score": 5.0
+                    }
+          ],
+          "beam_width": 5
+},
+        expectedOutput: [
+          "single"
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-11': {
+    id: "adv-ds-prob-11",
+    title: "#691. Disjoint set union (union-find)",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "disjoint_set_connected_components",
+    functionSignature: "disjoint_set_connected_components(n: int, edges: list[list[int]]) -> int",
+    starterCode: `def disjoint_set_connected_components(n, edges):
+    """Count connected components in an undirected graph with n vertices (0 to n-1) using Union-Find.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Track disjoint partitioned sets and compute connected components in undirected graphs using Union-Find.",
+    taskDescription: "Implement `disjoint_set_connected_components(n, edges)`. Given `n` nodes labeled `0` to `n - 1` and a list of undirected edges `[u, v]`, initialize a Disjoint Set Union (DSU) structure where each node starts in its own component. Perform union operations for each edge. Return the total number of connected components remaining.",
+    constraints: [
+      "1 <= n <= 50000",
+      "0 <= len(edges) <= 100000",
+      "0 <= u, v < n"
+],
+    hints: {
+      small: "Initialize parent = list(range(n)) and component_count = n.",
+      strong: "Each successful union of different component roots decrements component_count by 1.",
+      concept: "Disjoint Set Union manages dynamic equivalence relations in near-constant amortized inverse Ackermann time O(alpha(N)).",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "5 nodes with 2 components",
+        input: {
+          "n": 5,
+          "edges": [
+                    [
+                              0,
+                              1
+                    ],
+                    [
+                              1,
+                              2
+                    ],
+                    [
+                              3,
+                              4
+                    ]
+          ]
+},
+        expectedOutput: 2,
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "No edges leaves n components",
+        input: {
+          "n": 4,
+          "edges": []
+},
+        expectedOutput: 4,
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Fully connected clique has 1 component",
+        input: {
+          "n": 3,
+          "edges": [
+                    [
+                              0,
+                              1
+                    ],
+                    [
+                              1,
+                              2
+                    ],
+                    [
+                              0,
+                              2
+                    ]
+          ]
+},
+        expectedOutput: 1,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-12': {
+    id: "adv-ds-prob-12",
+    title: "#692. Union-find with path compression",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "union_find_cycle_detection",
+    functionSignature: "union_find_cycle_detection(n: int, edges: list[list[int]]) -> bool",
+    starterCode: `def union_find_cycle_detection(n, edges):
+    """Detect if adding edges to an n-node graph introduces a cycle using Union-Find with path compression.
+    
+    Return True if cycle detected, False otherwise.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Detect cycles in dynamic undirected graphs using recursive path compression Union-Find.",
+    taskDescription: "Implement `union_find_cycle_detection(n, edges)`. Implement `find(i)` with full recursive path compression (`parent[i] = find(parent[i])`). Iterate through `edges` sequentially: if `find(u) == find(v)`, the edge connects two nodes already in the same set, indicating a cycle. Return `True` immediately if a cycle is detected. If all edges are processed without a cycle, return `False`.",
+    constraints: [
+      "1 <= n <= 50000",
+      "0 <= len(edges) <= 100000",
+      "Self-loops and multi-edges count as cycles"
+],
+    hints: {
+      small: "Path compression flattens tree depth directly to the root during find traversal.",
+      strong: "If root_u == root_v when examining edge (u, v), return True.",
+      concept: "Cycle detection via Union-Find forms the backbone of Kruskal's Minimum Spanning Tree algorithm.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Triangle cycle detected on 3rd edge",
+        input: {
+          "n": 3,
+          "edges": [
+                    [
+                              0,
+                              1
+                    ],
+                    [
+                              1,
+                              2
+                    ],
+                    [
+                              2,
+                              0
+                    ]
+          ]
+},
+        expectedOutput: true,
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Tree structure has no cycles",
+        input: {
+          "n": 4,
+          "edges": [
+                    [
+                              0,
+                              1
+                    ],
+                    [
+                              0,
+                              2
+                    ],
+                    [
+                              0,
+                              3
+                    ]
+          ]
+},
+        expectedOutput: false,
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Self-loop edge creates immediate cycle",
+        input: {
+          "n": 2,
+          "edges": [
+                    [
+                              0,
+                              0
+                    ]
+          ]
+},
+        expectedOutput: true,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-13': {
+    id: "adv-ds-prob-13",
+    title: "#693. LRU cache eviction",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "lru_cache_simulation",
+    functionSignature: "lru_cache_simulation(capacity: int, operations: list[dict]) -> list",
+    starterCode: `def lru_cache_simulation(capacity, operations):
+    """Simulate an LRU cache supporting 'get' and 'put'. Return results of all 'get' operations.
+    
+    operations: [{'type': 'get', 'key': any}, {'type': 'put', 'key': any, 'val': any}]
+    """
+    # Your code here
+    pass
+`,
+    mission: "Simulate Least Recently Used (LRU) cache evictions under sequential read and write workloads.",
+    taskDescription: "Implement `lru_cache_simulation(capacity, operations)`. Maintain an LRU cache with maximum `capacity`. Process operations in order:\n- `{'type': 'get', 'key': k}`: return stored value and mark `k` as most recently used; return `None` if missing\n- `{'type': 'put', 'key': k, 'val': v}`: update or insert `k`. If inserting causes size > `capacity`, evict the least recently used key first\nReturn a list containing the return values of all `'get'` operations.",
+    constraints: [
+      "capacity >= 1",
+      "1 <= len(operations) <= 1000",
+      "Returns list of values returned by 'get' operations"
+],
+    hints: {
+      small: "Use collections.OrderedDict or a dict combined with an order tracking list.",
+      strong: "Both 'get' (on hit) and 'put' move the accessed key to the most recently used position.",
+      concept: "LRU caching discards the least recently accessed items first, optimizing hit rates for temporal locality.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Evict key 1 after inserting key 3",
+        input: {
+          "capacity": 2,
+          "operations": [
+                    {
+                              "type": "put",
+                              "key": "k1",
+                              "val": 10
+                    },
+                    {
+                              "type": "put",
+                              "key": "k2",
+                              "val": 20
+                    },
+                    {
+                              "type": "get",
+                              "key": "k1"
+                    },
+                    {
+                              "type": "put",
+                              "key": "k3",
+                              "val": 30
+                    },
+                    {
+                              "type": "get",
+                              "key": "k2"
+                    },
+                    {
+                              "type": "get",
+                              "key": "k3"
+                    }
+          ]
+},
+        expectedOutput: [
+          10,
+          null,
+          30
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Update existing key does not evict",
+        input: {
+          "capacity": 1,
+          "operations": [
+                    {
+                              "type": "put",
+                              "key": "x",
+                              "val": 1
+                    },
+                    {
+                              "type": "put",
+                              "key": "x",
+                              "val": 2
+                    },
+                    {
+                              "type": "get",
+                              "key": "x"
+                    }
+          ]
+},
+        expectedOutput: [
+          2
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Get on missing key returns None",
+        input: {
+          "capacity": 2,
+          "operations": [
+                    {
+                              "type": "get",
+                              "key": "not_there"
+                    }
+          ]
+},
+        expectedOutput: [
+          null
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-14': {
+    id: "adv-ds-prob-14",
+    title: "#694. LFU cache (frequency counting)",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "lfu_cache_simulation",
+    functionSignature: "lfu_cache_simulation(capacity: int, operations: list[dict]) -> list",
+    starterCode: `def lfu_cache_simulation(capacity, operations):
+    """Simulate an LFU cache supporting 'get' and 'put'. Tie-break lowest frequency by least recently used.
+    
+    Return results of all 'get' operations.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Simulate Least Frequently Used (LFU) cache eviction with LRU secondary tie-breaking.",
+    taskDescription: "Implement `lfu_cache_simulation(capacity, operations)`. Maintain an LFU cache with maximum `capacity`. Track access count (frequency) and timestamp for each key. Process operations:\n- `'get'`: if hit, increment frequency, update timestamp, return value; else return `None`\n- `'put'`: if key exists, update value, increment frequency, update timestamp. If inserting new key exceeds `capacity`, evict the key with minimum frequency (tie-breaking by oldest timestamp)\nReturn list of results from all `'get'` operations.",
+    constraints: [
+      "capacity >= 1",
+      "1 <= len(operations) <= 1000",
+      "Tie-break least frequent item using oldest timestamp"
+],
+    hints: {
+      small: "Maintain dictionaries for cache values, frequency counts, and last_used timestamps.",
+      strong: "Candidate to evict = min(keys, key=lambda k: (freq[k], last_used[k])).",
+      concept: "LFU preserves hot items accessed across bursts while discarding infrequently accessed items.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Item with lower access count evicted first",
+        input: {
+          "capacity": 2,
+          "operations": [
+                    {
+                              "type": "put",
+                              "key": "k1",
+                              "val": 10
+                    },
+                    {
+                              "type": "put",
+                              "key": "k2",
+                              "val": 20
+                    },
+                    {
+                              "type": "get",
+                              "key": "k1"
+                    },
+                    {
+                              "type": "put",
+                              "key": "k3",
+                              "val": 30
+                    },
+                    {
+                              "type": "get",
+                              "key": "k2"
+                    },
+                    {
+                              "type": "get",
+                              "key": "k1"
+                    }
+          ]
+},
+        expectedOutput: [
+          10,
+          null,
+          10
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Equal frequency tie-breaks by LRU",
+        input: {
+          "capacity": 2,
+          "operations": [
+                    {
+                              "type": "put",
+                              "key": "a",
+                              "val": 1
+                    },
+                    {
+                              "type": "put",
+                              "key": "b",
+                              "val": 2
+                    },
+                    {
+                              "type": "put",
+                              "key": "c",
+                              "val": 3
+                    },
+                    {
+                              "type": "get",
+                              "key": "a"
+                    },
+                    {
+                              "type": "get",
+                              "key": "b"
+                    }
+          ]
+},
+        expectedOutput: [
+          null,
+          2
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Single slot LFU cache",
+        input: {
+          "capacity": 1,
+          "operations": [
+                    {
+                              "type": "put",
+                              "key": "x",
+                              "val": 99
+                    },
+                    {
+                              "type": "put",
+                              "key": "y",
+                              "val": 88
+                    },
+                    {
+                              "type": "get",
+                              "key": "x"
+                    },
+                    {
+                              "type": "get",
+                              "key": "y"
+                    }
+          ]
+},
+        expectedOutput: [
+          null,
+          88
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-15': {
+    id: "adv-ds-prob-15",
+    title: "#695. B-tree node split concept",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "btree_split_child",
+    functionSignature: "btree_split_child(keys: list[int], max_degree: int) -> dict",
+    starterCode: `def btree_split_child(keys, max_degree):
+    """Split an overflowing B-tree node containing keys into left child, promoted median, and right child.
+    
+    mid = len(keys) // 2
+    Return {'promoted': keys[mid], 'left': keys[:mid], 'right': keys[mid+1:]}
+    """
+    # Your code here
+    pass
+`,
+    mission: "Implement the core node splitting operation that preserves B-tree balancing invariants during insertions.",
+    taskDescription: "Implement `btree_split_child(keys, max_degree)`. Given a sorted list of integer `keys` overflowing a node of order `max_degree`, find the median element at index `mid = len(keys) // 2`. Extract `keys[mid]` as the promoted key to be sent to the parent, all elements before `mid` as the left child keys, and all elements after `mid` as the right child keys. Return `{'promoted': int, 'left': list[int], 'right': list[int]}`.",
+    constraints: [
+      "keys is sorted in ascending order",
+      "len(keys) >= 3",
+      "max_degree >= 3"
+],
+    hints: {
+      small: "Find mid = len(keys) // 2.",
+      strong: "promoted = keys[mid], left = keys[:mid], right = keys[mid+1:].",
+      concept: "B-tree splitting ensures all leaves remain at identical depth, providing logarithmic disk block I/O guarantees.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Split node of 5 keys",
+        input: {
+          "keys": [
+                    10,
+                    20,
+                    30,
+                    40,
+                    50
+          ],
+          "max_degree": 4
+},
+        expectedOutput: {
+          "promoted": 30,
+          "left": [
+                    10,
+                    20
+          ],
+          "right": [
+                    40,
+                    50
+          ]
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Split node of 3 keys",
+        input: {
+          "keys": [
+                    1,
+                    2,
+                    3
+          ],
+          "max_degree": 3
+},
+        expectedOutput: {
+          "promoted": 2,
+          "left": [
+                    1
+          ],
+          "right": [
+                    3
+          ]
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Split node with 7 keys",
+        input: {
+          "keys": [
+                    5,
+                    10,
+                    15,
+                    20,
+                    25,
+                    30,
+                    35
+          ],
+          "max_degree": 6
+},
+        expectedOutput: {
+          "promoted": 20,
+          "left": [
+                    5,
+                    10,
+                    15
+          ],
+          "right": [
+                    25,
+                    30,
+                    35
+          ]
+},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-16': {
+    id: "adv-ds-prob-16",
+    title: "#696. Hash map with chaining (collision handling)",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "hash_map_chaining",
+    functionSignature: "hash_map_chaining(num_buckets: int, operations: list[dict]) -> list",
+    starterCode: `def hash_map_chaining(num_buckets, operations):
+    """Simulate a separate chaining hash table with num_buckets buckets.
+    
+    Hash index = hash(key) % num_buckets.
+    operations:
+    {'type': 'put', 'key': any, 'val': any}
+    {'type': 'get', 'key': any} -> returns val or None
+    {'type': 'delete', 'key': any} -> returns True if deleted, False otherwise
+    """
+    # Your code here
+    pass
+`,
+    mission: "Implement separate chaining collision resolution over fixed-capacity bucket arrays in hash tables.",
+    taskDescription: "Implement `hash_map_chaining(num_buckets, operations)`. Maintain a list of `num_buckets` buckets (each bucket holding a list of key-value pairs). Compute bucket index via `hash(key) % num_buckets`. Process operations in order:\n- `'put'`: insert or update the key-value pair in its bucket\n- `'get'`: return stored value or `None` if key missing\n- `'delete'`: remove key if present and return `True`, else `False`\nReturn the list of outputs from all `'get'` and `'delete'` operations.",
+    constraints: [
+      "num_buckets >= 1",
+      "1 <= len(operations) <= 1000",
+      "Keys are hashable primitives"
+],
+    hints: {
+      small: "Represent buckets as [[] for _ in range(num_buckets)].",
+      strong: "Iterate through pairs in bucket[idx] to find, update, or remove matching keys.",
+      concept: "Separate chaining stores collided items in linked bucket chains, sustaining graceful performance degradation.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Colliding keys handled in same bucket",
+        input: {
+          "num_buckets": 2,
+          "operations": [
+                    {
+                              "type": "put",
+                              "key": "k1",
+                              "val": 10
+                    },
+                    {
+                              "type": "put",
+                              "key": "k2",
+                              "val": 20
+                    },
+                    {
+                              "type": "get",
+                              "key": "k1"
+                    },
+                    {
+                              "type": "delete",
+                              "key": "k1"
+                    },
+                    {
+                              "type": "get",
+                              "key": "k1"
+                    },
+                    {
+                              "type": "get",
+                              "key": "k2"
+                    }
+          ]
+},
+        expectedOutput: [
+          10,
+          true,
+          null,
+          20
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Delete non-existent key returns False",
+        input: {
+          "num_buckets": 5,
+          "operations": [
+                    {
+                              "type": "delete",
+                              "key": "ghost"
+                    },
+                    {
+                              "type": "get",
+                              "key": "ghost"
+                    }
+          ]
+},
+        expectedOutput: [
+          false,
+          null
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Overwriting value in place",
+        input: {
+          "num_buckets": 3,
+          "operations": [
+                    {
+                              "type": "put",
+                              "key": "x",
+                              "val": "first"
+                    },
+                    {
+                              "type": "put",
+                              "key": "x",
+                              "val": "second"
+                    },
+                    {
+                              "type": "get",
+                              "key": "x"
+                    }
+          ]
+},
+        expectedOutput: [
+          "second"
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-17': {
+    id: "adv-ds-prob-17",
+    title: "#697. Cuckoo hashing displacement",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "cuckoo_hash_insert",
+    functionSignature: "cuckoo_hash_insert(table_size: int, keys: list[int]) -> dict",
+    starterCode: `def cuckoo_hash_insert(table_size, keys):
+    """Insert integer keys into two tables of size table_size using Cuckoo hashing:
+    h1(k) = k % table_size
+    h2(k) = (k // table_size) % table_size
+    Max displacements = 2 * table_size.
+    Return {'table1': list, 'table2': list, 'unplaced': list}
+    """
+    # Your code here
+    pass
+`,
+    mission: "Simulate Cuckoo Hashing ping-pong displacements across dual hash tables for constant worst-case lookup time.",
+    taskDescription: "Implement `cuckoo_hash_insert(table_size, keys)`. Maintain two tables `table1` and `table2` of size `table_size` initialized to `None`. For each key, attempt insertion into `table1[k % table_size]`. If occupied, displace the existing occupant to `table2[(k // table_size) % table_size]`, continuing up to `2 * table_size` displacement steps. If a key fails to find an empty slot within the limit, append it to `unplaced`. Return `{'table1': table1, 'table2': table2, 'unplaced': unplaced}`.",
+    constraints: [
+      "table_size >= 1",
+      "0 <= len(keys) <= 500",
+      "Keys are non-negative integers"
+],
+    hints: {
+      small: "Swap curr with table1[pos1] when displaced, then try inserting into table2.",
+      strong: "Set loop limit to 2 * table_size; if loop finishes without empty slot, add curr to unplaced.",
+      concept: "Cuckoo hashing guarantees O(1) worst-case lookup by examining at most two locations in constant memory.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Keys inserted without cycle",
+        input: {
+          "table_size": 4,
+          "keys": [
+                    1,
+                    5,
+                    2
+          ]
+},
+        expectedOutput: {
+          "table1": [
+                    null,
+                    5,
+                    2,
+                    null
+          ],
+          "table2": [
+                    1,
+                    null,
+                    null,
+                    null
+          ],
+          "unplaced": []
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Displacement chain resolves cleanly",
+        input: {
+          "table_size": 3,
+          "keys": [
+                    0,
+                    3
+          ]
+},
+        expectedOutput: {
+          "table1": [
+                    3,
+                    null,
+                    null
+          ],
+          "table2": [
+                    0,
+                    null,
+                    null
+          ],
+          "unplaced": []
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Overcrowding leads to unplaced key",
+        input: {
+          "table_size": 2,
+          "keys": [
+                    0,
+                    2,
+                    4,
+                    6
+          ]
+},
+        expectedOutput: {
+          "table1": [
+                    4,
+                    null
+          ],
+          "table2": [
+                    0,
+                    2
+          ],
+          "unplaced": [
+                    6
+          ]
+},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-18': {
+    id: "adv-ds-prob-18",
+    title: "#698. Consistent hashing ring",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "consistent_hash_ring",
+    functionSignature: "consistent_hash_ring(nodes: list[str], keys: list[str]) -> dict[str, str]",
+    starterCode: `def consistent_hash_ring(nodes, keys):
+    """Assign keys to nodes on a 360-degree hash ring using:
+    hash_pos(s) = sum(ord(c) * (31 ** i) for i, c in enumerate(s)) % 360
+    Walk clockwise to the first node with pos >= key_pos (wrap around to ring[0]).
+    """
+    # Your code here
+    pass
+`,
+    mission: "Implement consistent hashing over a 360-degree virtual ring to partition keys with minimal resharding.",
+    taskDescription: "Implement `consistent_hash_ring(nodes, keys)`. Map both `nodes` and `keys` onto a circular ring of `360` degrees using `hash_pos(s) = sum(ord(c) * (31 ** i) for i, c in enumerate(s)) % 360`. Sort node positions in ascending order. For each key, find the first node located clockwise (`node_pos >= key_pos`). If no node has a position greater than or equal to the key, wrap around to the first node on the ring. Return `{key: assigned_node}`.",
+    constraints: [
+      "1 <= len(nodes) <= 100",
+      "0 <= len(keys) <= 1000",
+      "Ring positions in range [0, 359]"
+],
+    hints: {
+      small: "Sort nodes by their hash_pos on the ring.",
+      strong: "Find the first node with pos >= k_pos; if none found, wrap around to sorted_nodes[0].",
+      concept: "Consistent hashing ensures that adding or removing an AI worker node only reshuffles K/N keys rather than all keys.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Keys assigned to 3 server nodes",
+        input: {
+          "nodes": [
+                    "node_alpha",
+                    "node_beta",
+                    "node_gamma"
+          ],
+          "keys": [
+                    "user_1",
+                    "user_2",
+                    "user_3"
+          ]
+},
+        expectedOutput: {
+          "user_1": "node_gamma",
+          "user_2": "node_gamma",
+          "user_3": "node_alpha"
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Single node handles all keys",
+        input: {
+          "nodes": [
+                    "lonely_node"
+          ],
+          "keys": [
+                    "k1",
+                    "k2",
+                    "k3"
+          ]
+},
+        expectedOutput: {
+          "k1": "lonely_node",
+          "k2": "lonely_node",
+          "k3": "lonely_node"
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Key wrapping around to ring start",
+        input: {
+          "nodes": [
+                    "srvA",
+                    "srvB"
+          ],
+          "keys": [
+                    "wrap_key"
+          ]
+},
+        expectedOutput: {
+          "wrap_key": "srvA"
+},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-19': {
+    id: "adv-ds-prob-19",
+    title: "#699. Van Emde Boas tree successor concept",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "veb_successor",
+    functionSignature: "veb_successor(elements: list[int], u: int, x: int) -> int | None",
+    starterCode: `def veb_successor(elements, u, x):
+    """Find the smallest element in elements (subset of universe [0, u-1]) strictly greater than x.
+    
+    Return None if no such element exists.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Evaluate successor queries over bounded integer universes modeled after Van Emde Boas tree semantics.",
+    taskDescription: "Implement `veb_successor(elements, u, x)`. Given a universe size `u` where valid elements lie in `[0, u - 1]`, find the successor of `x`: the smallest integer `e` in `elements` such that `e > x`. Return the successor integer, or `None` if no elements in `elements` are strictly greater than `x`.",
+    constraints: [
+      "u >= 2",
+      "0 <= x < u",
+      "Elements are distinct integers in [0, u - 1]"
+],
+    hints: {
+      small: "Filter elements for values strictly greater than x and within universe range.",
+      strong: "Return min(filtered) if filtered else None.",
+      concept: "vEB trees achieve double logarithmic O(log log U) priority queue and successor operations by clustering universe chunks.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Successor found among elements",
+        input: {
+          "elements": [
+                    2,
+                    3,
+                    7,
+                    14
+          ],
+          "u": 16,
+          "x": 3
+},
+        expectedOutput: 7,
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "No successor greater than x returns None",
+        input: {
+          "elements": [
+                    1,
+                    5,
+                    8
+          ],
+          "u": 16,
+          "x": 8
+},
+        expectedOutput: null,
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "x smaller than all elements",
+        input: {
+          "elements": [
+                    10,
+                    20,
+                    30
+          ],
+          "u": 64,
+          "x": 0
+},
+        expectedOutput: 10,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-20': {
+    id: "adv-ds-prob-20",
+    title: "#700. Radix sort (integer keys)",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "radix_sort_integers",
+    functionSignature: "radix_sort_integers(nums: list[int]) -> list[int]",
+    starterCode: `def radix_sort_integers(nums):
+    """Sort non-negative integers using Least Significant Digit (LSD) Radix Sort in O(d * (n + k)) time.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Sort non-negative integers in linear time using Least Significant Digit (LSD) Radix Sort.",
+    taskDescription: "Implement `radix_sort_integers(nums)`. Sort a list of non-negative integers using Least Significant Digit (LSD) Radix Sort (base 10). Starting from the ones place (`exp = 1`), place numbers into 10 buckets (`digit = (num // exp) % 10`), flatten buckets to maintain stable order, and advance to the next higher digit power until all digits of `max(nums)` are processed. Return the sorted list.",
+    constraints: [
+      "All integers in nums >= 0",
+      "0 <= len(nums) <= 10000",
+      "LSD stable sorting logic"
+],
+    hints: {
+      small: "Use 10 buckets (indices 0..9) per digit pass.",
+      strong: "Multiply exp by 10 in each pass while max(nums) // exp > 0.",
+      concept: "Radix sort circumvents comparison-based O(N log N) lower bounds by partitioning fixed-width integer bitstrings.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Sort numbers with mixed digit lengths",
+        input: {
+          "nums": [
+                    170,
+                    45,
+                    75,
+                    90,
+                    802,
+                    24,
+                    2,
+                    66
+          ]
+},
+        expectedOutput: [
+          2,
+          24,
+          45,
+          66,
+          75,
+          90,
+          170,
+          802
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Already sorted list",
+        input: {
+          "nums": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+          ]
+},
+        expectedOutput: [
+          1,
+          2,
+          3,
+          4,
+          5
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Single element and duplicates",
+        input: {
+          "nums": [
+                    42,
+                    10,
+                    42,
+                    0
+          ]
+},
+        expectedOutput: [
+          0,
+          10,
+          42,
+          42
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-21': {
+    id: "adv-ds-prob-21",
+    title: "#701. Count-Min Sketch query",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "count_min_sketch",
+    functionSignature: "count_min_sketch(width: int, depth: int, stream: list[str], queries: list[str]) -> list[int]",
+    starterCode: `def count_min_sketch(width, depth, stream, queries):
+    """Estimate point frequencies in a streaming dataset using Count-Min Sketch.
+    
+    Hash function for row r:
+    h = sum(ord(c) * (37 ** j) for j, c in enumerate(s))
+    col = (h * (r + 1) + 101 * (r + 1)) % width
+    Point query returns min count across all depth rows.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Estimate streaming frequency queries with sublinear space using a 2D Count-Min Sketch array.",
+    taskDescription: "Implement `count_min_sketch(width, depth, stream, queries)`. Maintain a 2D table of size `depth x width` initialized to 0. For each row `r` (from `0` to `depth - 1`), compute column `col = (h * (r + 1) + 101 * (r + 1)) % width` where `h = sum(ord(c) * (37 ** j) for j, c in enumerate(s))`. Update table counts for each item in `stream`. For each query in `queries`, return the minimum estimate across all rows: `min(table[r][hash_i(q, r)] for r in range(depth))`. Return the list of estimates.",
+    constraints: [
+      "width >= 1, depth >= 1",
+      "Point frequency estimates never underestimate true frequency",
+      "Deterministic polynomial hashing per row"
+],
+    hints: {
+      small: "Increment table[r][col] for every row r during stream ingestion.",
+      strong: "Frequency query takes min() across all depth rows for the query item.",
+      concept: "Count-Min Sketch provides rigorous (epsilon, delta) probabilistic bounds on point and heavy hitter frequencies.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Point queries reflect token frequencies",
+        input: {
+          "width": 50,
+          "depth": 3,
+          "stream": [
+                    "apple",
+                    "banana",
+                    "apple",
+                    "apple",
+                    "cherry",
+                    "banana"
+          ],
+          "queries": [
+                    "apple",
+                    "banana",
+                    "cherry",
+                    "missing"
+          ]
+},
+        expectedOutput: [
+          3,
+          2,
+          1,
+          0
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Empty stream produces 0 counts",
+        input: {
+          "width": 20,
+          "depth": 2,
+          "stream": [],
+          "queries": [
+                    "test"
+          ]
+},
+        expectedOutput: [
+          0
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Single item repeated 5 times",
+        input: {
+          "width": 10,
+          "depth": 2,
+          "stream": [
+                    "x",
+                    "x",
+                    "x",
+                    "x",
+                    "x"
+          ],
+          "queries": [
+                    "x"
+          ]
+},
+        expectedOutput: [
+          5
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-22': {
+    id: "adv-ds-prob-22",
+    title: "#702. HyperLogLog cardinality estimate",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "hyperloglog_cardinality",
+    functionSignature: "hyperloglog_cardinality(items: list[str], num_buckets: int) -> int",
+    starterCode: `def hyperloglog_cardinality(items, num_buckets):
+    """Estimate unique item cardinality using HyperLogLog harmonic register averaging.
+    
+    Return rounded integer estimate.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Estimate distinct element cardinality across large data streams using HyperLogLog register averages.",
+    taskDescription: "Implement `hyperloglog_cardinality(items, num_buckets)`. Partition items across `m = num_buckets` registers. Compute a 32-bit hash using FNV-1a: initial `2166136261`, `h = ((h ^ ord(ch)) * 16777619) & 0xFFFFFFFF`. Assign register `bucket = h % m` and record maximum leading zero count + 1 of `w = h // m`. Calculate raw estimate `E = alpha_m * (m ** 2) / sum(2 ** (-reg))` where `alpha_m = 0.7213 / (1.0 + 1.079 / m)` (for `m >= 64`, else `0.673` for 16, `0.697` for 32). Return `int(round(E))`.",
+    constraints: [
+      "num_buckets in [16, 32, 64, 128]",
+      "0 <= len(items) <= 50000",
+      "Returns integer estimate"
+],
+    hints: {
+      small: "Use bitwise shifts to count leading zeros in the 32-bit quotient w.",
+      strong: "Raw estimate uses harmonic mean: alpha_m * (m**2) / sum(2 ** (-r) for r in registers).",
+      concept: "HyperLogLog estimates multi-billion cardinalities within ~1% error using less than 1.5 KB of memory.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Stream of 100 distinct items",
+        input: {
+          "items": [
+                    "user_0",
+                    "user_1",
+                    "user_2",
+                    "user_3",
+                    "user_4",
+                    "user_5",
+                    "user_6",
+                    "user_7",
+                    "user_8",
+                    "user_9",
+                    "user_10",
+                    "user_11",
+                    "user_12",
+                    "user_13",
+                    "user_14",
+                    "user_15",
+                    "user_16",
+                    "user_17",
+                    "user_18",
+                    "user_19",
+                    "user_20",
+                    "user_21",
+                    "user_22",
+                    "user_23",
+                    "user_24",
+                    "user_25",
+                    "user_26",
+                    "user_27",
+                    "user_28",
+                    "user_29",
+                    "user_30",
+                    "user_31",
+                    "user_32",
+                    "user_33",
+                    "user_34",
+                    "user_35",
+                    "user_36",
+                    "user_37",
+                    "user_38",
+                    "user_39",
+                    "user_40",
+                    "user_41",
+                    "user_42",
+                    "user_43",
+                    "user_44",
+                    "user_45",
+                    "user_46",
+                    "user_47",
+                    "user_48",
+                    "user_49",
+                    "user_50",
+                    "user_51",
+                    "user_52",
+                    "user_53",
+                    "user_54",
+                    "user_55",
+                    "user_56",
+                    "user_57",
+                    "user_58",
+                    "user_59",
+                    "user_60",
+                    "user_61",
+                    "user_62",
+                    "user_63",
+                    "user_64",
+                    "user_65",
+                    "user_66",
+                    "user_67",
+                    "user_68",
+                    "user_69",
+                    "user_70",
+                    "user_71",
+                    "user_72",
+                    "user_73",
+                    "user_74",
+                    "user_75",
+                    "user_76",
+                    "user_77",
+                    "user_78",
+                    "user_79",
+                    "user_80",
+                    "user_81",
+                    "user_82",
+                    "user_83",
+                    "user_84",
+                    "user_85",
+                    "user_86",
+                    "user_87",
+                    "user_88",
+                    "user_89",
+                    "user_90",
+                    "user_91",
+                    "user_92",
+                    "user_93",
+                    "user_94",
+                    "user_95",
+                    "user_96",
+                    "user_97",
+                    "user_98",
+                    "user_99"
+          ],
+          "num_buckets": 64
+},
+        expectedOutput: 467,
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Stream with repeated duplicate items",
+        input: {
+          "items": [
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_a",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b",
+                    "token_b"
+          ],
+          "num_buckets": 32
+},
+        expectedOutput: 24,
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "16 buckets on single item",
+        input: {
+          "items": [
+                    "only_one"
+          ],
+          "num_buckets": 16
+},
+        expectedOutput: 11,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-23': {
+    id: "adv-ds-prob-23",
+    title: "#703. Reservoir sampling",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "reservoir_sample",
+    functionSignature: "reservoir_sample(stream: list[int], k: int, seed: int) -> list[int]",
+    starterCode: `def reservoir_sample(stream, k, seed):
+    """Select k uniform random samples from an unknown-length stream using Algorithm R.
+    
+    Use random.Random(seed).randint(0, i) to decide replacements for i in range(k, len(stream)).
+    """
+    # Your code here
+    pass
+`,
+    mission: "Sample a uniform random subset of size k from an unbounded stream of tokens using Reservoir Sampling.",
+    taskDescription: "Implement `reservoir_sample(stream, k, seed)`. If `len(stream) <= k`, return a copy of `stream`. Otherwise, initialize the reservoir with `stream[:k]`. Instantiate a pseudo-random generator `rng = random.Random(seed)`. For each element at index `i` from `k` to `len(stream) - 1`, pick a random integer `j = rng.randint(0, i)`. If `j < k`, replace `reservoir[j] = stream[i]`. Return the final reservoir list.",
+    constraints: [
+      "k >= 1",
+      "Uses random.Random(seed) for deterministic testability",
+      "Single-pass O(N) stream iteration"
+],
+    hints: {
+      small: "Initialize rng = random.Random(seed).",
+      strong: "For index i from k to len(stream)-1: j = rng.randint(0, i); if j < k: reservoir[j] = stream[i].",
+      concept: "Algorithm R guarantees every stream element has exactly equal probability k/N of selection.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Sample 3 items from stream of 10",
+        input: {
+          "stream": [
+                    10,
+                    20,
+                    30,
+                    40,
+                    50,
+                    60,
+                    70,
+                    80,
+                    90,
+                    100
+          ],
+          "k": 3,
+          "seed": 42
+},
+        expectedOutput: [
+          50,
+          20,
+          100
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Stream smaller than k returns full stream copy",
+        input: {
+          "stream": [
+                    1,
+                    2
+          ],
+          "k": 5,
+          "seed": 123
+},
+        expectedOutput: [
+          1,
+          2
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "k = 1 single item reservoir",
+        input: {
+          "stream": [
+                    5,
+                    4,
+                    3,
+                    2,
+                    1
+          ],
+          "k": 1,
+          "seed": 99
+},
+        expectedOutput: [
+          5
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-24': {
+    id: "adv-ds-prob-24",
+    title: "#704. Weighted random sampling",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "weighted_sample_cumulative",
+    functionSignature: "weighted_sample_cumulative(weights: list[float], random_value: float) -> int",
+    starterCode: `def weighted_sample_cumulative(weights, random_value):
+    """Sample an item index given non-negative weights and a deterministic probe random_value in [0, 1).
+    
+    target = random_value * sum(weights)
+    Return the first index i where cumulative_weight > target.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Sample token indices from discrete unnormalized probability distributions using cumulative distribution inversion.",
+    taskDescription: "Implement `weighted_sample_cumulative(weights, random_value)`. Given non-negative weights and a probe `random_value` in `[0.0, 1.0)`, compute `target = random_value * sum(weights)`. Iterate through `weights`, accumulating `curr += weight`. Return the first index `i` where `curr > target`. If edge cases leave `curr <= target` due to floating point precision, return `len(weights) - 1`.",
+    constraints: [
+      "0.0 <= random_value < 1.0",
+      "len(weights) >= 1, all weights >= 0",
+      "Returns integer index in [0, len(weights) - 1]"
+],
+    hints: {
+      small: "Compute target = random_value * sum(weights).",
+      strong: "Accumulate running sum; as soon as running sum > target, return the index.",
+      concept: "Inverse transform sampling maps uniform random variables onto non-uniform discrete token probability vectors.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Pick second item based on cumulative weight",
+        input: {
+          "weights": [
+                    10.0,
+                    30.0,
+                    60.0
+          ],
+          "random_value": 0.25
+},
+        expectedOutput: 1,
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Pick first item when random value is close to 0",
+        input: {
+          "weights": [
+                    5.0,
+                    5.0
+          ],
+          "random_value": 0.01
+},
+        expectedOutput: 0,
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Pick last item when random value is high",
+        input: {
+          "weights": [
+                    1.0,
+                    2.0,
+                    7.0
+          ],
+          "random_value": 0.95
+},
+        expectedOutput: 2,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-25': {
+    id: "adv-ds-prob-25",
+    title: "#705. Order statistics tree rank query",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "order_statistics_rank",
+    functionSignature: "order_statistics_rank(arr: list[int], x: int) -> int",
+    starterCode: `def order_statistics_rank(arr, x):
+    """Compute the 1-based rank of element x: total count of elements in arr <= x.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Compute order statistic ranks over dynamic multiset collections.",
+    taskDescription: "Implement `order_statistics_rank(arr, x)`. Calculate the 1-based rank of integer `x` relative to `arr`: the number of elements in `arr` that are less than or equal to `x`. Return the integer count.",
+    constraints: [
+      "0 <= len(arr) <= 50000",
+      "Integer values",
+      "Rank counts elements <= x"
+],
+    hints: {
+      small: "Count elements <= x with a generator expression.",
+      strong: "return sum(1 for v in arr if v <= x).",
+      concept: "Order statistics trees augment self-balancing trees with subtree size annotations to support rank queries in O(log N).",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Rank of element present in array",
+        input: {
+          "arr": [
+                    10,
+                    20,
+                    30,
+                    40,
+                    50
+          ],
+          "x": 30
+},
+        expectedOutput: 3,
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Rank of element smaller than all elements",
+        input: {
+          "arr": [
+                    5,
+                    10,
+                    15
+          ],
+          "x": 2
+},
+        expectedOutput: 0,
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Array with duplicate values",
+        input: {
+          "arr": [
+                    4,
+                    4,
+                    4,
+                    8,
+                    8
+          ],
+          "x": 4
+},
+        expectedOutput: 3,
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-26': {
+    id: "adv-ds-prob-26",
+    title: "#706. Interval tree overlap detection",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "interval_tree_find_overlaps",
+    functionSignature: "interval_tree_find_overlaps(intervals: list[list[int]], query_interval: list[int]) -> list[list[int]]",
+    starterCode: `def interval_tree_find_overlaps(intervals, query_interval):
+    """Find all closed intervals [start, end] in intervals that overlap with query_interval [qs, qe].
+    
+    Overlap condition: max(start, qs) <= min(end, qe).
+    Return matches sorted by start time, then end time.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Detect overlapping temporal intervals using Interval Tree intersection testing.",
+    taskDescription: "Implement `interval_tree_find_overlaps(intervals, query_interval)`. Given a list of closed intervals `[start, end]` and a `query_interval` `[qs, qe]`, determine which intervals intersect (`max(start, qs) <= min(end, qe)`). Return all overlapping intervals sorted by `start` ascending, tie-breaking by `end` ascending.",
+    constraints: [
+      "start <= end, qs <= qe",
+      "Closed intervals (endpoints touching counts as overlap)",
+      "Returns sorted list of intervals"
+],
+    hints: {
+      small: "Two closed intervals [a, b] and [c, d] overlap if and only if max(a, c) <= min(b, d).",
+      strong: "Filter overlapping intervals and sort them with key=lambda x: (x[0], x[1]).",
+      concept: "Interval trees index time windows and bounding boxes to identify collisions in O(log N + k) output-sensitive time.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "2 out of 3 intervals overlap query",
+        input: {
+          "intervals": [
+                    [
+                              1,
+                              5
+                    ],
+                    [
+                              10,
+                              15
+                    ],
+                    [
+                              4,
+                              8
+                    ]
+          ],
+          "query_interval": [
+                    3,
+                    6
+          ]
+},
+        expectedOutput: [
+          [
+                    1,
+                    5
+          ],
+          [
+                    4,
+                    8
+          ]
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "No intervals overlap query",
+        input: {
+          "intervals": [
+                    [
+                              1,
+                              2
+                    ],
+                    [
+                              7,
+                              9
+                    ]
+          ],
+          "query_interval": [
+                    4,
+                    5
+          ]
+},
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Touching boundaries count as overlap",
+        input: {
+          "intervals": [
+                    [
+                              5,
+                              10
+                    ]
+          ],
+          "query_interval": [
+                    10,
+                    12
+          ]
+},
+        expectedOutput: [
+          [
+                    5,
+                    10
+          ]
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-27': {
+    id: "adv-ds-prob-27",
+    title: "#707. KD-tree nearest neighbor search (2D)",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "kd_tree_nearest_neighbor",
+    functionSignature: "kd_tree_nearest_neighbor(points: list[list[float]], query: list[float]) -> list[float]",
+    starterCode: `def kd_tree_nearest_neighbor(points, query):
+    """Find the 2D point in points nearest to query by Euclidean distance.
+    
+    Tie-break by point[0] ascending, then point[1] ascending.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Locate nearest neighbor coordinates in 2D spatial vector spaces using KD-tree metric search.",
+    taskDescription: "Implement `kd_tree_nearest_neighbor(points, query)`. Given a list of 2D points `[x, y]` and a query point `query` `[qx, qy]`, find the point with the minimum Euclidean distance `sqrt((x - qx)**2 + (y - qy)**2)`. Tie-break equal distances by `point[0]` ascending, then `point[1]` ascending. Return the nearest point coordinates.",
+    constraints: [
+      "1 <= len(points) <= 10000",
+      "Points and query have exactly 2 dimensions",
+      "Returns point [x, y]"
+],
+    hints: {
+      small: "Square of Euclidean distance: (p[0] - q[0])**2 + (p[1] - q[1])**2 avoids computing square roots.",
+      strong: "Use min(points, key=lambda p: (dist_sq(p, query), p[0], p[1])).",
+      concept: "k-d trees recursively bisect multi-dimensional spaces along alternating axes for rapid spatial range and nearest neighbor search.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Nearest neighbor among 4 quadrant points",
+        input: {
+          "points": [
+                    [
+                              2.0,
+                              3.0
+                    ],
+                    [
+                              5.0,
+                              4.0
+                    ],
+                    [
+                              9.0,
+                              6.0
+                    ],
+                    [
+                              4.0,
+                              7.0
+                    ]
+          ],
+          "query": [
+                    9.0,
+                    2.0
+          ]
+},
+        expectedOutput: [
+          9.0,
+          6.0
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Exact coordinate match",
+        input: {
+          "points": [
+                    [
+                              1.0,
+                              1.0
+                    ],
+                    [
+                              2.0,
+                              2.0
+                    ]
+          ],
+          "query": [
+                    2.0,
+                    2.0
+          ]
+},
+        expectedOutput: [
+          2.0,
+          2.0
+],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Equidistant points tie-break on coordinates",
+        input: {
+          "points": [
+                    [
+                              0.0,
+                              1.0
+                    ],
+                    [
+                              1.0,
+                              0.0
+                    ]
+          ],
+          "query": [
+                    0.0,
+                    0.0
+          ]
+},
+        expectedOutput: [
+          0.0,
+          1.0
+],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-28': {
+    id: "adv-ds-prob-28",
+    title: "#708. Ball tree node assignment",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "ball_tree_center_radius",
+    functionSignature: "ball_tree_center_radius(points: list[list[float]]) -> dict",
+    starterCode: `def ball_tree_center_radius(points):
+    """Compute centroid and bounding radius for a Ball Tree hyper-sphere node.
+    
+    center[d] = mean of points[:, d] rounded to 4 decimals
+    radius = max Euclidean distance from center to any point rounded to 4 decimals
+    Return {'center': list[float], 'radius': float}
+    """
+    # Your code here
+    pass
+`,
+    mission: "Compute bounding hyper-sphere centroids and radii for Ball Tree metric space partitioning.",
+    taskDescription: "Implement `ball_tree_center_radius(points)`. Given a set of points in D dimensions, calculate the centroid `center` where each coordinate is the arithmetic mean across all points, rounded to 4 decimal places. Then calculate the bounding radius `radius`: the maximum Euclidean distance from `center` to any point in the set, rounded to 4 decimal places. Return `{'center': list[float], 'radius': float}`.",
+    constraints: [
+      "1 <= len(points) <= 1000",
+      "1 <= D <= 64",
+      "All points have identical dimensionality"
+],
+    hints: {
+      small: "Compute the mean along each dimension to get the center point.",
+      strong: "Compute Euclidean distance to all points and take max(), rounding to 4 decimals.",
+      concept: "Ball trees partition metric spaces using hyper-spheres, which perform better than k-d trees in high-dimensional vector spaces.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "2D rectangle points centroid and radius",
+        input: {
+          "points": [
+                    [
+                              0.0,
+                              0.0
+                    ],
+                    [
+                              4.0,
+                              0.0
+                    ],
+                    [
+                              0.0,
+                              4.0
+                    ],
+                    [
+                              4.0,
+                              4.0
+                    ]
+          ]
+},
+        expectedOutput: {
+          "center": [
+                    2.0,
+                    2.0
+          ],
+          "radius": 2.8284
+},
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Single point has radius 0",
+        input: {
+          "points": [
+                    [
+                              3.5,
+                              -2.1
+                    ]
+          ]
+},
+        expectedOutput: {
+          "center": [
+                    3.5,
+                    -2.1
+          ],
+          "radius": 0.0
+},
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "3D points hyper-sphere",
+        input: {
+          "points": [
+                    [
+                              1.0,
+                              0.0,
+                              0.0
+                    ],
+                    [
+                              0.0,
+                              1.0,
+                              0.0
+                    ],
+                    [
+                              0.0,
+                              0.0,
+                              1.0
+                    ]
+          ]
+},
+        expectedOutput: {
+          "center": [
+                    0.3333,
+                    0.3333,
+                    0.3333
+          ],
+          "radius": 0.8165
+},
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-29': {
+    id: "adv-ds-prob-29",
+    title: "#709. HNSW greedy search layer traversal",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "hnsw_layer_greedy_search",
+    functionSignature: "hnsw_layer_greedy_search(graph: dict[str, list[str]], node_vectors: dict[str, list[float]], entry_point: str, query: list[float]) -> str",
+    starterCode: `def hnsw_layer_greedy_search(graph, node_vectors, entry_point, query):
+    """Traverse a single proximity graph layer in an HNSW index using greedy best-first search.
+    
+    At each step, move to neighbor with strictly smaller Euclidean distance to query.
+    Stop when no neighbor is closer. Tie-break equal distances by neighbor ID ascending.
+    Return the local minimum node ID.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Execute greedy best-first navigation across proximity graph layers in an HNSW vector index.",
+    taskDescription: "Implement `hnsw_layer_greedy_search(graph, node_vectors, entry_point, query)`. Starting at `entry_point`, examine all adjacent neighbors in `graph[curr]`. If any neighbor has a strictly smaller squared Euclidean distance to `query` than `curr`, transition to the closest neighbor (tie-breaking neighbor IDs alphabetically). Repeat until reaching a local minimum where no neighbor is closer to `query`. Return the stopping node ID.",
+    constraints: [
+      "All node vectors have identical dimensionality",
+      "Graph has no isolated entry_point",
+      "Deterministic local minimum convergence"
+],
+    hints: {
+      small: "Evaluate squared Euclidean distance to avoid math.sqrt.",
+      strong: "Only step to a neighbor if its distance is strictly less than current best.",
+      concept: "Hierarchical Navigable Small World (HNSW) graphs achieve logarithmic nearest neighbor search in billion-scale vector databases.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Step through 2 hops to reach nearest neighbor",
+        input: {
+          "graph": {
+                    "A": [
+                              "B",
+                              "C"
+                    ],
+                    "B": [
+                              "A",
+                              "D"
+                    ],
+                    "C": [
+                              "A"
+                    ],
+                    "D": [
+                              "B"
+                    ]
+          },
+          "node_vectors": {
+                    "A": [
+                              0.0,
+                              0.0
+                    ],
+                    "B": [
+                              2.0,
+                              0.0
+                    ],
+                    "C": [
+                              -1.0,
+                              0.0
+                    ],
+                    "D": [
+                              5.0,
+                              0.0
+                    ]
+          },
+          "entry_point": "A",
+          "query": [
+                    4.8,
+                    0.0
+          ]
+},
+        expectedOutput: "D",
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "Entry point is already local minimum",
+        input: {
+          "graph": {
+                    "X": [
+                              "Y"
+                    ],
+                    "Y": [
+                              "X"
+                    ]
+          },
+          "node_vectors": {
+                    "X": [
+                              1.0,
+                              1.0
+                    ],
+                    "Y": [
+                              10.0,
+                              10.0
+                    ]
+          },
+          "entry_point": "X",
+          "query": [
+                    1.1,
+                    1.1
+          ]
+},
+        expectedOutput: "X",
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "2D plane search",
+        input: {
+          "graph": {
+                    "p1": [
+                              "p2"
+                    ],
+                    "p2": [
+                              "p1",
+                              "p3"
+                    ],
+                    "p3": [
+                              "p2"
+                    ]
+          },
+          "node_vectors": {
+                    "p1": [
+                              0.0,
+                              1.0
+                    ],
+                    "p2": [
+                              0.0,
+                              2.0
+                    ],
+                    "p3": [
+                              0.0,
+                              3.0
+                    ]
+          },
+          "entry_point": "p1",
+          "query": [
+                    0.0,
+                    2.9
+          ]
+},
+        expectedOutput: "p3",
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+
+  'adv-ds-prob-30': {
+    id: "adv-ds-prob-30",
+    title: "#706. Inverted index term lookup",
+    difficulty: "medium",
+    topic: "Advanced Data Structures for AI",
+    estimatedTime: "15–20 min",
+    functionName: "inverted_index_boolean_and",
+    functionSignature: "inverted_index_boolean_and(documents: dict[str, str], query_terms: list[str]) -> list[str]",
+    starterCode: `def inverted_index_boolean_and(documents, query_terms):
+    """Build an inverted index mapping lowercased tokens to doc IDs, then execute a Boolean AND query.
+    
+    Return sorted list of doc IDs that contain ALL query_terms.
+    """
+    # Your code here
+    pass
+`,
+    mission: "Build an inverted document index to execute conjunctive multi-term Boolean retrieval queries.",
+    taskDescription: "Implement `inverted_index_boolean_and(documents, query_terms)`. `documents` maps `doc_id -> text`. Build an inverted index mapping lowercased tokens (`re.findall(r'\\w+', text.lower())`) to sets of document IDs. Given `query_terms`, find all document IDs that contain every term in `query_terms` (Boolean AND). Return the list of matching document IDs sorted alphabetically.",
+    constraints: [
+      "Words extracted via re.findall(r'\\w+', text.lower())",
+      "Conjunctive AND semantics: doc must contain all query terms",
+      "Returns sorted list of doc IDs"
+],
+    hints: {
+      small: "Build a dict mapping term -> set of doc_ids.",
+      strong: "Compute the intersection of posting lists for each query term using set.intersection.",
+      concept: "Inverted indices form the foundational posting list architecture for web search engines and document retrievers.",
+    },
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    testCases: [
+      {
+        id: "tc1",
+        label: "Two documents contain both query terms",
+        input: {
+          "documents": {
+                    "doc1": "Machine learning with neural networks",
+                    "doc2": "Deep learning and neural networks",
+                    "doc3": "Classical machine learning algorithms"
+          },
+          "query_terms": [
+                    "learning",
+                    "neural"
+          ]
+},
+        expectedOutput: [
+          "doc1",
+          "doc2"
+],
+        hidden: false
+      },
+      {
+        id: "tc2",
+        label: "No documents match all terms",
+        input: {
+          "documents": {
+                    "a": "Python programming",
+                    "b": "Rust systems"
+          },
+          "query_terms": [
+                    "Python",
+                    "Rust"
+          ]
+},
+        expectedOutput: [],
+        hidden: false
+      },
+      {
+        id: "tc3",
+        label: "Empty query terms returns empty list",
+        input: {
+          "documents": {
+                    "d1": "Content here"
+          },
+          "query_terms": []
+},
+        expectedOutput: [],
+        hidden: true
+      }
+    ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';
