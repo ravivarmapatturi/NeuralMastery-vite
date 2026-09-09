@@ -126615,6 +126615,3725 @@ def compute_bleu_1(reference, candidate):
       ],
     runtime: { language: 'python', capabilities: ['python'] },
   },
+  "llm-internals-prob-41": {
+    id: "llm-internals-prob-41",
+    title: "Perplexity From Cross-Entropy Loss",
+    difficulty: "easy",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "perplexity",
+    functionSignature: "perplexity(cross_entropy_loss: float) -> float",
+    starterCode: `import math
+
+def perplexity(cross_entropy_loss):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement perplexity computation, the real, standard way a language model's cross-entropy loss is reported as an interpretable metric.",
+    taskDescription: "Implement `perplexity(cross_entropy_loss)`: return `exp(cross_entropy_loss)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "cross_entropy_loss >= 0"
+      ],
+    hints: {
+  "small": "Perplexity is literally e raised to the cross-entropy loss.",
+        "strong": "return math.exp(cross_entropy_loss).",
+        "concept": "Perplexity has a real, intuitive interpretation as the model's effective 'branching factor' -- a perplexity of 20 means the model is, on average, as uncertain as if it were choosing uniformly among 20 equally-likely next tokens, which is why it's reported instead of the less-interpretable raw log-loss number."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "zero loss perfect prediction",
+          "input": {
+            "cross_entropy_loss": 0
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "moderate loss",
+          "input": {
+            "cross_entropy_loss": 2
+          },
+          "expectedOutput": 7.38905609893065,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "low loss well-trained model",
+          "input": {
+            "cross_entropy_loss": 0.5
+          },
+          "expectedOutput": 1.6487212707001282,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "high loss poorly-trained model",
+          "input": {
+            "cross_entropy_loss": 5
+          },
+          "expectedOutput": 148.4131591025766,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-42": {
+    id: "llm-internals-prob-42",
+    title: "Byte-Pair Encoding: One Merge Step",
+    difficulty: "hard",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "bpe_merge_step",
+    functionSignature: "bpe_merge_step(tokens: list[str], pair_to_merge: tuple) -> list[str]",
+    starterCode: `def bpe_merge_step(tokens, pair_to_merge):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement one real Byte-Pair Encoding merge step, the core iterative operation that builds a BPE tokenizer's vocabulary from raw characters upward.",
+    taskDescription: "Implement `bpe_merge_step(tokens, pair_to_merge)`. `pair_to_merge` is `(a, b)`. Scan `tokens` left to right; whenever two CONSECUTIVE tokens exactly equal `(a, b)`, replace them with the single merged token `a+b` (don't re-scan the merged result in the same pass -- move past it). Return the resulting token list.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "tokens is a list of strings"
+      ],
+    hints: {
+  "small": "Walk left to right, merging the target pair wherever it occurs consecutively, skipping past each merge.",
+        "strong": "result = []; i = 0; while i < len(tokens): if i < len(tokens)-1 and (tokens[i], tokens[i+1]) == pair_to_merge: result.append(tokens[i]+tokens[i+1]); i += 2; else: result.append(tokens[i]); i += 1. Return result.",
+        "concept": "This exact greedy, non-overlapping left-to-right merge (not merging every possible occurrence simultaneously in some other order) is the real BPE algorithm -- repeating this step with the most-frequent pair chosen each time, starting from individual characters, is literally how tokenizer vocabularies for GPT-2, GPT-4, and most modern LLMs were built."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single merge",
+          "input": {
+            "tokens": [
+              "l",
+              "o",
+              "w"
+            ],
+            "pair_to_merge": [
+              "l",
+              "o"
+            ]
+          },
+          "expectedOutput": [
+            "lo",
+            "w"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no matching pair unchanged",
+          "input": {
+            "tokens": [
+              "a",
+              "b",
+              "c"
+            ],
+            "pair_to_merge": [
+              "x",
+              "y"
+            ]
+          },
+          "expectedOutput": [
+            "a",
+            "b",
+            "c"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "multiple non-overlapping merges",
+          "input": {
+            "tokens": [
+              "a",
+              "b",
+              "a",
+              "b"
+            ],
+            "pair_to_merge": [
+              "a",
+              "b"
+            ]
+          },
+          "expectedOutput": [
+            "ab",
+            "ab"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "merge does not re-trigger on its own output",
+          "input": {
+            "tokens": [
+              "a",
+              "a",
+              "a"
+            ],
+            "pair_to_merge": [
+              "a",
+              "a"
+            ]
+          },
+          "expectedOutput": [
+            "aa",
+            "a"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-43": {
+    id: "llm-internals-prob-43",
+    title: "Greedy Longest-Match WordPiece Tokenization",
+    difficulty: "hard",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "wordpiece_tokenize",
+    functionSignature: "wordpiece_tokenize(word: str, vocab: set, unk_token: str) -> list[str]",
+    starterCode: `def wordpiece_tokenize(word, vocab, unk_token):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement WordPiece's real greedy longest-match-first tokenization algorithm (used by BERT), splitting an out-of-vocabulary word into known subword pieces.",
+    taskDescription: "Implement `wordpiece_tokenize(word, vocab, unk_token)`. Starting from position 0, greedily find the LONGEST prefix of the remaining substring that's in `vocab` (for positions after the first, the candidate must be prefixed with `'##'` before checking vocab membership). If no valid piece is found at any position, return `[unk_token]` for the WHOLE word (not partial pieces).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "vocab is a set of valid tokens (continuation pieces already include the '##' prefix)"
+      ],
+    hints: {
+  "small": "Greedily consume the longest matching piece at each position, using the ## continuation convention after the first piece.",
+        "strong": "pieces = []; start = 0; n = len(word); while start < n: end = n; found = None; while end > start: substr = word[start:end] if start == 0 else '##' + word[start:end]; if substr in vocab: found = substr; break; end -= 1; if found is None: return [unk_token]; pieces.append(found); start = end. Return pieces.",
+        "concept": "The '##' continuation-piece convention is what distinguishes 'a piece starting a new word' from 'a piece continuing the current word' -- without it, the tokenizer couldn't tell whether a vocab entry like 'ing' means the start of a word or a suffix, which matters for correctly reconstructing the original text from tokens."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "word splits into two known pieces",
+          "input": {
+            "word": "unaffable",
+            "vocab": [
+              "un",
+              "##aff",
+              "##able"
+            ],
+            "unk_token": "[UNK]"
+          },
+          "expectedOutput": [
+            "un",
+            "##aff",
+            "##able"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "whole word is a known token",
+          "input": {
+            "word": "hello",
+            "vocab": [
+              "hello"
+            ],
+            "unk_token": "[UNK]"
+          },
+          "expectedOutput": [
+            "hello"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "no valid tokenization falls back to unk",
+          "input": {
+            "word": "xyz",
+            "vocab": [
+              "abc"
+            ],
+            "unk_token": "[UNK]"
+          },
+          "expectedOutput": [
+            "[UNK]"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "three-piece split",
+          "input": {
+            "word": "playing",
+            "vocab": [
+              "play",
+              "##ing"
+            ],
+            "unk_token": "[UNK]"
+          },
+          "expectedOutput": [
+            "play",
+            "##ing"
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-44": {
+    id: "llm-internals-prob-44",
+    title: "Standard LayerNorm Computation",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "layernorm",
+    functionSignature: "layernorm(x: list[float], gamma: list[float], beta: list[float], eps: float) -> list[float]",
+    starterCode: `import math
+
+def layernorm(x, gamma, beta, eps):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement standard LayerNorm, the original Transformer's real normalization layer, for direct comparison against RMSNorm's simplification.",
+    taskDescription: "Implement `layernorm(x, gamma, beta, eps)`. Compute `mean = mean(x)`, `var = mean((xi-mean)**2 for xi in x)`. Return `[(xi-mean)/sqrt(var+eps)*g + b for xi,g,b in zip(x,gamma,beta)]`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(x) == len(gamma) == len(beta)",
+        "eps > 0"
+      ],
+    hints: {
+  "small": "Center by the mean, scale by the standard deviation, then apply a learned affine transform.",
+        "strong": "n=len(x); mean = sum(x)/n; var = sum((xi-mean)**2 for xi in x)/n; std = math.sqrt(var+eps); return [(xi-mean)/std*g+b for xi,g,b in zip(x,gamma,beta)].",
+        "concept": "Unlike RMSNorm, LayerNorm both RE-CENTERS (subtracts the mean) and RE-SCALES (divides by std) -- the original Transformer paper's real normalization choice, which RMSNorm later showed could drop the centering step with little quality loss but a real compute saving."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "uniform input zero variance handled by eps",
+          "input": {
+            "x": [
+              5,
+              5,
+              5
+            ],
+            "gamma": [
+              1,
+              1,
+              1
+            ],
+            "beta": [
+              0,
+              0,
+              0
+            ],
+            "eps": 0.00001
+          },
+          "expectedOutput": [
+            0,
+            0,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "spread values normalized",
+          "input": {
+            "x": [
+              1,
+              2,
+              3
+            ],
+            "gamma": [
+              1,
+              1,
+              1
+            ],
+            "beta": [
+              0,
+              0,
+              0
+            ],
+            "eps": 0.00001
+          },
+          "expectedOutput": [
+            -1.2247356859083902,
+            0,
+            1.2247356859083902
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "with learned scale and shift",
+          "input": {
+            "x": [
+              1,
+              2,
+              3
+            ],
+            "gamma": [
+              2,
+              2,
+              2
+            ],
+            "beta": [
+              1,
+              1,
+              1
+            ],
+            "eps": 0.00001
+          },
+          "expectedOutput": [
+            -1.4494713718167804,
+            1,
+            3.4494713718167804
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "negative values",
+          "input": {
+            "x": [
+              -1,
+              0,
+              1
+            ],
+            "gamma": [
+              1,
+              1,
+              1
+            ],
+            "beta": [
+              0,
+              0,
+              0
+            ],
+            "eps": 0.00001
+          },
+          "expectedOutput": [
+            -1.2247356859083902,
+            0,
+            1.2247356859083902
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-45": {
+    id: "llm-internals-prob-45",
+    title: "GELU Activation (Tanh Approximation)",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "gelu_approx",
+    functionSignature: "gelu_approx(x: float) -> float",
+    starterCode: `import math
+
+def gelu_approx(x):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the tanh-approximated GELU activation, the real activation function used in BERT, GPT-2/3, and many other transformer feed-forward blocks.",
+    taskDescription: "Implement `gelu_approx(x)` using the standard tanh approximation: `0.5 * x * (1 + tanh(sqrt(2/pi) * (x + 0.044715 * x**3)))`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "x is a float"
+      ],
+    hints: {
+  "small": "This is a direct formula application -- the real, standard GELU tanh approximation.",
+        "strong": "0.5 * x * (1 + math.tanh(math.sqrt(2/math.pi) * (x + 0.044715*x**3))).",
+        "concept": "GELU (unlike ReLU) is smooth and non-monotonic near zero, weighting inputs by their value's probability under a Gaussian rather than a hard 0/1 cutoff -- this specific tanh-based approximation (versus the exact erf-based formula) is what most real implementations use because it's cheaper to compute while being numerically very close."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "positive input mostly passes through",
+          "input": {
+            "x": 3
+          },
+          "expectedOutput": 2.996362607918227,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "negative input mostly suppressed",
+          "input": {
+            "x": -3
+          },
+          "expectedOutput": -0.0036373920817729943,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "zero input",
+          "input": {
+            "x": 0
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "small positive value",
+          "input": {
+            "x": 0.5
+          },
+          "expectedOutput": 0.34571400982514394,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-46": {
+    id: "llm-internals-prob-46",
+    title: "Sinusoidal Positional Encoding",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "sinusoidal_pe",
+    functionSignature: "sinusoidal_pe(position: int, dim_index: int, d_model: int) -> float",
+    starterCode: `import math
+
+def sinusoidal_pe(position, dim_index, d_model):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the original Transformer's sinusoidal positional encoding formula, the fixed (non-learned) position representation from 'Attention Is All You Need.'",
+    taskDescription: "Implement `sinusoidal_pe(position, dim_index, d_model)`. Compute `angle = position / (10000 ** (2*(dim_index//2)/d_model))`. Return `sin(angle)` if `dim_index` is even, else `cos(angle)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "d_model > 0",
+        "0 <= dim_index < d_model"
+      ],
+    hints: {
+  "small": "Even dimensions use sine, odd dimensions use cosine, both driven by the same position-and-dimension-dependent angle.",
+        "strong": "angle = position / (10000 ** (2*(dim_index//2)/d_model)); return math.sin(angle) if dim_index % 2 == 0 else math.cos(angle).",
+        "concept": "Interleaving sin/cos at each dimension pair (rather than using sin for all dimensions) is what gives this encoding a real, useful property: the encoding for position p+k can be expressed as a LINEAR function of the encoding for position p, which the original paper argued should make it easier for attention to learn to attend by relative position."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "position zero even dim",
+          "input": {
+            "position": 0,
+            "dim_index": 0,
+            "d_model": 512
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "position zero odd dim",
+          "input": {
+            "position": 0,
+            "dim_index": 1,
+            "d_model": 512
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "nonzero position even dim",
+          "input": {
+            "position": 10,
+            "dim_index": 4,
+            "d_model": 512
+          },
+          "expectedOutput": 0.11877648322563235,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "nonzero position odd dim",
+          "input": {
+            "position": 10,
+            "dim_index": 5,
+            "d_model": 512
+          },
+          "expectedOutput": -0.992921017519798,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-47": {
+    id: "llm-internals-prob-47",
+    title: "Reshape Flat Vector Into Multi-Head Attention Heads",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "split_into_heads",
+    functionSignature: "split_into_heads(x: list[float], num_heads: int) -> list[list[float]]",
+    starterCode: `def split_into_heads(x, num_heads):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the multi-head split operation, dividing one flat query/key/value vector into the separate per-head sub-vectors multi-head attention actually operates on.",
+    taskDescription: "Implement `split_into_heads(x, num_heads)`. Split `x` into `num_heads` equal contiguous chunks. Return the list of chunks (each a list of floats).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "len(x) % num_heads == 0"
+      ],
+    hints: {
+  "small": "Contiguous equal-sized chunking, not interleaved.",
+        "strong": "head_dim = len(x)//num_heads; [x[i*head_dim:(i+1)*head_dim] for i in range(num_heads)].",
+        "concept": "Splitting into CONTIGUOUS chunks (not interleaved dimensions) is the real, standard convention every transformer implementation uses -- it matters because the corresponding weight matrices are laid out to match this exact chunking when the model is trained, so using a different split scheme at inference would silently scramble which learned weights apply to which head."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "split 4-dim into 2 heads",
+          "input": {
+            "x": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "num_heads": 2
+          },
+          "expectedOutput": [
+            [
+              1,
+              2
+            ],
+            [
+              3,
+              4
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "single head no split",
+          "input": {
+            "x": [
+              1,
+              2,
+              3
+            ],
+            "num_heads": 1
+          },
+          "expectedOutput": [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "split 6-dim into 3 heads",
+          "input": {
+            "x": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "num_heads": 3
+          },
+          "expectedOutput": [
+            [
+              1,
+              2
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              5,
+              6
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "8-dim into 4 heads",
+          "input": {
+            "x": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8
+            ],
+            "num_heads": 4
+          },
+          "expectedOutput": [
+            [
+              1,
+              2
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              7,
+              8
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-48": {
+    id: "llm-internals-prob-48",
+    title: "FlashAttention: Compute SRAM-Bound Tile Size",
+    difficulty: "hard",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "flash_attention_tile_size",
+    functionSignature: "flash_attention_tile_size(sram_bytes: int, head_dim: int, bytes_per_value: float) -> int",
+    starterCode: `def flash_attention_tile_size(sram_bytes, head_dim, bytes_per_value):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a simplified FlashAttention tile-size calculation, the real memory-budgeting arithmetic behind why FlashAttention processes attention in blocks rather than materializing the full attention matrix.",
+    taskDescription: "Implement `flash_attention_tile_size(sram_bytes, head_dim, bytes_per_value)`. Assume a tile needs to hold Q, K, and V sub-blocks of `head_dim` each, i.e. `3 * tile_rows * head_dim * bytes_per_value <= sram_bytes`. Return the largest integer `tile_rows` satisfying this (floor of the exact division).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "sram_bytes, head_dim > 0",
+        "bytes_per_value > 0"
+      ],
+    hints: {
+  "small": "Solve the memory-budget inequality for the largest integer tile size that fits.",
+        "strong": "import math; return math.floor(sram_bytes / (3*head_dim*bytes_per_value)).",
+        "concept": "This is the real, core insight behind FlashAttention -- the full N x N attention matrix is too large for fast on-chip SRAM at real sequence lengths, so it's computed in SMALL TILES that DO fit in SRAM, with a running softmax normalization trick to combine tile results correctly -- this is why FlashAttention is exact (same output as standard attention) yet dramatically faster, purely from better memory access patterns, not an approximation."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "typical SRAM budget",
+          "input": {
+            "sram_bytes": 196608,
+            "head_dim": 64,
+            "bytes_per_value": 4
+          },
+          "expectedOutput": 256,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "smaller head dim allows bigger tiles",
+          "input": {
+            "sram_bytes": 196608,
+            "head_dim": 32,
+            "bytes_per_value": 4
+          },
+          "expectedOutput": 512,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "fp16 halves bytes per value",
+          "input": {
+            "sram_bytes": 196608,
+            "head_dim": 64,
+            "bytes_per_value": 2
+          },
+          "expectedOutput": 512,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "very small SRAM tiny tile",
+          "input": {
+            "sram_bytes": 1000,
+            "head_dim": 64,
+            "bytes_per_value": 4
+          },
+          "expectedOutput": 1,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-49": {
+    id: "llm-internals-prob-49",
+    title: "Merge a LoRA Adapter Into the Base Weight",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "merge_lora",
+    functionSignature: "merge_lora(base_weight: float, lora_a: float, lora_b: float, alpha: float, rank: int) -> float",
+    starterCode: `def merge_lora(base_weight, lora_a, lora_b, alpha, rank):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement LoRA adapter merging, the real formula for folding a trained low-rank adapter back into the base model weight for zero-overhead inference.",
+    taskDescription: "Implement `merge_lora(base_weight, lora_a, lora_b, alpha, rank)` (simplified to scalars representing one weight element's low-rank update): return `base_weight + (alpha/rank) * lora_a * lora_b`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "rank > 0"
+      ],
+    hints: {
+  "small": "The LoRA update is the product of the two low-rank factors, scaled by alpha/rank, added to the frozen base weight.",
+        "strong": "return base_weight + (alpha/rank) * lora_a * lora_b.",
+        "concept": "The `alpha/rank` scaling factor is a real, deliberate LoRA design choice -- it keeps the effective update magnitude roughly consistent across DIFFERENT chosen ranks, so switching from rank 8 to rank 16 doesn't require re-tuning the learning rate just to compensate for a different implicit scale, which is exactly the practical convenience this scaling provides."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "small adapter update",
+          "input": {
+            "base_weight": 1,
+            "lora_a": 0.1,
+            "lora_b": 0.2,
+            "alpha": 16,
+            "rank": 8
+          },
+          "expectedOutput": 1.04,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "zero lora effectively no-op",
+          "input": {
+            "base_weight": 1,
+            "lora_a": 0,
+            "lora_b": 0.5,
+            "alpha": 16,
+            "rank": 8
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "higher rank same alpha smaller effective scale",
+          "input": {
+            "base_weight": 1,
+            "lora_a": 1,
+            "lora_b": 1,
+            "alpha": 16,
+            "rank": 16
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "negative base weight",
+          "input": {
+            "base_weight": -1,
+            "lora_a": 1,
+            "lora_b": 1,
+            "alpha": 8,
+            "rank": 8
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-50": {
+    id: "llm-internals-prob-50",
+    title: "INT8 Quantization Scale Computation",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "int8_quant_scale",
+    functionSignature: "int8_quant_scale(max_abs_value: float) -> float",
+    starterCode: `def int8_quant_scale(max_abs_value):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement symmetric INT8 quantization scale computation, the real first step of quantizing a weight tensor's floating-point values into the int8 range.",
+    taskDescription: "Implement `int8_quant_scale(max_abs_value)`: return `max_abs_value / 127.0` (symmetric quantization maps `[-max_abs_value, max_abs_value]` to `[-127, 127]`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "max_abs_value > 0"
+      ],
+    hints: {
+  "small": "The scale is the real-value range divided by the available integer range.",
+        "strong": "return max_abs_value / 127.0.",
+        "concept": "A real float value `v` quantizes to `round(v/scale)`, and dequantizes back via `q*scale` -- the scale is exactly what determines the real precision loss: a tensor with a few extreme outlier values forces a large scale, coarsening precision for the vast majority of normally-sized values, which is the real reason outlier-aware quantization schemes exist."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "typical weight range",
+          "input": {
+            "max_abs_value": 2.5
+          },
+          "expectedOutput": 0.01968503937007874,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "small range fine precision",
+          "input": {
+            "max_abs_value": 0.1
+          },
+          "expectedOutput": 0.0007874015748031497,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "large outlier range coarse precision",
+          "input": {
+            "max_abs_value": 100
+          },
+          "expectedOutput": 0.7874015748031497,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "unit range",
+          "input": {
+            "max_abs_value": 1
+          },
+          "expectedOutput": 0.007874015748031496,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-51": {
+    id: "llm-internals-prob-51",
+    title: "Estimate Memory Saved by Gradient Checkpointing",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "checkpointing_memory_saved",
+    functionSignature: "checkpointing_memory_saved(num_layers: int, activation_mb_per_layer: float, checkpoint_every_n: int) -> float",
+    starterCode: `def checkpointing_memory_saved(num_layers, activation_mb_per_layer, checkpoint_every_n):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real gradient-checkpointing memory-savings estimate, quantifying the actual memory/compute tradeoff of not storing every layer's activations for backpropagation.",
+    taskDescription: "Implement `checkpointing_memory_saved(num_layers, activation_mb_per_layer, checkpoint_every_n)`. Without checkpointing, all `num_layers` layers' activations are stored. With checkpointing, only every `checkpoint_every_n`-th layer's activations are kept: `kept_layers = ceil(num_layers / checkpoint_every_n)`. Return `(num_layers - kept_layers) * activation_mb_per_layer` (the MB saved).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "checkpoint_every_n >= 1",
+        "num_layers >= 1"
+      ],
+    hints: {
+  "small": "Only a fraction of layers' activations are stored; the rest are recomputed during the backward pass instead.",
+        "strong": "import math; kept_layers = math.ceil(num_layers/checkpoint_every_n); return (num_layers-kept_layers)*activation_mb_per_layer.",
+        "concept": "Gradient checkpointing trades real, measurable extra compute (recomputing the discarded activations during backprop) for real, measurable memory savings -- this is exactly the calculation an engineer runs to decide whether a larger batch size (enabled by the memory savings) is worth the real training-time slowdown from the recomputation."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "checkpoint every 2 layers",
+          "input": {
+            "num_layers": 24,
+            "activation_mb_per_layer": 100,
+            "checkpoint_every_n": 2
+          },
+          "expectedOutput": 1200,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "checkpoint every layer no savings",
+          "input": {
+            "num_layers": 24,
+            "activation_mb_per_layer": 100,
+            "checkpoint_every_n": 1
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "aggressive checkpointing large savings",
+          "input": {
+            "num_layers": 24,
+            "activation_mb_per_layer": 100,
+            "checkpoint_every_n": 8
+          },
+          "expectedOutput": 2100,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "single layer model",
+          "input": {
+            "num_layers": 1,
+            "activation_mb_per_layer": 50,
+            "checkpoint_every_n": 2
+          },
+          "expectedOutput": 0,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-52": {
+    id: "llm-internals-prob-52",
+    title: "Mixture-of-Experts Top-K Routing",
+    difficulty: "hard",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "moe_topk_routing",
+    functionSignature: "moe_topk_routing(router_logits: list[float], top_k: int) -> list[dict]",
+    starterCode: `import math
+
+def moe_topk_routing(router_logits, top_k):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Mixture-of-Experts top-k routing, the real gating mechanism deciding which experts process a given token and how much weight each contributes.",
+    taskDescription: "Implement `moe_topk_routing(router_logits, top_k)`. Apply softmax to `router_logits` to get expert probabilities. Select the `top_k` experts by probability. RENORMALIZE just those `top_k` probabilities to sum to 1 (so the token's output is a proper weighted combination of only the selected experts). Return a list of `{\"expert_idx\": int, \"weight\": float}`, sorted by `expert_idx` ascending.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "top_k <= len(router_logits)"
+      ],
+    hints: {
+  "small": "Softmax over all experts first, pick the top-k, then renormalize just those weights.",
+        "strong": "m = max(router_logits); exps = [math.exp(l-m) for l in router_logits]; total = sum(exps); probs = [e/total for e in exps]; ranked = sorted(range(len(probs)), key=lambda i: -probs[i])[:top_k]; selected_total = sum(probs[i] for i in ranked); result = [{'expert_idx': i, 'weight': probs[i]/selected_total} for i in ranked]; return sorted(result, key=lambda r: r['expert_idx']).",
+        "concept": "This is the real gating mechanism from Mixtral/Switch-Transformer-style sparse MoE models -- only top_k experts (typically 1-2 out of many, e.g. 8) actually run for each token, which is exactly what lets an MoE model have a huge total parameter count while keeping per-token inference compute proportional to only the small active subset."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "top-2 of 4 experts",
+          "input": {
+            "router_logits": [
+              1,
+              3,
+              0.5,
+              2
+            ],
+            "top_k": 2
+          },
+          "expectedOutput": [
+            {
+              "expert_idx": 1,
+              "weight": 0.7310585786300049
+            },
+            {
+              "expert_idx": 3,
+              "weight": 0.26894142136999516
+            }
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "top-1 routing",
+          "input": {
+            "router_logits": [
+              1,
+              5,
+              0.5
+            ],
+            "top_k": 1
+          },
+          "expectedOutput": [
+            {
+              "expert_idx": 1,
+              "weight": 1
+            }
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "top-k equals all experts",
+          "input": {
+            "router_logits": [
+              1,
+              2
+            ],
+            "top_k": 2
+          },
+          "expectedOutput": [
+            {
+              "expert_idx": 0,
+              "weight": 0.2689414213699951
+            },
+            {
+              "expert_idx": 1,
+              "weight": 0.7310585786300049
+            }
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "tied logits",
+          "input": {
+            "router_logits": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "top_k": 2
+          },
+          "expectedOutput": [
+            {
+              "expert_idx": 0,
+              "weight": 0.5
+            },
+            {
+              "expert_idx": 1,
+              "weight": 0.5
+            }
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-53": {
+    id: "llm-internals-prob-53",
+    title: "Sliding Window Attention Mask",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "sliding_window_mask",
+    functionSignature: "sliding_window_mask(seq_len: int, window_size: int) -> list[list[bool]]",
+    starterCode: `def sliding_window_mask(seq_len, window_size):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement sliding-window attention masking, used in Mistral and Longformer-style models to bound attention cost for very long sequences.",
+    taskDescription: "Implement `sliding_window_mask(seq_len, window_size)`. Position `i` may attend to position `j` if `j <= i` (causal) AND `i - j < window_size` (within the recent window). Return the `seq_len x seq_len` boolean matrix.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "window_size >= 1"
+      ],
+    hints: {
+  "small": "Combine the causal constraint with a recency-window constraint.",
+        "strong": "[[j <= i and (i-j) < window_size for j in range(seq_len)] for i in range(seq_len)].",
+        "concept": "Sliding window attention bounds each token's real attention cost to O(window_size) instead of O(sequence_length) -- the real tradeoff is that information from far outside the window can only reach a token indirectly, through multiple LAYERS of the window sliding forward (a real, well-understood limitation, not a bug), which is why models using this technique typically stack many layers."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "small window",
+          "input": {
+            "seq_len": 5,
+            "window_size": 2
+          },
+          "expectedOutput": [
+            [
+              true,
+              false,
+              false,
+              false,
+              false
+            ],
+            [
+              true,
+              true,
+              false,
+              false,
+              false
+            ],
+            [
+              false,
+              true,
+              true,
+              false,
+              false
+            ],
+            [
+              false,
+              false,
+              true,
+              true,
+              false
+            ],
+            [
+              false,
+              false,
+              false,
+              true,
+              true
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "window covers everything",
+          "input": {
+            "seq_len": 3,
+            "window_size": 10
+          },
+          "expectedOutput": [
+            [
+              true,
+              false,
+              false
+            ],
+            [
+              true,
+              true,
+              false
+            ],
+            [
+              true,
+              true,
+              true
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "window size 1 only self",
+          "input": {
+            "seq_len": 3,
+            "window_size": 1
+          },
+          "expectedOutput": [
+            [
+              true,
+              false,
+              false
+            ],
+            [
+              false,
+              true,
+              false
+            ],
+            [
+              false,
+              false,
+              true
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "larger sequence",
+          "input": {
+            "seq_len": 6,
+            "window_size": 3
+          },
+          "expectedOutput": [
+            [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            [
+              true,
+              true,
+              false,
+              false,
+              false,
+              false
+            ],
+            [
+              true,
+              true,
+              true,
+              false,
+              false,
+              false
+            ],
+            [
+              false,
+              true,
+              true,
+              true,
+              false,
+              false
+            ],
+            [
+              false,
+              false,
+              true,
+              true,
+              true,
+              false
+            ],
+            [
+              false,
+              false,
+              false,
+              true,
+              true,
+              true
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-54": {
+    id: "llm-internals-prob-54",
+    title: "ALiBi Positional Bias",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "alibi_bias",
+    functionSignature: "alibi_bias(query_pos: int, key_pos: int, head_slope: float) -> float",
+    starterCode: `def alibi_bias(query_pos, key_pos, head_slope):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement ALiBi (Attention with Linear Biases), a real alternative to RoPE/sinusoidal encoding that biases attention scores directly by distance instead of modifying the query/key vectors.",
+    taskDescription: "Implement `alibi_bias(query_pos, key_pos, head_slope)`. Return `-head_slope * (query_pos - key_pos)` (assumes `key_pos <= query_pos`, a causal setting, so the bias is always `<= 0`, penalizing more distant keys).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "key_pos <= query_pos",
+        "head_slope > 0"
+      ],
+    hints: {
+  "small": "A negative bias proportional to distance, scaled per-head by head_slope.",
+        "strong": "return -head_slope * (query_pos - key_pos).",
+        "concept": "ALiBi's real, notable practical benefit is that it enables genuine length extrapolation -- a model trained on short sequences with ALiBi generalizes to much longer sequences at inference far better than sinusoidal or (unmoified) RoPE encodings, since the linear distance penalty naturally extends beyond the training length without needing any special scaling trick."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "attending to self zero bias",
+          "input": {
+            "query_pos": 5,
+            "key_pos": 5,
+            "head_slope": 0.5
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "nearby key small penalty",
+          "input": {
+            "query_pos": 5,
+            "key_pos": 4,
+            "head_slope": 0.5
+          },
+          "expectedOutput": -0.5,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "distant key large penalty",
+          "input": {
+            "query_pos": 100,
+            "key_pos": 0,
+            "head_slope": 0.5
+          },
+          "expectedOutput": -50,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "different head slope scales penalty",
+          "input": {
+            "query_pos": 10,
+            "key_pos": 5,
+            "head_slope": 0.1
+          },
+          "expectedOutput": -0.5,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-55": {
+    id: "llm-internals-prob-55",
+    title: "Token Embedding Lookup With Padding Handling",
+    difficulty: "easy",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "embedding_lookup",
+    functionSignature: "embedding_lookup(token_ids: list[int], embedding_table: dict[int, list[float]], padding_idx: int, embed_dim: int) -> list[list[float]]",
+    starterCode: `def embedding_lookup(token_ids, embedding_table, padding_idx, embed_dim):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement embedding lookup with correct padding-token handling, the real first layer of any transformer converting discrete token ids into continuous vectors.",
+    taskDescription: "Implement `embedding_lookup(token_ids, embedding_table, padding_idx, embed_dim)`. For each token id, return its embedding from `embedding_table`, EXCEPT if the id equals `padding_idx`, always return a zero vector of length `embed_dim` regardless of what's in the table.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "every non-padding token_id is a key in embedding_table"
+      ],
+    hints: {
+  "small": "Padding always maps to zero, everything else does a normal table lookup.",
+        "strong": "[[0.0]*embed_dim if tid == padding_idx else embedding_table[tid] for tid in token_ids].",
+        "concept": "Forcing the padding embedding to a fixed zero vector (rather than letting it be a normal learned parameter) is a real, deliberate convention -- it ensures padding tokens contribute no real signal and produce zero gradient during training, which matters because padding is an artifact of batching variable-length sequences, not real content the model should learn anything from."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no padding all real lookups",
+          "input": {
+            "token_ids": [
+              1,
+              2
+            ],
+            "embedding_table": {
+              "1": [
+                0.1,
+                0.2
+              ],
+              "2": [
+                0.3,
+                0.4
+              ]
+            },
+            "padding_idx": 0,
+            "embed_dim": 2
+          },
+          "expectedOutput": [
+            [
+              0.1,
+              0.2
+            ],
+            [
+              0.3,
+              0.4
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "padding token zeroed",
+          "input": {
+            "token_ids": [
+              1,
+              0
+            ],
+            "embedding_table": {
+              "1": [
+                0.1,
+                0.2
+              ]
+            },
+            "padding_idx": 0,
+            "embed_dim": 2
+          },
+          "expectedOutput": [
+            [
+              0.1,
+              0.2
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "all padding",
+          "input": {
+            "token_ids": [
+              0,
+              0
+            ],
+            "embedding_table": {},
+            "padding_idx": 0,
+            "embed_dim": 3
+          },
+          "expectedOutput": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "padding in the middle",
+          "input": {
+            "token_ids": [
+              1,
+              0,
+              2
+            ],
+            "embedding_table": {
+              "1": [
+                1
+              ],
+              "2": [
+                2
+              ]
+            },
+            "padding_idx": 0,
+            "embed_dim": 1
+          },
+          "expectedOutput": [
+            [
+              1
+            ],
+            [
+              0
+            ],
+            [
+              2
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-56": {
+    id: "llm-internals-prob-56",
+    title: "Cross-Entropy Loss for Next-Token Prediction",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "cross_entropy_loss",
+    functionSignature: "cross_entropy_loss(predicted_probs: list[float], target_idx: int) -> float",
+    starterCode: `import math
+
+def cross_entropy_loss(predicted_probs, target_idx):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement cross-entropy loss, the real, standard training objective for next-token prediction in language models.",
+    taskDescription: "Implement `cross_entropy_loss(predicted_probs, target_idx)`: return `-log(predicted_probs[target_idx])`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "predicted_probs is a valid probability distribution summing to ~1",
+        "0 < predicted_probs[target_idx] <= 1"
+      ],
+    hints: {
+  "small": "Negative log of the probability assigned to the correct target.",
+        "strong": "return -math.log(predicted_probs[target_idx]).",
+        "concept": "This loss is exactly why LLM training rewards the model for putting HIGH probability on the true next token -- a confident, correct prediction (probability near 1) gives loss near 0, while a confident WRONG prediction (true token's probability near 0) gives a loss that blows up toward infinity, a real, strong gradient signal to correct that specific mistake."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "confident correct prediction low loss",
+          "input": {
+            "predicted_probs": [
+              0.05,
+              0.9,
+              0.05
+            ],
+            "target_idx": 1
+          },
+          "expectedOutput": 0.10536051565782628,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "unconfident correct prediction higher loss",
+          "input": {
+            "predicted_probs": [
+              0.3,
+              0.4,
+              0.3
+            ],
+            "target_idx": 1
+          },
+          "expectedOutput": 0.916290731874155,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "confident wrong prediction very high loss",
+          "input": {
+            "predicted_probs": [
+              0.01,
+              0.98,
+              0.01
+            ],
+            "target_idx": 0
+          },
+          "expectedOutput": 4.605170185988091,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "uniform distribution",
+          "input": {
+            "predicted_probs": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ],
+            "target_idx": 2
+          },
+          "expectedOutput": 1.3862943611198906,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-57": {
+    id: "llm-internals-prob-57",
+    title: "Label Smoothing Applied to Target Distribution",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "label_smoothing",
+    functionSignature: "label_smoothing(target_idx: int, vocab_size: int, smoothing: float) -> list[float]",
+    starterCode: `def label_smoothing(target_idx, vocab_size, smoothing):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement label smoothing, a real regularization technique softening the hard one-hot training target to prevent overconfident LLM predictions.",
+    taskDescription: "Implement `label_smoothing(target_idx, vocab_size, smoothing)`. The target distribution assigns `1 - smoothing + smoothing/vocab_size` to the true token, and `smoothing/vocab_size` to every other token. Return the full `vocab_size`-length distribution.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= smoothing < 1",
+        "vocab_size >= 1"
+      ],
+    hints: {
+  "small": "A softened one-hot: the true class gets most of the mass, everything else gets a small uniform floor.",
+        "strong": "base = smoothing/vocab_size; dist = [base]*vocab_size; dist[target_idx] = 1 - smoothing + base; return dist.",
+        "concept": "Training against a hard one-hot target (probability exactly 1 for the true token, exactly 0 for everything else) pushes the model toward extreme, overconfident logits -- label smoothing gives a real, measurable regularization effect that improves calibration (the model's confidence better matches its real accuracy) at a small, deliberate cost to raw training loss on the true class."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no smoothing pure one-hot",
+          "input": {
+            "target_idx": 1,
+            "vocab_size": 3,
+            "smoothing": 0
+          },
+          "expectedOutput": [
+            0,
+            1,
+            0
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "moderate smoothing",
+          "input": {
+            "target_idx": 0,
+            "vocab_size": 4,
+            "smoothing": 0.1
+          },
+          "expectedOutput": [
+            0.925,
+            0.025,
+            0.025,
+            0.025
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "target at last index",
+          "input": {
+            "target_idx": 2,
+            "vocab_size": 3,
+            "smoothing": 0.2
+          },
+          "expectedOutput": [
+            0.06666666666666667,
+            0.06666666666666667,
+            0.8666666666666667
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "larger vocab",
+          "input": {
+            "target_idx": 5,
+            "vocab_size": 10,
+            "smoothing": 0.1
+          },
+          "expectedOutput": [
+            0.01,
+            0.01,
+            0.01,
+            0.01,
+            0.01,
+            0.91,
+            0.01,
+            0.01,
+            0.01,
+            0.01
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-58": {
+    id: "llm-internals-prob-58",
+    title: "NTK-Aware RoPE Scaling for Context Extension",
+    difficulty: "hard",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "ntk_scaled_base",
+    functionSignature: "ntk_scaled_base(original_base: float, scale_factor: float, dim: int) -> float",
+    starterCode: `def ntk_scaled_base(original_base, scale_factor, dim):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement NTK-aware RoPE base scaling, a real, practical technique for extending a pretrained model's context length beyond what it was originally trained on, without full retraining.",
+    taskDescription: "Implement `ntk_scaled_base(original_base, scale_factor, dim)`: return `original_base * (scale_factor ** (dim / (dim - 2)))`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "scale_factor >= 1",
+        "dim > 2"
+      ],
+    hints: {
+  "small": "This is a direct formula application -- scale the RoPE base by the scale factor raised to a dimension-dependent exponent.",
+        "strong": "return original_base * (scale_factor ** (dim / (dim - 2))).",
+        "concept": "Naively scaling RoPE's rotation angles down (linear position interpolation) hurts short-range relative position resolution -- NTK-aware scaling instead adjusts the BASE frequency itself, which changes high-frequency (short-range) dimensions less and low-frequency (long-range) dimensions more, extending usable context with measurably less degradation on short-range attention patterns the model already learned well."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "2x context extension",
+          "input": {
+            "original_base": 10000,
+            "scale_factor": 2,
+            "dim": 128
+          },
+          "expectedOutput": 20221.261689737912,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "no scaling factor 1 unchanged",
+          "input": {
+            "original_base": 10000,
+            "scale_factor": 1,
+            "dim": 128
+          },
+          "expectedOutput": 10000,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "4x context extension",
+          "input": {
+            "original_base": 10000,
+            "scale_factor": 4,
+            "dim": 128
+          },
+          "expectedOutput": 40889.94243248622,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "different dimensionality",
+          "input": {
+            "original_base": 10000,
+            "scale_factor": 2,
+            "dim": 64
+          },
+          "expectedOutput": 20452.228712025368,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-59": {
+    id: "llm-internals-prob-59",
+    title: "Check Weight Tying Validity",
+    difficulty: "easy",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "weight_tying_valid",
+    functionSignature: "weight_tying_valid(embedding_shape: list[int], output_layer_shape: list[int]) -> bool",
+    starterCode: `def weight_tying_valid(embedding_shape, output_layer_shape):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement weight-tying shape validation, checking whether a model's input embedding and output (unembedding) layer weights can legally share the same underlying tensor.",
+    taskDescription: "Implement `weight_tying_valid(embedding_shape, output_layer_shape)`: return `True` if `embedding_shape == output_layer_shape` (weight tying requires the exact same shape since it's literally the same tensor used in both places, just transposed in one direction).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both are 2-element shape lists [vocab_size, embed_dim]"
+      ],
+    hints: {
+  "small": "Tying requires the two layers' shapes to match exactly.",
+        "strong": "return embedding_shape == output_layer_shape.",
+        "concept": "Weight tying (sharing the input embedding matrix and the final output projection) is a real, common parameter-saving technique -- since both layers conceptually map between the SAME vocab_size x embed_dim space, tying them roughly halves the parameter count these two layers would otherwise use, at negligible or even positive effect on quality per several published results."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "matching shapes valid",
+          "input": {
+            "embedding_shape": [
+              50000,
+              768
+            ],
+            "output_layer_shape": [
+              50000,
+              768
+            ]
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "mismatched vocab size invalid",
+          "input": {
+            "embedding_shape": [
+              50000,
+              768
+            ],
+            "output_layer_shape": [
+              40000,
+              768
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "mismatched embed dim invalid",
+          "input": {
+            "embedding_shape": [
+              50000,
+              768
+            ],
+            "output_layer_shape": [
+              50000,
+              512
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "both mismatched invalid",
+          "input": {
+            "embedding_shape": [
+              50000,
+              768
+            ],
+            "output_layer_shape": [
+              30000,
+              512
+            ]
+          },
+          "expectedOutput": false,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-60": {
+    id: "llm-internals-prob-60",
+    title: "Pad Vocabulary Size for Hardware Efficiency",
+    difficulty: "easy",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "pad_vocab_size",
+    functionSignature: "pad_vocab_size(raw_vocab_size: int, multiple_of: int) -> int",
+    starterCode: `import math
+
+def pad_vocab_size(raw_vocab_size, multiple_of):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement vocabulary-size padding, a real, common practical step rounding a tokenizer's actual vocab size up to a hardware-friendly multiple for faster matrix operations.",
+    taskDescription: "Implement `pad_vocab_size(raw_vocab_size, multiple_of)`: return the smallest multiple of `multiple_of` that's `>= raw_vocab_size`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "multiple_of > 0"
+      ],
+    hints: {
+  "small": "Round up to the next multiple.",
+        "strong": "import math; return math.ceil(raw_vocab_size/multiple_of) * multiple_of.",
+        "concept": "GPUs' tensor cores perform matrix multiplication most efficiently at dimensions that are multiples of specific numbers (e.g. 8, 64, 128 depending on hardware/precision) -- padding an awkward real vocab size like 50257 (GPT-2's actual size) up to a rounder number is a genuine, measurable real-world speed optimization, not just cosmetic."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "gpt2 vocab size padded to 64",
+          "input": {
+            "raw_vocab_size": 50257,
+            "multiple_of": 64
+          },
+          "expectedOutput": 50304,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "already a multiple unchanged",
+          "input": {
+            "raw_vocab_size": 512,
+            "multiple_of": 64
+          },
+          "expectedOutput": 512,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "small vocab padded to 128",
+          "input": {
+            "raw_vocab_size": 100,
+            "multiple_of": 128
+          },
+          "expectedOutput": 128,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "large multiple",
+          "input": {
+            "raw_vocab_size": 32000,
+            "multiple_of": 256
+          },
+          "expectedOutput": 32000,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-61": {
+    id: "llm-internals-prob-61",
+    title: "Logit Lens: Project Intermediate Hidden State",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "logit_lens_top_token",
+    functionSignature: "logit_lens_top_token(hidden_state: list[float], unembed_matrix: dict[int, list[float]]) -> int",
+    starterCode: `def logit_lens_top_token(hidden_state, unembed_matrix):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the Logit Lens interpretability technique, projecting an INTERMEDIATE (not final) layer's hidden state through the model's final unembedding matrix to see what token that layer 'would predict' if generation stopped there.",
+    taskDescription: "Implement `logit_lens_top_token(hidden_state, unembed_matrix)`. `unembed_matrix` maps token id -> its unembedding row vector. Compute the dot product of `hidden_state` with each token's row, and return the token id with the HIGHEST dot product; ties broken by token id ascending.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "unembed_matrix non-empty, all rows same dimensionality as hidden_state"
+      ],
+    hints: {
+  "small": "Score every vocabulary token by dot product with the hidden state, take the argmax.",
+        "strong": "return min(sorted(unembed_matrix), key=lambda tid: -sum(h*u for h,u in zip(hidden_state, unembed_matrix[tid]))).",
+        "concept": "This is the real, genuinely surprising interpretability finding behind the Logit Lens technique -- applying the FINAL layer's unembedding matrix to an EARLIER layer's hidden state often produces a coherent, sensible 'partial prediction' even though that matrix was never trained on that layer's representations, suggesting intermediate layers already encode meaningfully-refined token predictions that get progressively sharpened by later layers."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "clear best matching token",
+          "input": {
+            "hidden_state": [
+              1,
+              0
+            ],
+            "unembed_matrix": {
+              "1": [
+                1,
+                0
+              ],
+              "2": [
+                0,
+                1
+              ]
+            }
+          },
+          "expectedOutput": 1,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "tie broken by token id",
+          "input": {
+            "hidden_state": [
+              1,
+              1
+            ],
+            "unembed_matrix": {
+              "2": [
+                1,
+                0
+              ],
+              "5": [
+                1,
+                0
+              ]
+            }
+          },
+          "expectedOutput": 2,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "single vocab entry",
+          "input": {
+            "hidden_state": [
+              1
+            ],
+            "unembed_matrix": {
+              "0": [
+                1
+              ]
+            }
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "negative dot products still ranks correctly",
+          "input": {
+            "hidden_state": [
+              1,
+              0
+            ],
+            "unembed_matrix": {
+              "1": [
+                -1,
+                0
+              ],
+              "2": [
+                0.5,
+                0
+              ]
+            }
+          },
+          "expectedOutput": 2,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-62": {
+    id: "llm-internals-prob-62",
+    title: "Build a Padding Attention Mask From Sequence Lengths",
+    difficulty: "easy",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "padding_attention_mask",
+    functionSignature: "padding_attention_mask(seq_lengths: list[int], max_len: int) -> list[list[bool]]",
+    starterCode: `def padding_attention_mask(seq_lengths, max_len):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement padding-mask construction, telling attention which positions in a batched, padded set of variable-length sequences are real tokens versus padding to ignore.",
+    taskDescription: "Implement `padding_attention_mask(seq_lengths, max_len)`. Return one boolean row per sequence in `seq_lengths`, each of length `max_len`, where position `j` is `True` (real token) if `j < seq_lengths[i]`, else `False` (padding).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all seq_lengths <= max_len"
+      ],
+    hints: {
+  "small": "Each sequence's real tokens are its first seq_length positions; the rest is padding.",
+        "strong": "[[j < length for j in range(max_len)] for length in seq_lengths].",
+        "concept": "Without this mask, attention would let real tokens attend to (and be influenced by) meaningless padding positions -- a real, necessary correctness step whenever variable-length sequences are batched together and padded to a common length for efficient parallel processing."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "two sequences different lengths",
+          "input": {
+            "seq_lengths": [
+              2,
+              4
+            ],
+            "max_len": 4
+          },
+          "expectedOutput": [
+            [
+              true,
+              true,
+              false,
+              false
+            ],
+            [
+              true,
+              true,
+              true,
+              true
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "sequence exactly at max_len no padding",
+          "input": {
+            "seq_lengths": [
+              4
+            ],
+            "max_len": 4
+          },
+          "expectedOutput": [
+            [
+              true,
+              true,
+              true,
+              true
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "very short sequence lots of padding",
+          "input": {
+            "seq_lengths": [
+              1
+            ],
+            "max_len": 5
+          },
+          "expectedOutput": [
+            [
+              true,
+              false,
+              false,
+              false,
+              false
+            ]
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "multiple sequences",
+          "input": {
+            "seq_lengths": [
+              1,
+              2,
+              3
+            ],
+            "max_len": 3
+          },
+          "expectedOutput": [
+            [
+              true,
+              false,
+              false
+            ],
+            [
+              true,
+              true,
+              false
+            ],
+            [
+              true,
+              true,
+              true
+            ]
+          ],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-63": {
+    id: "llm-internals-prob-63",
+    title: "KV Cache Size With Grouped Query Attention",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "gqa_kv_cache_size_mb",
+    functionSignature: "gqa_kv_cache_size_mb(num_layers: int, num_kv_heads: int, head_dim: int, seq_len: int, batch_size: int, bytes_per_value: float) -> float",
+    starterCode: `def gqa_kv_cache_size_mb(num_layers, num_kv_heads, head_dim, seq_len, batch_size, bytes_per_value):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement KV-cache size estimation specifically accounting for Grouped Query Attention's reduced KV head count, the real reason GQA models have a measurably smaller serving memory footprint.",
+    taskDescription: "Implement `gqa_kv_cache_size_mb(num_layers, num_kv_heads, head_dim, seq_len, batch_size, bytes_per_value)`. Total elements: `2 (K and V) * num_layers * num_kv_heads * head_dim * seq_len * batch_size`. Multiply by `bytes_per_value`, convert to MB (divide by `1024*1024`).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all inputs positive"
+      ],
+    hints: {
+  "small": "Same KV-cache formula as full multi-head attention, but using num_kv_heads (fewer, shared heads) instead of the full query head count.",
+        "strong": "elements = 2 * num_layers * num_kv_heads * head_dim * seq_len * batch_size; return (elements*bytes_per_value)/(1024*1024).",
+        "concept": "This is the exact, real reason GQA models (LLaMA 2/3 70B, Mistral) can serve much longer contexts / larger batches at the same GPU memory budget than an equivalent full-multi-head-attention model -- the KV cache scales with num_kv_heads, not the full query head count, and GQA deliberately makes that number small."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "few kv heads small cache",
+          "input": {
+            "num_layers": 32,
+            "num_kv_heads": 8,
+            "head_dim": 128,
+            "seq_len": 2048,
+            "batch_size": 1,
+            "bytes_per_value": 2
+          },
+          "expectedOutput": 256,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "fewer kv heads even smaller",
+          "input": {
+            "num_layers": 32,
+            "num_kv_heads": 2,
+            "head_dim": 128,
+            "seq_len": 2048,
+            "batch_size": 1,
+            "bytes_per_value": 2
+          },
+          "expectedOutput": 64,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "longer context scales linearly",
+          "input": {
+            "num_layers": 32,
+            "num_kv_heads": 8,
+            "head_dim": 128,
+            "seq_len": 8192,
+            "batch_size": 1,
+            "bytes_per_value": 2
+          },
+          "expectedOutput": 1024,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "larger batch scales linearly",
+          "input": {
+            "num_layers": 32,
+            "num_kv_heads": 8,
+            "head_dim": 128,
+            "seq_len": 2048,
+            "batch_size": 4,
+            "bytes_per_value": 2
+          },
+          "expectedOutput": 1024,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-64": {
+    id: "llm-internals-prob-64",
+    title: "Chinchilla Compute-Optimal Token Count",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "chinchilla_optimal_tokens",
+    functionSignature: "chinchilla_optimal_tokens(num_params: float, tokens_per_param: float) -> float",
+    starterCode: `def chinchilla_optimal_tokens(num_params, tokens_per_param):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the Chinchilla scaling-law's real compute-optimal token calculation, the finding that reshaped how the field allocates a fixed training compute budget between model size and data size.",
+    taskDescription: "Implement `chinchilla_optimal_tokens(num_params, tokens_per_param)`: return `num_params * tokens_per_param`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both values > 0"
+      ],
+    hints: {
+  "small": "A direct proportional relationship between model size and optimal training tokens.",
+        "strong": "return num_params * tokens_per_param.",
+        "concept": "The real Chinchilla paper's finding (approximately 20 tokens per parameter for compute-optimal training) showed that most earlier large models (like the original 175B GPT-3) were substantially UNDER-trained relative to their size -- a smaller model trained on proportionally more real data can match or beat a larger undertrained one at the SAME total compute cost, which reshaped real training budget allocation industry-wide."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "chinchilla-scale model",
+          "input": {
+            "num_params": 70000000000,
+            "tokens_per_param": 20
+          },
+          "expectedOutput": 1400000000000,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "smaller model",
+          "input": {
+            "num_params": 7000000000,
+            "tokens_per_param": 20
+          },
+          "expectedOutput": 140000000000,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "different ratio",
+          "input": {
+            "num_params": 1000000000,
+            "tokens_per_param": 10
+          },
+          "expectedOutput": 10000000000,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "very large model",
+          "input": {
+            "num_params": 175000000000,
+            "tokens_per_param": 20
+          },
+          "expectedOutput": 3500000000000,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-65": {
+    id: "llm-internals-prob-65",
+    title: "KV Cache Eviction: Attention Sink Policy",
+    difficulty: "hard",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "attention_sink_evict",
+    functionSignature: "attention_sink_evict(cache_size: int, max_cache_size: int, num_sink_tokens: int) -> list[str]",
+    starterCode: `def attention_sink_evict(cache_size, max_cache_size, num_sink_tokens):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement the real Attention Sink KV-cache eviction policy (from StreamingLLM), which lets a model process an effectively unbounded stream of tokens under a fixed KV-cache budget without quality collapse.",
+    taskDescription: "Implement `attention_sink_evict(cache_size, max_cache_size, num_sink_tokens)`. If `cache_size <= max_cache_size`, return `[]` (nothing needs evicting yet). Otherwise, KEEP the first `num_sink_tokens` positions (the 'sink,' never evicted) plus the most recent `max_cache_size - num_sink_tokens` positions; return the sorted list of POSITION INDICES (as strings) that get evicted -- everything between the sink and the recent window.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "num_sink_tokens < max_cache_size",
+        "cache_size > max_cache_size"
+      ],
+    hints: {
+  "small": "The sink tokens (earliest) and the most recent window are both kept; everything in between the two gets evicted.",
+        "strong": "recent_start = cache_size - (max_cache_size - num_sink_tokens); evicted = [str(i) for i in range(num_sink_tokens, recent_start)]; return sorted(evicted, key=int).",
+        "concept": "This is the real, genuinely surprising finding from StreamingLLM -- keeping just the FIRST FEW tokens ('attention sinks') alongside a sliding recent window, and evicting everything in between, prevents the real quality collapse that naive sliding-window-only eviction causes; the paper found the model learns to dump disproportionate attention mass on early tokens regardless of their actual content, and losing that sink breaks attention's softmax normalization behavior."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "no eviction needed yet",
+          "input": {
+            "cache_size": 100,
+            "max_cache_size": 200,
+            "num_sink_tokens": 4
+          },
+          "expectedOutput": [],
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "eviction needed keeps sink and recent window",
+          "input": {
+            "cache_size": 300,
+            "max_cache_size": 200,
+            "num_sink_tokens": 4
+          },
+          "expectedOutput": [
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32",
+            "33",
+            "34",
+            "35",
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45",
+            "46",
+            "47",
+            "48",
+            "49",
+            "50",
+            "51",
+            "52",
+            "53",
+            "54",
+            "55",
+            "56",
+            "57",
+            "58",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82",
+            "83",
+            "84",
+            "85",
+            "86",
+            "87",
+            "88",
+            "89",
+            "90",
+            "91",
+            "92",
+            "93",
+            "94",
+            "95",
+            "96",
+            "97",
+            "98",
+            "99",
+            "100",
+            "101",
+            "102",
+            "103"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "large overflow evicts a wide middle range",
+          "input": {
+            "cache_size": 1000,
+            "max_cache_size": 200,
+            "num_sink_tokens": 4
+          },
+          "expectedOutput": [
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32",
+            "33",
+            "34",
+            "35",
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45",
+            "46",
+            "47",
+            "48",
+            "49",
+            "50",
+            "51",
+            "52",
+            "53",
+            "54",
+            "55",
+            "56",
+            "57",
+            "58",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82",
+            "83",
+            "84",
+            "85",
+            "86",
+            "87",
+            "88",
+            "89",
+            "90",
+            "91",
+            "92",
+            "93",
+            "94",
+            "95",
+            "96",
+            "97",
+            "98",
+            "99",
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "105",
+            "106",
+            "107",
+            "108",
+            "109",
+            "110",
+            "111",
+            "112",
+            "113",
+            "114",
+            "115",
+            "116",
+            "117",
+            "118",
+            "119",
+            "120",
+            "121",
+            "122",
+            "123",
+            "124",
+            "125",
+            "126",
+            "127",
+            "128",
+            "129",
+            "130",
+            "131",
+            "132",
+            "133",
+            "134",
+            "135",
+            "136",
+            "137",
+            "138",
+            "139",
+            "140",
+            "141",
+            "142",
+            "143",
+            "144",
+            "145",
+            "146",
+            "147",
+            "148",
+            "149",
+            "150",
+            "151",
+            "152",
+            "153",
+            "154",
+            "155",
+            "156",
+            "157",
+            "158",
+            "159",
+            "160",
+            "161",
+            "162",
+            "163",
+            "164",
+            "165",
+            "166",
+            "167",
+            "168",
+            "169",
+            "170",
+            "171",
+            "172",
+            "173",
+            "174",
+            "175",
+            "176",
+            "177",
+            "178",
+            "179",
+            "180",
+            "181",
+            "182",
+            "183",
+            "184",
+            "185",
+            "186",
+            "187",
+            "188",
+            "189",
+            "190",
+            "191",
+            "192",
+            "193",
+            "194",
+            "195",
+            "196",
+            "197",
+            "198",
+            "199",
+            "200",
+            "201",
+            "202",
+            "203",
+            "204",
+            "205",
+            "206",
+            "207",
+            "208",
+            "209",
+            "210",
+            "211",
+            "212",
+            "213",
+            "214",
+            "215",
+            "216",
+            "217",
+            "218",
+            "219",
+            "220",
+            "221",
+            "222",
+            "223",
+            "224",
+            "225",
+            "226",
+            "227",
+            "228",
+            "229",
+            "230",
+            "231",
+            "232",
+            "233",
+            "234",
+            "235",
+            "236",
+            "237",
+            "238",
+            "239",
+            "240",
+            "241",
+            "242",
+            "243",
+            "244",
+            "245",
+            "246",
+            "247",
+            "248",
+            "249",
+            "250",
+            "251",
+            "252",
+            "253",
+            "254",
+            "255",
+            "256",
+            "257",
+            "258",
+            "259",
+            "260",
+            "261",
+            "262",
+            "263",
+            "264",
+            "265",
+            "266",
+            "267",
+            "268",
+            "269",
+            "270",
+            "271",
+            "272",
+            "273",
+            "274",
+            "275",
+            "276",
+            "277",
+            "278",
+            "279",
+            "280",
+            "281",
+            "282",
+            "283",
+            "284",
+            "285",
+            "286",
+            "287",
+            "288",
+            "289",
+            "290",
+            "291",
+            "292",
+            "293",
+            "294",
+            "295",
+            "296",
+            "297",
+            "298",
+            "299",
+            "300",
+            "301",
+            "302",
+            "303",
+            "304",
+            "305",
+            "306",
+            "307",
+            "308",
+            "309",
+            "310",
+            "311",
+            "312",
+            "313",
+            "314",
+            "315",
+            "316",
+            "317",
+            "318",
+            "319",
+            "320",
+            "321",
+            "322",
+            "323",
+            "324",
+            "325",
+            "326",
+            "327",
+            "328",
+            "329",
+            "330",
+            "331",
+            "332",
+            "333",
+            "334",
+            "335",
+            "336",
+            "337",
+            "338",
+            "339",
+            "340",
+            "341",
+            "342",
+            "343",
+            "344",
+            "345",
+            "346",
+            "347",
+            "348",
+            "349",
+            "350",
+            "351",
+            "352",
+            "353",
+            "354",
+            "355",
+            "356",
+            "357",
+            "358",
+            "359",
+            "360",
+            "361",
+            "362",
+            "363",
+            "364",
+            "365",
+            "366",
+            "367",
+            "368",
+            "369",
+            "370",
+            "371",
+            "372",
+            "373",
+            "374",
+            "375",
+            "376",
+            "377",
+            "378",
+            "379",
+            "380",
+            "381",
+            "382",
+            "383",
+            "384",
+            "385",
+            "386",
+            "387",
+            "388",
+            "389",
+            "390",
+            "391",
+            "392",
+            "393",
+            "394",
+            "395",
+            "396",
+            "397",
+            "398",
+            "399",
+            "400",
+            "401",
+            "402",
+            "403",
+            "404",
+            "405",
+            "406",
+            "407",
+            "408",
+            "409",
+            "410",
+            "411",
+            "412",
+            "413",
+            "414",
+            "415",
+            "416",
+            "417",
+            "418",
+            "419",
+            "420",
+            "421",
+            "422",
+            "423",
+            "424",
+            "425",
+            "426",
+            "427",
+            "428",
+            "429",
+            "430",
+            "431",
+            "432",
+            "433",
+            "434",
+            "435",
+            "436",
+            "437",
+            "438",
+            "439",
+            "440",
+            "441",
+            "442",
+            "443",
+            "444",
+            "445",
+            "446",
+            "447",
+            "448",
+            "449",
+            "450",
+            "451",
+            "452",
+            "453",
+            "454",
+            "455",
+            "456",
+            "457",
+            "458",
+            "459",
+            "460",
+            "461",
+            "462",
+            "463",
+            "464",
+            "465",
+            "466",
+            "467",
+            "468",
+            "469",
+            "470",
+            "471",
+            "472",
+            "473",
+            "474",
+            "475",
+            "476",
+            "477",
+            "478",
+            "479",
+            "480",
+            "481",
+            "482",
+            "483",
+            "484",
+            "485",
+            "486",
+            "487",
+            "488",
+            "489",
+            "490",
+            "491",
+            "492",
+            "493",
+            "494",
+            "495",
+            "496",
+            "497",
+            "498",
+            "499",
+            "500",
+            "501",
+            "502",
+            "503",
+            "504",
+            "505",
+            "506",
+            "507",
+            "508",
+            "509",
+            "510",
+            "511",
+            "512",
+            "513",
+            "514",
+            "515",
+            "516",
+            "517",
+            "518",
+            "519",
+            "520",
+            "521",
+            "522",
+            "523",
+            "524",
+            "525",
+            "526",
+            "527",
+            "528",
+            "529",
+            "530",
+            "531",
+            "532",
+            "533",
+            "534",
+            "535",
+            "536",
+            "537",
+            "538",
+            "539",
+            "540",
+            "541",
+            "542",
+            "543",
+            "544",
+            "545",
+            "546",
+            "547",
+            "548",
+            "549",
+            "550",
+            "551",
+            "552",
+            "553",
+            "554",
+            "555",
+            "556",
+            "557",
+            "558",
+            "559",
+            "560",
+            "561",
+            "562",
+            "563",
+            "564",
+            "565",
+            "566",
+            "567",
+            "568",
+            "569",
+            "570",
+            "571",
+            "572",
+            "573",
+            "574",
+            "575",
+            "576",
+            "577",
+            "578",
+            "579",
+            "580",
+            "581",
+            "582",
+            "583",
+            "584",
+            "585",
+            "586",
+            "587",
+            "588",
+            "589",
+            "590",
+            "591",
+            "592",
+            "593",
+            "594",
+            "595",
+            "596",
+            "597",
+            "598",
+            "599",
+            "600",
+            "601",
+            "602",
+            "603",
+            "604",
+            "605",
+            "606",
+            "607",
+            "608",
+            "609",
+            "610",
+            "611",
+            "612",
+            "613",
+            "614",
+            "615",
+            "616",
+            "617",
+            "618",
+            "619",
+            "620",
+            "621",
+            "622",
+            "623",
+            "624",
+            "625",
+            "626",
+            "627",
+            "628",
+            "629",
+            "630",
+            "631",
+            "632",
+            "633",
+            "634",
+            "635",
+            "636",
+            "637",
+            "638",
+            "639",
+            "640",
+            "641",
+            "642",
+            "643",
+            "644",
+            "645",
+            "646",
+            "647",
+            "648",
+            "649",
+            "650",
+            "651",
+            "652",
+            "653",
+            "654",
+            "655",
+            "656",
+            "657",
+            "658",
+            "659",
+            "660",
+            "661",
+            "662",
+            "663",
+            "664",
+            "665",
+            "666",
+            "667",
+            "668",
+            "669",
+            "670",
+            "671",
+            "672",
+            "673",
+            "674",
+            "675",
+            "676",
+            "677",
+            "678",
+            "679",
+            "680",
+            "681",
+            "682",
+            "683",
+            "684",
+            "685",
+            "686",
+            "687",
+            "688",
+            "689",
+            "690",
+            "691",
+            "692",
+            "693",
+            "694",
+            "695",
+            "696",
+            "697",
+            "698",
+            "699",
+            "700",
+            "701",
+            "702",
+            "703",
+            "704",
+            "705",
+            "706",
+            "707",
+            "708",
+            "709",
+            "710",
+            "711",
+            "712",
+            "713",
+            "714",
+            "715",
+            "716",
+            "717",
+            "718",
+            "719",
+            "720",
+            "721",
+            "722",
+            "723",
+            "724",
+            "725",
+            "726",
+            "727",
+            "728",
+            "729",
+            "730",
+            "731",
+            "732",
+            "733",
+            "734",
+            "735",
+            "736",
+            "737",
+            "738",
+            "739",
+            "740",
+            "741",
+            "742",
+            "743",
+            "744",
+            "745",
+            "746",
+            "747",
+            "748",
+            "749",
+            "750",
+            "751",
+            "752",
+            "753",
+            "754",
+            "755",
+            "756",
+            "757",
+            "758",
+            "759",
+            "760",
+            "761",
+            "762",
+            "763",
+            "764",
+            "765",
+            "766",
+            "767",
+            "768",
+            "769",
+            "770",
+            "771",
+            "772",
+            "773",
+            "774",
+            "775",
+            "776",
+            "777",
+            "778",
+            "779",
+            "780",
+            "781",
+            "782",
+            "783",
+            "784",
+            "785",
+            "786",
+            "787",
+            "788",
+            "789",
+            "790",
+            "791",
+            "792",
+            "793",
+            "794",
+            "795",
+            "796",
+            "797",
+            "798",
+            "799",
+            "800",
+            "801",
+            "802",
+            "803"
+          ],
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "exactly at cache limit no eviction",
+          "input": {
+            "cache_size": 200,
+            "max_cache_size": 200,
+            "num_sink_tokens": 4
+          },
+          "expectedOutput": [],
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-66": {
+    id: "llm-internals-prob-66",
+    title: "Speculative Decoding: Accept or Reject a Draft Token",
+    difficulty: "hard",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "spec_decode_accept",
+    functionSignature: "spec_decode_accept(draft_prob: float, target_prob: float, random_draw: float) -> bool",
+    starterCode: `def spec_decode_accept(draft_prob, target_prob, random_draw):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement speculative decoding's real acceptance test, the exact rejection-sampling rule that makes speculative decoding's output distribution IDENTICAL to standard autoregressive decoding from the target model (not merely a fast approximation).",
+    taskDescription: "Implement `spec_decode_accept(draft_prob, target_prob, random_draw)`. Accept the drafted token if `random_draw < min(1, target_prob / draft_prob)`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 < draft_prob <= 1",
+        "0 <= target_prob <= 1",
+        "0 <= random_draw < 1"
+      ],
+    hints: {
+  "small": "Accept with probability equal to the ratio of target-to-draft probability (capped at 1).",
+        "strong": "return random_draw < min(1.0, target_prob/draft_prob).",
+        "concept": "This is the real, exact rejection-sampling acceptance rule from the speculative decoding papers (Leviathan et al., Chen et al.) -- it's specifically designed so that, across many draws, the OVERALL output distribution matches sampling from the target model alone exactly, which is why speculative decoding is a genuine speedup technique with ZERO quality cost, not an approximation trading quality for speed."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "target agrees strongly always accepts",
+          "input": {
+            "draft_prob": 0.5,
+            "target_prob": 0.9,
+            "random_draw": 0.5
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "target disagrees may reject",
+          "input": {
+            "draft_prob": 0.9,
+            "target_prob": 0.1,
+            "random_draw": 0.5
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "target disagrees low random draw still accepts",
+          "input": {
+            "draft_prob": 0.9,
+            "target_prob": 0.1,
+            "random_draw": 0.05
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "equal probabilities always accepts",
+          "input": {
+            "draft_prob": 0.5,
+            "target_prob": 0.5,
+            "random_draw": 0.99
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-67": {
+    id: "llm-internals-prob-67",
+    title: "Mixture-of-Depths: Token Layer-Skip Decision",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "should_skip_layer",
+    functionSignature: "should_skip_layer(router_score: float, capacity_threshold: float) -> bool",
+    starterCode: `def should_skip_layer(router_score, capacity_threshold):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement Mixture-of-Depths' real per-token routing decision, letting individual tokens skip a transformer layer's computation entirely when a lightweight router judges it unnecessary for that token.",
+    taskDescription: "Implement `should_skip_layer(router_score, capacity_threshold)`: return `True` (skip this layer for this token) if `router_score < capacity_threshold`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "both values are floats, typically in a comparable normalized range"
+      ],
+    hints: {
+  "small": "A simple threshold comparison decides per-token layer participation.",
+        "strong": "return router_score < capacity_threshold.",
+        "concept": "This is the real, core idea behind Mixture-of-Depths -- unlike Mixture-of-Experts (which routes tokens to different PARAMETERS), MoD routes tokens to different AMOUNTS of computation, letting 'easy' tokens skip layers entirely while 'hard' tokens get the full model depth, achieving real compute savings without uniformly shrinking the model for every token."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "low router score skips layer",
+          "input": {
+            "router_score": 0.2,
+            "capacity_threshold": 0.5
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "high router score processes normally",
+          "input": {
+            "router_score": 0.8,
+            "capacity_threshold": 0.5
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "exactly at threshold does not skip",
+          "input": {
+            "router_score": 0.5,
+            "capacity_threshold": 0.5
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "very low score always skips",
+          "input": {
+            "router_score": 0,
+            "capacity_threshold": 0.1
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-68": {
+    id: "llm-internals-prob-68",
+    title: "Detect Attention Entropy Collapse",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "attention_entropy",
+    functionSignature: "attention_entropy(attention_weights: list[float]) -> float",
+    starterCode: `import math
+
+def attention_entropy(attention_weights):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement attention-entropy computation, a real diagnostic metric for detecting when an attention head has collapsed to attending almost entirely to one position (a known real training pathology).",
+    taskDescription: "Implement `attention_entropy(attention_weights)`: return the Shannon entropy `-sum(p * log(p) for p in attention_weights if p > 0)` of the attention distribution (treat any zero weight as contributing 0, avoiding log(0)).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "attention_weights sums to ~1, all values >= 0"
+      ],
+    hints: {
+  "small": "Standard Shannon entropy, skipping zero-probability terms.",
+        "strong": "return -sum(p*math.log(p) for p in attention_weights if p > 0).",
+        "concept": "Low attention entropy (concentrated on very few positions) versus high entropy (spread broadly) is a real, measurable diagnostic -- some heads legitimately specialize in low-entropy 'look at one specific thing' behavior (e.g. positional heads), but a WIDESPREAD entropy collapse across many heads is a real, known training pathology worth monitoring for, since it can indicate the model has stopped genuinely integrating context."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "uniform attention high entropy",
+          "input": {
+            "attention_weights": [
+              0.25,
+              0.25,
+              0.25,
+              0.25
+            ]
+          },
+          "expectedOutput": 1.3862943611198906,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "collapsed attention low entropy",
+          "input": {
+            "attention_weights": [
+              0.97,
+              0.01,
+              0.01,
+              0.01
+            ]
+          },
+          "expectedOutput": 0.16770053683981004,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "fully collapsed zero entropy",
+          "input": {
+            "attention_weights": [
+              1,
+              0,
+              0
+            ]
+          },
+          "expectedOutput": 0,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "moderately spread attention",
+          "input": {
+            "attention_weights": [
+              0.5,
+              0.3,
+              0.2
+            ]
+          },
+          "expectedOutput": 1.0296530140645737,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-69": {
+    id: "llm-internals-prob-69",
+    title: "Compute Effective Batch Size With Gradient Accumulation",
+    difficulty: "easy",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "effective_batch_size",
+    functionSignature: "effective_batch_size(per_device_batch_size: int, num_devices: int, gradient_accumulation_steps: int) -> int",
+    starterCode: `def effective_batch_size(per_device_batch_size, num_devices, gradient_accumulation_steps):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement effective batch size computation, the real arithmetic behind how gradient accumulation and multi-device training combine to reach a target training batch size that wouldn't otherwise fit in memory.",
+    taskDescription: "Implement `effective_batch_size(per_device_batch_size, num_devices, gradient_accumulation_steps)`: return `per_device_batch_size * num_devices * gradient_accumulation_steps`.",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "all values >= 1"
+      ],
+    hints: {
+  "small": "Multiply the three real scaling factors together.",
+        "strong": "return per_device_batch_size * num_devices * gradient_accumulation_steps.",
+        "concept": "This is the real, direct calculation behind reaching a large target training batch size (often needed for stable large-model training) when the per-device memory-limited batch size is small -- gradient accumulation (summing gradients over several forward/backward passes before an optimizer step) and multi-device data parallelism are the two real, independent multipliers that combine here."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "single device no accumulation",
+          "input": {
+            "per_device_batch_size": 32,
+            "num_devices": 1,
+            "gradient_accumulation_steps": 1
+          },
+          "expectedOutput": 32,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "multi-device training",
+          "input": {
+            "per_device_batch_size": 8,
+            "num_devices": 8,
+            "gradient_accumulation_steps": 1
+          },
+          "expectedOutput": 64,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "gradient accumulation simulates larger batch",
+          "input": {
+            "per_device_batch_size": 4,
+            "num_devices": 1,
+            "gradient_accumulation_steps": 16
+          },
+          "expectedOutput": 64,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "both multi-device and accumulation",
+          "input": {
+            "per_device_batch_size": 8,
+            "num_devices": 4,
+            "gradient_accumulation_steps": 4
+          },
+          "expectedOutput": 128,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
+  "llm-internals-prob-70": {
+    id: "llm-internals-prob-70",
+    title: "Detect Numerical Overflow Risk in Mixed-Precision Training",
+    difficulty: "medium",
+    topic: "Transformers & LLMs",
+    estimatedTime: '15 min',
+    functionName: "overflow_risk",
+    functionSignature: "overflow_risk(activation_max_abs: float, dtype_max: float, safety_margin: float) -> bool",
+    starterCode: `def overflow_risk(activation_max_abs, dtype_max, safety_margin):
+    # Your implementation here
+    pass
+`,
+    mission: "Implement a real overflow-risk check for mixed-precision (fp16) training, catching activations that are approaching the representable range's limit before they actually overflow to Inf/NaN.",
+    taskDescription: "Implement `overflow_risk(activation_max_abs, dtype_max, safety_margin)`: return `True` if `activation_max_abs > dtype_max * (1 - safety_margin)` (within `safety_margin` fraction of the dtype's max representable value).",
+    libraryPolicyText: 'Libraries allowed · Pure Python earns +10 bonus XP',
+    bonusPoints: 10,
+    bonusDescription: 'Pure Python implementation',
+    constraints: [
+  "0 <= safety_margin < 1",
+        "dtype_max > 0"
+      ],
+    hints: {
+  "small": "Flag risk before hitting the actual limit, using a safety margin.",
+        "strong": "return activation_max_abs > dtype_max * (1 - safety_margin).",
+        "concept": "FP16's real, narrow representable range (max ~65504) is a genuine, common cause of NaN losses partway through training -- this is exactly why mixed-precision training uses loss scaling (multiplying the loss up before backward, then unscaling gradients) and why monitoring activation magnitudes for early overflow warning signs (before an actual NaN appears) is real, standard practice."
+      },
+    conceptConnections: [],
+    testCases: [
+  {
+          "id": "tc1",
+          "label": "well within safe range",
+          "input": {
+            "activation_max_abs": 1000,
+            "dtype_max": 65504,
+            "safety_margin": 0.1
+          },
+          "expectedOutput": false,
+          "hidden": false
+        },
+        {
+          "id": "tc2",
+          "label": "approaching the limit flagged as risky",
+          "input": {
+            "activation_max_abs": 60000,
+            "dtype_max": 65504,
+            "safety_margin": 0.1
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc3",
+          "label": "already past the safety margin",
+          "input": {
+            "activation_max_abs": 65000,
+            "dtype_max": 65504,
+            "safety_margin": 0.05
+          },
+          "expectedOutput": true,
+          "hidden": false
+        },
+        {
+          "id": "tc4",
+          "label": "very conservative safety margin",
+          "input": {
+            "activation_max_abs": 30000,
+            "dtype_max": 65504,
+            "safety_margin": 0.6
+          },
+          "expectedOutput": true,
+          "hidden": true
+        }
+      ],
+    runtime: { language: 'python', capabilities: ['python'] },
+  },
 };
 
 import curriculum500Data from '../data/curriculum500.json';

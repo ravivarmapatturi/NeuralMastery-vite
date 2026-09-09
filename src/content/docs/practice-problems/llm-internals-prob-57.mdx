@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 57: Problem 417"
-sidebar_position: 417
-description: "Curriculum Problem 417 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: hard
-topic: transformers-llms
+title: "Practice: Label Smoothing Applied to Target Distribution"
+description: "Implement label smoothing, a real regularization technique softening the hard one-hot training target to prevent overconfident LLM predictions."
+difficulty: "medium"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 57: Problem 417
+# Label Smoothing Applied to Target Distribution
 
-**Rank #417** · Difficulty: **Hard** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-56`.
+## Overview
+
+Implement label smoothing, a real regularization technique softening the hard one-hot training target to prevent overconfident LLM predictions.
+
+## Task
+
+Implement `label_smoothing(target_idx, vocab_size, smoothing)`. The target distribution assigns `1 - smoothing + smoothing/vocab_size` to the true token, and `smoothing/vocab_size` to every other token. Return the full `vocab_size`-length distribution.
 
 <PracticePlayground problemId="llm-internals-prob-57" />
-
-<Solution>
-
-```python
-def llm_internals_p57(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

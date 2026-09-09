@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 67: Problem 427"
-sidebar_position: 427
-description: "Curriculum Problem 427 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: hard
-topic: transformers-llms
+title: "Practice: Mixture-of-Depths: Token Layer-Skip Decision"
+description: "Implement Mixture-of-Depths' real per-token routing decision, letting individual tokens skip a transformer layer's computation entirely when a lightweight router judges it unnecessary for that token."
+difficulty: "medium"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 67: Problem 427
+# Mixture-of-Depths: Token Layer-Skip Decision
 
-**Rank #427** · Difficulty: **Hard** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-66`.
+## Overview
+
+Implement Mixture-of-Depths' real per-token routing decision, letting individual tokens skip a transformer layer's computation entirely when a lightweight router judges it unnecessary for that token.
+
+## Task
+
+Implement `should_skip_layer(router_score, capacity_threshold)`: return `True` (skip this layer for this token) if `router_score < capacity_threshold`.
 
 <PracticePlayground problemId="llm-internals-prob-67" />
-
-<Solution>
-
-```python
-def llm_internals_p67(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

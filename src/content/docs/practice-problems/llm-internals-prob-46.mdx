@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 46: Problem 406"
-sidebar_position: 406
-description: "Curriculum Problem 406 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Sinusoidal Positional Encoding"
+description: "Implement the original Transformer's sinusoidal positional encoding formula, the fixed (non-learned) position representation from 'Attention Is All You Need.'"
+difficulty: "medium"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 46: Problem 406
+# Sinusoidal Positional Encoding
 
-**Rank #406** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-45`.
+## Overview
+
+Implement the original Transformer's sinusoidal positional encoding formula, the fixed (non-learned) position representation from 'Attention Is All You Need.'
+
+## Task
+
+Implement `sinusoidal_pe(position, dim_index, d_model)`. Compute `angle = position / (10000 ** (2*(dim_index//2)/d_model))`. Return `sin(angle)` if `dim_index` is even, else `cos(angle)`.
 
 <PracticePlayground problemId="llm-internals-prob-46" />
-
-<Solution>
-
-```python
-def llm_internals_p46(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in LLM evaluation.
-
-</Solution>

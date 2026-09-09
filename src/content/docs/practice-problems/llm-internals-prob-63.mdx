@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 63: Problem 423"
-sidebar_position: 423
-description: "Curriculum Problem 423 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: hard
-topic: transformers-llms
+title: "Practice: KV Cache Size With Grouped Query Attention"
+description: "Implement KV-cache size estimation specifically accounting for Grouped Query Attention's reduced KV head count, the real reason GQA models have a measurably smaller serving memory footprint."
+difficulty: "medium"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 63: Problem 423
+# KV Cache Size With Grouped Query Attention
 
-**Rank #423** · Difficulty: **Hard** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-62`.
+## Overview
+
+Implement KV-cache size estimation specifically accounting for Grouped Query Attention's reduced KV head count, the real reason GQA models have a measurably smaller serving memory footprint.
+
+## Task
+
+Implement `gqa_kv_cache_size_mb(num_layers, num_kv_heads, head_dim, seq_len, batch_size, bytes_per_value)`. Total elements: `2 (K and V) * num_layers * num_kv_heads * head_dim * seq_len * batch_size`. Multiply by `bytes_per_value`, convert to MB (divide by `1024*1024`).
 
 <PracticePlayground problemId="llm-internals-prob-63" />
-
-<Solution>
-
-```python
-def llm_internals_p63(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

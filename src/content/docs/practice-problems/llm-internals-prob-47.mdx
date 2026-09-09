@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 47: Problem 407"
-sidebar_position: 407
-description: "Curriculum Problem 407 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Reshape Flat Vector Into Multi-Head Attention Heads"
+description: "Implement the multi-head split operation, dividing one flat query/key/value vector into the separate per-head sub-vectors multi-head attention actually operates on."
+difficulty: "medium"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 47: Problem 407
+# Reshape Flat Vector Into Multi-Head Attention Heads
 
-**Rank #407** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-46`.
+## Overview
+
+Implement the multi-head split operation, dividing one flat query/key/value vector into the separate per-head sub-vectors multi-head attention actually operates on.
+
+## Task
+
+Implement `split_into_heads(x, num_heads)`. Split `x` into `num_heads` equal contiguous chunks. Return the list of chunks (each a list of floats).
 
 <PracticePlayground problemId="llm-internals-prob-47" />
-
-<Solution>
-
-```python
-def llm_internals_p47(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

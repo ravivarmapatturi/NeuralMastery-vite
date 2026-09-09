@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 59: Problem 419"
-sidebar_position: 419
-description: "Curriculum Problem 419 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: hard
-topic: transformers-llms
+title: "Practice: Check Weight Tying Validity"
+description: "Implement weight-tying shape validation, checking whether a model's input embedding and output (unembedding) layer weights can legally share the same underlying tensor."
+difficulty: "easy"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 59: Problem 419
+# Check Weight Tying Validity
 
-**Rank #419** · Difficulty: **Hard** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-58`.
+## Overview
+
+Implement weight-tying shape validation, checking whether a model's input embedding and output (unembedding) layer weights can legally share the same underlying tensor.
+
+## Task
+
+Implement `weight_tying_valid(embedding_shape, output_layer_shape)`: return `True` if `embedding_shape == output_layer_shape` (weight tying requires the exact same shape since it's literally the same tensor used in both places, just transposed in one direction).
 
 <PracticePlayground problemId="llm-internals-prob-59" />
-
-<Solution>
-
-```python
-def llm_internals_p59(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

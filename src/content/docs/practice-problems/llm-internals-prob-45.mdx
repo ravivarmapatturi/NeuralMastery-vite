@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 45: Problem 405"
-sidebar_position: 405
-description: "Curriculum Problem 405 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: GELU Activation (Tanh Approximation)"
+description: "Implement the tanh-approximated GELU activation, the real activation function used in BERT, GPT-2/3, and many other transformer feed-forward blocks."
+difficulty: "medium"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 45: Problem 405
+# GELU Activation (Tanh Approximation)
 
-**Rank #405** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-44`.
+## Overview
+
+Implement the tanh-approximated GELU activation, the real activation function used in BERT, GPT-2/3, and many other transformer feed-forward blocks.
+
+## Task
+
+Implement `gelu_approx(x)` using the standard tanh approximation: `0.5 * x * (1 + tanh(sqrt(2/pi) * (x + 0.044715 * x**3)))`.
 
 <PracticePlayground problemId="llm-internals-prob-45" />
-
-<Solution>
-
-```python
-def llm_internals_p45(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

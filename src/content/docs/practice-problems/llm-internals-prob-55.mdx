@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 55: Problem 415"
-sidebar_position: 415
-description: "Curriculum Problem 415 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Token Embedding Lookup With Padding Handling"
+description: "Implement embedding lookup with correct padding-token handling, the real first layer of any transformer converting discrete token ids into continuous vectors."
+difficulty: "easy"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 55: Problem 415
+# Token Embedding Lookup With Padding Handling
 
-**Rank #415** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-54`.
+## Overview
+
+Implement embedding lookup with correct padding-token handling, the real first layer of any transformer converting discrete token ids into continuous vectors.
+
+## Task
+
+Implement `embedding_lookup(token_ids, embedding_table, padding_idx, embed_dim)`. For each token id, return its embedding from `embedding_table`, EXCEPT if the id equals `padding_idx`, always return a zero vector of length `embed_dim` regardless of what's in the table.
 
 <PracticePlayground problemId="llm-internals-prob-55" />
-
-<Solution>
-
-```python
-def llm_internals_p55(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

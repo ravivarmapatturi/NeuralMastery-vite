@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 43: Problem 403"
-sidebar_position: 403
-description: "Curriculum Problem 403 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Greedy Longest-Match WordPiece Tokenization"
+description: "Implement WordPiece's real greedy longest-match-first tokenization algorithm (used by BERT), splitting an out-of-vocabulary word into known subword pieces."
+difficulty: "hard"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 43: Problem 403
+# Greedy Longest-Match WordPiece Tokenization
 
-**Rank #403** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-42`.
+## Overview
+
+Implement WordPiece's real greedy longest-match-first tokenization algorithm (used by BERT), splitting an out-of-vocabulary word into known subword pieces.
+
+## Task
+
+Implement `wordpiece_tokenize(word, vocab, unk_token)`. Starting from position 0, greedily find the LONGEST prefix of the remaining substring that's in `vocab` (for positions after the first, the candidate must be prefixed with `'##'` before checking vocab membership). If no valid piece is found at any position, return `[unk_token]` for the WHOLE word (not partial pieces).
 
 <PracticePlayground problemId="llm-internals-prob-43" />
-
-<Solution>
-
-```python
-def llm_internals_p43(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

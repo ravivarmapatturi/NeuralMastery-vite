@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: Transformers Module 49: Problem 409"
-sidebar_position: 409
-description: "Curriculum Problem 409 (Stage 7: Transformers, LLMs & Foundation Models): Master Transformers / LLM internals."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Merge a LoRA Adapter Into the Base Weight"
+description: "Implement LoRA adapter merging, the real formula for folding a trained low-rank adapter back into the base model weight for zero-overhead inference."
+difficulty: "medium"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# Transformers Module 49: Problem 409
+# Merge a LoRA Adapter Into the Base Weight
 
-**Rank #409** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-48`.
+## Overview
+
+Implement LoRA adapter merging, the real formula for folding a trained low-rank adapter back into the base model weight for zero-overhead inference.
+
+## Task
+
+Implement `merge_lora(base_weight, lora_a, lora_b, alpha, rank)` (simplified to scalars representing one weight element's low-rank update): return `base_weight + (alpha/rank) * lora_a * lora_b`.
 
 <PracticePlayground problemId="llm-internals-prob-49" />
-
-<Solution>
-
-```python
-def llm_internals_p49(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in Transformers / LLM internals.
-
-</Solution>

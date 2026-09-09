@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 44: Problem 404"
-sidebar_position: 404
-description: "Curriculum Problem 404 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Standard LayerNorm Computation"
+description: "Implement standard LayerNorm, the original Transformer's real normalization layer, for direct comparison against RMSNorm's simplification."
+difficulty: "medium"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 44: Problem 404
+# Standard LayerNorm Computation
 
-**Rank #404** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-43`.
+## Overview
+
+Implement standard LayerNorm, the original Transformer's real normalization layer, for direct comparison against RMSNorm's simplification.
+
+## Task
+
+Implement `layernorm(x, gamma, beta, eps)`. Compute `mean = mean(x)`, `var = mean((xi-mean)**2 for xi in x)`. Return `[(xi-mean)/sqrt(var+eps)*g + b for xi,g,b in zip(x,gamma,beta)]`.
 
 <PracticePlayground problemId="llm-internals-prob-44" />
-
-<Solution>
-
-```python
-def llm_internals_p44(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in LLM evaluation.
-
-</Solution>

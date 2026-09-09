@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 70: Problem 430"
-sidebar_position: 430
-description: "Curriculum Problem 430 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
-difficulty: hard
-topic: transformers-llms
+title: "Practice: Detect Numerical Overflow Risk in Mixed-Precision Training"
+description: "Implement a real overflow-risk check for mixed-precision (fp16) training, catching activations that are approaching the representable range's limit before they actually overflow to Inf/NaN."
+difficulty: "medium"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 70: Problem 430
+# Detect Numerical Overflow Risk in Mixed-Precision Training
 
-**Rank #430** · Difficulty: **Hard** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-69`.
+## Overview
+
+Implement a real overflow-risk check for mixed-precision (fp16) training, catching activations that are approaching the representable range's limit before they actually overflow to Inf/NaN.
+
+## Task
+
+Implement `overflow_risk(activation_max_abs, dtype_max, safety_margin)`: return `True` if `activation_max_abs > dtype_max * (1 - safety_margin)` (within `safety_margin` fraction of the dtype's max representable value).
 
 <PracticePlayground problemId="llm-internals-prob-70" />
-
-<Solution>
-
-```python
-def llm_internals_p70(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in LLM evaluation.
-
-</Solution>

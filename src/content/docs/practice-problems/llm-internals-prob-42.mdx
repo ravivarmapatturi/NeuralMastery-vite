@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 42: Problem 402"
-sidebar_position: 402
-description: "Curriculum Problem 402 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: Byte-Pair Encoding: One Merge Step"
+description: "Implement one real Byte-Pair Encoding merge step, the core iterative operation that builds a BPE tokenizer's vocabulary from raw characters upward."
+difficulty: "hard"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 42: Problem 402
+# Byte-Pair Encoding: One Merge Step
 
-**Rank #402** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-41`.
+## Overview
+
+Implement one real Byte-Pair Encoding merge step, the core iterative operation that builds a BPE tokenizer's vocabulary from raw characters upward.
+
+## Task
+
+Implement `bpe_merge_step(tokens, pair_to_merge)`. `pair_to_merge` is `(a, b)`. Scan `tokens` left to right; whenever two CONSECUTIVE tokens exactly equal `(a, b)`, replace them with the single merged token `a+b` (don't re-scan the merged result in the same pass -- move past it). Return the resulting token list.
 
 <PracticePlayground problemId="llm-internals-prob-42" />
-
-<Solution>
-
-```python
-def llm_internals_p42(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in LLM evaluation.
-
-</Solution>

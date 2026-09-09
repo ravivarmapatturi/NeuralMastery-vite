@@ -1,31 +1,22 @@
 ---
-placeholder: true
-title: "Practice: LLM evaluation Module 50: Problem 410"
-sidebar_position: 410
-description: "Curriculum Problem 410 (Stage 7: Transformers, LLMs & Foundation Models): Master LLM evaluation."
-difficulty: medium
-topic: transformers-llms
+title: "Practice: INT8 Quantization Scale Computation"
+description: "Implement symmetric INT8 quantization scale computation, the real first step of quantizing a weight tensor's floating-point values into the int8 range."
+difficulty: "medium"
+topic: "Transformers & LLMs"
 ---
 
 import PracticePlayground from '../../../components/content/PracticePlayground';
-import { Solution } from '../../../components/content/ExpandableDepth';
 
-# LLM evaluation Module 50: Problem 410
+# INT8 Quantization Scale Computation
 
-**Rank #410** · Difficulty: **Medium** · Stage: **Stage 7: Transformers, LLMs & Foundation Models** · Category: **Transformers & LLMs**
+**Track**: Transformers & LLMs | **Points**: 40 XP
 
-Master core AI engineering concepts in this interactive problem. Prerequisite: `llm-internals-prob-49`.
+## Overview
+
+Implement symmetric INT8 quantization scale computation, the real first step of quantizing a weight tensor's floating-point values into the int8 range.
+
+## Task
+
+Implement `int8_quant_scale(max_abs_value)`: return `max_abs_value / 127.0` (symmetric quantization maps `[-max_abs_value, max_abs_value]` to `[-127, 127]`).
 
 <PracticePlayground problemId="llm-internals-prob-50" />
-
-<Solution>
-
-```python
-def llm_internals_p50(data):
-    # Reference implementation
-    return data
-```
-
-This problem tests fundamental skills in LLM evaluation.
-
-</Solution>
