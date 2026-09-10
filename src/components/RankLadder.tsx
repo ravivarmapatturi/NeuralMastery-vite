@@ -2,7 +2,7 @@ import RankBadge from './RankBadge';
 import { RANK_TIERS, rankForLevel } from '../lib/rankTiers';
 
 /**
- * A compact view of the FULL 8-tier rank ladder (see lib/rankTiers.ts),
+ * A compact view of the FULL 10-tier rank ladder (see lib/rankTiers.ts),
  * with the learner's current tier visually highlighted -- reuses the same
  * RANK_TIERS data and RankBadge component ProfilePage's own single-tier
  * "Rank" card already uses, rather than a second, parallel rank
