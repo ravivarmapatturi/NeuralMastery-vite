@@ -525,24 +525,11 @@ export default function ProblemPanel({
               </div>
             </div>
 
-            {/* Item 2: Why This Matters Block */}
+            {/* Related Skills -- the Mission box above already states why
+                this problem matters, so this no longer repeats that same
+                sentence under a second "Why This Matters" header (the two
+                blocks previously showed identical text back-to-back). */}
             <div style={{ marginBottom: 22 }}>
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.06em',
-                  color: 'var(--nm-text-muted)',
-                  marginBottom: 6,
-                }}
-              >
-                Why This Matters
-              </div>
-              <div style={{ fontSize: 13.5, lineHeight: 1.6, color: 'var(--nm-text-secondary)', marginBottom: 12 }}>
-                {problem.mission}
-              </div>
-
               <RelatedSkillsLinks problem={problem} />
             </div>
 
