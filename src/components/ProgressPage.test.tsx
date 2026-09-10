@@ -38,7 +38,7 @@ describe('ProgressPage rank ladder', () => {
     expect(screen.getByText('Rank ladder')).toBeInTheDocument()
     // All 10 tiers render, not just the current one.
     for (const label of ['Initiate', 'Apprentice', 'Explorer', 'Builder', 'Practitioner', 'Specialist', 'Expert', 'Master', 'Grandmaster', 'Neural Legend']) {
-      expect(screen.getByText(label)).toBeInTheDocument()
+      expect(screen.getAllByText(label).length).toBeGreaterThanOrEqual(1)
     }
     // A level-1 learner's real current tier is Initiate.
     expect(screen.getByText('You')).toBeInTheDocument()
@@ -55,6 +55,17 @@ describe('ProgressPage rank ladder', () => {
     // Walk up to the tier card and confirm it's the Specialist one, not Initiate.
     const card = you.closest('div[title]')
     expect(card).toHaveAttribute('title', expect.stringContaining('Specialist'))
+  })
+
+  it('renders the YOUR MASTERY hero, Next Best Action, and Curriculum vs Practice sections', () => {
+    renderProgressPage()
+    expect(screen.getByText('YOUR MASTERY')).toBeInTheDocument()
+    expect(screen.getByText(/Level Progress:/i)).toBeInTheDocument()
+    expect(screen.getByText('Curriculum Progress')).toBeInTheDocument()
+    expect(screen.getByText('Curriculum Checkpoints')).toBeInTheDocument()
+    expect(screen.getByText('Practice Progress')).toBeInTheDocument()
+    expect(screen.getByText('Mastery Map (Tracks)')).toBeInTheDocument()
+    expect(screen.getByText(/Next Best Action/i)).toBeInTheDocument()
   })
 })
 
