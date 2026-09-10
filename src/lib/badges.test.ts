@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BADGES, getUnlockedBadges } from './badges';
+import { BADGES, RARITY_CONFIGS, getUnlockedBadges, computeBadgeStats, type BadgeRarity, type BadgeCategory } from './badges';
 
 describe('BADGES definition & unlock logic', () => {
   it('defines unique badge IDs and valid properties', () => {
@@ -9,7 +9,44 @@ describe('BADGES definition & unlock logic', () => {
       expect(b.title).toBeTruthy();
       expect(b.icon).toBeTruthy();
       expect(b.description).toBeTruthy();
+      expect(b.rarity).toBeTruthy();
+      expect(b.category).toBeTruthy();
+      expect(b.requirementText).toBeTruthy();
     });
+  });
+
+  it('covers all 6 rarity tiers and all 5 specified categories', () => {
+    const rarities = new Set<BadgeRarity>(BADGES.map((b) => b.rarity));
+    expect(rarities).toEqual(new Set(['common', 'uncommon', 'rare', 'epic', 'legendary', 'mythic']));
+
+    const categories = new Set<BadgeCategory>(BADGES.map((b) => b.category));
+    expect(categories).toEqual(new Set(['learning', 'practice', 'difficulty', 'consistency', 'mastery']));
+
+    for (const r of ['common', 'uncommon', 'rare', 'epic', 'legendary', 'mythic'] as BadgeRarity[]) {
+      expect(RARITY_CONFIGS[r]).toBeDefined();
+      expect(RARITY_CONFIGS[r].color).toBeTruthy();
+    }
+  });
+
+  it('every badge has getProgress that returns non-negative current and target', () => {
+    const stats = {
+      totalXP: 120,
+      streak: 4,
+      pagesUnderstood: 8,
+      problemsSolved: 3,
+      systemDesignSolved: 1,
+      isSignedIn: true,
+      independentSolves: 2,
+      hardSolved: 0,
+      reviewsCompleted: 1,
+      depthRevealed: 2,
+    };
+    for (const badge of BADGES) {
+      const p = badge.getProgress(stats);
+      expect(p.target).toBeGreaterThan(0);
+      expect(p.current).toBeGreaterThanOrEqual(0);
+      expect(p.unit).toBeTruthy();
+    }
   });
 
   it('correctly locks all badges for a brand-new user with 0 stats', () => {
@@ -56,5 +93,27 @@ describe('BADGES definition & unlock logic', () => {
     expect(unlockedIds).toContain('problem-solver');
     expect(unlockedIds).toContain('system-architect');
     expect(unlockedIds).not.toContain('xp-master'); // 1000 XP required
+  });
+
+  it('computeBadgeStats derives accurate breakdown from events and catalogue', () => {
+    const mockProblems = [
+      { route: '/practice/prob-1', title: 'P1', difficulty: 'easy' } as any,
+      { route: '/practice/prob-2', title: 'P2', difficulty: 'hard' } as any,
+    ];
+    const mockEvents = [
+      { permalink: '/practice/prob-1', kind: 'complete' as const, date: '2026-09-10', points: 25, hintUsed: false },
+      { permalink: '/practice/prob-2', kind: 'complete' as const, date: '2026-09-10', points: 100, hintUsed: true },
+      { permalink: '/docs/math', kind: 'mark' as const, date: '2026-09-10', points: 10 },
+      { permalink: 'depth:1', kind: 'depth' as const, date: '2026-09-10', points: 2 },
+      { permalink: 'review:1', kind: 'review' as const, date: '2026-09-10', points: 10 },
+    ];
+    const stats = computeBadgeStats(mockEvents, 147, 1, true, mockProblems);
+    expect(stats.problemsSolved).toBe(2);
+    expect(stats.pagesUnderstood).toBe(1);
+    expect(stats.easySolved).toBe(1);
+    expect(stats.hardSolved).toBe(1);
+    expect(stats.independentSolves).toBe(1); // prob-1 was hintUsed: false
+    expect(stats.depthRevealed).toBe(1);
+    expect(stats.reviewsCompleted).toBe(1);
   });
 });

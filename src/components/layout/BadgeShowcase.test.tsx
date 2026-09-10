@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it, beforeEach } from 'vitest'
 import BadgeShowcase from './BadgeShowcase'
+import { BADGES } from '../../lib/badges'
 import { ThemeProvider } from '../../theme/ThemeProvider'
 import { AuthProvider } from '../../contexts/AuthContext'
 import { GamificationProvider } from '../../contexts/GamificationContext'
@@ -22,36 +24,59 @@ function renderShowcase() {
   )
 }
 
-describe('BadgeShowcase', () => {
+describe('BadgeShowcase (spec v2 Part 4)', () => {
   beforeEach(() => {
     window.localStorage.clear()
   })
 
-  it('renders only the empty state when no badges are unlocked, without placeholder locked tiles', () => {
+  it('renders all real badges with locked state and real progress for a brand-new learner', () => {
     renderShowcase()
-    expect(screen.getByText(/Unlocked 0 of \d+ checkpoint badges/)).toBeInTheDocument()
-    expect(screen.getByText(/No checkpoint badges earned yet/i)).toBeInTheDocument()
-    expect(screen.queryByText('LOCKED')).not.toBeInTheDocument()
-    expect(screen.queryByText('UNLOCKED')).not.toBeInTheDocument()
+    expect(screen.getByText(new RegExp(`Unlocked 0 of ${BADGES.length} checkpoint badges`))).toBeInTheDocument()
+    // Locked badges are shown with LOCKED tags
+    const lockedPills = screen.getAllByText('LOCKED')
+    expect(lockedPills.length).toBe(BADGES.length)
+
+    // Check that real unlock progress is displayed
+    const progressLabels = screen.getAllByText('Progress:')
+    expect(progressLabels.length).toBeGreaterThan(0)
   })
 
-  it('renders ONLY the unlocked badges when achievements exist, removing locked-badge placeholder tiles entirely', () => {
-    // Earn 50 XP -> unlocks the "First Step" badge
+  it('displays unlocked badge with rarity tier when earned, alongside locked badges with progress', () => {
+    // 50 XP -> unlocks "Curious Mind" (first-step)
     window.localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify([{ permalink: '/practice/dot-product', kind: 'complete', date: '2026-09-10', points: 50 }]),
     )
     renderShowcase()
 
-    expect(screen.getByText(/Unlocked 1 of \d+ checkpoint badges/)).toBeInTheDocument()
-    expect(screen.getByText('First Step')).toBeInTheDocument()
-    expect(screen.getByText('UNLOCKED')).toBeInTheDocument()
+    expect(screen.getByText(new RegExp(`Unlocked 2 of ${BADGES.length} checkpoint badges`))).toBeInTheDocument()
+    expect(screen.getByText('Curious Mind')).toBeInTheDocument()
+    expect(screen.getByText('First Code')).toBeInTheDocument()
+    // Unlocked badge displays rarity label
+    const commonLabels = screen.getAllByText('Common')
+    expect(commonLabels.length).toBeGreaterThan(0)
 
-    // Absolutely no LOCKED tiles/badges rendered in the DOM
-    expect(screen.queryByText('LOCKED')).not.toBeInTheDocument()
-    // "Code Ninja" (needs 5 problems) should NOT be rendered
+    // Other badges remain locked with progress
+    expect(screen.getByText('Code Ninja')).toBeInTheDocument()
+    expect(screen.getAllByText('LOCKED').length).toBe(BADGES.length - 2)
+  })
+
+  it('filters badges by category and status', async () => {
+    const user = userEvent.setup()
+    renderShowcase()
+
+    // Click "Learning" category tab
+    await user.click(screen.getByRole('button', { name: 'Learning' }))
+    const learningBadges = BADGES.filter((b) => b.category === 'learning')
+    for (const b of learningBadges) {
+      expect(screen.getByText(b.title)).toBeInTheDocument()
+    }
+
+    // Practice badge should not be in learning tab
     expect(screen.queryByText('Code Ninja')).not.toBeInTheDocument()
-    // "Attention Architect" (needs 500 XP) should NOT be rendered
-    expect(screen.queryByText('Attention Architect')).not.toBeInTheDocument()
+
+    // Click "All" tab again
+    await user.click(screen.getByRole('button', { name: 'All' }))
+    expect(screen.getByText('Code Ninja')).toBeInTheDocument()
   })
 })
