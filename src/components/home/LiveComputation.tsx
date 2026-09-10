@@ -95,7 +95,7 @@ export default function LiveComputation({
   const attentionValues = attention.weights[0];
 
   return <section className={`nm-live-computation ${className}`.trim()} aria-labelledby="live-computation-heading">
-    <div className="nm-live-topbar"><span><i aria-hidden="true" /> live deterministic computation</span><span>{reducedMotion ? 'motion paused' : `step ${activeStage + 1}/${concept.stages.length}`}</span></div>
+    <div className="nm-live-topbar"><span><i aria-hidden="true" /> live deterministic computation</span>{' '}<span>{reducedMotion ? 'motion paused' : `step ${activeStage + 1}/${concept.stages.length}`}</span></div>
     <div className="nm-live-body">
       <div className="nm-live-heading"><div><p>{titlePrefix}</p><h2 id="live-computation-heading">{concept.title}</h2><small>{concept.subtitle}</small></div><Link to={concept.route}>Open lesson →</Link></div>
       <div className="nm-live-pipeline" aria-label={`${concept.label} computation stages`}>
