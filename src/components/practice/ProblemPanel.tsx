@@ -351,6 +351,12 @@ export default function ProblemPanel({
                 >
                   {problem.difficulty}
                 </span>
+                {/* A real space text node between pills: the flex `gap`
+                    above only adds visual spacing, not a text-content
+                    space, so a raw-DOM-text consumer (Pagefind's search
+                    excerpts, most visibly) read adjacent pills as one
+                    run-on word ("mediumAgent Memory..."). */}
+                {' '}
 
                 {/* Neutral topic pill */}
                 <span
@@ -366,6 +372,7 @@ export default function ProblemPanel({
                 >
                   {problem.topic}
                 </span>
+                {' '}
 
                 {/* Neutral time pill */}
                 <span
