@@ -91,4 +91,45 @@ describe('ProfilePage', () => {
     const link = screen.getByRole('link', { name: /your Progress page/i })
     expect(link).toHaveAttribute('href', '/progress')
   })
+
+  it('renders the pseudo-3D avatar and default Neural Learner title when no practice problems have been solved', () => {
+    renderProfile()
+    expect(screen.getByTestId('pseudo-3d-avatar')).toBeInTheDocument()
+    expect(screen.getByText(/⚡ Neural Learner/i)).toBeInTheDocument()
+  })
+
+  it('genuinely derives the learner identity title from real practice history', () => {
+    // When deep-learning has the most solves -> Deep Learning Specialist
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify([
+        { permalink: '/practice/adamw-optimizer', kind: 'complete', date: '2026-09-10', points: 30 },
+      ]),
+    )
+    renderProfile()
+    expect(screen.getByText(/⚡ Deep Learning Specialist/i)).toBeInTheDocument()
+  })
+
+  it('shifts learner identity title when another track becomes dominant', () => {
+    // 2 solves in transformers-llms vs 1 in deep-learning
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify([
+        { permalink: '/practice/adamw-optimizer', kind: 'complete', date: '2026-09-10', points: 30 },
+        { permalink: '/practice/llm-internals-prob-1', kind: 'complete', date: '2026-09-10', points: 30 },
+        { permalink: '/practice/llm-internals-prob-10', kind: 'complete', date: '2026-09-10', points: 30 },
+      ]),
+    )
+    renderProfile()
+    expect(screen.getByText(/⚡ Transformer Architect/i)).toBeInTheDocument()
+  })
+
+  it('prominently renders all real stats in the player card', () => {
+    renderProfile()
+    expect(screen.getByText('Pages Understood')).toBeInTheDocument()
+    expect(screen.getByText('Problems Solved')).toBeInTheDocument()
+    expect(screen.getByText('Catalog Solved Rate')).toBeInTheDocument()
+    expect(screen.getByText('Current Streak')).toBeInTheDocument()
+    expect(screen.getByText('Badges Earned')).toBeInTheDocument()
+  })
 })
