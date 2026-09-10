@@ -484,8 +484,14 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
         boxSizing: 'border-box',
       }}
     >
-      {/* Top Header */}
+      {/* Top Header -- PracticeWorkspace renders its own header (breadcrumb,
+          difficulty badge, Next button) instead of reusing the shared
+          Navbar, so it needs its own data-pagefind-ignore: this is exactly
+          the piece the earlier Navbar/Footer/tab-bar fix missed, and it's
+          the actual source of the "LearnPracticeLeaderboard...Next ->"
+          garbage still showing in every practice-page search result. */}
       <header
+        data-pagefind-ignore
         style={{
           display: 'flex',
           alignItems: 'center',
