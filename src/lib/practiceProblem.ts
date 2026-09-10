@@ -70,6 +70,27 @@ export interface GuidedStep {
   explanation?: string;
 }
 
+export interface FrameworkGap {
+  id: string;
+  title: string;
+  description: string;
+  hint?: string;
+  starterSnippet: string;
+  solutionSnippet: string;
+}
+
+export interface FrameworkSpec {
+  framework: 'langgraph';
+  title: string;
+  subtitle: string;
+  disclaimer: string;
+  functionName: string;
+  starterCode: string;
+  solutionCode: string;
+  gaps: FrameworkGap[];
+  testCases: PracticeTestCase[];
+}
+
 export interface PracticeProblem {
   id: string;
   title: string;
@@ -101,6 +122,7 @@ export interface PracticeProblem {
   points?: number;
   canvasSpec?: CanvasSpec;
   guidedSteps?: GuidedStep[];
+  frameworkSpec?: FrameworkSpec;
 }
 
 export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
@@ -684,6 +706,526 @@ def react_agent_step(agent_output, available_tools):
         explanation: 'Formatting the return value as "Observation: <result>" completes the ReAct step so the agent can inspect the result in the next iteration.',
       },
     ],
+    frameworkSpec: {
+      framework: 'langgraph',
+      title: 'LangGraph ReAct Agent (StateGraph)',
+      subtitle: 'Teach LangGraph\'s real StateGraph API shape with a deterministic pure-Python educational shim.',
+      disclaimer: 'ℹ️ Educational Model: This exercise models LangGraph\'s real StateGraph API shape (StateGraph, add_node, add_edge, add_conditional_edges, set_entry_point, compile, invoke, MessagesState, and tools_condition) via a pure-Python teaching shim. Runs in-browser without installing the external langgraph pip package or making live LLM calls.',
+      functionName: 'run_agent',
+      starterCode: `# ==============================================================================
+# LangGraph Educational Teaching Shim (Pure-Python In-Browser Model)
+#
+# NOTE: This is a faithful, runnable model of LangGraph's real public API shape
+# (StateGraph, add_node, add_edge, add_conditional_edges, compile, invoke),
+# designed for teaching how graph-based agent orchestration works without
+# requiring pip/micropip dependencies or external LLM API keys.
+# ==============================================================================
+
+import json
+
+START = "__start__"
+END = "__end__"
+
+class AIMessage(dict):
+    """LangChain/LangGraph AIMessage model with content and tool_calls."""
+    def __init__(self, content="", tool_calls=None):
+        calls = tool_calls or []
+        super().__init__(role="assistant", content=content, tool_calls=calls)
+        self.role = "assistant"
+        self.content = content
+        self.tool_calls = calls
+
+class HumanMessage(dict):
+    """LangChain/LangGraph HumanMessage model with user content."""
+    def __init__(self, content=""):
+        super().__init__(role="user", content=content)
+        self.role = "user"
+        self.content = content
+
+class ToolMessage(dict):
+    """LangChain/LangGraph ToolMessage model recording tool output."""
+    def __init__(self, content="", name="", tool_call_id=None):
+        super().__init__(role="tool", content=content, name=name, tool_call_id=tool_call_id)
+        self.role = "tool"
+        self.content = content
+        self.name = name
+        self.tool_call_id = tool_call_id
+
+class CompiledGraph:
+    """Compiled runnable LangGraph graph supporting .invoke(initial_state)."""
+    def __init__(self, nodes, edges, conditional_edges, entry_point):
+        self.nodes = nodes
+        self.edges = edges
+        self.conditional_edges = conditional_edges
+        self.entry_point = entry_point
+
+    def invoke(self, state, config=None):
+        """Executes nodes and follows edges until END is reached."""
+        current_state = dict(state)
+        if "messages" not in current_state:
+            current_state["messages"] = []
+        else:
+            current_state["messages"] = list(current_state["messages"])
+
+        current_node = self.entry_point
+        max_steps = 25
+        step_count = 0
+
+        while current_node != END and step_count < max_steps:
+            step_count += 1
+            if current_node not in self.nodes:
+                raise ValueError(f"Node '{current_node}' not found in registered graph nodes.")
+
+            node_fn = self.nodes[current_node]
+            update = node_fn(current_state)
+
+            if isinstance(update, dict):
+                for k, v in update.items():
+                    if k == "messages" and isinstance(v, list) and isinstance(current_state.get(k), list):
+                        current_state[k] = current_state[k] + v
+                    else:
+                        current_state[k] = v
+
+            if current_node in self.conditional_edges:
+                cond_fn, mapping = self.conditional_edges[current_node]
+                dest = cond_fn(current_state)
+                if mapping and isinstance(mapping, dict):
+                    next_node = mapping.get(dest, dest)
+                else:
+                    next_node = dest
+            elif current_node in self.edges:
+                next_node = self.edges[current_node]
+            else:
+                next_node = END
+
+            current_node = next_node
+
+        return current_state
+
+class StateGraph:
+    """LangGraph StateGraph builder: registers nodes, edges, and conditional routing."""
+    def __init__(self, state_schema=None):
+        self.state_schema = state_schema
+        self.nodes = {}
+        self.edges = {}
+        self.conditional_edges = {}
+        self.entry_point = None
+
+    def add_node(self, name, fn):
+        self.nodes[name] = fn
+        return self
+
+    def add_edge(self, source, target):
+        if source == START:
+            self.entry_point = target
+        else:
+            self.edges[source] = target
+        return self
+
+    def add_conditional_edges(self, source, condition_fn, mapping=None):
+        self.conditional_edges[source] = (condition_fn, mapping)
+        return self
+
+    def set_entry_point(self, name):
+        self.entry_point = name
+        return self
+
+    def compile(self):
+        if not self.entry_point:
+            raise ValueError("Entry point not set. Use set_entry_point or add_edge(START, ...).")
+        return CompiledGraph(self.nodes, self.edges, self.conditional_edges, self.entry_point)
+
+
+# ==============================================================================
+# Deterministic Mocks (Matching src/content/docs/agents/react-agent-production.mdx)
+# ==============================================================================
+
+def mock_tools(name, args):
+    """Deterministic mock tools representing external APIs."""
+    if name == "get_order_status":
+        order_id = args.get("order_id")
+        if order_id == "ORD-991":
+            return {"status": "shipped", "carrier": "FedEx", "tracking_number": "TRK-4402"}
+        return {"error": "Order not found"}
+    elif name == "query_shipping_carrier":
+        tracking_num = args.get("tracking_number")
+        if tracking_num == "TRK-4402":
+            return {"status": "in_transit", "estimated_delivery": "2026-09-12", "hub": "Memphis, TN"}
+        return {"error": "Tracking number not found"}
+    raise ValueError(f"Unknown tool: {name}")
+
+def mock_llm(messages):
+    """Deterministic LLM simulator demonstrating the ReAct Thought/Action cycle."""
+    tool_messages = [m for m in messages if (isinstance(m, dict) and m.get("role") == "tool") or getattr(m, "role", None) == "tool"]
+    last_user_msg = ""
+    for m in messages:
+        role = m.get("role") if isinstance(m, dict) else getattr(m, "role", "")
+        if role == "user":
+            last_user_msg = m.get("content") if isinstance(m, dict) else getattr(m, "content", "")
+
+    if "capital of France" in last_user_msg:
+        return AIMessage(content="Paris is the capital of France.", tool_calls=[])
+
+    if len(tool_messages) == 0:
+        return AIMessage(
+            content="",
+            tool_calls=[{"name": "get_order_status", "args": {"order_id": "ORD-991"}}]
+        )
+    elif len(tool_messages) == 1:
+        return AIMessage(
+            content="",
+            tool_calls=[{"name": "query_shipping_carrier", "args": {"tracking_number": "TRK-4402"}}]
+        )
+    else:
+        return AIMessage(
+            content="Order ORD-991 has shipped via FedEx (tracking: TRK-4402) and is estimated to arrive on September 12, 2026.",
+            tool_calls=[]
+        )
+
+
+# ==============================================================================
+# Scaffolding & Learner Gaps
+# ==============================================================================
+
+# --- GAP 1: Agent Node ---
+def agent(state):
+    """
+    Agent node: inspects the message history, calls mock_llm, and returns
+    an update dict with the new AIMessage appended to messages.
+    """
+    # TODO (Gap 1): Call mock_llm(state["messages"]) and return {"messages": [response]}
+    pass
+
+# --- GAP 2: Conditional Edge Routing (tools_condition) ---
+def tools_condition(state):
+    """
+    Conditional routing function (matching LangGraph's prebuilt tools_condition).
+    Inspects the last message in state['messages'].
+    - If it contains non-empty tool_calls, route to "tools".
+    - Otherwise (final answer delivered), route to END.
+    """
+    # TODO (Gap 2): Return "tools" if the last message has tool_calls, else return END
+    pass
+
+# --- Pre-filled Tool Node (ToolNode) ---
+def tool_node(state):
+    """
+    Executes tool calls requested by the last AIMessage and returns ToolMessages.
+    """
+    last_message = state["messages"][-1]
+    tool_calls = last_message.get("tool_calls") if isinstance(last_message, dict) else getattr(last_message, "tool_calls", [])
+    results = []
+    for call in tool_calls:
+        name = call["name"]
+        args = call.get("args", {})
+        try:
+            output = mock_tools(name, args)
+            obs = json.dumps(output)
+        except Exception as e:
+            obs = f"Error: {e}"
+        results.append(ToolMessage(content=obs, name=name))
+    return {"messages": results}
+
+# --- Graph Construction & Wiring ---
+workflow = StateGraph(dict)
+
+# Add nodes
+workflow.add_node("agent", agent)
+workflow.add_node("tools", tool_node)
+
+# Set entry point
+workflow.set_entry_point("agent")
+
+# --- GAP 3: Wire conditional and return edges ---
+# TODO (Gap 3):
+# 1. Wire conditional edge from "agent" using tools_condition
+# 2. Wire normal edge from "tools" back to "agent"
+pass
+
+# Compile graph
+app = workflow.compile()
+
+def run_agent(messages):
+    """Entry point invoked by the Pyodide test runner."""
+    state = app.invoke({"messages": messages})
+    return state
+`,
+      solutionCode: `# ==============================================================================
+# LangGraph Educational Teaching Shim (Pure-Python In-Browser Model)
+# ==============================================================================
+
+import json
+
+START = "__start__"
+END = "__end__"
+
+class AIMessage(dict):
+    """LangChain/LangGraph AIMessage model with content and tool_calls."""
+    def __init__(self, content="", tool_calls=None):
+        calls = tool_calls or []
+        super().__init__(role="assistant", content=content, tool_calls=calls)
+        self.role = "assistant"
+        self.content = content
+        self.tool_calls = calls
+
+class HumanMessage(dict):
+    """LangChain/LangGraph HumanMessage model with user content."""
+    def __init__(self, content=""):
+        super().__init__(role="user", content=content)
+        self.role = "user"
+        self.content = content
+
+class ToolMessage(dict):
+    """LangChain/LangGraph ToolMessage model recording tool output."""
+    def __init__(self, content="", name="", tool_call_id=None):
+        super().__init__(role="tool", content=content, name=name, tool_call_id=tool_call_id)
+        self.role = "tool"
+        self.content = content
+        self.name = name
+        self.tool_call_id = tool_call_id
+
+class CompiledGraph:
+    """Compiled runnable LangGraph graph supporting .invoke(initial_state)."""
+    def __init__(self, nodes, edges, conditional_edges, entry_point):
+        self.nodes = nodes
+        self.edges = edges
+        self.conditional_edges = conditional_edges
+        self.entry_point = entry_point
+
+    def invoke(self, state, config=None):
+        """Executes nodes and follows edges until END is reached."""
+        current_state = dict(state)
+        if "messages" not in current_state:
+            current_state["messages"] = []
+        else:
+            current_state["messages"] = list(current_state["messages"])
+
+        current_node = self.entry_point
+        max_steps = 25
+        step_count = 0
+
+        while current_node != END and step_count < max_steps:
+            step_count += 1
+            if current_node not in self.nodes:
+                raise ValueError(f"Node '{current_node}' not found in registered graph nodes.")
+
+            node_fn = self.nodes[current_node]
+            update = node_fn(current_state)
+
+            if isinstance(update, dict):
+                for k, v in update.items():
+                    if k == "messages" and isinstance(v, list) and isinstance(current_state.get(k), list):
+                        current_state[k] = current_state[k] + v
+                    else:
+                        current_state[k] = v
+
+            if current_node in self.conditional_edges:
+                cond_fn, mapping = self.conditional_edges[current_node]
+                dest = cond_fn(current_state)
+                if mapping and isinstance(mapping, dict):
+                    next_node = mapping.get(dest, dest)
+                else:
+                    next_node = dest
+            elif current_node in self.edges:
+                next_node = self.edges[current_node]
+            else:
+                next_node = END
+
+            current_node = next_node
+
+        return current_state
+
+class StateGraph:
+    """LangGraph StateGraph builder: registers nodes, edges, and conditional routing."""
+    def __init__(self, state_schema=None):
+        self.state_schema = state_schema
+        self.nodes = {}
+        self.edges = {}
+        self.conditional_edges = {}
+        self.entry_point = None
+
+    def add_node(self, name, fn):
+        self.nodes[name] = fn
+        return self
+
+    def add_edge(self, source, target):
+        if source == START:
+            self.entry_point = target
+        else:
+            self.edges[source] = target
+        return self
+
+    def add_conditional_edges(self, source, condition_fn, mapping=None):
+        self.conditional_edges[source] = (condition_fn, mapping)
+        return self
+
+    def set_entry_point(self, name):
+        self.entry_point = name
+        return self
+
+    def compile(self):
+        if not self.entry_point:
+            raise ValueError("Entry point not set. Use set_entry_point or add_edge(START, ...).")
+        return CompiledGraph(self.nodes, self.edges, self.conditional_edges, self.entry_point)
+
+
+# ==============================================================================
+# Deterministic Mocks
+# ==============================================================================
+
+def mock_tools(name, args):
+    if name == "get_order_status":
+        order_id = args.get("order_id")
+        if order_id == "ORD-991":
+            return {"status": "shipped", "carrier": "FedEx", "tracking_number": "TRK-4402"}
+        return {"error": "Order not found"}
+    elif name == "query_shipping_carrier":
+        tracking_num = args.get("tracking_number")
+        if tracking_num == "TRK-4402":
+            return {"status": "in_transit", "estimated_delivery": "2026-09-12", "hub": "Memphis, TN"}
+        return {"error": "Tracking number not found"}
+    raise ValueError(f"Unknown tool: {name}")
+
+def mock_llm(messages):
+    tool_messages = [m for m in messages if (isinstance(m, dict) and m.get("role") == "tool") or getattr(m, "role", None) == "tool"]
+    last_user_msg = ""
+    for m in messages:
+        role = m.get("role") if isinstance(m, dict) else getattr(m, "role", "")
+        if role == "user":
+            last_user_msg = m.get("content") if isinstance(m, dict) else getattr(m, "content", "")
+
+    if "capital of France" in last_user_msg:
+        return AIMessage(content="Paris is the capital of France.", tool_calls=[])
+
+    if len(tool_messages) == 0:
+        return AIMessage(
+            content="",
+            tool_calls=[{"name": "get_order_status", "args": {"order_id": "ORD-991"}}]
+        )
+    elif len(tool_messages) == 1:
+        return AIMessage(
+            content="",
+            tool_calls=[{"name": "query_shipping_carrier", "args": {"tracking_number": "TRK-4402"}}]
+        )
+    else:
+        return AIMessage(
+            content="Order ORD-991 has shipped via FedEx (tracking: TRK-4402) and is estimated to arrive on September 12, 2026.",
+            tool_calls=[]
+        )
+
+
+# ==============================================================================
+# Completed Solution
+# ==============================================================================
+
+def agent(state):
+    """Agent node: inspects messages, calls mock_llm, returns new AIMessage."""
+    messages = state["messages"]
+    response = mock_llm(messages)
+    return {"messages": [response]}
+
+def tools_condition(state):
+    """Inspects last message: if tool_calls present, route to 'tools', else END."""
+    messages = state.get("messages", [])
+    if not messages:
+        return END
+    last_message = messages[-1]
+    tool_calls = last_message.get("tool_calls") if isinstance(last_message, dict) else getattr(last_message, "tool_calls", None)
+    if tool_calls and len(tool_calls) > 0:
+        return "tools"
+    return END
+
+def tool_node(state):
+    last_message = state["messages"][-1]
+    tool_calls = last_message.get("tool_calls") if isinstance(last_message, dict) else getattr(last_message, "tool_calls", [])
+    results = []
+    for call in tool_calls:
+        name = call["name"]
+        args = call.get("args", {})
+        try:
+            output = mock_tools(name, args)
+            obs = json.dumps(output)
+        except Exception as e:
+            obs = f"Error: {e}"
+        results.append(ToolMessage(content=obs, name=name))
+    return {"messages": results}
+
+workflow = StateGraph(dict)
+workflow.add_node("agent", agent)
+workflow.add_node("tools", tool_node)
+workflow.set_entry_point("agent")
+
+workflow.add_conditional_edges("agent", tools_condition)
+workflow.add_edge("tools", "agent")
+
+app = workflow.compile()
+
+def run_agent(messages):
+    """Entry point invoked by the Pyodide test runner."""
+    state = app.invoke({"messages": messages})
+    return state
+`,
+      gaps: [
+        {
+          id: 'gap-1-agent',
+          title: 'Gap 1: Agent Node (agent)',
+          description: 'Call mock_llm with state["messages"] and return an update dict appending the response: {"messages": [response]}.',
+          hint: 'Extract messages = state["messages"], call response = mock_llm(messages), and return {"messages": [response]}.',
+          starterSnippet: `    # TODO (Gap 1): Call mock_llm(state["messages"]) and return {"messages": [response]}\n    pass`,
+          solutionSnippet: `    messages = state["messages"]\n    response = mock_llm(messages)\n    return {"messages": [response]}`,
+        },
+        {
+          id: 'gap-2-tools-condition',
+          title: 'Gap 2: Edge Router (tools_condition)',
+          description: 'Inspect the last message in state["messages"]. If it has non-empty tool_calls, return "tools", otherwise return END.',
+          hint: 'If tool_calls in last message, return "tools"; otherwise return END.',
+          starterSnippet: `    # TODO (Gap 2): Return "tools" if the last message has tool_calls, else return END\n    pass`,
+          solutionSnippet: `    messages = state.get("messages", [])\n    if not messages:\n        return END\n    last_message = messages[-1]\n    tool_calls = last_message.get("tool_calls") if isinstance(last_message, dict) else getattr(last_message, "tool_calls", None)\n    if tool_calls and len(tool_calls) > 0:\n        return "tools"\n    return END`,
+        },
+        {
+          id: 'gap-3-graph-wiring',
+          title: 'Gap 3: Graph Wiring (add_conditional_edges & add_edge)',
+          description: 'Wire conditional routing from "agent" using tools_condition, and wire return edge from "tools" back to "agent".',
+          hint: 'Call workflow.add_conditional_edges("agent", tools_condition) and workflow.add_edge("tools", "agent").',
+          starterSnippet: `# TODO (Gap 3):\n# 1. Wire conditional edge from "agent" using tools_condition\n# 2. Wire normal edge from "tools" back to "agent"\npass`,
+          solutionSnippet: `workflow.add_conditional_edges("agent", tools_condition)\nworkflow.add_edge("tools", "agent")`,
+        },
+      ],
+      testCases: [
+        {
+          id: 'single_step',
+          label: 'Direct Final Answer (No Tools)',
+          input: {
+            messages: [{ role: 'user', content: 'What is the capital of France?' }],
+          },
+          expectedOutput: {
+            messages: [
+              { role: 'user', content: 'What is the capital of France?' },
+              { role: 'assistant', content: 'Paris is the capital of France.', tool_calls: [] },
+            ],
+          },
+          hidden: false,
+        },
+        {
+          id: 'multi_step_tools',
+          label: 'Multi-step Tool Calling & Order Resolution',
+          input: {
+            messages: [{ role: 'user', content: 'When will order ORD-991 arrive?' }],
+          },
+          expectedOutput: {
+            messages: [
+              { role: 'user', content: 'When will order ORD-991 arrive?' },
+              { role: 'assistant', content: '', tool_calls: [{ name: 'get_order_status', args: { order_id: 'ORD-991' } }] },
+              { role: 'tool', content: '{"status": "shipped", "carrier": "FedEx", "tracking_number": "TRK-4402"}', name: 'get_order_status', tool_call_id: null },
+              { role: 'assistant', content: '', tool_calls: [{ name: 'query_shipping_carrier', args: { tracking_number: 'TRK-4402' } }] },
+              { role: 'tool', content: '{"status": "in_transit", "estimated_delivery": "2026-09-12", "hub": "Memphis, TN"}', name: 'query_shipping_carrier', tool_call_id: null },
+              { role: 'assistant', content: 'Order ORD-991 has shipped via FedEx (tracking: TRK-4402) and is estimated to arrive on September 12, 2026.', tool_calls: [] },
+            ],
+          },
+          hidden: false,
+        },
+      ],
+    },
   },
   'dpo-loss': {
     id: 'dpo-loss',

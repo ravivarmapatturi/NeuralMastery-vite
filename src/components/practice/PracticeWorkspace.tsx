@@ -11,6 +11,7 @@ import { getPracticeProblem, type PracticeTestCase } from '../../lib/practicePro
 // visitor ever opens Canvas mode.
 const CanvasAgentBuilder = lazy(() => import('../canvas/CanvasAgentBuilder'));
 const GuidedBuildPane = lazy(() => import('./GuidedBuildPane'));
+const FrameworkModePane = lazy(() => import('./FrameworkModePane'));
 import {
   loadSavedCode,
   saveUserCode,
@@ -62,6 +63,15 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving'>('saved');
   const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Framework mode has its own separate function/tests (e.g. a LangGraph
+  // shim's run_agent, distinct from the raw react_agent_step Python mode
+  // targets), so it needs its own code buffer -- sharing `code` with
+  // Python mode would silently clobber one when switching modes.
+  const frameworkStarterCode = problem?.frameworkSpec?.starterCode ?? '';
+  const [frameworkCode, setFrameworkCode] = useState<string>(() => loadSavedCode(`${problemId}-framework`, frameworkStarterCode));
+  const [frameworkSaveStatus, setFrameworkSaveStatus] = useState<'saved' | 'saving'>('saved');
+  const frameworkAutosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Custom Test Cases state
   const [customTestCases, setCustomTestCases] = useState<PracticeTestCase[]>(() => loadCustomTestCases(problemId));
 
@@ -76,10 +86,11 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
   const [isMobile, setIsMobile] = useState<boolean>(() => typeof window !== 'undefined' && window.innerWidth < 768);
   const [mobileTab, setMobileTab] = useState<'problem' | 'code' | 'results' | 'canvas'>('problem');
 
-  // Canvas / Python / Guided mode state
+  // Canvas / Python / Guided / Framework mode state
   const hasCanvas = Boolean(problem?.canvasSpec);
   const hasGuided = Boolean(problem?.guidedSteps && problem.guidedSteps.length > 0);
-  const [workspaceMode, setWorkspaceMode] = useState<'canvas' | 'python' | 'guided'>(() => (hasCanvas ? 'canvas' : 'python'));
+  const hasFramework = Boolean(problem?.frameworkSpec);
+  const [workspaceMode, setWorkspaceMode] = useState<'canvas' | 'python' | 'guided' | 'framework'>(() => (hasCanvas ? 'canvas' : 'python'));
 
   useEffect(() => {
     if (hasCanvas) {
@@ -89,7 +100,7 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
     }
   }, [hasCanvas, problemId]);
 
-  const modeToggle = (hasCanvas || hasGuided) ? (
+  const modeToggle = (hasCanvas || hasGuided || hasFramework) ? (
     <div
       role="tablist"
       aria-label="Workspace mode"
@@ -177,6 +188,31 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
           <span>🪜</span> Guided
         </button>
       )}
+      {hasFramework && (
+        <button
+          type="button"
+          role="tab"
+          aria-selected={workspaceMode === 'framework'}
+          data-testid="toggle-framework-mode"
+          onClick={() => setWorkspaceMode('framework')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 5,
+            padding: '3px 9px',
+            fontSize: 12,
+            fontWeight: 700,
+            borderRadius: 4,
+            border: 'none',
+            cursor: 'pointer',
+            background: workspaceMode === 'framework' ? 'var(--nm-accent-primary, #3DDC97)' : 'transparent',
+            color: workspaceMode === 'framework' ? '#0A0A0B' : 'var(--nm-text-secondary, #ABABB3)',
+            transition: 'all 0.15s ease',
+          }}
+        >
+          <span>🕸️</span> Framework
+        </button>
+      )}
     </div>
   ) : null;
 
@@ -220,6 +256,20 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
     [problemId],
   );
 
+  const handleFrameworkCodeChange = useCallback(
+    (newCode: string) => {
+      setFrameworkCode(newCode);
+      setFrameworkSaveStatus('saving');
+
+      if (frameworkAutosaveTimerRef.current) clearTimeout(frameworkAutosaveTimerRef.current);
+      frameworkAutosaveTimerRef.current = setTimeout(() => {
+        saveUserCode(`${problemId}-framework`, newCode);
+        setFrameworkSaveStatus('saved');
+      }, 700);
+    },
+    [problemId],
+  );
+
   if (!problem) {
     return (
       <div style={{ padding: 40, textAlign: 'center', color: '#f87171', background: '#0f172a', minHeight: '100vh' }}>
@@ -256,14 +306,18 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
       void import('../../lib/firebase').then(({ trackFeatureEvent }) => trackFeatureEvent('practice_problem_attempt', { problem_id: problemId }));
     }
 
+    const isFrameworkMode = workspaceMode === 'framework' && problem?.frameworkSpec;
+    const activeCode = isFrameworkMode ? frameworkCode : code;
+    const activeFunctionName = isFrameworkMode ? problem!.frameworkSpec!.functionName : problem!.functionName;
+
     const executor = ensureExecutor();
     const res = await executor.execute({
-      code,
-      functionName: problem!.functionName,
+      code: activeCode,
+      functionName: activeFunctionName,
       testCases: cases,
     });
 
-    const usesLibrary = /\b(import\s+numpy|from\s+numpy|import\s+scipy|import\s+torch|import\s+tensorflow|np\.)\b/.test(code);
+    const usesLibrary = /\b(import\s+numpy|from\s+numpy|import\s+scipy|import\s+torch|import\s+tensorflow|np\.)\b/.test(activeCode);
     res.usesLibrary = usesLibrary;
 
     if (res.status === 'success') {
@@ -290,7 +344,7 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
       const totalCount = res.caseResults.length;
 
       recordSubmission(problemId, {
-        code,
+        code: activeCode,
         status: res.status,
         passedCount,
         totalCount,
@@ -316,21 +370,36 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
   }
 
   function handleRun() {
+    if (workspaceMode === 'framework' && problem?.frameworkSpec) {
+      const visibleCases = problem.frameworkSpec.testCases.filter((tc) => !tc.hidden);
+      void executeCode(visibleCases, 'run');
+      return;
+    }
     const visibleCases = problem!.testCases.filter((tc) => !tc.hidden);
     const combinedCases = [...visibleCases, ...customTestCases];
     void executeCode(combinedCases, 'run');
   }
 
   function handleSubmit() {
+    if (workspaceMode === 'framework' && problem?.frameworkSpec) {
+      void executeCode(problem.frameworkSpec.testCases, 'submit');
+      return;
+    }
     // Submit runs against the complete system test suite (all visible + hidden tests)
     void executeCode(problem!.testCases, 'submit');
   }
 
   function handleReset() {
     if (!window.confirm('Reset your code to the original starter template? Unsaved changes will be lost.')) return;
-    setCode(starterCode);
-    saveUserCode(problemId, starterCode);
-    setSaveStatus('saved');
+    if (workspaceMode === 'framework' && problem?.frameworkSpec) {
+      setFrameworkCode(frameworkStarterCode);
+      saveUserCode(`${problemId}-framework`, frameworkStarterCode);
+      setFrameworkSaveStatus('saved');
+    } else {
+      setCode(starterCode);
+      saveUserCode(problemId, starterCode);
+      setSaveStatus('saved');
+    }
     setResult(null);
     executorRef.current?.terminate();
     executorRef.current = null;
@@ -799,7 +868,24 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
                     : 'block',
               }}
             >
-              {workspaceMode === 'guided' && problem?.guidedSteps ? (
+              {workspaceMode === 'framework' && problem?.frameworkSpec ? (
+                <Suspense fallback={<div style={{ padding: 20, color: 'var(--nm-text-muted)' }}>Loading framework mode…</div>}>
+                  <FrameworkModePane
+                    problemId={problemId}
+                    frameworkSpec={problem.frameworkSpec}
+                    code={frameworkCode}
+                    onChangeCode={handleFrameworkCodeChange}
+                    onRun={handleRun}
+                    onSubmit={handleSubmit}
+                    onReset={handleReset}
+                    onStop={handleStop}
+                    isBusy={isBusy}
+                    status={status}
+                    saveStatus={frameworkSaveStatus}
+                    modeToggle={modeToggle}
+                  />
+                </Suspense>
+              ) : workspaceMode === 'guided' && problem?.guidedSteps ? (
                 <Suspense fallback={<div style={{ padding: 20, color: 'var(--nm-text-muted)' }}>Loading guided mode…</div>}>
                   <GuidedBuildPane
                     problemId={problemId}
