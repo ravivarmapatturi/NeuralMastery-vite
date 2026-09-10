@@ -957,8 +957,8 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
               }}
             >
               <TestResultsPane
-                testCases={problem.testCases}
-                customTestCases={customTestCases}
+                testCases={workspaceMode === 'framework' && problem.frameworkSpec ? problem.frameworkSpec.testCases : problem.testCases}
+                customTestCases={workspaceMode === 'framework' ? [] : customTestCases}
                 onAddCustomTest={handleAddCustomTest}
                 onRemoveCustomTest={handleRemoveCustomTest}
                 result={result}
