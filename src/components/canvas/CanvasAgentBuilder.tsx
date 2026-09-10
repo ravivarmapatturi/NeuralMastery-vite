@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ReactFlow,
   Background,
@@ -11,6 +11,7 @@ import {
   type Edge,
   type Node,
   type NodeTypes,
+  type ReactFlowInstance,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useVizTokens, RADIUS, FONT_FAMILY } from '../../theme/vizTokens';
@@ -118,6 +119,28 @@ export default function CanvasAgentBuilder({
   );
   const [isFreshlyAwarded, setIsFreshlyAwarded] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(true);
+
+  // Real bug this fixes: on mobile, PracticeWorkspace mounts this component
+  // while its own tab is still hidden (display:none) behind the default
+  // "Problem" tab -- fitView's one-shot initial calculation runs against a
+  // zero-size container and never recalculates, so the canvas renders with
+  // nodes stuck far outside the visible viewport once the tab becomes
+  // visible. A ResizeObserver re-fits whenever the real (non-zero) size
+  // becomes available, which also covers window resize/orientation change.
+  const flowWrapperRef = useRef<HTMLDivElement | null>(null);
+  const flowInstanceRef = useRef<ReactFlowInstance | null>(null);
+  useEffect(() => {
+    const el = flowWrapperRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry && entry.contentRect.width > 0 && entry.contentRect.height > 0) {
+        flowInstanceRef.current?.fitView({ padding: 0.2 });
+      }
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Persist the learner's own layout/wiring on every real change (drag,
   // connect, delete, reset) -- never award/celebrate here, only Verify
@@ -448,13 +471,14 @@ export default function CanvasAgentBuilder({
       </div>
 
       {/* Canvas Area */}
-      <div style={{ flex: 1, position: 'relative', width: '100%', height: '100%' }}>
+      <div ref={flowWrapperRef} style={{ flex: 1, position: 'relative', width: '100%', height: '100%' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
+          onInit={(instance) => { flowInstanceRef.current = instance; }}
           nodeTypes={nodeTypes}
           fitView
           fitViewOptions={{ padding: 0.2 }}
