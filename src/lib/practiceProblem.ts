@@ -135,7 +135,7 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
     estimatedTime: '3 min',
     functionName: 'calculate_average',
     functionSignature: 'calculate_average(nums: list[float]) -> float',
-    starterCode: `def calculate_average(nums):
+    starterCode: `def calculate_average(nums: list[float]) -> float:
     """Calculate and return the average of a list of numbers.
     Return 0.0 if the list is empty."""
     if not nums:
@@ -162,7 +162,7 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
     estimatedTime: '3 min',
     functionName: 'fizz_buzz',
     functionSignature: 'fizz_buzz(n: int) -> list[str]',
-    starterCode: `def fizz_buzz(n):
+    starterCode: `def fizz_buzz(n: int) -> list[str]:
     """Return FizzBuzz sequence from 1 to n:
     - 'FizzBuzz' if divisible by 3 and 5
     - 'Fizz' if divisible by 3
@@ -199,7 +199,7 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
     estimatedTime: '10–15 min',
     functionName: 'dot_product',
     functionSignature: 'dot_product(a: list[float], b: list[float]) -> float',
-    starterCode: `def dot_product(a, b):
+    starterCode: `def dot_product(a: list[float], b: list[float]) -> float:
     """Return the dot product of two equal-length lists of numbers.
     Raise ValueError if len(a) != len(b)."""
     # Your implementation here
@@ -246,7 +246,7 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
     estimatedTime: '12–15 min',
     functionName: 'batch_dot_product',
     functionSignature: 'batch_dot_product(batch_a: list[list[float]], batch_b: list[list[float]]) -> list[float]',
-    starterCode: `def batch_dot_product(batch_a, batch_b):
+    starterCode: `def batch_dot_product(batch_a: list[list[float]], batch_b: list[list[float]]) -> list[float]:
     """batch_a, batch_b: list of vectors (list of numbers), same length.
     Return a list of per-pair dot products.
     Raise ValueError on a batch-length or per-pair-dimension mismatch."""
@@ -290,7 +290,7 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
     estimatedTime: '15–20 min',
     functionName: 'matmul',
     functionSignature: 'matmul(A: list[list[float]], B: list[list[float]]) -> list[list[float]]',
-    starterCode: `def matmul(A, B):
+    starterCode: `def matmul(A: list[list[float]], B: list[list[float]]) -> list[list[float]]:
     """A, B: list of lists (rows). Return A @ B as a list of lists.
     Raise ValueError if A's row length != B's row count."""
     # Your implementation here
@@ -331,7 +331,7 @@ export const PRACTICE_PROBLEMS: Record<string, PracticeProblem> = {
     functionSignature: 'softmax(logits: list[float]) -> list[float]',
     starterCode: `import math
 
-def softmax(logits):
+def softmax(logits: list[float]) -> list[float]:
     """Return probability distribution over logits.
     Use numeric stabilization by subtracting max(logits)."""
     # Your implementation here
@@ -369,7 +369,7 @@ def softmax(logits):
     functionSignature: 'sigmoid(x: float) -> float',
     starterCode: `import math
 
-def sigmoid(x):
+def sigmoid(x: float) -> float:
     """Return 1 / (1 + exp(-x))."""
     # Your implementation here
     pass
@@ -405,7 +405,7 @@ def sigmoid(x):
     functionSignature: 'multi_head_attention(Q: np.ndarray, K: np.ndarray, V: np.ndarray, d_model: int, num_heads: int) -> np.ndarray',
     starterCode: `import numpy as np
 
-def multi_head_attention(Q, K, V, d_model, num_heads):
+def multi_head_attention(Q: np.ndarray, K: np.ndarray, V: np.ndarray, d_model: int, num_heads: int) -> np.ndarray:
     """
     Q, K, V: 2D arrays of shape (seq_len, d_model)
     d_model: total embedding dimension
@@ -444,7 +444,7 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
     estimatedTime: '25–30 min',
     functionName: 'autograd_grad',
     functionSignature: 'autograd_grad(a_val: float, b_val: float) -> tuple[float, float]',
-    starterCode: `def autograd_grad(a_val, b_val):
+    starterCode: `def autograd_grad(a_val: float, b_val: float) -> tuple[float, float]:
     """
     Build a computation graph for f(a, b) = (a * b) + (a * a)
     Return tuple (df/da, df/db) evaluated at a_val, b_val.
@@ -480,7 +480,7 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
     estimatedTime: '15–20 min',
     functionName: 'adamw_step',
     functionSignature: 'adamw_step(param: list, grad: list, m: list, v: list, t: int) -> tuple',
-    starterCode: `def adamw_step(param, grad, m, v, t, lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8, weight_decay=0.01):
+    starterCode: `def adamw_step(param: list, grad: list, m: list, v: list, t: int) -> tuple:
     """
     Execute one AdamW update step.
     Return tuple (next_param, next_m, next_v) as lists.
@@ -516,7 +516,7 @@ def multi_head_attention(Q, K, V, d_model, num_heads):
     estimatedTime: '20–25 min',
     functionName: 'react_agent_step',
     functionSignature: 'react_agent_step(agent_output: str, available_tools: dict) -> dict',
-    starterCode: `def react_agent_step(agent_output, available_tools):
+    starterCode: `def react_agent_step(agent_output: str, available_tools: dict) -> dict:
     """
     Parses agent_output for Action: <name> and Action Input: <input>.
     Executes function from available_tools dict if present.
@@ -1236,7 +1236,7 @@ def run_agent(messages):
     estimatedTime: '15–20 min',
     functionName: 'dpo_loss',
     functionSignature: 'dpo_loss(policy_chosen_logps: float, policy_rejected_logps: float, ref_chosen_logps: float, ref_rejected_logps: float, beta: float) -> float',
-    starterCode: `def dpo_loss(policy_chosen_logps, policy_rejected_logps, ref_chosen_logps, ref_rejected_logps, beta=0.1):
+    starterCode: `def dpo_loss(policy_chosen_logps: float, policy_rejected_logps: float, ref_chosen_logps: float, ref_rejected_logps: float, beta: float) -> float:
     """
     Computes DPO loss for a single sample or batch.
     Return scalar loss float.
@@ -1275,7 +1275,7 @@ def run_agent(messages):
     functionSignature: 'mcp_router(jsonrpc_request: str, registered_tools: dict) -> str',
     starterCode: `import json
 
-def mcp_router(jsonrpc_request, registered_tools):
+def mcp_router(jsonrpc_request: str, registered_tools: dict) -> str:
     """
     Parses JSON-RPC 2.0 request string and handles tools/list or tools/call methods.
     Return JSON-RPC response string.
@@ -1311,7 +1311,7 @@ def mcp_router(jsonrpc_request, registered_tools):
     estimatedTime: '15 min',
     functionName: 'handle_tool_call',
     functionSignature: 'handle_tool_call(tool_name: str, arguments: dict, registered_tools: dict) -> dict',
-    starterCode: `def handle_tool_call(tool_name, arguments, registered_tools):
+    starterCode: `def handle_tool_call(tool_name: str, arguments: dict, registered_tools: dict) -> dict:
     """
     Executes registered MCP server tool and returns standard MCP content response dictionary.
     """
@@ -1348,7 +1348,7 @@ def mcp_router(jsonrpc_request, registered_tools):
     functionSignature: 'mcp_client_initialize(client_info: dict, protocol_version: str) -> str',
     starterCode: `import json
 
-def mcp_client_initialize(client_info, protocol_version="2024-11-05"):
+def mcp_client_initialize(client_info: dict, protocol_version: str) -> str:
     """
     Constructs standard MCP initialize JSON-RPC request.
     """
@@ -1385,7 +1385,7 @@ def mcp_client_initialize(client_info, protocol_version="2024-11-05"):
     functionSignature: 'swish(x: list[float], beta: float = 1.0) -> list[float]',
     starterCode: `import math
 
-def swish(x, beta=1.0):
+def swish(x: list[float], beta: float = 1.0) -> list[float]:
     """
     Computes Swish activation element-wise: f(x) = x / (1 + exp(-beta * x)).
     """
@@ -1420,7 +1420,7 @@ def swish(x, beta=1.0):
     functionSignature: 'selu(x: list[float], scale: float, alpha: float) -> list[float]',
     starterCode: `import math
 
-def selu(x, scale=1.0507009873554805, alpha=1.6732632423543772):
+def selu(x: list[float], scale: float, alpha: float) -> list[float]:
     """
     Computes SELU activation: scale * x if x > 0 else scale * alpha * (exp(x) - 1).
     """
@@ -1453,7 +1453,7 @@ def selu(x, scale=1.0507009873554805, alpha=1.6732632423543772):
     estimatedTime: '15 min',
     functionName: 'dropout',
     functionSignature: 'dropout(x: list[float], drop_prob: float, mask: list[int]) -> list[float]',
-    starterCode: `def dropout(x, drop_prob, mask):
+    starterCode: `def dropout(x: list[float], drop_prob: float, mask: list[int]) -> list[float]:
     """
     Applies inverted dropout using a binary mask (1 keep, 0 drop).
     Inverted dropout scales kept values by 1 / (1 - drop_prob).
@@ -1489,7 +1489,7 @@ def selu(x, scale=1.0507009873554805, alpha=1.6732632423543772):
     starterCode: `import math
 from collections import Counter
 
-def knn_predict(X_train, y_train, x_test, k):
+def knn_predict(X_train: list[list[float]], y_train: list[int], x_test: list[float], k: int) -> int:
     """
     Predicts majority class for x_test based on k nearest neighbors by Euclidean distance.
     """
@@ -1521,7 +1521,7 @@ def knn_predict(X_train, y_train, x_test, k):
     estimatedTime: '15 min',
     functionName: 'bellman_update',
     functionSignature: 'bellman_update(state: int, transitions: dict, V: list[float], gamma: float) -> float',
-    starterCode: `def bellman_update(state, transitions, V, gamma):
+    starterCode: `def bellman_update(state: int, transitions: dict, V: list[float], gamma: float) -> float:
     """
     Computes updated V(s) = max_a sum_{s'} P(s'|s,a) * [ R(s,a,s') + gamma * V(s') ].
     """
@@ -1554,7 +1554,7 @@ def knn_predict(X_train, y_train, x_test, k):
     functionSignature: 'euclidean_distance(a: list[float], b: list[float]) -> float',
     starterCode: `import math
 
-def euclidean_distance(a, b):
+def euclidean_distance(a: list[float], b: list[float]) -> float:
     """Return the Euclidean (L2) distance between two equal-length vectors.
     Raise ValueError if len(a) != len(b)."""
     # Your implementation here
@@ -1596,7 +1596,7 @@ def euclidean_distance(a, b):
     estimatedTime: '10–15 min',
     functionName: 'manhattan_distance',
     functionSignature: 'manhattan_distance(a: list[float], b: list[float]) -> float',
-    starterCode: `def manhattan_distance(a, b):
+    starterCode: `def manhattan_distance(a: list[float], b: list[float]) -> float:
     """Return the Manhattan (L1) distance between two equal-length vectors.
     Raise ValueError if len(a) != len(b)."""
     # Your implementation here
@@ -1637,7 +1637,7 @@ def euclidean_distance(a, b):
     functionSignature: 'cosine_similarity(a: list[float], b: list[float]) -> float',
     starterCode: `import math
 
-def cosine_similarity(a, b):
+def cosine_similarity(a: list[float], b: list[float]) -> float:
     """Return the cosine similarity between two equal-length vectors, in [-1, 1].
     Raise ValueError if len(a) != len(b), or if either vector has zero magnitude."""
     # Your implementation here
@@ -1682,7 +1682,7 @@ def cosine_similarity(a, b):
     functionSignature: 'normalize_vector(v: list[float]) -> list[float]',
     starterCode: `import math
 
-def normalize_vector(v):
+def normalize_vector(v: list[float]) -> list[float]:
     """Return v scaled to unit (L2) length.
     Raise ValueError if v is the zero vector."""
     # Your implementation here
@@ -1723,7 +1723,7 @@ def normalize_vector(v):
     functionSignature: 'vector_magnitude(v: list[float]) -> float',
     starterCode: `import math
 
-def vector_magnitude(v):
+def vector_magnitude(v: list[float]) -> float:
     """Return the L2 norm (Euclidean length) of v."""
     # Your implementation here
     pass
@@ -1762,7 +1762,7 @@ def vector_magnitude(v):
     functionSignature: 'brute_force_knn(query: list[float], vectors: list[list[float]], k: int) -> list[int]',
     starterCode: `import math
 
-def brute_force_knn(query, vectors, k):
+def brute_force_knn(query: list[float], vectors: list[list[float]], k: int) -> list[int]:
     """Return the indices (into vectors) of the k vectors closest to query
     by Euclidean distance, ordered nearest-first. Ties broken by index
     ascending. Raise ValueError if k <= 0 or k > len(vectors)."""
@@ -1805,7 +1805,7 @@ def brute_force_knn(query, vectors, k):
     estimatedTime: '15–20 min',
     functionName: 'build_inverted_index',
     functionSignature: 'build_inverted_index(documents: list[list[str]]) -> dict[str, list[int]]',
-    starterCode: `def build_inverted_index(documents):
+    starterCode: `def build_inverted_index(documents: list[list[str]]) -> dict[str, list[int]]:
     """documents: a list of tokenized documents (each a list of string tokens).
     Return a dict mapping each unique token to the sorted list of document
     indices that contain it (each index appears at most once per token,
@@ -1851,7 +1851,7 @@ def brute_force_knn(query, vectors, k):
     functionSignature: 'cosine_similarity_matrix(vectors: list[list[float]]) -> list[list[float]]',
     starterCode: `import math
 
-def cosine_similarity_matrix(vectors):
+def cosine_similarity_matrix(vectors: list[list[float]]) -> list[list[float]]:
     """Return the n x n matrix of pairwise cosine similarities between the
     n vectors in 'vectors' (matrix[i][j] = cosine similarity of vectors[i]
     and vectors[j]; the diagonal is always 1.0). Raise ValueError if any
@@ -1892,7 +1892,7 @@ def cosine_similarity_matrix(vectors):
     estimatedTime: '15–20 min',
     functionName: 'scalar_quantize',
     functionSignature: 'scalar_quantize(vector: list[float], num_bits: int) -> list[int]',
-    starterCode: `def scalar_quantize(vector, num_bits):
+    starterCode: `def scalar_quantize(vector: list[float], num_bits: int) -> list[int]:
     """Uniformly quantize each element of 'vector' to an integer code in
     [0, 2**num_bits - 1] using min-max scalar quantization. Raise
     ValueError if num_bits <= 0. If every element is identical (a zero
@@ -1937,7 +1937,7 @@ def cosine_similarity_matrix(vectors):
     estimatedTime: '15–20 min',
     functionName: 'reciprocal_rank_fusion',
     functionSignature: 'reciprocal_rank_fusion(rankings: list[list[int]], k: int = 60) -> list[int]',
-    starterCode: `def reciprocal_rank_fusion(rankings, k=60):
+    starterCode: `def reciprocal_rank_fusion(rankings: list[list[int]], k: int = 60) -> list[int]:
     """rankings: a list of ranked result lists (each a list of document
     IDs, best-first, 1-indexed rank = position + 1). Return a single
     fused ranking (list of document IDs) sorted by descending combined
@@ -1985,7 +1985,7 @@ def cosine_similarity_matrix(vectors):
     functionSignature: 'range_query(query: list[float], vectors: list[list[float]], radius: float) -> list[int]',
     starterCode: `import math
 
-def range_query(query, vectors, radius):
+def range_query(query: list[float], vectors: list[list[float]], radius: float) -> list[int]:
     """Return the indices (into vectors) of every vector within Euclidean
     distance <= radius of query, ordered nearest-first (ties broken by
     ascending index). Return an empty list if none qualify."""
@@ -2027,7 +2027,7 @@ def range_query(query, vectors, radius):
     functionSignature: 'deduplicate_near_duplicates(vectors: list[list[float]], threshold: float) -> list[int]',
     starterCode: `import math
 
-def deduplicate_near_duplicates(vectors, threshold):
+def deduplicate_near_duplicates(vectors: list[list[float]], threshold: float) -> list[int]:
     """Process vectors in order. Keep a vector's index unless its cosine
     similarity to some already-kept vector is >= threshold, in which case
     treat it as a near-duplicate and skip it. Return the kept indices in
@@ -2071,7 +2071,7 @@ def deduplicate_near_duplicates(vectors, threshold):
     estimatedTime: '10–15 min',
     functionName: 'precision_recall_f1',
     functionSignature: 'precision_recall_f1(tp: int, fp: int, fn: int) -> dict',
-    starterCode: `def precision_recall_f1(tp, fp, fn):
+    starterCode: `def precision_recall_f1(tp: int, fp: int, fn: int) -> dict:
     """tp, fp, fn: true positive / false positive / false negative counts
     for the positive class. Return {'precision': ..., 'recall': ...,
     'f1': ...}. Define precision = 0.0 if tp+fp == 0, recall = 0.0 if
@@ -2116,7 +2116,7 @@ def deduplicate_near_duplicates(vectors, threshold):
     estimatedTime: '10–15 min',
     functionName: 'regularized_loss',
     functionSignature: 'regularized_loss(mse: float, weights: list[float], l1: float = 0.0, l2: float = 0.0) -> float',
-    starterCode: `def regularized_loss(mse, weights, l1=0.0, l2=0.0):
+    starterCode: `def regularized_loss(mse: float, weights: list[float], l1: float = 0.0, l2: float = 0.0) -> float:
     """mse: the model's unregularized data loss (already computed).
     weights: the model's weight vector (bias/intercept excluded). l1, l2:
     regularization strengths. Return mse + l1 * sum(|w|) + l2 * sum(w^2)
@@ -2162,7 +2162,7 @@ def deduplicate_near_duplicates(vectors, threshold):
     estimatedTime: '10–15 min',
     functionName: 'majority_vote',
     functionSignature: 'majority_vote(predictions: list[list[int]]) -> list[int]',
-    starterCode: `def majority_vote(predictions):
+    starterCode: `def majority_vote(predictions: list[list[int]]) -> list[int]:
     """predictions: a list of M models' predictions, each a list of the
     same N class-label predictions (one per sample) -- predictions[m][s]
     is model m's prediction for sample s. Return one list of N labels:
@@ -2208,7 +2208,7 @@ def deduplicate_near_duplicates(vectors, threshold):
     functionSignature: 'linear_regression_normal_equation(X: list[list[float]], y: list[float]) -> list[float]',
     starterCode: `import numpy as np
 
-def linear_regression_normal_equation(X, y):
+def linear_regression_normal_equation(X: list[list[float]], y: list[float]) -> list[float]:
     """X: list of feature rows (no bias column). y: list of targets.
     Return the fitted weight vector [intercept, w1, w2, ...] solving
     ordinary least squares via the closed-form normal equation
@@ -2251,7 +2251,7 @@ def linear_regression_normal_equation(X, y):
     functionSignature: 'logistic_regression_loss(X: list[list[float]], y: list[int], weights: list[float], bias: float) -> float',
     starterCode: `import math
 
-def logistic_regression_loss(X, y, weights, bias):
+def logistic_regression_loss(X: list[list[float]], y: list[int], weights: list[float], bias: float) -> float:
     """X: list of feature rows. y: list of 0/1 labels. weights, bias:
     model parameters. Return the mean binary cross-entropy (log) loss
     over the dataset: for each row, z = dot(x, weights) + bias, p =
@@ -2295,7 +2295,7 @@ def logistic_regression_loss(X, y, weights, bias):
     functionSignature: "information_gain(parent: list, left: list, right: list, criterion: str = 'gini') -> float",
     starterCode: `import math
 
-def information_gain(parent, left, right, criterion='gini'):
+def information_gain(parent: list, left: list, right: list, criterion: str = 'gini') -> float:
     """parent: class labels at a node before splitting. left, right: the
     class labels that land in each child after a candidate split.
     criterion: 'gini' (Gini impurity) or 'entropy' (Shannon entropy, log
@@ -2342,7 +2342,7 @@ def information_gain(parent, left, right, criterion='gini'):
     functionSignature: 'gaussian_naive_bayes_predict(X_train: list[list[float]], y_train: list[int], x_test: list[float]) -> int',
     starterCode: `import math
 
-def gaussian_naive_bayes_predict(X_train, y_train, x_test):
+def gaussian_naive_bayes_predict(X_train: list[list[float]], y_train: list[int], x_test: list[float]) -> int:
     """Fit a per-class, per-feature Gaussian on X_train/y_train (assuming
     feature independence given the class -- the 'naive' assumption), then
     return the class label that maximizes log(prior) + sum of per-feature
@@ -2385,7 +2385,7 @@ def gaussian_naive_bayes_predict(X_train, y_train, x_test):
     estimatedTime: '15–20 min',
     functionName: 'svm_hinge_loss',
     functionSignature: 'svm_hinge_loss(X: list[list[float]], y: list[int], weights: list[float], bias: float, C: float = 1.0) -> float',
-    starterCode: `def svm_hinge_loss(X, y, weights, bias, C=1.0):
+    starterCode: `def svm_hinge_loss(X: list[list[float]], y: list[int], weights: list[float], bias: float, C: float = 1.0) -> float:
     """X: feature rows. y: labels, each -1 or +1 (NOT 0/1). weights, bias,
     C: model parameters. Return the soft-margin SVM primal objective:
     0.5 * ||weights||^2 + C * mean_i(max(0, 1 - y_i * (w.x_i + b)))."""
@@ -2426,7 +2426,7 @@ def gaussian_naive_bayes_predict(X_train, y_train, x_test):
     estimatedTime: '15–20 min',
     functionName: 'k_fold_splits',
     functionSignature: 'k_fold_splits(n_samples: int, k: int) -> list',
-    starterCode: `def k_fold_splits(n_samples, k):
+    starterCode: `def k_fold_splits(n_samples: int, k: int) -> list:
     """Return a list of k [train_indices, val_indices] pairs (both plain
     lists of 0-indexed ints) splitting range(n_samples) into k
     contiguous, near-equal folds (no shuffling). If n_samples doesn't
@@ -2472,7 +2472,7 @@ def gaussian_naive_bayes_predict(X_train, y_train, x_test):
     functionSignature: 'pca_explained_variance_ratio(X: list[list[float]], k: int) -> list[float]',
     starterCode: `import numpy as np
 
-def pca_explained_variance_ratio(X, k):
+def pca_explained_variance_ratio(X: list[list[float]], k: int) -> list[float]:
     """X: list of feature rows. k: number of top principal components.
     Center X (subtract each column's mean), compute its covariance
     matrix, eigendecompose it, and return the top-k eigenvalues each
@@ -2515,7 +2515,7 @@ def pca_explained_variance_ratio(X, k):
     estimatedTime: '20–25 min',
     functionName: 'compute_auc',
     functionSignature: 'compute_auc(y_true: list[int], y_scores: list[float]) -> float',
-    starterCode: `def compute_auc(y_true, y_scores):
+    starterCode: `def compute_auc(y_true: list[int], y_scores: list[float]) -> float:
     """y_true: 0/1 labels. y_scores: a predicted score per example (higher
     = more likely positive). Return the ROC AUC using the Mann-Whitney
     rank formula: AUC = (sum of ranks of the positive examples -
@@ -2561,7 +2561,7 @@ def pca_explained_variance_ratio(X, k):
     functionSignature: 'silhouette_score(X: list[list[float]], labels: list[int]) -> float',
     starterCode: `import math
 
-def silhouette_score(X, labels):
+def silhouette_score(X: list[list[float]], labels: list[int]) -> float:
     """X: feature rows. labels: a cluster assignment per row. For each
     point i: a(i) = mean Euclidean distance to other points in its own
     cluster (0.0 if its cluster has no other members); b(i) = the
@@ -2616,7 +2616,7 @@ def silhouette_score(X, labels):
     bonusDescription: 'Pure Python implementation',
     functionName: 'chunk_text',
     functionSignature: 'chunk_text(text: str, chunk_size: int, overlap: int) -> list[str]',
-    starterCode: `def chunk_text(text, chunk_size, overlap):
+    starterCode: `def chunk_text(text: str, chunk_size: int, overlap: int) -> list[str]:
     """Split text into overlapping fixed-size chunks for a RAG ingestion
     pipeline. Each chunk after the first starts (chunk_size - overlap)
     characters after the previous chunk's start. Raise ValueError if
@@ -2663,7 +2663,7 @@ def silhouette_score(X, labels):
     functionSignature: 'parse_react_action(text: str) -> tuple[str, str]',
     starterCode: `import re
 
-def parse_react_action(text):
+def parse_react_action(text: str) -> tuple[str, str]:
     """Parse a ReAct-style agent line of the exact form
     "Action: tool_name[argument text]" into (tool_name, argument text).
     Leading/trailing whitespace on the whole line is ignored. Raise
@@ -2707,7 +2707,7 @@ def parse_react_action(text):
     bonusDescription: 'Pure Python implementation',
     functionName: 'validate_mcp_tool_call',
     functionSignature: 'validate_mcp_tool_call(schema: dict, payload: dict) -> list[str]',
-    starterCode: `def validate_mcp_tool_call(schema, payload):
+    starterCode: `def validate_mcp_tool_call(schema: dict, payload: dict) -> list[str]:
     """schema maps field name -> type name ('string' | 'number' |
     'boolean' | 'array' | 'object'). Validate payload against schema and
     return a list of human-readable error strings (empty list = valid).
@@ -2753,7 +2753,7 @@ def parse_react_action(text):
     bonusDescription: 'Pure Python implementation',
     functionName: 'ema',
     functionSignature: 'ema(values: list[float], alpha: float) -> list[float]',
-    starterCode: `def ema(values, alpha):
+    starterCode: `def ema(values: list[float], alpha: float) -> list[float]:
     """Return the exponential moving average of values: result[0] =
     values[0]; result[i] = alpha*values[i] + (1-alpha)*result[i-1].
     Raise ValueError if values is empty or alpha is not in (0, 1]."""
@@ -2796,7 +2796,7 @@ def parse_react_action(text):
     bonusDescription: 'Pure Python implementation',
     functionName: 'token_bucket_allow',
     functionSignature: 'token_bucket_allow(timestamps: list[float], capacity: int, refill_rate: float) -> list[bool]',
-    starterCode: `def token_bucket_allow(timestamps, capacity, refill_rate):
+    starterCode: `def token_bucket_allow(timestamps: list[float], capacity: int, refill_rate: float) -> list[bool]:
     """Simulate a token-bucket rate limiter. The bucket starts full
     (capacity tokens). For each timestamp (seconds, non-decreasing), first
     refill by (elapsed_seconds * refill_rate) tokens (capped at capacity),
@@ -2844,7 +2844,7 @@ def parse_react_action(text):
     functionSignature: 'filtered_vector_search(query: list[float], vectors: list[list[float]], tags: list[str], required_tag: str, k: int) -> list[int]',
     starterCode: `import math
 
-def filtered_vector_search(query, vectors, tags, required_tag, k):
+def filtered_vector_search(query: list[float], vectors: list[list[float]], tags: list[str], required_tag: str, k: int) -> list[int]:
     """Restrict the candidate set to vectors[i] where tags[i] ==
     required_tag, then return the indices (into the ORIGINAL vectors
     list) of the k most similar candidates to query by cosine similarity,
@@ -2915,7 +2915,7 @@ def filtered_vector_search(query, vectors, tags, required_tag, k):
     bonusDescription: 'Pure Python implementation',
     functionName: 'patchify',
     functionSignature: 'patchify(image: list[list[float]], patch_size: int) -> list[list[list[float]]]',
-    starterCode: `def patchify(image, patch_size):
+    starterCode: `def patchify(image: list[list[float]], patch_size: int) -> list[list[list[float]]]:
     """Split a 2D image (list of rows) into non-overlapping
     patch_size x patch_size square patches, scanning row-major (left to
     right, then top to bottom). Raise ValueError if patch_size <= 0 or if
@@ -2962,7 +2962,7 @@ def filtered_vector_search(query, vectors, tags, required_tag, k):
     bonusDescription: 'Pure Python implementation',
     functionName: 'assemble_context_within_budget',
     functionSignature: 'assemble_context_within_budget(token_counts: list[int], max_tokens: int) -> list[int]',
-    starterCode: `def assemble_context_within_budget(token_counts, max_tokens):
+    starterCode: `def assemble_context_within_budget(token_counts: list[int], max_tokens: int) -> list[int]:
     """token_counts[i] is the token count of the i-th retrieved chunk,
     already ranked best-first. Greedily include chunks in rank order
     while the running total stays within max_tokens, and STOP (do not
@@ -3008,7 +3008,7 @@ def filtered_vector_search(query, vectors, tags, required_tag, k):
     bonusDescription: 'Pure Python implementation',
     functionName: 'detect_agent_loop',
     functionSignature: 'detect_agent_loop(calls: list[tuple[str, str]], max_repeats: int) -> bool',
-    starterCode: `def detect_agent_loop(calls, max_repeats):
+    starterCode: `def detect_agent_loop(calls: list[tuple[str, str]], max_repeats: int) -> bool:
     """calls is an ordered list of (tool_name, arg) pairs an agent has
     called so far. Return True if the SAME (tool_name, arg) pair occurs
     max_repeats or more times CONSECUTIVELY anywhere in calls, else False.
@@ -3051,7 +3051,7 @@ def filtered_vector_search(query, vectors, tags, required_tag, k):
     bonusDescription: 'Pure Python implementation',
     functionName: 'correlate_jsonrpc_responses',
     functionSignature: 'correlate_jsonrpc_responses(requests: list[dict], responses: list[dict]) -> list[dict]',
-    starterCode: `def correlate_jsonrpc_responses(requests, responses):
+    starterCode: `def correlate_jsonrpc_responses(requests: list[dict], responses: list[dict]) -> list[dict]:
     """requests is a list of {"id": ..., "method": str}, in the order they
     were sent. responses is a list of {"id": ..., "result": Any} or
     {"id": ..., "error": str}, possibly arriving out of order. Return a
@@ -3118,7 +3118,7 @@ def filtered_vector_search(query, vectors, tags, required_tag, k):
     functionSignature: 'route_canary(request_id: str, canary_percentage: float) -> str',
     starterCode: `import hashlib
 
-def route_canary(request_id, canary_percentage):
+def route_canary(request_id: str, canary_percentage: float) -> str:
     """Deterministically route a request to "canary" or "stable" so the
     SAME request_id always gets the SAME answer for a given
     canary_percentage. Use an MD5-hash-based bucket in [0, 100): hash
@@ -3168,7 +3168,7 @@ def route_canary(request_id, canary_percentage):
 def _hash(s):
     return int(hashlib.md5(s.encode()).hexdigest(), 16) % (2**32)
 
-def consistent_hash_lookup(nodes, key, replicas):
+def consistent_hash_lookup(nodes: list[str], key: str, replicas: int) -> str:
     """Build a consistent-hashing ring: each node gets 'replicas' virtual
     points on the ring at hash(f"{node}#{i}") for i in range(replicas).
     Look up 'key' by hashing it and returning the owning node -- the node
@@ -3214,7 +3214,7 @@ def consistent_hash_lookup(nodes, key, replicas):
     bonusDescription: 'Pure Python implementation',
     functionName: 'hybrid_search_score',
     functionSignature: 'hybrid_search_score(keyword_scores: dict[str, float], vector_scores: dict[str, float], alpha: float) -> dict[str, float]',
-    starterCode: `def hybrid_search_score(keyword_scores, vector_scores, alpha):
+    starterCode: `def hybrid_search_score(keyword_scores: dict[str, float], vector_scores: dict[str, float], alpha: float) -> dict[str, float]:
     """Combine a keyword-search score map and a vector-similarity score
     map into one hybrid score per document: combined = alpha * vector +
     (1 - alpha) * keyword. A document missing from one map contributes 0
@@ -3278,7 +3278,7 @@ def consistent_hash_lookup(nodes, key, replicas):
     functionSignature: 'clip_zero_shot_predict(image_embedding: list[float], label_embeddings: list[list[float]], temperature: float) -> list[float]',
     starterCode: `import math
 
-def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
+def clip_zero_shot_predict(image_embedding: list[float], label_embeddings: list[list[float]], temperature: float) -> list[float]:
     """CLIP-style zero-shot classification: compute cosine similarity
     between image_embedding and each vector in label_embeddings, divide
     each by temperature, then return the softmax over those scaled
@@ -3336,7 +3336,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     bonusDescription: 'Pure Python implementation',
     functionName: 'retrieval_recall_at_k',
     functionSignature: 'retrieval_recall_at_k(retrieved: list[str], relevant: list[str], k: int) -> float',
-    starterCode: `def retrieval_recall_at_k(retrieved, relevant, k):
+    starterCode: `def retrieval_recall_at_k(retrieved: list[str], relevant: list[str], k: int) -> float:
     """retrieved is a ranked list of document IDs (best first). relevant
     is the list of document IDs that are actually correct for the query.
     Return recall@k: the fraction of 'relevant' documents that appear
@@ -3378,7 +3378,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '10–15 min',
     functionName: 'two_sum',
     functionSignature: 'two_sum(nums: list[int], target: int) -> list[int]',
-    starterCode: `def two_sum(nums, target):
+    starterCode: `def two_sum(nums: list[int], target: int) -> list[int]:
     """Return the indices [i, j] (i < j) of the two numbers in nums that
     add up to target. Assume exactly one valid pair exists and you may
     not use the same element twice. Raise ValueError if no pair sums to
@@ -3421,7 +3421,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '10–15 min',
     functionName: 'contains_duplicate',
     functionSignature: 'contains_duplicate(nums: list[int]) -> bool',
-    starterCode: `def contains_duplicate(nums):
+    starterCode: `def contains_duplicate(nums: list[int]) -> bool:
     """Return True if any value appears at least twice in nums, False if
     every element is distinct."""
     # Your implementation here
@@ -3461,7 +3461,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '10–15 min',
     functionName: 'is_anagram',
     functionSignature: 'is_anagram(s: str, t: str) -> bool',
-    starterCode: `def is_anagram(s, t):
+    starterCode: `def is_anagram(s: str, t: str) -> bool:
     """Return True if t is an anagram of s (same characters, same
     multiplicity, any order), False otherwise."""
     # Your implementation here
@@ -3501,7 +3501,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '10–15 min',
     functionName: 'max_profit',
     functionSignature: 'max_profit(prices: list[int]) -> int',
-    starterCode: `def max_profit(prices):
+    starterCode: `def max_profit(prices: list[int]) -> int:
     """prices[i] is the stock price on day i. Return the maximum profit
     from buying on one day and selling on a LATER day (0 if no profit is
     possible, e.g. prices only ever fall). Return 0 for an empty list."""
@@ -3543,7 +3543,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '10–15 min',
     functionName: 'move_zeroes',
     functionSignature: 'move_zeroes(nums: list[int]) -> list[int]',
-    starterCode: `def move_zeroes(nums):
+    starterCode: `def move_zeroes(nums: list[int]) -> list[int]:
     """Return a new list with every 0 moved to the end, while preserving
     the RELATIVE order of all the non-zero elements."""
     # Your implementation here
@@ -3583,7 +3583,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '15–20 min',
     functionName: 'group_anagrams',
     functionSignature: 'group_anagrams(words: list[str]) -> list[list[str]]',
-    starterCode: `def group_anagrams(words):
+    starterCode: `def group_anagrams(words: list[str]) -> list[list[str]]:
     """Group words that are anagrams of each other. Return the groups
     sorted by their sorted-letters key in ascending alphabetical order;
     within each group, preserve the words' original relative order."""
@@ -3625,7 +3625,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '15–20 min',
     functionName: 'product_except_self',
     functionSignature: 'product_except_self(nums: list[int]) -> list[int]',
-    starterCode: `def product_except_self(nums):
+    starterCode: `def product_except_self(nums: list[int]) -> list[int]:
     """Return a list where result[i] is the product of every element in
     nums EXCEPT nums[i]. Must not use division, and must run in O(n)
     time (extra O(n) output space is fine; the classic follow-up asks
@@ -3668,7 +3668,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '15–20 min',
     functionName: 'longest_consecutive',
     functionSignature: 'longest_consecutive(nums: list[int]) -> int',
-    starterCode: `def longest_consecutive(nums):
+    starterCode: `def longest_consecutive(nums: list[int]) -> int:
     """Return the length of the longest run of consecutive integers
     present in nums (in any order in the input). Must run in O(n) time
     (no sorting)."""
@@ -3709,7 +3709,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '15–20 min',
     functionName: 'max_area',
     functionSignature: 'max_area(heights: list[int]) -> int',
-    starterCode: `def max_area(heights):
+    starterCode: `def max_area(heights: list[int]) -> int:
     """heights[i] is the height of a vertical line at position i. Return
     the maximum area of water a pair of these lines (plus the x-axis
     between them) can contain: area = min(heights[i], heights[j]) *
@@ -3751,7 +3751,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '15–20 min',
     functionName: 'subarray_sum',
     functionSignature: 'subarray_sum(nums: list[int], k: int) -> int',
-    starterCode: `def subarray_sum(nums, k):
+    starterCode: `def subarray_sum(nums: list[int], k: int) -> int:
     """Return the number of CONTIGUOUS subarrays of nums whose elements
     sum to exactly k. nums may contain negative numbers (so a sliding
     window alone does not work here -- use prefix sums)."""
@@ -3792,7 +3792,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '15–20 min',
     functionName: 'sort_colors',
     functionSignature: 'sort_colors(nums: list[int]) -> list[int]',
-    starterCode: `def sort_colors(nums):
+    starterCode: `def sort_colors(nums: list[int]) -> list[int]:
     """nums contains only the values 0, 1, and 2. Return them sorted
     (all 0s, then all 1s, then all 2s) in a SINGLE pass using the
     three-pointer Dutch National Flag partition (not a general sort)."""
@@ -3833,7 +3833,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '20–25 min',
     functionName: 'trap_rain_water',
     functionSignature: 'trap_rain_water(height: list[int]) -> int',
-    starterCode: `def trap_rain_water(height):
+    starterCode: `def trap_rain_water(height: list[int]) -> int:
     """height[i] is the height of a bar at position i in an elevation
     map. Return the total units of rainwater trapped between the bars
     after it rains."""
@@ -3874,7 +3874,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '20–25 min',
     functionName: 'first_missing_positive',
     functionSignature: 'first_missing_positive(nums: list[int]) -> int',
-    starterCode: `def first_missing_positive(nums):
+    starterCode: `def first_missing_positive(nums: list[int]) -> int:
     """Return the smallest positive integer (>= 1) that does NOT appear
     in nums. Must run in O(n) time using O(1) extra space (in-place
     index placement -- no new hash set/dict of size n)."""
@@ -3915,7 +3915,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '20–25 min',
     functionName: 'four_sum',
     functionSignature: 'four_sum(nums: list[int], target: int) -> list[list[int]]',
-    starterCode: `def four_sum(nums, target):
+    starterCode: `def four_sum(nums: list[int], target: int) -> list[list[int]]:
     """Return every unique quadruple [a, b, c, d] from nums (each element
     used at most once per quadruple, by index) such that a+b+c+d ==
     target. Each quadruple's 4 numbers must be listed in ascending
@@ -3959,7 +3959,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     estimatedTime: '25–30 min',
     functionName: 'find_median_sorted_arrays',
     functionSignature: 'find_median_sorted_arrays(nums1: list[int], nums2: list[int]) -> float',
-    starterCode: `def find_median_sorted_arrays(nums1, nums2):
+    starterCode: `def find_median_sorted_arrays(nums1: list[int], nums2: list[int]) -> float:
     """nums1 and nums2 are each already sorted ascending. Return the
     median of the combined (conceptually merged) sorted array, as a
     float, in O(log(min(len(nums1), len(nums2)))) time -- do not
@@ -4011,7 +4011,7 @@ def clip_zero_shot_predict(image_embedding, label_embeddings, temperature):
     functionSignature: 'route_to_tool(query: str, tool_keywords: dict[str, list[str]]) -> str',
     starterCode: `import re
 
-def route_to_tool(query, tool_keywords):
+def route_to_tool(query: str, tool_keywords: dict[str, list[str]]) -> str:
     """Pick the tool whose keyword list has the most matches among the
     query's lowercase word tokens. Ties broken alphabetically by tool
     name. Raise ValueError if tool_keywords is empty or no tool matches
@@ -4080,7 +4080,7 @@ def route_to_tool(query, tool_keywords):
     bonusDescription: 'Pure Python implementation',
     functionName: 'parse_mcp_resource_uri',
     functionSignature: 'parse_mcp_resource_uri(uri: str, allowed_schemes: list[str]) -> tuple[str, str]',
-    starterCode: `def parse_mcp_resource_uri(uri, allowed_schemes):
+    starterCode: `def parse_mcp_resource_uri(uri: str, allowed_schemes: list[str]) -> tuple[str, str]:
     """Split an MCP resource URI of the form "scheme://path" into
     (scheme, path). Raise ValueError if the URI has no "://" separator,
     or if the scheme is not in allowed_schemes."""
@@ -4122,7 +4122,7 @@ def route_to_tool(query, tool_keywords):
     bonusDescription: 'Pure Python implementation',
     functionName: 'percentile',
     functionSignature: 'percentile(values: list[float], p: float) -> float',
-    starterCode: `def percentile(values, p):
+    starterCode: `def percentile(values: list[float], p: float) -> float:
     """Return the p-th percentile (0 <= p <= 100) of values using linear
     interpolation between the two nearest ranks (the same method
     numpy.percentile uses by default). Raise ValueError if values is
@@ -4167,7 +4167,7 @@ def route_to_tool(query, tool_keywords):
     bonusDescription: 'Pure Python implementation',
     functionName: 'quorum_reached_at',
     functionSignature: 'quorum_reached_at(acks: list[bool], quorum: int) -> int',
-    starterCode: `def quorum_reached_at(acks, quorum):
+    starterCode: `def quorum_reached_at(acks: list[bool], quorum: int) -> int:
     """acks is an ordered list of per-replica ack booleans as they arrive.
     Return the 0-based index of the ack at which the running count of
     True acks FIRST reaches quorum, or -1 if it never does. Raise
@@ -4210,7 +4210,7 @@ def route_to_tool(query, tool_keywords):
     bonusDescription: 'Pure Python implementation',
     functionName: 'hamming_search',
     functionSignature: 'hamming_search(query: list[float], vectors: list[list[float]], k: int) -> list[int]',
-    starterCode: `def hamming_search(query, vectors, k):
+    starterCode: `def hamming_search(query: list[float], vectors: list[list[float]], k: int) -> list[int]:
     """Binary-quantize query and every vector (1 bit per dimension: 1 if
     the value is >= 0, else 0), then return the indices of the k vectors
     with the smallest Hamming distance to the quantized query, ties
@@ -4254,7 +4254,7 @@ def route_to_tool(query, tool_keywords):
     bonusDescription: 'Pure Python implementation',
     functionName: 'attention_weighted_pool',
     functionSignature: 'attention_weighted_pool(patch_embeddings: list[list[float]], attention_weights: list[float]) -> list[float]',
-    starterCode: `def attention_weighted_pool(patch_embeddings, attention_weights):
+    starterCode: `def attention_weighted_pool(patch_embeddings: list[list[float]], attention_weights: list[float]) -> list[float]:
     """Combine per-patch embeddings into one embedding via a weighted
     average, using attention_weights normalized to sum to 1 first (the
     caller's weights need not already sum to 1). Raise ValueError if the
@@ -4301,7 +4301,7 @@ def route_to_tool(query, tool_keywords):
     functionSignature: 'dedupe_passages(passages: list[str]) -> list[str]',
     starterCode: `import re
 
-def dedupe_passages(passages):
+def dedupe_passages(passages: list[str]) -> list[str]:
     """Remove passages that are duplicates of an earlier one after
     normalizing (strip, lowercase, collapse internal whitespace runs to a
     single space). Keep the FIRST occurrence's original (non-normalized)
@@ -4350,7 +4350,7 @@ def dedupe_passages(passages):
     bonusDescription: 'Pure Python implementation',
     functionName: 'assign_subtasks',
     functionSignature: 'assign_subtasks(subtasks: list[dict], agents: dict[str, list[str]]) -> list[str]',
-    starterCode: `def assign_subtasks(subtasks, agents):
+    starterCode: `def assign_subtasks(subtasks: list[dict], agents: dict[str, list[str]]) -> list[str]:
     """Each subtask is {"task": str, "requires": str}. agents maps
     agent_name -> list of capabilities. Assign each subtask, in order, to
     the FIRST agent (in agents' iteration order) whose capability list
@@ -4410,7 +4410,7 @@ def dedupe_passages(passages):
     bonusDescription: 'Pure Python implementation',
     functionName: 'negotiate_capabilities',
     functionSignature: 'negotiate_capabilities(client_caps: dict[str, bool], server_caps: dict[str, bool]) -> dict[str, bool]',
-    starterCode: `def negotiate_capabilities(client_caps, server_caps):
+    starterCode: `def negotiate_capabilities(client_caps: dict[str, bool], server_caps: dict[str, bool]) -> dict[str, bool]:
     """Return a dict containing only the capabilities that are truthy in
     BOTH client_caps and server_caps, each mapped to True. A capability
     present in only one side, or false in either, is excluded."""
@@ -4461,7 +4461,7 @@ def dedupe_passages(passages):
     functionSignature: 'population_stability_index(baseline_counts: list[int], current_counts: list[int]) -> float',
     starterCode: `import math
 
-def population_stability_index(baseline_counts, current_counts):
+def population_stability_index(baseline_counts: list[int], current_counts: list[int]) -> float:
     """Compute the Population Stability Index (PSI) between a baseline
     and current bucketed distribution (same buckets, so same length).
     For each bucket: convert counts to proportions of their own total,
@@ -4508,7 +4508,7 @@ def population_stability_index(baseline_counts, current_counts):
     bonusDescription: 'Pure Python implementation',
     functionName: 'compare_vector_clocks',
     functionSignature: 'compare_vector_clocks(a: dict[str, int], b: dict[str, int]) -> str',
-    starterCode: `def compare_vector_clocks(a, b):
+    starterCode: `def compare_vector_clocks(a: dict[str, int], b: dict[str, int]) -> str:
     """a and b are vector clocks (node_id -> counter; a missing node is
     implicitly counter 0). Return "equal" if all counters match, "before"
     if a happened-before b (every counter in a <= the matching one in b,
@@ -4552,7 +4552,7 @@ def population_stability_index(baseline_counts, current_counts):
     bonusDescription: 'Pure Python implementation',
     functionName: 'apply_index_operations',
     functionSignature: 'apply_index_operations(operations: list[tuple[str, str]]) -> list[str]',
-    starterCode: `def apply_index_operations(operations):
+    starterCode: `def apply_index_operations(operations: list[tuple[str, str]]) -> list[str]:
     """Each operation is ("insert", id) or ("delete", id), applied in
     order to an initially empty index. Return the sorted list of ids
     still live after all operations. Raise ValueError when deleting an id
@@ -4596,7 +4596,7 @@ def population_stability_index(baseline_counts, current_counts):
     bonusDescription: 'Pure Python implementation',
     functionName: 'bbox_iou',
     functionSignature: 'bbox_iou(box_a: list[float], box_b: list[float]) -> float',
-    starterCode: `def bbox_iou(box_a, box_b):
+    starterCode: `def bbox_iou(box_a: list[float], box_b: list[float]) -> float:
     """Each box is [x1, y1, x2, y2] (x1<x2, y1<y2). Return the
     Intersection-over-Union of the two boxes. Raise ValueError if either
     box is degenerate (x2 <= x1 or y2 <= y1)."""
@@ -4640,7 +4640,7 @@ def population_stability_index(baseline_counts, current_counts):
     functionSignature: 'jaccard_relevance(query: str, chunk: str) -> float',
     starterCode: `import re
 
-def jaccard_relevance(query, chunk):
+def jaccard_relevance(query: str, chunk: str) -> float:
     """Tokenize query and chunk into lowercase alphanumeric word sets, and
     return the Jaccard similarity |intersection| / |union| between them.
     Raise ValueError if either string has zero tokens."""
@@ -4681,7 +4681,7 @@ def jaccard_relevance(query, chunk):
     bonusDescription: 'Pure Python implementation',
     functionName: 'exponential_backoff_delays',
     functionSignature: 'exponential_backoff_delays(num_attempts: int, base_delay: float, max_delay: float) -> list[float]',
-    starterCode: `def exponential_backoff_delays(num_attempts, base_delay, max_delay):
+    starterCode: `def exponential_backoff_delays(num_attempts: int, base_delay: float, max_delay: float) -> list[float]:
     """Return the list of retry delays for num_attempts attempts, where
     the i-th delay (0-indexed) is base_delay * 2**i, capped at max_delay.
     Raise ValueError if num_attempts <= 0, base_delay <= 0, or
@@ -4733,7 +4733,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '10–15 min',
     functionName: 'max_depth',
     functionSignature: 'max_depth(root: dict | None) -> int',
-    starterCode: `def max_depth(root):
+    starterCode: `def max_depth(root: dict | None) -> int:
     """root: a tree node as {'val', 'left', 'right'} (left/right are None
     for an absent child), or None for an empty tree. Return the number
     of nodes along the longest path from root down to the farthest leaf
@@ -4775,7 +4775,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '10–15 min',
     functionName: 'invert_tree',
     functionSignature: 'invert_tree(root: dict | None) -> dict | None',
-    starterCode: `def invert_tree(root):
+    starterCode: `def invert_tree(root: dict | None) -> dict | None:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return a
     new tree that is the mirror image of root -- every node's left and
     right children swapped, recursively."""
@@ -4816,7 +4816,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '10–15 min',
     functionName: 'is_same_tree',
     functionSignature: 'is_same_tree(p: dict | None, q: dict | None) -> bool',
-    starterCode: `def is_same_tree(p, q):
+    starterCode: `def is_same_tree(p: dict | None, q: dict | None) -> bool:
     """p, q: tree nodes as {'val', 'left', 'right'}, or None. Return True
     if the two trees are structurally identical AND every corresponding
     node holds the same value."""
@@ -4857,7 +4857,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '10–15 min',
     functionName: 'binary_search',
     functionSignature: 'binary_search(nums: list[int], target: int) -> int',
-    starterCode: `def binary_search(nums, target):
+    starterCode: `def binary_search(nums: list[int], target: int) -> int:
     """nums: a list sorted in ascending order, all distinct values.
     Return the index of target in nums, or -1 if it is not present.
     Must run in O(log n) time."""
@@ -4899,7 +4899,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '10–15 min',
     functionName: 'inorder_traversal',
     functionSignature: 'inorder_traversal(root: dict | None) -> list[int]',
-    starterCode: `def inorder_traversal(root):
+    starterCode: `def inorder_traversal(root: dict | None) -> list[int]:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return the
     node values in inorder (left, root, right) order, using an explicit
     stack -- NOT recursion."""
@@ -4940,7 +4940,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '15–20 min',
     functionName: 'is_symmetric',
     functionSignature: 'is_symmetric(root: dict | None) -> bool',
-    starterCode: `def is_symmetric(root):
+    starterCode: `def is_symmetric(root: dict | None) -> bool:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return
     True if the tree is a mirror image of itself around its center
     (root's left subtree is a mirror of its right subtree)."""
@@ -4981,7 +4981,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '15–20 min',
     functionName: 'kth_smallest_in_bst',
     functionSignature: 'kth_smallest_in_bst(root: dict | None, k: int) -> int',
-    starterCode: `def kth_smallest_in_bst(root, k):
+    starterCode: `def kth_smallest_in_bst(root: dict | None, k: int) -> int:
     """root: the root of a valid BST, as {'val', 'left', 'right'}. k: a
     1-indexed rank (k=1 means the smallest value). Return the kth
     smallest value in the tree. Raise ValueError if k exceeds the number
@@ -5023,7 +5023,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '15–20 min',
     functionName: 'search_insert',
     functionSignature: 'search_insert(nums: list[int], target: int) -> int',
-    starterCode: `def search_insert(nums, target):
+    starterCode: `def search_insert(nums: list[int], target: int) -> int:
     """nums: sorted ascending, distinct values. Return the index of
     target if it is present; otherwise return the index where it would
     be inserted to keep nums sorted. Must run in O(log n) time."""
@@ -5065,7 +5065,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '15–20 min',
     functionName: 'search_range',
     functionSignature: 'search_range(nums: list[int], target: int) -> list[int]',
-    starterCode: `def search_range(nums, target):
+    starterCode: `def search_range(nums: list[int], target: int) -> list[int]:
     """nums: sorted ascending, may contain duplicates. Return [first,
     last] -- the indices of target's first and last occurrence -- or
     [-1, -1] if target is not present. Must run in O(log n) time."""
@@ -5106,7 +5106,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '15–20 min',
     functionName: 'has_path_sum',
     functionSignature: 'has_path_sum(root: dict | None, target_sum: int) -> bool',
-    starterCode: `def has_path_sum(root, target_sum):
+    starterCode: `def has_path_sum(root: dict | None, target_sum: int) -> bool:
     """root: a tree node as {'val', 'left', 'right'}, or None.
     target_sum: an integer. Return True if some ROOT-TO-LEAF path exists
     whose node values sum to exactly target_sum. An empty tree has no
@@ -5148,7 +5148,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '15–20 min',
     functionName: 'diameter_of_binary_tree',
     functionSignature: 'diameter_of_binary_tree(root: dict | None) -> int',
-    starterCode: `def diameter_of_binary_tree(root):
+    starterCode: `def diameter_of_binary_tree(root: dict | None) -> int:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return
     the length (number of EDGES, not nodes) of the longest path between
     any two nodes in the tree -- this path may or may not pass through
@@ -5191,7 +5191,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '20–25 min',
     functionName: 'is_balanced',
     functionSignature: 'is_balanced(root: dict | None) -> bool',
-    starterCode: `def is_balanced(root):
+    starterCode: `def is_balanced(root: dict | None) -> bool:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return
     True if the tree is height-balanced: for EVERY node, the heights of
     its left and right subtrees differ by at most 1. Must run in O(n)
@@ -5234,7 +5234,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '20–25 min',
     functionName: 'build_tree_from_traversals',
     functionSignature: 'build_tree_from_traversals(preorder: list[int], inorder: list[int]) -> dict | None',
-    starterCode: `def build_tree_from_traversals(preorder, inorder):
+    starterCode: `def build_tree_from_traversals(preorder: list[int], inorder: list[int]) -> dict | None:
     """preorder, inorder: the preorder and inorder traversals of the SAME
     binary tree (all values distinct). Reconstruct and return the tree
     as {'val', 'left', 'right'} nodes (None for an absent child, or for
@@ -5275,7 +5275,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '20–25 min',
     functionName: 'serialize_tree',
     functionSignature: 'serialize_tree(root: dict | None) -> str',
-    starterCode: `def serialize_tree(root):
+    starterCode: `def serialize_tree(root: dict | None) -> str:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return a
     single comma-separated string encoding of the tree, built from a
     PREORDER traversal where every None child is written as the literal
@@ -5318,7 +5318,7 @@ def jaccard_relevance(query, chunk):
     estimatedTime: '25–30 min',
     functionName: 'max_path_sum',
     functionSignature: 'max_path_sum(root: dict) -> int',
-    starterCode: `def max_path_sum(root):
+    starterCode: `def max_path_sum(root: dict) -> int:
     """root: a non-empty tree node as {'val', 'left', 'right'}. A path
     is any sequence of nodes connected by edges, and does NOT need to
     pass through the root or end at a leaf -- it may start and end at
@@ -5372,7 +5372,7 @@ def jaccard_relevance(query, chunk):
     functionSignature: 'render_mcp_prompt(template: str, arguments: dict[str, str]) -> str',
     starterCode: `import re
 
-def render_mcp_prompt(template, arguments):
+def render_mcp_prompt(template: str, arguments: dict[str, str]) -> str:
     """Substitute every {{variable}} placeholder in template with
     arguments[variable]. Raise ValueError if a placeholder's variable is
     missing from arguments."""
@@ -5413,7 +5413,7 @@ def render_mcp_prompt(template, arguments):
     bonusDescription: 'Pure Python implementation',
     functionName: 'traffic_percentage_at',
     functionSignature: 'traffic_percentage_at(schedule: list[tuple[float, float]], query_time: float) -> float',
-    starterCode: `def traffic_percentage_at(schedule, query_time):
+    starterCode: `def traffic_percentage_at(schedule: list[tuple[float, float]], query_time: float) -> float:
     """schedule is a list of (time, percentage) staged-rollout steps.
     Return the percentage in effect at query_time: the percentage of the
     LATEST step whose time is <= query_time. Raise ValueError if schedule
@@ -5458,7 +5458,7 @@ def render_mcp_prompt(template, arguments):
     bonusDescription: 'Pure Python implementation',
     functionName: 'two_phase_commit_outcome',
     functionSignature: 'two_phase_commit_outcome(votes: list[bool | None]) -> str',
-    starterCode: `def two_phase_commit_outcome(votes):
+    starterCode: `def two_phase_commit_outcome(votes: list[bool | None]) -> str:
     """votes has one entry per participant: True (yes), False (no), or
     None (timed out, treated as a no). Return "commit" only if every
     participant voted True, else "abort". Raise ValueError if votes is
@@ -5502,7 +5502,7 @@ def render_mcp_prompt(template, arguments):
     functionSignature: 'ivf_assign_cell(query: list[float], centroids: list[list[float]]) -> int',
     starterCode: `import math
 
-def ivf_assign_cell(query, centroids):
+def ivf_assign_cell(query: list[float], centroids: list[list[float]]) -> int:
     """Return the index of the centroid closest to query by Euclidean
     distance (ties broken by lower index). Raise ValueError if centroids
     is empty."""
@@ -5543,7 +5543,7 @@ def ivf_assign_cell(query, centroids):
     bonusDescription: 'Pure Python implementation',
     functionName: 'non_max_suppression',
     functionSignature: 'non_max_suppression(boxes: list[list[float]], scores: list[float], iou_threshold: float) -> list[int]',
-    starterCode: `def non_max_suppression(boxes, scores, iou_threshold):
+    starterCode: `def non_max_suppression(boxes: list[list[float]], scores: list[float], iou_threshold: float) -> list[int]:
     """Each box is [x1, y1, x2, y2]. Greedily keep the highest-scoring
     remaining box, suppress every not-yet-suppressed box whose IoU with
     it is >= iou_threshold, and repeat until every box is either kept or
@@ -5602,7 +5602,7 @@ def ivf_assign_cell(query, centroids):
     bonusDescription: 'Pure Python implementation',
     functionName: 'merge_overlapping_ranges',
     functionSignature: 'merge_overlapping_ranges(ranges: list[tuple[int, int]]) -> list[tuple[int, int]]',
-    starterCode: `def merge_overlapping_ranges(ranges):
+    starterCode: `def merge_overlapping_ranges(ranges: list[tuple[int, int]]) -> list[tuple[int, int]]:
     """Each range is (start, end) character offsets of a retrieved chunk
     within the same source document. Merge any ranges that overlap or
     touch (one's start <= another's end) into a single combined range.
@@ -5647,7 +5647,7 @@ def ivf_assign_cell(query, centroids):
     bonusDescription: 'Pure Python implementation',
     functionName: 'validate_plan_order',
     functionSignature: 'validate_plan_order(steps: list[dict]) -> str | None',
-    starterCode: `def validate_plan_order(steps):
+    starterCode: `def validate_plan_order(steps: list[dict]) -> str | None:
     """Each step is {"id": str, "depends_on": list[str]}. Verify steps
     are ordered so every step's dependencies appear earlier in the list.
     Return the id of the FIRST step whose dependencies are not yet
@@ -5714,7 +5714,7 @@ def ivf_assign_cell(query, centroids):
     bonusDescription: 'Pure Python implementation',
     functionName: 'paginate_tools',
     functionSignature: 'paginate_tools(tools: list[str], page_size: int, cursor: str | None) -> tuple[list[str], str | None]',
-    starterCode: `def paginate_tools(tools, page_size, cursor):
+    starterCode: `def paginate_tools(tools: list[str], page_size: int, cursor: str | None) -> tuple[list[str], str | None]:
     """cursor is None for the first page, else the opaque cursor string
     returned by the previous call. Return (page_items, next_cursor),
     where next_cursor is None once there are no more items. Raise
@@ -5761,7 +5761,7 @@ def ivf_assign_cell(query, centroids):
     functionSignature: 'compute_autoscale_target(request_rate: float, target_per_instance: float, min_instances: int, max_instances: int) -> int',
     starterCode: `import math
 
-def compute_autoscale_target(request_rate, target_per_instance, min_instances, max_instances):
+def compute_autoscale_target(request_rate: float, target_per_instance: float, min_instances: int, max_instances: int) -> int:
     """Return the number of instances needed to handle request_rate at
     target_per_instance requests per instance, rounded UP, then clamped
     to [min_instances, max_instances]. Raise ValueError if
@@ -5806,7 +5806,7 @@ def compute_autoscale_target(request_rate, target_per_instance, min_instances, m
     bonusDescription: 'Pure Python implementation',
     functionName: 'find_replica_divergence',
     functionSignature: 'find_replica_divergence(replica_a: dict[str, str], replica_b: dict[str, str]) -> list[str]',
-    starterCode: `def find_replica_divergence(replica_a, replica_b):
+    starterCode: `def find_replica_divergence(replica_a: dict[str, str], replica_b: dict[str, str]) -> list[str]:
     """Return the sorted list of keys where replica_a and replica_b
     disagree -- either the value differs, or the key is present in only
     one replica. An empty result means the replicas are fully in sync."""
@@ -5849,7 +5849,7 @@ def compute_autoscale_target(request_rate, target_per_instance, min_instances, m
     functionSignature: 'estimate_index_memory_bytes(num_vectors: int, dimensions: int, bytes_per_element: int, quantization_bits: int | None) -> int',
     starterCode: `import math
 
-def estimate_index_memory_bytes(num_vectors, dimensions, bytes_per_element, quantization_bits):
+def estimate_index_memory_bytes(num_vectors: int, dimensions: int, bytes_per_element: int, quantization_bits: int | None) -> int:
     """Estimate total index memory in bytes. Without quantization, each
     vector costs dimensions * bytes_per_element bytes. With
     quantization_bits set, each vector instead costs
@@ -5895,7 +5895,7 @@ def estimate_index_memory_bytes(num_vectors, dimensions, bytes_per_element, quan
     bonusDescription: 'Pure Python implementation',
     functionName: 'aspect_preserving_resize',
     functionSignature: 'aspect_preserving_resize(width: int, height: int, max_dimension: int) -> tuple[int, int]',
-    starterCode: `def aspect_preserving_resize(width, height, max_dimension):
+    starterCode: `def aspect_preserving_resize(width: int, height: int, max_dimension: int) -> tuple[int, int]:
     """Return (new_width, new_height) scaled so the LARGER original
     dimension becomes exactly max_dimension, preserving aspect ratio (the
     other dimension scales proportionally, rounded to the nearest
@@ -5941,7 +5941,7 @@ def estimate_index_memory_bytes(num_vectors, dimensions, bytes_per_element, quan
     functionSignature: 'groundedness_score(answer: str, source_chunks: list[str]) -> float',
     starterCode: `import re
 
-def groundedness_score(answer, source_chunks):
+def groundedness_score(answer: str, source_chunks: list[str]) -> float:
     """Tokenize answer into lowercase alphanumeric words, and tokenize
     the UNION of all source_chunks the same way. Return the fraction of
     answer's UNIQUE tokens that also appear somewhere in the source
@@ -5985,7 +5985,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'has_exceeded_turn_budget',
     functionSignature: 'has_exceeded_turn_budget(turns: list[str], max_turns: int) -> bool',
-    starterCode: `def has_exceeded_turn_budget(turns, max_turns):
+    starterCode: `def has_exceeded_turn_budget(turns: list[str], max_turns: int) -> bool:
     """turns is an ordered list of role strings ("user", "assistant", or
     "tool") for a conversation so far. Return True if the number of
     "assistant" turns (the ones that cost an LLM call) is >= max_turns.
@@ -6030,7 +6030,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'debounce_notifications',
     functionSignature: 'debounce_notifications(timestamps: list[float], window: float) -> list[float]',
-    starterCode: `def debounce_notifications(timestamps, window):
+    starterCode: `def debounce_notifications(timestamps: list[float], window: float) -> list[float]:
     """timestamps is an ordered (non-decreasing) list of times a resource
     changed. Return the subset that would actually be SENT as
     notifications if debounced by window: the first change is always
@@ -7060,7 +7060,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'reverse_list',
     functionSignature: 'reverse_list(head: dict | None) -> dict | None',
-    starterCode: `def reverse_list(head):
+    starterCode: `def reverse_list(head: dict | None) -> dict | None:
     """head: a linked-list node as {'val', 'next'} (None terminates the
     list, or represents an empty list). Return the head of the REVERSED
     list."""
@@ -7101,7 +7101,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'is_valid_parentheses',
     functionSignature: "is_valid_parentheses(s: str) -> bool",
-    starterCode: `def is_valid_parentheses(s):
+    starterCode: `def is_valid_parentheses(s: str) -> bool:
     """s: a string containing only the characters '(', ')', '{', '}',
     '[', ']'. Return True if every bracket is properly closed in the
     correct order (matched AND correctly nested)."""
@@ -7143,7 +7143,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'merge_two_lists',
     functionSignature: 'merge_two_lists(l1: dict | None, l2: dict | None) -> dict | None',
-    starterCode: `def merge_two_lists(l1, l2):
+    starterCode: `def merge_two_lists(l1: dict | None, l2: dict | None) -> dict | None:
     """l1, l2: linked-list nodes as {'val', 'next'} (each already sorted
     ascending), or None for an empty list. Return the head of a single
     sorted list splicing together every node from both (reusing the
@@ -7184,7 +7184,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'has_cycle',
     functionSignature: 'has_cycle(values: list[int], pos: int) -> bool',
-    starterCode: `def has_cycle(values, pos):
+    starterCode: `def has_cycle(values: list[int], pos: int) -> bool:
     """values: the node values, in list order. pos: the 0-indexed
     position the LAST node's next pointer connects back to (creating a
     cycle), or -1 for no cycle. First build the described linked list
@@ -7228,7 +7228,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'run_queue_ops',
     functionSignature: "run_queue_ops(ops: list[str], args: list[list[int]]) -> list",
-    starterCode: `def run_queue_ops(ops, args):
+    starterCode: `def run_queue_ops(ops: list[str], args: list[list[int]]) -> list:
     """Simulate a FIFO queue built from two LIFO stacks (an 'in' stack
     and an 'out' stack), processing ops in order (args[i] is the
     argument list for ops[i], e.g. [5] for a push, [] for a pop/peek).
@@ -7269,7 +7269,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'remove_nth_from_end',
     functionSignature: 'remove_nth_from_end(head: dict | None, n: int) -> dict | None',
-    starterCode: `def remove_nth_from_end(head, n):
+    starterCode: `def remove_nth_from_end(head: dict | None, n: int) -> dict | None:
     """head: a linked-list node as {'val', 'next'}. n: a positive
     integer, guaranteed <= the list's length. Remove the nth node from
     the END of the list (1-indexed: n=1 is the last node) and return
@@ -7311,7 +7311,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'is_palindrome_list',
     functionSignature: 'is_palindrome_list(head: dict | None) -> bool',
-    starterCode: `def is_palindrome_list(head):
+    starterCode: `def is_palindrome_list(head: dict | None) -> bool:
     """head: a linked-list node as {'val', 'next'}, or None for an empty
     list. Return True if the sequence of values reads the same forward
     and backward."""
@@ -7351,7 +7351,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'eval_rpn',
     functionSignature: "eval_rpn(tokens: list[str]) -> int",
-    starterCode: `def eval_rpn(tokens):
+    starterCode: `def eval_rpn(tokens: list[str]) -> int:
     """tokens: a list of strings, each either an integer literal or one
     of '+', '-', '*', '/'. Evaluate the Reverse Polish (postfix)
     expression and return the integer result. Division between two
@@ -7393,7 +7393,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'add_two_numbers',
     functionSignature: 'add_two_numbers(l1: dict | None, l2: dict | None) -> dict | None',
-    starterCode: `def add_two_numbers(l1, l2):
+    starterCode: `def add_two_numbers(l1: dict | None, l2: dict | None) -> dict | None:
     """l1, l2: linked-list nodes as {'val', 'next'}, each representing a
     non-negative integer with its digits stored in REVERSE order (the
     1s digit is the head). Return the sum, as a new linked list in the
@@ -7435,7 +7435,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'get_intersection_node',
     functionSignature: 'get_intersection_node(listA: list[int], listB: list[int], skipA: int, skipB: int) -> int | None',
-    starterCode: `def get_intersection_node(listA, listB, skipA, skipB):
+    starterCode: `def get_intersection_node(listA: list[int], listB: list[int], skipA: int, skipB: int) -> int | None:
     """listA, listB: the full value sequences as seen from each list's
     own head. skipA, skipB: how many nodes at the FRONT of each list are
     NOT shared with the other list -- when the lists genuinely
@@ -7480,7 +7480,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'next_greater_element',
     functionSignature: 'next_greater_element(nums1: list[int], nums2: list[int]) -> list[int]',
-    starterCode: `def next_greater_element(nums1, nums2):
+    starterCode: `def next_greater_element(nums1: list[int], nums2: list[int]) -> list[int]:
     """nums1: a list of distinct values, each of which also appears
     somewhere in nums2 (nums2's values are all distinct too). For each
     value in nums1, find the first value to its RIGHT in nums2 that is
@@ -7523,7 +7523,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'reorder_list',
     functionSignature: 'reorder_list(head: dict | None) -> dict | None',
-    starterCode: `def reorder_list(head):
+    starterCode: `def reorder_list(head: dict | None) -> dict | None:
     """head: a linked-list node as {'val', 'next'}. Reorder it in place
     (conceptually) from L0 -> L1 -> ... -> Ln-1 -> Ln into
     L0 -> Ln -> L1 -> Ln-1 -> L2 -> Ln-2 -> ... (alternating from the
@@ -7565,7 +7565,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'run_circular_queue_ops',
     functionSignature: 'run_circular_queue_ops(capacity: int, ops: list[str], args: list[list[int]]) -> list',
-    starterCode: `def run_circular_queue_ops(capacity, ops, args):
+    starterCode: `def run_circular_queue_ops(capacity: int, ops: list[str], args: list[list[int]]) -> list:
     """Simulate a fixed-CAPACITY circular queue backed by a single
     preallocated buffer of size capacity (a real ring buffer -- no
     resizing, no shifting elements on dequeue). ops are 'enqueue' (arg
@@ -7608,7 +7608,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'sort_list',
     functionSignature: 'sort_list(head: dict | None) -> dict | None',
-    starterCode: `def sort_list(head):
+    starterCode: `def sort_list(head: dict | None) -> dict | None:
     """head: a linked-list node as {'val', 'next'}, in arbitrary order.
     Return the head of the list sorted in ascending order, in
     O(n log n) time."""
@@ -7649,7 +7649,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '25–30 min',
     functionName: 'calculate',
     functionSignature: "calculate(s: str) -> int",
-    starterCode: `def calculate(s):
+    starterCode: `def calculate(s: str) -> int:
     """s: a string expression containing non-negative integers, '+',
     '-', parentheses, and spaces (no '*' or '/'). Evaluate it and
     return the integer result, respecting parentheses grouping."""
@@ -7694,7 +7694,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'is_palindrome',
     functionSignature: "is_palindrome(s: str) -> bool",
-    starterCode: `def is_palindrome(s):
+    starterCode: `def is_palindrome(s: str) -> bool:
     """Return True if s is a palindrome considering only alphanumeric
     characters and ignoring case, False otherwise."""
     # Your implementation here
@@ -7736,7 +7736,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'majority_element',
     functionSignature: "majority_element(nums: list[int]) -> int",
-    starterCode: `def majority_element(nums):
+    starterCode: `def majority_element(nums: list[int]) -> int:
     """Return the majority element of nums (the element that appears
     strictly more than floor(len(nums) / 2) times)."""
     # Your implementation here
@@ -7778,7 +7778,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'two_sum_sorted',
     functionSignature: "two_sum_sorted(numbers: list[int], target: int) -> list[int]",
-    starterCode: `def two_sum_sorted(numbers, target):
+    starterCode: `def two_sum_sorted(numbers: list[int], target: int) -> list[int]:
     """numbers: a 1-indexed array of integers sorted in non-decreasing order.
     Return the 1-indexed indices [index1, index2] (1 <= index1 < index2 <= len(numbers))
     such that numbers[index1 - 1] + numbers[index2 - 1] == target."""
@@ -7822,7 +7822,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'is_subsequence',
     functionSignature: "is_subsequence(s: str, t: str) -> bool",
-    starterCode: `def is_subsequence(s, t):
+    starterCode: `def is_subsequence(s: str, t: str) -> bool:
     """Return True if s is a subsequence of t, False otherwise."""
     # Your implementation here
     pass
@@ -7863,7 +7863,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'sorted_squares',
     functionSignature: "sorted_squares(nums: list[int]) -> list[int]",
-    starterCode: `def sorted_squares(nums):
+    starterCode: `def sorted_squares(nums: list[int]) -> list[int]:
     """nums: an integer array sorted in non-decreasing order.
     Return an array of the squares of each number sorted in non-decreasing order."""
     # Your implementation here
@@ -7906,7 +7906,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'three_sum',
     functionSignature: "three_sum(nums: list[int]) -> list[list[int]]",
-    starterCode: `def three_sum(nums):
+    starterCode: `def three_sum(nums: list[int]) -> list[list[int]]:
     """Return all unique triplets [nums[i], nums[j], nums[k]] such that
     i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
     Each triplet must be sorted ascending, and the list of triplets
@@ -7951,7 +7951,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'top_k_frequent',
     functionSignature: "top_k_frequent(nums: list[int], k: int) -> list[int]",
-    starterCode: `def top_k_frequent(nums, k):
+    starterCode: `def top_k_frequent(nums: list[int], k: int) -> list[int]:
     """Return the k most frequent elements in nums.
     Return elements sorted by frequency descending (and by value ascending on ties)."""
     # Your implementation here
@@ -7994,7 +7994,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'length_of_longest_substring',
     functionSignature: "length_of_longest_substring(s: str) -> int",
-    starterCode: `def length_of_longest_substring(s):
+    starterCode: `def length_of_longest_substring(s: str) -> int:
     """Return the length of the longest substring without repeating characters."""
     # Your implementation here
     pass
@@ -8036,7 +8036,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'is_valid_sudoku',
     functionSignature: "is_valid_sudoku(board: list[list[str]]) -> bool",
-    starterCode: `def is_valid_sudoku(board):
+    starterCode: `def is_valid_sudoku(board: list[list[str]]) -> bool:
     """board: a 9x9 list of lists of single characters ('1'-'9' or '.').
     Return True if the board is valid according to Sudoku rules, False otherwise."""
     # Your implementation here
@@ -8077,7 +8077,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '25–30 min',
     functionName: 'min_window',
     functionSignature: "min_window(s: str, t: str) -> str",
-    starterCode: `def min_window(s, t):
+    starterCode: `def min_window(s: str, t: str) -> str:
     """Return the minimum window substring of s such that every character in t
     (including duplicates) is included in the window. If there is no such
     substring, return the empty string ""."""
@@ -8121,7 +8121,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'max_sliding_window',
     functionSignature: "max_sliding_window(nums: list[int], k: int) -> list[int]",
-    starterCode: `def max_sliding_window(nums, k):
+    starterCode: `def max_sliding_window(nums: list[int], k: int) -> list[int]:
     """nums: an array of integers.
     k: the sliding window size.
     Return the max sliding window array containing the maximum value in each
@@ -8165,7 +8165,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'find_anagrams',
     functionSignature: "find_anagrams(s: str, p: str) -> list[int]",
-    starterCode: `def find_anagrams(s, p):
+    starterCode: `def find_anagrams(s: str, p: str) -> list[int]:
     """Return an array of all the start indices of p's anagrams in s.
     The answer may be returned in any order (return sorted ascending)."""
     # Your implementation here
@@ -8207,7 +8207,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '25–30 min',
     functionName: 'subarrays_with_k_distinct',
     functionSignature: "subarrays_with_k_distinct(nums: list[int], k: int) -> int",
-    starterCode: `def subarrays_with_k_distinct(nums, k):
+    starterCode: `def subarrays_with_k_distinct(nums: list[int], k: int) -> int:
     """Return the number of good contiguous subarrays of nums.
     A good array is an array where the number of different integers is exactly k."""
     # Your implementation here
@@ -8249,7 +8249,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '25–30 min',
     functionName: 'smallest_range',
     functionSignature: "smallest_range(nums: list[list[int]]) -> list[int]",
-    starterCode: `def smallest_range(nums):
+    starterCode: `def smallest_range(nums: list[list[int]]) -> list[int]:
     """nums: a list of k non-empty lists of integers sorted in non-decreasing order.
     Find the smallest range [a, b] that includes at least one number from each of
     the k lists."""
@@ -8294,7 +8294,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'length_of_longest_substring_k_distinct',
     functionSignature: "length_of_longest_substring_k_distinct(s: str, k: int) -> int",
-    starterCode: `def length_of_longest_substring_k_distinct(s, k):
+    starterCode: `def length_of_longest_substring_k_distinct(s: str, k: int) -> int:
     """Return the length of the longest substring of s that contains at most k distinct characters."""
     # Your implementation here
     pass
@@ -8336,7 +8336,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'count_frequencies',
     functionSignature: 'count_frequencies(items: list) -> dict',
-    starterCode: `def count_frequencies(items):
+    starterCode: `def count_frequencies(items: list) -> dict:
     """Count the frequency of each element in the input list.
 
     Return a dictionary mapping each unique item to its count.
@@ -8378,7 +8378,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'rotate_list',
     functionSignature: 'rotate_list(nums: list, k: int) -> list',
-    starterCode: `def rotate_list(nums, k):
+    starterCode: `def rotate_list(nums: list, k: int) -> list:
     """Rotate the list nums to the right by k positions.
 
     A positive k rotates elements to the right; a negative k rotates
@@ -8423,7 +8423,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'invert_dictionary',
     functionSignature: 'invert_dictionary(mapping: dict) -> dict',
-    starterCode: `def invert_dictionary(mapping):
+    starterCode: `def invert_dictionary(mapping: dict) -> dict:
     """Invert a dictionary mapping keys to values.
 
     Returns a dictionary mapping each unique value to a sorted list of
@@ -8465,7 +8465,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'flatten_nested_list',
     functionSignature: 'flatten_nested_list(nested: list) -> list',
-    starterCode: `def flatten_nested_list(nested):
+    starterCode: `def flatten_nested_list(nested: list) -> list:
     """Flatten an arbitrarily nested list of items into a 1D list.
 
     Preserves the relative ordering of all leaf items. Handles empty
@@ -8507,7 +8507,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'clean_and_tokenize',
     functionSignature: 'clean_and_tokenize(text: str) -> list[str]',
-    starterCode: `def clean_and_tokenize(text):
+    starterCode: `def clean_and_tokenize(text: str) -> list[str]:
     """Normalize and tokenize text into lowercase words.
 
     Convert to lowercase, replace non-alphanumeric characters (except
@@ -8551,7 +8551,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'cumulative_sum',
     functionSignature: 'cumulative_sum(nums: list[float]) -> list[float]',
-    starterCode: `def cumulative_sum(nums):
+    starterCode: `def cumulative_sum(nums: list[float]) -> list[float]:
     """Compute the running cumulative sum of a numeric sequence.
 
     Each element at index i in the returned list is the sum of nums[0..i].
@@ -8593,7 +8593,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'merge_dicts_with_sum',
     functionSignature: 'merge_dicts_with_sum(dict_a: dict, dict_b: dict) -> dict',
-    starterCode: `def merge_dicts_with_sum(dict_a, dict_b):
+    starterCode: `def merge_dicts_with_sum(dict_a: dict, dict_b: dict) -> dict:
     """Merge two dictionaries of numeric values, summing values for common keys.
 
     Keys unique to dict_a or dict_b retain their original value.
@@ -8635,7 +8635,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'deduplicate_preserve_order',
     functionSignature: 'deduplicate_preserve_order(items: list) -> list',
-    starterCode: `def deduplicate_preserve_order(items):
+    starterCode: `def deduplicate_preserve_order(items: list) -> list:
     """Remove duplicates from a list while maintaining original first-appearance order.
 
     Unlike set(items), strictly preserves the order of elements as they
@@ -8678,7 +8678,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'transpose_matrix',
     functionSignature: 'transpose_matrix(matrix: list[list]) -> list[list]',
-    starterCode: `def transpose_matrix(matrix):
+    starterCode: `def transpose_matrix(matrix: list[list]) -> list[list]:
     """Transpose an M x N matrix (list of lists) into an N x M matrix.
 
     Rows become columns and columns become rows. Raises ValueError if
@@ -8721,7 +8721,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'zip_longest_custom',
     functionSignature: 'zip_longest_custom(list_a: list, list_b: list, fillvalue=None) -> list[list]',
-    starterCode: `def zip_longest_custom(list_a, list_b, fillvalue=None):
+    starterCode: `def zip_longest_custom(list_a: list, list_b: list, fillvalue=None) -> list[list]:
     """Pair elements from two lists, padding the shorter with fillvalue.
 
     Pairs elements up to the length of the longer list. Returns a list
@@ -8763,7 +8763,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'group_by_key',
     functionSignature: 'group_by_key(items: list[dict], key: str) -> dict',
-    starterCode: `def group_by_key(items, key):
+    starterCode: `def group_by_key(items: list[dict], key: str) -> dict:
     """Group a list of dictionaries by the value of a specified key.
 
     Returns a dictionary mapping each group value to a list of matching
@@ -8804,7 +8804,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'chunk_list',
     functionSignature: 'chunk_list(items: list, chunk_size: int) -> list[list]',
-    starterCode: `def chunk_list(items, chunk_size):
+    starterCode: `def chunk_list(items: list, chunk_size: int) -> list[list]:
     """Split a list into consecutive chunks of at most chunk_size length.
 
     The final chunk may be smaller if len(items) is not divisible by
@@ -8848,7 +8848,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'deep_merge_dicts',
     functionSignature: 'deep_merge_dicts(base: dict, update: dict) -> dict',
-    starterCode: `def deep_merge_dicts(base, update):
+    starterCode: `def deep_merge_dicts(base: dict, update: dict) -> dict:
     """Recursively merge dictionary update into base.
 
     If both base and update contain a dict at key k, recursively merge them.
@@ -8890,7 +8890,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'top_k_frequent',
     functionSignature: 'top_k_frequent(items: list, k: int) -> list',
-    starterCode: `def top_k_frequent(items, k):
+    starterCode: `def top_k_frequent(items: list, k: int) -> list:
     """Return the k most frequent elements in items.
 
     Sorts by frequency descending, breaking ties by element value
@@ -8934,7 +8934,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'safe_nested_get',
     functionSignature: 'safe_nested_get(data: dict, keys: list[str], default=None)',
-    starterCode: `def safe_nested_get(data, keys, default=None):
+    starterCode: `def safe_nested_get(data: dict, keys: list[str], default=None):
     """Safely traverse a nested dictionary path without KeyError or TypeError.
 
     Walks down keys in order. If any key is missing or an intermediate
@@ -8979,7 +8979,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'mean_squared_error',
     functionSignature: 'mean_squared_error(y_true: list[float], y_pred: list[float]) -> float',
-    starterCode: `def mean_squared_error(y_true, y_pred):
+    starterCode: `def mean_squared_error(y_true: list[float], y_pred: list[float]) -> float:
     """Compute the Mean Squared Error (MSE) between actual and predicted values.
 
     MSE = 1/N * sum((y_true[i] - y_pred[i])^2).
@@ -9024,7 +9024,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'kmeans_assign_clusters',
     functionSignature: 'kmeans_assign_clusters(points: list[list[float]], centroids: list[list[float]]) -> list[int]',
-    starterCode: `def kmeans_assign_clusters(points, centroids):
+    starterCode: `def kmeans_assign_clusters(points: list[list[float]], centroids: list[list[float]]) -> list[int]:
     """Assign each data point to the nearest centroid index using Euclidean distance.
 
     In case of equal distance, choose the smaller centroid index."""
@@ -9067,7 +9067,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'binary_cross_entropy',
     functionSignature: 'binary_cross_entropy(y_true: list[int], y_pred: list[float], eps: float = 1e-15) -> float',
-    starterCode: `def binary_cross_entropy(y_true, y_pred, eps=1e-15):
+    starterCode: `def binary_cross_entropy(y_true: list[int], y_pred: list[float], eps: float = 1e-15) -> float:
     """Compute average binary cross-entropy loss with prediction clipping.
 
     BCE = -1/N * sum(y * ln(p) + (1 - y) * ln(1 - p)),
@@ -9112,7 +9112,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'kmeans_update_centroids',
     functionSignature: 'kmeans_update_centroids(points: list[list[float]], assignments: list[int], k: int) -> list[list[float]]',
-    starterCode: `def kmeans_update_centroids(points, assignments, k):
+    starterCode: `def kmeans_update_centroids(points: list[list[float]], assignments: list[int], k: int) -> list[list[float]]:
     """Recompute cluster centroids as the mean of points assigned to each cluster.
 
     If cluster c (0 <= c < k) has no assigned points, set its centroid to [0.0] * dim."""
@@ -9155,7 +9155,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'standard_scaler',
     functionSignature: 'standard_scaler(X: list[list[float]]) -> list[list[float]]',
-    starterCode: `def standard_scaler(X):
+    starterCode: `def standard_scaler(X: list[list[float]]) -> list[list[float]]:
     """Standardize feature matrix X by centering to mean 0 and scaling to unit variance.
 
     z = (x - mean) / std.
@@ -9199,7 +9199,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'wcss_inertia',
     functionSignature: 'wcss_inertia(points: list[list[float]], centroids: list[list[float]], assignments: list[int]) -> float',
-    starterCode: `def wcss_inertia(points, centroids, assignments):
+    starterCode: `def wcss_inertia(points: list[list[float]], centroids: list[list[float]], assignments: list[int]) -> float:
     """Compute Within-Cluster Sum of Squares (WCSS / Inertia).
 
     WCSS = sum_i ||points[i] - centroids[assignments[i]]||^2."""
@@ -9242,7 +9242,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'min_max_scaler',
     functionSignature: 'min_max_scaler(X: list[list[float]], min_val: float = 0.0, max_val: float = 1.0) -> list[list[float]]',
-    starterCode: `def min_max_scaler(X, min_val=0.0, max_val=1.0):
+    starterCode: `def min_max_scaler(X: list[list[float]], min_val: float = 0.0, max_val: float = 1.0) -> list[list[float]]:
     """Scale feature matrix X column-wise to the range [min_val, max_val].
 
     scaled = min_val + (x - col_min) / (col_max - col_min) * (max_val - min_val).
@@ -9286,7 +9286,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'user_jaccard_similarity',
     functionSignature: 'user_jaccard_similarity(user_a_items: list[str], user_b_items: list[str]) -> float',
-    starterCode: `def user_jaccard_similarity(user_a_items, user_b_items):
+    starterCode: `def user_jaccard_similarity(user_a_items: list[str], user_b_items: list[str]) -> float:
     """Compute Jaccard similarity between two users based on their consumed item sets.
 
     J(A, B) = |A ∩ B| / |A ∪ B|.
@@ -9331,7 +9331,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'polynomial_features_deg2',
     functionSignature: 'polynomial_features_deg2(x: list[float], include_bias: bool = True) -> list[float]',
-    starterCode: `def polynomial_features_deg2(x, include_bias=True):
+    starterCode: `def polynomial_features_deg2(x: list[float], include_bias: bool = True) -> list[float]:
     """Generate degree-2 polynomial features for a 1D feature vector x.
 
     Output order: [bias (1.0 if include_bias), linear terms x_i, pairwise terms x_i * x_j (0 <= i <= j < d)]."""
@@ -9374,7 +9374,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'item_collaborative_predict',
     functionSignature: 'item_collaborative_predict(user_ratings: dict[str, float], item_similarities: dict[str, float]) -> float',
-    starterCode: `def item_collaborative_predict(user_ratings, item_similarities):
+    starterCode: `def item_collaborative_predict(user_ratings: dict[str, float], item_similarities: dict[str, float]) -> float:
     """Predict user rating for a target item using item-item collaborative filtering.
 
     score = sum(sim_i * rating_i) / sum(sim_i) for items with sim_i > 0 that the user rated.
@@ -9418,7 +9418,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'linear_regression_gd_step',
     functionSignature: 'linear_regression_gd_step(X: list[list[float]], y: list[float], weights: list[float], bias: float, lr: float) -> list[float]',
-    starterCode: `def linear_regression_gd_step(X, y, weights, bias, lr):
+    starterCode: `def linear_regression_gd_step(X: list[list[float]], y: list[float], weights: list[float], bias: float, lr: float) -> list[float]:
     """Perform one gradient descent update step on weights and bias for MSE loss.
 
     grad_w = (1/N) * sum_i (y_pred_i - y_i) * X[i]
@@ -9462,7 +9462,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'single_linkage_distance',
     functionSignature: 'single_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float',
-    starterCode: `def single_linkage_distance(cluster_a, cluster_b):
+    starterCode: `def single_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float:
     """Compute single-linkage (minimum pairwise Euclidean distance) between two clusters.
 
     If either cluster is empty, return 0.0."""
@@ -9505,7 +9505,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'r2_score',
     functionSignature: 'r2_score(y_true: list[float], y_pred: list[float]) -> float',
-    starterCode: `def r2_score(y_true, y_pred):
+    starterCode: `def r2_score(y_true: list[float], y_pred: list[float]) -> float:
     """Compute R^2 (coefficient of determination) regression score.
 
     R^2 = 1 - SS_res / SS_tot.
@@ -9550,7 +9550,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'dbscan_region_query',
     functionSignature: 'dbscan_region_query(points: list[list[float]], point_idx: int, eps: float) -> list[int]',
-    starterCode: `def dbscan_region_query(points, point_idx, eps):
+    starterCode: `def dbscan_region_query(points: list[list[float]], point_idx: int, eps: float) -> list[int]:
     """Find all point indices within Euclidean distance eps of points[point_idx].
 
     Return sorted list of matching indices (including point_idx itself)."""
@@ -9593,7 +9593,7 @@ def groundedness_score(answer, source_chunks):
     bonusDescription: 'Pure Python implementation',
     functionName: 'one_hot_encode',
     functionSignature: 'one_hot_encode(categories: list[str], vocabulary: list[str], handle_unknown: str = "ignore") -> list[list[int]]',
-    starterCode: `def one_hot_encode(categories, vocabulary, handle_unknown="ignore"):
+    starterCode: `def one_hot_encode(categories: list[str], vocabulary: list[str], handle_unknown: str = "ignore") -> list[list[int]]:
     """Encode categorical features into one-hot binary vectors based on vocabulary.
 
     If handle_unknown == "ignore", unknown categories receive an all-zero vector.
@@ -9633,7 +9633,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'reverse_list',
     functionSignature: 'reverse_list(head: dict | None) -> dict | None',
-    starterCode: `def reverse_list(head):
+    starterCode: `def reverse_list(head: dict | None) -> dict | None:
     """head: a linked-list node as {'val', 'next'} (next is None at the
     tail), or None for an empty list. Reverse the list and return the
     new head."""
@@ -9674,7 +9674,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'level_order',
     functionSignature: 'level_order(root: dict | None) -> list[list[int]]',
-    starterCode: `def level_order(root):
+    starterCode: `def level_order(root: dict | None) -> list[list[int]]:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return a
     list of lists, one per level from root to leaves, in left-to-right
     order within each level."""
@@ -9714,7 +9714,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'num_islands',
     functionSignature: 'num_islands(grid: list[list[str]]) -> int',
-    starterCode: `def num_islands(grid):
+    starterCode: `def num_islands(grid: list[list[str]]) -> int:
     """grid: a 2D list of '1' (land) and '0' (water) strings. Return the
     count of islands -- maximal groups of '1' cells connected up/down/
     left/right."""
@@ -9754,7 +9754,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'climb_stairs',
     functionSignature: 'climb_stairs(n: int) -> int',
-    starterCode: `def climb_stairs(n):
+    starterCode: `def climb_stairs(n: int) -> int:
     """Return the number of distinct ways to reach stair n by taking 1
     or 2 steps at a time."""
     # Your implementation here
@@ -9794,7 +9794,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'is_valid',
     functionSignature: 'is_valid(s: str) -> bool',
-    starterCode: `def is_valid(s):
+    starterCode: `def is_valid(s: str) -> bool:
     """s: a string of the characters ()[]{}. Return True if every opener
     is matched by the correct closer in valid nesting order."""
     # Your implementation here
@@ -9835,7 +9835,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'merge_two_lists',
     functionSignature: 'merge_two_lists(list1: dict | None, list2: dict | None) -> dict | None',
-    starterCode: `def merge_two_lists(list1, list2):
+    starterCode: `def merge_two_lists(list1: dict | None, list2: dict | None) -> dict | None:
     """list1, list2: linked-list nodes as {'val', 'next'} (or None for
     an empty list). Return the head of the merged, sorted list."""
     # Your implementation here
@@ -9874,7 +9874,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'count_nodes',
     functionSignature: 'count_nodes(root: dict | None) -> int',
-    starterCode: `def count_nodes(root):
+    starterCode: `def count_nodes(root: dict | None) -> int:
     """root: a tree node as {'val', 'left', 'right'}, or None. The tree
     is a complete binary tree. Return the total node count (0 for an
     empty tree)."""
@@ -9914,7 +9914,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'flood_fill',
     functionSignature: 'flood_fill(image: list[list[int]], sr: int, sc: int, color: int) -> list[list[int]]',
-    starterCode: `def flood_fill(image, sr, sc, color):
+    starterCode: `def flood_fill(image: list[list[int]], sr: int, sc: int, color: int) -> list[list[int]]:
     """image: a 2D list of ints. Starting from (sr, sc), recolor every
     4-directionally connected cell sharing the starting color to
     'color'. Return the modified image (do not mutate the input)."""
@@ -9953,7 +9953,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'rob',
     functionSignature: 'rob(nums: list[int]) -> int',
-    starterCode: `def rob(nums):
+    starterCode: `def rob(nums: list[int]) -> int:
     """nums: list of non-negative ints (money in each house). Return the
     max sum collectible without robbing two adjacent houses."""
     # Your implementation here
@@ -9993,7 +9993,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'min_stack_ops',
     functionSignature: 'min_stack_ops(operations: list[list]) -> list',
-    starterCode: `def min_stack_ops(operations):
+    starterCode: `def min_stack_ops(operations: list[list]) -> list:
     """operations: list of ['push', val] | ['pop'] | ['top'] | ['getMin'].
     Simulate a MinStack; return a list with one entry per operation
     (None for push/pop, the value for top/getMin)."""
@@ -10031,7 +10031,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'has_cycle',
     functionSignature: 'has_cycle(vals: list[int], pos: int) -> bool',
-    starterCode: `def has_cycle(vals, pos):
+    starterCode: `def has_cycle(vals: list[int], pos: int) -> bool:
     """vals: node values to build a linked list from. pos: index the
     tail's 'next' should point back to (-1 for no cycle). Build the
     list, then return True if it has a cycle."""
@@ -10071,7 +10071,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'range_sum_bst',
     functionSignature: 'range_sum_bst(root: dict | None, low: int, high: int) -> int',
-    starterCode: `def range_sum_bst(root, low, high):
+    starterCode: `def range_sum_bst(root: dict | None, low: int, high: int) -> int:
     """root: a BST node as {'val', 'left', 'right'}, or None. Return the
     sum of all node values within the inclusive range [low, high]."""
     # Your implementation here
@@ -10109,7 +10109,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'bfs_shortest_path',
     functionSignature: 'bfs_shortest_path(graph: dict[str, list[str]], start: str, end: str) -> int',
-    starterCode: `def bfs_shortest_path(graph, start, end):
+    starterCode: `def bfs_shortest_path(graph: dict[str, list[str]], start: str, end: str) -> int:
     """graph: adjacency dict {node: [neighbors]}. Return the minimum
     edge-count path length from start to end, or -1 if unreachable."""
     # Your implementation here
@@ -10148,7 +10148,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'max_subarray',
     functionSignature: 'max_subarray(nums: list[int]) -> int',
-    starterCode: `def max_subarray(nums):
+    starterCode: `def max_subarray(nums: list[int]) -> int:
     """nums: non-empty list of ints. Return the maximum sum of any
     contiguous subarray."""
     # Your implementation here
@@ -10187,7 +10187,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'queue_using_stacks',
     functionSignature: 'queue_using_stacks(operations: list[list]) -> list',
-    starterCode: `def queue_using_stacks(operations):
+    starterCode: `def queue_using_stacks(operations: list[list]) -> list:
     """operations: list of ['push', x] | ['pop'] | ['peek'] | ['empty'].
     Simulate a FIFO queue using two stacks; return a list with one
     entry per operation (None for push, the value/bool otherwise)."""
@@ -10225,7 +10225,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'remove_nth_from_end',
     functionSignature: 'remove_nth_from_end(head: dict | None, n: int) -> dict | None',
-    starterCode: `def remove_nth_from_end(head, n):
+    starterCode: `def remove_nth_from_end(head: dict | None, n: int) -> dict | None:
     """head: a linked-list node as {'val', 'next'}. Remove the n-th node
     counting from the end of the list (1-indexed) and return the new
     head."""
@@ -10265,7 +10265,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'is_symmetric',
     functionSignature: 'is_symmetric(root: dict | None) -> bool',
-    starterCode: `def is_symmetric(root):
+    starterCode: `def is_symmetric(root: dict | None) -> bool:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return
     True if the tree is a mirror image of itself."""
     # Your implementation here
@@ -10304,7 +10304,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'clone_graph',
     functionSignature: 'clone_graph(adj: dict[int, list[int]], start: int) -> dict[int, list[int]]',
-    starterCode: `def clone_graph(adj, start):
+    starterCode: `def clone_graph(adj: dict[int, list[int]], start: int) -> dict[int, list[int]]:
     """adj: adjacency dict {node_id: [neighbor_ids]}. Return a new
     adjacency dict that is a deep clone of the graph reachable from
     start."""
@@ -10344,7 +10344,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'coin_change',
     functionSignature: 'coin_change(coins: list[int], amount: int) -> int',
-    starterCode: `def coin_change(coins, amount):
+    starterCode: `def coin_change(coins: list[int], amount: int) -> int:
     """coins: list of available coin denominations. Return the minimum
     number of coins needed to make exactly 'amount', or -1 if
     impossible."""
@@ -10384,7 +10384,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'stack_using_queues',
     functionSignature: 'stack_using_queues(operations: list[list]) -> list',
-    starterCode: `def stack_using_queues(operations):
+    starterCode: `def stack_using_queues(operations: list[list]) -> list:
     """operations: list of ['push', x] | ['pop'] | ['top'] | ['empty'].
     Simulate a LIFO stack using only queue operations; return a list
     with one entry per operation (None for push, the value/bool
@@ -10423,7 +10423,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '10–15 min',
     functionName: 'is_palindrome_list',
     functionSignature: 'is_palindrome_list(head: dict | None) -> bool',
-    starterCode: `def is_palindrome_list(head):
+    starterCode: `def is_palindrome_list(head: dict | None) -> bool:
     """head: a linked-list node as {'val', 'next'}, or None. Return True
     if the list of values reads the same forward and backward."""
     # Your implementation here
@@ -10462,7 +10462,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'lca_bst',
     functionSignature: 'lca_bst(root: dict, p: int, q: int) -> int | None',
-    starterCode: `def lca_bst(root, p, q):
+    starterCode: `def lca_bst(root: dict, p: int, q: int) -> int | None:
     """root: a BST node as {'val', 'left', 'right'}. p, q: values of two
     nodes known to exist in the tree. Return the value of their lowest
     common ancestor."""
@@ -10501,7 +10501,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'count_components',
     functionSignature: 'count_components(n: int, edges: list[list[int]]) -> int',
-    starterCode: `def count_components(n, edges):
+    starterCode: `def count_components(n: int, edges: list[list[int]]) -> int:
     """n: number of nodes, labeled 0..n-1. edges: list of [u, v] pairs
     (undirected). Return the number of connected components."""
     # Your implementation here
@@ -10540,7 +10540,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'unique_paths',
     functionSignature: 'unique_paths(m: int, n: int) -> int',
-    starterCode: `def unique_paths(m, n):
+    starterCode: `def unique_paths(m: int, n: int) -> int:
     """Return the number of unique paths from the top-left to the
     bottom-right of an m x n grid, moving only right or down at each
     step."""
@@ -10580,7 +10580,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'lru_cache_ops',
     functionSignature: 'lru_cache_ops(capacity: int, operations: list[list]) -> list',
-    starterCode: `def lru_cache_ops(capacity, operations):
+    starterCode: `def lru_cache_ops(capacity: int, operations: list[list]) -> list:
     """capacity: max cache size. operations: list of ['put', key, value]
     | ['get', key]. Simulate an LRU cache; return a list with one entry
     per operation (None for put, the value or -1 for get)."""
@@ -10618,7 +10618,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'add_two_numbers',
     functionSignature: 'add_two_numbers(l1: dict, l2: dict) -> dict',
-    starterCode: `def add_two_numbers(l1, l2):
+    starterCode: `def add_two_numbers(l1: dict, l2: dict) -> dict:
     """l1, l2: linked-list nodes as {'val', 'next'}, digits stored in
     reverse order (least significant digit first). Return the head of
     a new list representing l1 + l2, also in reverse digit order."""
@@ -10658,7 +10658,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'right_side_view',
     functionSignature: 'right_side_view(root: dict | None) -> list[int]',
-    starterCode: `def right_side_view(root):
+    starterCode: `def right_side_view(root: dict | None) -> list[int]:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return
     the value of the rightmost node at each level, top to bottom."""
     # Your implementation here
@@ -10696,7 +10696,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'can_finish',
     functionSignature: 'can_finish(numCourses: int, prerequisites: list[list[int]]) -> bool',
-    starterCode: `def can_finish(numCourses, prerequisites):
+    starterCode: `def can_finish(numCourses: int, prerequisites: list[list[int]]) -> bool:
     """numCourses: courses labeled 0..numCourses-1. prerequisites: list
     of [a, b] meaning course a requires course b first. Return True if
     all courses can be completed (no circular dependency)."""
@@ -10736,7 +10736,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'length_of_lis',
     functionSignature: 'length_of_lis(nums: list[int]) -> int',
-    starterCode: `def length_of_lis(nums):
+    starterCode: `def length_of_lis(nums: list[int]) -> int:
     """Return the length of the longest strictly increasing subsequence
     of nums (elements need not be contiguous)."""
     # Your implementation here
@@ -10775,7 +10775,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'hashmap_ops',
     functionSignature: 'hashmap_ops(operations: list[list]) -> list',
-    starterCode: `def hashmap_ops(operations):
+    starterCode: `def hashmap_ops(operations: list[list]) -> list:
     """operations: list of ['put', key, value] | ['get', key] |
     ['remove', key]. Simulate a HashMap from scratch (chaining); return
     a list with one entry per operation (None for put/remove, the
@@ -10814,7 +10814,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'reorder_list',
     functionSignature: 'reorder_list(head: dict) -> dict',
-    starterCode: `def reorder_list(head):
+    starterCode: `def reorder_list(head: dict) -> dict:
     """head: a linked-list node as {'val', 'next'}. Reorder in place so
     L0->L1->...->Ln becomes L0->Ln->L1->Ln-1->..., and return the (same)
     head."""
@@ -10853,7 +10853,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'path_sum_ii',
     functionSignature: 'path_sum_ii(root: dict | None, target_sum: int) -> list[list[int]]',
-    starterCode: `def path_sum_ii(root, target_sum):
+    starterCode: `def path_sum_ii(root: dict | None, target_sum: int) -> list[list[int]]:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return all
     root-to-leaf paths (as lists of values) whose values sum to
     target_sum."""
@@ -10892,7 +10892,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'pacific_atlantic',
     functionSignature: 'pacific_atlantic(heights: list[list[int]]) -> list[list[int]]',
-    starterCode: `def pacific_atlantic(heights):
+    starterCode: `def pacific_atlantic(heights: list[list[int]]) -> list[list[int]]:
     """heights: 2D grid of elevations. Pacific touches the top and left
     edges; Atlantic touches the bottom and right edges. Return sorted
     [r, c] cells from which water can reach BOTH oceans."""
@@ -10931,7 +10931,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'knapsack',
     functionSignature: 'knapsack(weights: list[int], values: list[int], capacity: int) -> int',
-    starterCode: `def knapsack(weights, values, capacity):
+    starterCode: `def knapsack(weights: list[int], values: list[int], capacity: int) -> int:
     """weights[i]/values[i]: weight and value of item i. Return the max
     total value achievable without exceeding capacity; each item may be
     used at most once."""
@@ -10970,7 +10970,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'trie_ops',
     functionSignature: 'trie_ops(operations: list[list]) -> list',
-    starterCode: `def trie_ops(operations):
+    starterCode: `def trie_ops(operations: list[list]) -> list:
     """operations: list of ['insert', word] | ['search', word] |
     ['starts_with', prefix]. Simulate a Trie; return a list with one
     entry per operation (None for insert, a bool for search/starts_with)."""
@@ -11008,7 +11008,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'sort_list',
     functionSignature: 'sort_list(head: dict | None) -> dict | None',
-    starterCode: `def sort_list(head):
+    starterCode: `def sort_list(head: dict | None) -> dict | None:
     """head: a linked-list node as {'val', 'next'}, or None. Sort the
     list ascending using merge sort and return the new head."""
     # Your implementation here
@@ -11046,7 +11046,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'is_valid_bst',
     functionSignature: 'is_valid_bst(root: dict | None) -> bool',
-    starterCode: `def is_valid_bst(root):
+    starterCode: `def is_valid_bst(root: dict | None) -> bool:
     """root: a tree node as {'val', 'left', 'right'}, or None. Return
     True iff the tree is a valid BST: every node's value is strictly
     between the min/max bounds imposed by its ancestors."""
@@ -11085,7 +11085,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'walls_and_gates',
     functionSignature: 'walls_and_gates(rooms: list[list[int]]) -> list[list[int]]',
-    starterCode: `def walls_and_gates(rooms):
+    starterCode: `def walls_and_gates(rooms: list[list[int]]) -> list[list[int]]:
     """rooms: 2D grid where -1 is a wall, 0 is a gate, and 2147483647 is
     an empty room. Return a new grid where every empty room is replaced
     with its distance to the nearest gate."""
@@ -11123,7 +11123,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'min_distance',
     functionSignature: 'min_distance(word1: str, word2: str) -> int',
-    starterCode: `def min_distance(word1, word2):
+    starterCode: `def min_distance(word1: str, word2: str) -> int:
     """Return the minimum number of single-character insert, delete, or
     replace operations to transform word1 into word2."""
     # Your implementation here
@@ -11161,7 +11161,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'exist',
     functionSignature: 'exist(board: list[list[str]], word: str) -> bool',
-    starterCode: `def exist(board, word):
+    starterCode: `def exist(board: list[list[str]], word: str) -> bool:
     """board: 2D grid of single characters. Return True if word can be
     traced through sequentially adjacent (4-directional) cells, never
     reusing the same cell twice in one path."""
@@ -11201,7 +11201,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'rotate_right',
     functionSignature: 'rotate_right(head: dict | None, k: int) -> dict | None',
-    starterCode: `def rotate_right(head, k):
+    starterCode: `def rotate_right(head: dict | None, k: int) -> dict | None:
     """head: a linked-list node as {'val', 'next'}, or None. Rotate the
     list to the right by k places and return the new head."""
     # Your implementation here
@@ -11239,7 +11239,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'flatten',
     functionSignature: 'flatten(root: dict | None) -> dict | None',
-    starterCode: `def flatten(root):
+    starterCode: `def flatten(root: dict | None) -> dict | None:
     """root: a tree node as {'val', 'left', 'right'}, or None. Flatten
     the tree in-place into a "linked list" following preorder traversal
     -- every node's 'left' becomes None, and 'right' chains to the next
@@ -11278,7 +11278,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'min_cost_connect',
     functionSignature: 'min_cost_connect(n: int, connections: list[list[int]]) -> int',
-    starterCode: `def min_cost_connect(n, connections):
+    starterCode: `def min_cost_connect(n: int, connections: list[list[int]]) -> int:
     """n: cities labeled 1..n. connections[i] = [city1, city2, cost].
     Return the minimum total cost to connect all cities (a spanning
     tree), or -1 if it is impossible."""
@@ -11317,7 +11317,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'change',
     functionSignature: 'change(amount: int, coins: list[int]) -> int',
-    starterCode: `def change(amount, coins):
+    starterCode: `def change(amount: int, coins: list[int]) -> int:
     """coins: list of available (unlimited-supply) coin denominations.
     Return the number of DISTINCT combinations of coins that sum to
     amount (order does not matter)."""
@@ -11357,7 +11357,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'twitter_ops',
     functionSignature: 'twitter_ops(operations: list[list]) -> list',
-    starterCode: `def twitter_ops(operations):
+    starterCode: `def twitter_ops(operations: list[list]) -> list:
     """operations: list of ['postTweet',uid,tid] | ['getNewsFeed',uid] |
     ['follow',followerId,followeeId] | ['unfollow',followerId,followeeId].
     Simulate a simplified Twitter; return a list with one entry per
@@ -11397,7 +11397,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'swap_pairs',
     functionSignature: 'swap_pairs(head: dict | None) -> dict | None',
-    starterCode: `def swap_pairs(head):
+    starterCode: `def swap_pairs(head: dict | None) -> dict | None:
     """head: a linked-list node as {'val', 'next'}, or None. Swap every
     two adjacent nodes (by rewiring pointers, not by changing values)
     and return the new head."""
@@ -11437,7 +11437,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'distance_k',
     functionSignature: 'distance_k(root: dict, target_val: int, k: int) -> list[int]',
-    starterCode: `def distance_k(root, target_val, k):
+    starterCode: `def distance_k(root: dict, target_val: int, k: int) -> list[int]:
     """root: a tree node as {'val', 'left', 'right'}. Return, in any
     order, the values of all nodes at exactly distance k from the node
     whose value is target_val (distance can go up through parents)."""
@@ -11475,7 +11475,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '15–20 min',
     functionName: 'find_cheapest_price',
     functionSignature: 'find_cheapest_price(n: int, flights: list[list[int]], src: int, dst: int, k: int) -> int',
-    starterCode: `def find_cheapest_price(n, flights, src, dst, k):
+    starterCode: `def find_cheapest_price(n: int, flights: list[list[int]], src: int, dst: int, k: int) -> int:
     """n: cities 0..n-1. flights[i] = [u, v, price]. Return the cheapest
     price from src to dst using at most k stops (k+1 flights), or -1 if
     impossible."""
@@ -11514,7 +11514,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'word_break_ii',
     functionSignature: 'word_break_ii(s: str, word_dict: list[str]) -> list[str]',
-    starterCode: `def word_break_ii(s, word_dict):
+    starterCode: `def word_break_ii(s: str, word_dict: list[str]) -> list[str]:
     """word_dict: list of valid words. Return ALL possible sentences
     formed by inserting spaces into s so every resulting word is in
     word_dict (as a list of space-joined strings, any order)."""
@@ -11553,7 +11553,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'freq_stack_ops',
     functionSignature: 'freq_stack_ops(operations: list[list]) -> list',
-    starterCode: `def freq_stack_ops(operations):
+    starterCode: `def freq_stack_ops(operations: list[list]) -> list:
     """operations: list of ['push', val] | ['pop']. Simulate a FreqStack
     (pop removes and returns the most-frequent element pushed so far,
     ties broken by most-recently-pushed); return a list with one entry
@@ -11592,7 +11592,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'reverse_k_group',
     functionSignature: 'reverse_k_group(head: dict | None, k: int) -> dict | None',
-    starterCode: `def reverse_k_group(head, k):
+    starterCode: `def reverse_k_group(head: dict | None, k: int) -> dict | None:
     """head: a linked-list node as {'val', 'next'}. Reverse the list k
     nodes at a time. If fewer than k nodes remain in a final group,
     leave that remainder unchanged. Return the new head."""
@@ -11631,7 +11631,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'max_path_sum',
     functionSignature: 'max_path_sum(root: dict) -> int',
-    starterCode: `def max_path_sum(root):
+    starterCode: `def max_path_sum(root: dict) -> int:
     """root: a tree node as {'val', 'left', 'right'}. A path is any
     sequence of connected nodes (no node used twice), not required to
     pass through the root. Return the maximum sum over all such paths."""
@@ -11670,7 +11670,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'ladder_length',
     functionSignature: 'ladder_length(begin_word: str, end_word: str, word_list: list[str]) -> int',
-    starterCode: `def ladder_length(begin_word, end_word, word_list):
+    starterCode: `def ladder_length(begin_word: str, end_word: str, word_list: list[str]) -> int:
     """word_list: valid intermediate words. Return the length (number of
     words, including begin_word and end_word) of the shortest
     transformation sequence from begin_word to end_word where each step
@@ -11711,7 +11711,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'is_match',
     functionSignature: 'is_match(s: str, p: str) -> bool',
-    starterCode: `def is_match(s, p):
+    starterCode: `def is_match(s: str, p: str) -> bool:
     """s: input string. p: pattern where '.' matches any single char and
     '*' matches zero or more of the PRECEDING pattern element. Return
     True if p matches the entirety of s."""
@@ -11751,7 +11751,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'median_finder_ops',
     functionSignature: 'median_finder_ops(operations: list[list]) -> list',
-    starterCode: `def median_finder_ops(operations):
+    starterCode: `def median_finder_ops(operations: list[list]) -> list:
     """operations: list of ['addNum', num] | ['findMedian']. Simulate a
     MedianFinder; return a list with one entry per operation (None for
     addNum, the current median as a float for findMedian)."""
@@ -11789,7 +11789,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'merge_k_lists',
     functionSignature: 'merge_k_lists(lists: list[dict | None]) -> dict | None',
-    starterCode: `def merge_k_lists(lists):
+    starterCode: `def merge_k_lists(lists: list[dict | None]) -> dict | None:
     """lists: a list of linked-list heads (each {'val', 'next'} or
     None). Return the head of one fully merged, sorted linked list."""
     # Your implementation here
@@ -11827,7 +11827,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'serialize_deserialize',
     functionSignature: 'serialize_deserialize(root: dict | None) -> dict | None',
-    starterCode: `def serialize_deserialize(root):
+    starterCode: `def serialize_deserialize(root: dict | None) -> dict | None:
     """root: a tree node as {'val', 'left', 'right'}, or None. Serialize
     the tree to a string and immediately deserialize it back. Return
     the reconstructed root (which must be structurally identical to
@@ -11867,7 +11867,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'alien_order',
     functionSignature: 'alien_order(words: list[str]) -> str',
-    starterCode: `def alien_order(words):
+    starterCode: `def alien_order(words: list[str]) -> str:
     """words: a list assumed to be sorted according to an unknown alien
     alphabet's lexicographic order. Return a valid character ordering
     for that alphabet as a string, or '' if the words are inconsistent
@@ -11908,7 +11908,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'max_coins',
     functionSignature: 'max_coins(nums: list[int]) -> int',
-    starterCode: `def max_coins(nums):
+    starterCode: `def max_coins(nums: list[int]) -> int:
     """nums: balloon values. Bursting balloon i yields
     nums[i-1]*nums[i]*nums[i+1] coins (treat positions outside the
     array as having value 1). Return the max total coins obtainable by
@@ -11948,7 +11948,7 @@ def groundedness_score(answer, source_chunks):
     estimatedTime: '20–25 min',
     functionName: 'max_sliding_window',
     functionSignature: 'max_sliding_window(nums: list[int], k: int) -> list[int]',
-    starterCode: `def max_sliding_window(nums, k):
+    starterCode: `def max_sliding_window(nums: list[int], k: int) -> list[int]:
     """nums: list of ints. Return the maximum value in each contiguous
     window of size k as the window slides from left to right."""
     # Your implementation here
@@ -11992,7 +11992,7 @@ def groundedness_score(answer, source_chunks):
     functionSignature: "min_max_scale(data: list[float]) -> list[float]",
     starterCode: `import numpy as np
 
-def min_max_scale(data):
+def min_max_scale(data: list[float]) -> list[float]:
     """Scale feature values into the range [0.0, 1.0] using vectorized min-max normalization.
     Round each returned value to 4 decimal places.
     If max == min or len(data) <= 1, return [0.0] * len(data).
@@ -12125,7 +12125,7 @@ def min_max_scale(data):
     starterCode: `import pandas as pd
 import numpy as np
 
-def impute_missing_values(records, num_strategy="mean", cat_strategy="mode"):
+def impute_missing_values(records: list[dict], num_strategy: str = 'mean', cat_strategy: str = 'mode') -> list[dict]:
     """Impute missing (None/NaN) values in records using pandas.
     For numeric columns: fill with mean or median (rounded to 2 decimal places).
     For categorical columns: fill with mode or literal placeholder.
@@ -12318,7 +12318,7 @@ def impute_missing_values(records, num_strategy="mean", cat_strategy="mode"):
     functionSignature: "rolling_moving_average(values: list[float], window_size: int) -> list[float]",
     starterCode: `import numpy as np
 
-def rolling_moving_average(values, window_size):
+def rolling_moving_average(values: list[float], window_size: int) -> list[float]:
     """Compute the rolling moving average across sliding windows of size window_size.
     Round each window average to 4 decimal places.
     If len(values) < window_size or window_size <= 0, return []."""
@@ -12455,7 +12455,7 @@ def rolling_moving_average(values, window_size):
     functionSignature: "z_score_standardize(values: list[float]) -> list[float]",
     starterCode: `import numpy as np
 
-def z_score_standardize(values):
+def z_score_standardize(values: list[float]) -> list[float]:
     """Standardize numerical values to zero mean and unit variance: (x - mean) / std.
     Use population std (ddof=0). Round each value to 4 decimal places.
     If std == 0 or len(values) <= 1, return [0.0] * len(values).
@@ -12583,7 +12583,7 @@ def z_score_standardize(values):
     functionSignature: "groupby_aggregate(records: list[dict], group_col: str, val_col: str) -> dict",
     starterCode: `import pandas as pd
 
-def groupby_aggregate(records, group_col, val_col):
+def groupby_aggregate(records: list[dict], group_col: str, val_col: str) -> dict:
     """Group records by group_col and compute count, sum, and mean for val_col.
     Round sum and mean to 2 decimal places.
     Return a dictionary mapping each group name (str) to:
@@ -12770,7 +12770,7 @@ def groupby_aggregate(records, group_col, val_col):
     bonusDescription: 'Pure Python implementation',
     functionName: 'streaming_ema_series',
     functionSignature: "streaming_ema_series(stream: list[float], alpha: float) -> list[float]",
-    starterCode: `def streaming_ema_series(stream, alpha):
+    starterCode: `def streaming_ema_series(stream: list[float], alpha: float) -> list[float]:
     """Compute the Exponential Moving Average series over a data stream:
     S[0] = stream[0]
     S[t] = alpha * stream[t] + (1 - alpha) * S[t-1]
@@ -12908,7 +12908,7 @@ def groupby_aggregate(records, group_col, val_col):
     functionSignature: "vectorized_one_hot(labels: list[int], num_classes: int) -> list[list[int]]",
     starterCode: `import numpy as np
 
-def vectorized_one_hot(labels, num_classes):
+def vectorized_one_hot(labels: list[int], num_classes: int) -> list[list[int]]:
     """Convert 1D integer class labels into a 2D one-hot binary matrix using NumPy.
     Shape of returned matrix: (len(labels), num_classes).
     If labels is empty or num_classes <= 0, return []."""
@@ -13129,7 +13129,7 @@ def vectorized_one_hot(labels, num_classes):
     functionSignature: "pivot_sales_summary(records: list[dict], index_key: str, columns_key: str, values_key: str) -> dict",
     starterCode: `import pandas as pd
 
-def pivot_sales_summary(records, index_key, columns_key, values_key):
+def pivot_sales_summary(records: list[dict], index_key: str, columns_key: str, values_key: str) -> dict:
     """Pivot records into a cross-tabulated summary using pandas.
     Sum values_key across index_key (rows) and columns_key (columns).
     Fill missing intersections with 0.0. Round sums to 2 decimal places.
@@ -13314,7 +13314,7 @@ def pivot_sales_summary(records, index_key, columns_key, values_key):
     bonusDescription: 'Pure Python implementation',
     functionName: 'tumbling_window_aggregates',
     functionSignature: "tumbling_window_aggregates(events: list[dict], window_duration: int) -> list[dict]",
-    starterCode: `def tumbling_window_aggregates(events, window_duration):
+    starterCode: `def tumbling_window_aggregates(events: list[dict], window_duration: int) -> list[dict]:
     """Aggregate time-series events into non-overlapping tumbling windows.
     Each event has {'timestamp': int, 'value': float}.
     Return list of active windows:
@@ -13496,7 +13496,7 @@ def pivot_sales_summary(records, index_key, columns_key, values_key):
     functionSignature: "clip_outliers_iqr(data: list[float], k: float = 1.5) -> list[float]",
     starterCode: `import numpy as np
 
-def clip_outliers_iqr(data, k=1.5):
+def clip_outliers_iqr(data: list[float], k: float = 1.5) -> list[float]:
     """Clip distribution outliers based on Interquartile Range (IQR).
     Q1 = 25th percentile, Q3 = 75th percentile, IQR = Q3 - Q1.
     Clip all values to [Q1 - k * IQR, Q3 + k * IQR] using np.clip.
@@ -13652,7 +13652,7 @@ def clip_outliers_iqr(data, k=1.5):
     functionSignature: "dataframe_reconcile_merge(left_records: list[dict], right_records: list[dict], on_key: str, how: str = 'inner') -> list[dict]",
     starterCode: `import pandas as pd
 
-def dataframe_reconcile_merge(left_records, right_records, on_key, how="inner"):
+def dataframe_reconcile_merge(left_records: list[dict], right_records: list[dict], on_key: str, how: str = 'inner') -> list[dict]:
     """Merge two sets of records on on_key using pandas.
     Replace any missing/null values with 'N/A'.
     Sort the resulting merged records by on_key.
@@ -13842,7 +13842,7 @@ def dataframe_reconcile_merge(left_records, right_records, on_key, how="inner"):
     bonusDescription: 'Pure Python implementation',
     functionName: 'streaming_sliding_max',
     functionSignature: "streaming_sliding_max(stream: list[float], window_size: int) -> list[float]",
-    starterCode: `def streaming_sliding_max(stream, window_size):
+    starterCode: `def streaming_sliding_max(stream: list[float], window_size: int) -> list[float]:
     """Compute running maximum over a sliding window of capacity window_size.
     For each arrival in stream, return max of all elements currently in window.
     If stream is empty or window_size <= 0, return []."""
@@ -13994,7 +13994,7 @@ def dataframe_reconcile_merge(left_records, right_records, on_key, how="inner"):
     functionSignature: "vectorized_confusion_matrix(y_true: list[int], y_pred: list[int], num_classes: int) -> list[list[int]]",
     starterCode: `import numpy as np
 
-def vectorized_confusion_matrix(y_true, y_pred, num_classes):
+def vectorized_confusion_matrix(y_true: list[int], y_pred: list[int], num_classes: int) -> list[list[int]]:
     """Construct a (num_classes, num_classes) confusion matrix using vectorized NumPy.
     matrix[i][j] is the count of samples with true class i and predicted class j.
     If inputs are empty or mismatch, return zero matrix of shape (num_classes, num_classes)."""
@@ -14221,7 +14221,7 @@ def vectorized_confusion_matrix(y_true, y_pred, num_classes):
     functionSignature: "resample_interpolate_timeseries(records: list[dict], freq: str = '1h', method: str = 'ffill') -> list[dict]",
     starterCode: `import pandas as pd
 
-def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
+def resample_interpolate_timeseries(records: list[dict], freq: str = '1h', method: str = 'ffill') -> list[dict]:
     """Resample irregular timestamped records to a fixed frequency using pandas.
     Aggregate duplicates by mean. Fill missing gaps with method ('ffill', 'bfill', or 'zero').
     Return list of dicts with 'timestamp' formatted as 'YYYY-MM-DD HH:MM:SS'
@@ -14425,7 +14425,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     bonusDescription: 'Pure Python implementation',
     functionName: 'sliding_window_dedupe',
     functionSignature: "sliding_window_dedupe(events: list[dict], ttl: int) -> list[str]",
-    starterCode: `def sliding_window_dedupe(events, ttl):
+    starterCode: `def sliding_window_dedupe(events: list[dict], ttl: int) -> list[str]:
     """Deduplicate streaming events within a sliding TTL window.
     Each event has {'id': str, 'timestamp': int}.
     Accept event if its id was not seen within the last ttl seconds
@@ -14617,7 +14617,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'two_sum',
     functionSignature: "two_sum(nums: list[int], target: int) -> list[int]",
-    starterCode: `def two_sum(nums, target):
+    starterCode: `def two_sum(nums: list[int], target: int) -> list[int]:
     """Return 0-based indices [i, j] (with i < j) of two numbers in nums that add up to target.
     If no pair exists, return an empty list."""
     # Your implementation here
@@ -14745,7 +14745,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'run_length_encode',
     functionSignature: "run_length_encode(text: str) -> str",
-    starterCode: `def run_length_encode(text):
+    starterCode: `def run_length_encode(text: str) -> str:
     """Compress consecutive identical characters in text using run-length encoding.
     For example, 'AAABBC' becomes 'A3B2C1'. Empty string returns empty string."""
     # Your implementation here
@@ -14830,7 +14830,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'is_anagram',
     functionSignature: "is_anagram(s: str, t: str) -> bool",
-    starterCode: `def is_anagram(s, t):
+    starterCode: `def is_anagram(s: str, t: str) -> bool:
     """Determine if strings s and t are anagrams, ignoring whitespace and letter casing."""
     # Your implementation here
     pass
@@ -14919,7 +14919,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'list_depth',
     functionSignature: "list_depth(nested: any) -> int",
-    starterCode: `def list_depth(nested):
+    starterCode: `def list_depth(nested: any) -> int:
     """Return the maximum nesting depth of a list. A non-list has depth 0,
     an empty list [] has depth 1, and [1, [2]] has depth 2."""
     # Your implementation here
@@ -15026,7 +15026,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'longest_common_prefix',
     functionSignature: "longest_common_prefix(strs: list[str]) -> str",
-    starterCode: `def longest_common_prefix(strs):
+    starterCode: `def longest_common_prefix(strs: list[str]) -> str:
     """Find the longest common prefix string amongst an array of strings.
     If there is no common prefix, return an empty string ""."""
     # Your implementation here
@@ -15125,7 +15125,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'frequency_sort',
     functionSignature: "frequency_sort(s: str) -> str",
-    starterCode: `def frequency_sort(s):
+    starterCode: `def frequency_sort(s: str) -> str:
     """Sort characters in string s in decreasing order of frequency.
     Break frequency ties by ascending alphabetical order (ASCII)."""
     # Your implementation here
@@ -15210,7 +15210,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'sliding_window_average',
     functionSignature: "sliding_window_average(nums: list[float], k: int) -> list[float]",
-    starterCode: `def sliding_window_average(nums, k):
+    starterCode: `def sliding_window_average(nums: list[float], k: int) -> list[float]:
     """Compute sliding window moving averages of width k over nums.
     Return each window mean rounded to 4 decimal places. If len(nums) < k or k <= 0, return []."""
     # Your implementation here
@@ -15345,7 +15345,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'lru_cache_access',
     functionSignature: "lru_cache_access(operations: list[dict], capacity: int) -> list[any]",
-    starterCode: `def lru_cache_access(operations, capacity):
+    starterCode: `def lru_cache_access(operations: list[dict], capacity: int) -> list[any]:
     """Simulate Least Recently Used (LRU) Cache operations.
     Each op is {'op': 'get', 'key': k} or {'op': 'put', 'key': k, 'val': v}.
     Return list of results for 'get' ops (-1 if key not present)."""
@@ -15507,7 +15507,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'flatten_dict',
     functionSignature: "flatten_dict(nested: dict, sep: str = \".\") -> dict",
-    starterCode: `def flatten_dict(nested, sep="."):
+    starterCode: `def flatten_dict(nested: dict, sep: str = \".\") -> dict:
     """Flatten an arbitrarily nested dictionary into a single-level dictionary
     with keys joined by separator sep."""
     # Your implementation here
@@ -15613,7 +15613,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'unflatten_dict',
     functionSignature: "unflatten_dict(flat: dict, sep: str = \".\") -> dict",
-    starterCode: `def unflatten_dict(flat, sep="."):
+    starterCode: `def unflatten_dict(flat: dict, sep: str = \".\") -> dict:
     """Reconstruct an arbitrarily nested dictionary from a flattened dictionary
     whose keys are delimited by sep."""
     # Your implementation here
@@ -15719,7 +15719,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'merge_intervals',
     functionSignature: "merge_intervals(intervals: list[list[int]]) -> list[list[int]]",
-    starterCode: `def merge_intervals(intervals):
+    starterCode: `def merge_intervals(intervals: list[list[int]]) -> list[list[int]]:
     """Merge all overlapping intervals in list intervals and return non-overlapping
     intervals that cover all the intervals in the input."""
     # Your implementation here
@@ -15896,7 +15896,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'simulate_token_bucket',
     functionSignature: "simulate_token_bucket(requests: list[float], rate: float, capacity: float) -> list[bool]",
-    starterCode: `def simulate_token_bucket(requests, rate, capacity):
+    starterCode: `def simulate_token_bucket(requests: list[float], rate: float, capacity: float) -> list[bool]:
     """Simulate a token bucket rate limiter over timestamps requests (sorted floats).
     Bucket starts full at capacity tokens and refills at rate tokens/sec.
     Each allowed request consumes 1.0 token. Return list of bools for each request."""
@@ -16011,7 +16011,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'find_kth_largest',
     functionSignature: "find_kth_largest(nums: list[int], k: int) -> int",
-    starterCode: `def find_kth_largest(nums, k):
+    starterCode: `def find_kth_largest(nums: list[int], k: int) -> int:
     """Find the k-th largest element in an unsorted array nums using a min-heap."""
     # Your implementation here
     pass
@@ -16116,7 +16116,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'group_anagrams',
     functionSignature: "group_anagrams(words: list[str]) -> list[list[str]]",
-    starterCode: `def group_anagrams(words):
+    starterCode: `def group_anagrams(words: list[str]) -> list[list[str]]:
     """Group strings in words that are anagrams of each other.
     Sort words within each group, and sort the groups by their first element."""
     # Your implementation here
@@ -16238,7 +16238,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'longest_palindrome',
     functionSignature: "longest_palindrome(s: str) -> str",
-    starterCode: `def longest_palindrome(s):
+    starterCode: `def longest_palindrome(s: str) -> str:
     """Find the longest palindromic substring in string s.
     If multiple substrings share the maximum length, return the one that appears first."""
     # Your implementation here
@@ -16323,7 +16323,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'validate_schema',
     functionSignature: "validate_schema(record: dict, schema: dict) -> bool",
-    starterCode: `def validate_schema(record, schema):
+    starterCode: `def validate_schema(record: dict, schema: dict) -> bool:
     """Validate record against a schema dict with 'required' (list of keys)
     and 'properties' (dict mapping key to type string like 'int', 'str', etc.).
     Return True if record matches schema, else False."""
@@ -16455,7 +16455,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'word_wrap',
     functionSignature: "word_wrap(text: str, max_width: int) -> list[str]",
-    starterCode: `def word_wrap(text, max_width):
+    starterCode: `def word_wrap(text: str, max_width: int) -> list[str]:
     """Wrap words of text into lines such that each line has length at most max_width.
     Words on each line are separated by single spaces. Return list of lines."""
     # Your implementation here
@@ -16545,7 +16545,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'batch_process',
     functionSignature: "batch_process(items: list[any], batch_size: int, pad_value: any = None) -> list[list[any]]",
-    starterCode: `def batch_process(items, batch_size, pad_value=None):
+    starterCode: `def batch_process(items: list[any], batch_size: int, pad_value: any = None) -> list[list[any]]:
     """Split items into sublists of size batch_size. If pad_value is provided (not None),
     pad any trailing incomplete batch up to batch_size with pad_value."""
     # Your implementation here
@@ -16701,7 +16701,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'roman_to_int',
     functionSignature: "roman_to_int(s: str) -> int",
-    starterCode: `def roman_to_int(s):
+    starterCode: `def roman_to_int(s: str) -> int:
     """Convert Roman numeral string s into an integer.
     Handles additive symbols (I, V, X, L, C, D, M) and subtractive pairs (IV, IX, etc.)."""
     # Your implementation here
@@ -16786,7 +16786,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'spiral_order',
     functionSignature: "spiral_order(matrix: list[list[int]]) -> list[int]",
-    starterCode: `def spiral_order(matrix):
+    starterCode: `def spiral_order(matrix: list[list[int]]) -> list[int]:
     """Return all elements of the matrix in clockwise spiral order."""
     # Your implementation here
     pass
@@ -16948,7 +16948,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'is_match_wildcard',
     functionSignature: "is_match_wildcard(s: str, p: str) -> bool",
-    starterCode: `def is_match_wildcard(s, p):
+    starterCode: `def is_match_wildcard(s: str, p: str) -> bool:
     """Determine if pattern p matches entire string s.
     Pattern supports '?' (matches any single character) and '*' (matches any sequence of characters)."""
     # Your implementation here
@@ -17038,7 +17038,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'simulate_trie',
     functionSignature: "simulate_trie(operations: list[dict]) -> list[bool]",
-    starterCode: `def simulate_trie(operations):
+    starterCode: `def simulate_trie(operations: list[dict]) -> list[bool]:
     """Simulate a Trie prefix tree with operations:
     {'op': 'insert', 'word': w}, {'op': 'search', 'word': w}, {'op': 'starts_with', 'word': w}.
     Return list of boolean results for search and starts_with operations."""
@@ -17168,7 +17168,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'simulate_ring_buffer',
     functionSignature: "simulate_ring_buffer(operations: list[dict], capacity: int) -> list[any]",
-    starterCode: `def simulate_ring_buffer(operations, capacity):
+    starterCode: `def simulate_ring_buffer(operations: list[dict], capacity: int) -> list[any]:
     """Simulate a fixed-capacity ring buffer.
     Operations: {'op': 'push', 'val': x}, {'op': 'pop'}, {'op': 'to_list'}.
     If full, push overwrites oldest item. Pop removes and returns oldest item (or None if empty)."""
@@ -17310,7 +17310,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'calculate_backoff_delays',
     functionSignature: "calculate_backoff_delays(base_delay: float, max_delay: float, attempts: int, factor: float = 2.0) -> list[float]",
-    starterCode: `def calculate_backoff_delays(base_delay, max_delay, attempts, factor=2.0):
+    starterCode: `def calculate_backoff_delays(base_delay: float, max_delay: float, attempts: int, factor: float = 2.0) -> list[float]:
     """Compute truncated exponential backoff delay schedule for attempts retries:
     delay_i = min(max_delay, base_delay * (factor ** i)) rounded to 2 decimal places."""
     # Your implementation here
@@ -17413,7 +17413,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'connected_components_count',
     functionSignature: "connected_components_count(n: int, edges: list[list[int]]) -> int",
-    starterCode: `def connected_components_count(n, edges):
+    starterCode: `def connected_components_count(n: int, edges: list[list[int]]) -> int:
     """Return the number of connected components in an undirected graph with n nodes (0 to n-1)
     and given list of undirected edges [u, v]."""
     # Your implementation here
@@ -17536,7 +17536,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'evaluate_expression',
     functionSignature: "evaluate_expression(expr: str) -> int",
-    starterCode: `def evaluate_expression(expr):
+    starterCode: `def evaluate_expression(expr: str) -> int:
     """Evaluate an arithmetic expression string containing non-negative integers
     and operators +, -, *, / (truncating towards zero) respecting operator precedence.
     Do NOT use eval()."""
@@ -17622,7 +17622,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'diff_dicts',
     functionSignature: "diff_dicts(dict_a: dict, dict_b: dict) -> dict",
-    starterCode: `def diff_dicts(dict_a, dict_b):
+    starterCode: `def diff_dicts(dict_a: dict, dict_b: dict) -> dict:
     """Compare dict_a (baseline) and dict_b (updated). Return dict with keys:
     'added': {k: v for new keys in b},
     'removed': {k: v for deleted keys from a},
@@ -17751,7 +17751,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'reservoir_sample_step',
     functionSignature: "reservoir_sample_step(current_sample: list[int], item: int, item_index: int, random_val: float, k: int) -> list[int]",
-    starterCode: `def reservoir_sample_step(current_sample, item, item_index, random_val, k):
+    starterCode: `def reservoir_sample_step(current_sample: list[int], item: int, item_index: int, random_val: float, k: int) -> list[int]:
     """Perform one step of Algorithm R reservoir sampling for reservoir size k.
     item_index is 1-based index of item in stream.
     random_val is float in [0.0, 1.0). If item_index <= k, append item.
@@ -17870,7 +17870,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'topological_sort_tasks',
     functionSignature: "topological_sort_tasks(num_tasks: int, dependencies: list[list[int]]) -> list[int]",
-    starterCode: `def topological_sort_tasks(num_tasks, dependencies):
+    starterCode: `def topological_sort_tasks(num_tasks: int, dependencies: list[list[int]]) -> list[int]:
     """Find valid execution order for num_tasks (0 to num_tasks-1) given dependencies [u, v]
     meaning u must precede v. Break ties by smaller task index. Return [] if cycle exists."""
     # Your implementation here
@@ -17993,7 +17993,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'length_of_longest_substring',
     functionSignature: "length_of_longest_substring(s: str) -> int",
-    starterCode: `def length_of_longest_substring(s):
+    starterCode: `def length_of_longest_substring(s: str) -> int:
     """Find the length of the longest substring without repeating characters in string s."""
     # Your implementation here
     pass
@@ -18077,7 +18077,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'edit_distance',
     functionSignature: "edit_distance(word1: str, word2: str) -> int",
-    starterCode: `def edit_distance(word1, word2):
+    starterCode: `def edit_distance(word1: str, word2: str) -> int:
     """Compute the minimum number of single-character edits (insertions,
     deletions, or substitutions) required to transform word1 into word2."""
     # Your implementation here
@@ -18157,7 +18157,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'rabin_karp_find',
     functionSignature: "rabin_karp_find(text: str, pattern: str) -> list[int]",
-    starterCode: `def rabin_karp_find(text, pattern):
+    starterCode: `def rabin_karp_find(text: str, pattern: str) -> list[int]:
     """Find all 0-based starting indices where pattern occurs in text using a rolling hash.
     Return list of starting indices. If pattern is empty or not found, return []."""
     # Your implementation here
@@ -18258,7 +18258,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'parse_ranges',
     functionSignature: "parse_ranges(range_str: str) -> list[int]",
-    starterCode: `def parse_ranges(range_str):
+    starterCode: `def parse_ranges(range_str: str) -> list[int]:
     """Parse comma-separated integer and range tokens (e.g. '1-3,5,8-10')
     into a sorted list of unique integers. Empty input returns []."""
     # Your implementation here
@@ -18361,7 +18361,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'simulate_ttl_cache',
     functionSignature: "simulate_ttl_cache(operations: list[dict], default_ttl: int) -> list[any]",
-    starterCode: `def simulate_ttl_cache(operations, default_ttl):
+    starterCode: `def simulate_ttl_cache(operations: list[dict], default_ttl: int) -> list[any]:
     """Simulate a Key-Value cache with Time-To-Live expiration.
     Ops: {'op': 'set', 'key': k, 'val': v, 'time': t, 'ttl': opt_ttl},
          {'op': 'get', 'key': k, 'time': t}.
@@ -18514,7 +18514,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'resolve_build_order',
     functionSignature: "resolve_build_order(dependencies: dict[str, list[str]]) -> dict",
-    starterCode: `def resolve_build_order(dependencies):
+    starterCode: `def resolve_build_order(dependencies: dict[str, list[str]]) -> dict:
     """Resolve build order for packages where dependencies maps pkg -> list of prerequisites.
     Return {'has_cycle': bool, 'build_order': list[str]}.
     If has_cycle is True, build_order is []. Break ready-task ties alphabetically."""
@@ -18634,7 +18634,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'interval_intersections',
     functionSignature: "interval_intersections(first_list: list[list[int]], second_list: list[list[int]]) -> list[list[int]]",
-    starterCode: `def interval_intersections(first_list, second_list):
+    starterCode: `def interval_intersections(first_list: list[list[int]], second_list: list[list[int]]) -> list[list[int]]:
     """Find the intersection of two sorted lists of closed intervals.
     Each list is disjoint and sorted in ascending order."""
     # Your implementation here
@@ -18803,7 +18803,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'compute_word_diff',
     functionSignature: "compute_word_diff(tokens_a: list[str], tokens_b: list[str]) -> list[dict]",
-    starterCode: `def compute_word_diff(tokens_a, tokens_b):
+    starterCode: `def compute_word_diff(tokens_a: list[str], tokens_b: list[str]) -> list[dict]:
     """Compute token diff using Longest Common Subsequence (LCS).
     Return list of dicts: {'op': 'keep' | 'add' | 'remove', 'word': str}."""
     # Your implementation here
@@ -18948,7 +18948,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'simulate_producer_consumer',
     functionSignature: "simulate_producer_consumer(events: list[dict], capacity: int) -> list[str]",
-    starterCode: `def simulate_producer_consumer(events, capacity):
+    starterCode: `def simulate_producer_consumer(events: list[dict], capacity: int) -> list[str]:
     """Simulate a bounded FIFO queue of capacity with events:
     {'type': 'produce', 'item': 'X'} or {'type': 'consume'}.
     Emit logs: 'PRODUCED: X', 'DROPPED: X' (if full), 'CONSUMED: X', or 'UNDERFLOW' (if empty)."""
@@ -19078,7 +19078,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'query_json_path',
     functionSignature: "query_json_path(data: any, path: str) -> list[any]",
-    starterCode: `def query_json_path(data, path):
+    starterCode: `def query_json_path(data: any, path: str) -> list[any]:
     """Evaluate simplified JSONPath string (e.g. '$.store.book[*].author' or '$.items[0].id')
     against nested dict/list structure data. Return list of matched values."""
     # Your implementation here
@@ -19191,7 +19191,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'huffman_encoding',
     functionSignature: "huffman_encoding(text: str) -> dict",
-    starterCode: `def huffman_encoding(text):
+    starterCode: `def huffman_encoding(text: str) -> dict:
     """Generate Huffman prefix codebook {char: bitstring} for characters in text.
     Sort codebook by character keys. If text has single unique character, code is '0'.
     Return empty dict for empty string."""
@@ -19279,7 +19279,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'min_window',
     functionSignature: "min_window(s: str, t: str) -> str",
-    starterCode: `def min_window(s, t):
+    starterCode: `def min_window(s: str, t: str) -> str:
     """Find the minimum window substring of s that contains every character in t (with frequencies).
     If no such substring exists, return ""."""
     # Your implementation here
@@ -19359,7 +19359,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'has_cycle',
     functionSignature: "has_cycle(num_nodes: int, edges: list[list[int]]) -> bool",
-    starterCode: `def has_cycle(num_nodes, edges):
+    starterCode: `def has_cycle(num_nodes: int, edges: list[list[int]]) -> bool:
     """Determine if a directed graph with num_nodes (labeled 0 to num_nodes-1)
     and directed edges [u, v] contains at least one cycle."""
     # Your implementation here
@@ -19478,7 +19478,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'autocomplete',
     functionSignature: "autocomplete(words_with_scores: list[tuple[str, int]], prefix: str, top_k: int) -> list[str]",
-    starterCode: `def autocomplete(words_with_scores, prefix, top_k):
+    starterCode: `def autocomplete(words_with_scores: list[tuple[str, int]], prefix: str, top_k: int) -> list[str]:
     """Return up to top_k words that start with prefix, sorted by descending score.
     Break score ties by alphabetical order."""
     # Your implementation here
@@ -19610,7 +19610,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'evaluate_ast',
     functionSignature: "evaluate_ast(node: dict, env: dict[str, float]) -> float",
-    starterCode: `def evaluate_ast(node, env):
+    starterCode: `def evaluate_ast(node: dict, env: dict[str, float]) -> float:
     """Recursively evaluate an Abstract Syntax Tree (AST) node using environment dict env.
     Nodes:
     - {'type': 'num', 'val': float}
@@ -19749,7 +19749,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'shortest_path_grid',
     functionSignature: "shortest_path_grid(grid: list[list[int]], start: list[int], end: list[int]) -> int",
-    starterCode: `def shortest_path_grid(grid, start, end):
+    starterCode: `def shortest_path_grid(grid: list[list[int]], start: list[int], end: list[int]) -> int:
     """Find the shortest path length (number of moves) from start [r, c] to end [r, c]
     in a 2D binary grid (0 = walkable, 1 = obstacle). Movement is 4-directional.
     Return -1 if end is unreachable."""
@@ -19897,7 +19897,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'count_vowels_and_consonants',
     functionSignature: "count_vowels_and_consonants(text: str) -> dict[str, int]",
-    starterCode: `def count_vowels_and_consonants(text):
+    starterCode: `def count_vowels_and_consonants(text: str) -> dict[str, int]:
     """Count the number of vowels and consonants in text (ignoring case, punctuation, whitespace).
     Return dict {'vowels': int, 'consonants': int}."""
     # Your implementation here
@@ -19997,7 +19997,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'find_second_largest',
     functionSignature: "find_second_largest(nums: list[int]) -> int | None",
-    starterCode: `def find_second_largest(nums):
+    starterCode: `def find_second_largest(nums: list[int]) -> int | None:
     """Find the second largest unique value in list nums.
     If fewer than two unique elements exist, return None."""
     # Your implementation here
@@ -20099,7 +20099,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'matrix_column_sums',
     functionSignature: "matrix_column_sums(matrix: list[list[float]]) -> list[float]",
-    starterCode: `def matrix_column_sums(matrix):
+    starterCode: `def matrix_column_sums(matrix: list[list[float]]) -> list[float]:
     """Compute sum of each column in a 2D matrix of numbers.
     Return list of column sums rounded to 4 decimal places. Return [] if empty."""
     # Your implementation here
@@ -20221,7 +20221,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'remove_consecutive_duplicates',
     functionSignature: "remove_consecutive_duplicates(items: list[any]) -> list[any]",
-    starterCode: `def remove_consecutive_duplicates(items):
+    starterCode: `def remove_consecutive_duplicates(items: list[any]) -> list[any]:
     """Remove adjacent consecutive duplicate items from items while preserving first occurrence.
     For example, [1, 2, 2, 3, 2, 2] -> [1, 2, 3, 2]. Empty input returns []."""
     # Your implementation here
@@ -20326,7 +20326,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'word_length_histogram',
     functionSignature: "word_length_histogram(words: list[str]) -> dict[int, int]",
-    starterCode: `def word_length_histogram(words):
+    starterCode: `def word_length_histogram(words: list[str]) -> dict[int, int]:
     """Compute histogram mapping word length to frequency of occurrence.
     Return dictionary sorted by integer length keys. Empty list returns {}."""
     # Your implementation here
@@ -20428,7 +20428,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'chunk_string',
     functionSignature: "chunk_string(s: str, size: int) -> list[str]",
-    starterCode: `def chunk_string(s, size):
+    starterCode: `def chunk_string(s: str, size: int) -> list[str]:
     """Split string s into equal chunks of length size. The final chunk may be shorter.
     If size <= 0 or s is empty, return []."""
     # Your implementation here
@@ -20528,7 +20528,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'dict_invert_multi',
     functionSignature: "dict_invert_multi(d: dict) -> dict",
-    starterCode: `def dict_invert_multi(d):
+    starterCode: `def dict_invert_multi(d: dict) -> dict:
     """Invert dictionary d such that original values become keys mapping to sorted lists
     of corresponding original keys. Return dict sorted by keys."""
     # Your implementation here
@@ -20640,7 +20640,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'is_monotonic',
     functionSignature: "is_monotonic(nums: list[int | float]) -> bool",
-    starterCode: `def is_monotonic(nums):
+    starterCode: `def is_monotonic(nums: list[int | float]) -> bool:
     """Determine if array nums is monotonic (entirely non-decreasing or entirely non-increasing).
     Arrays with length <= 2 are always monotonic."""
     # Your implementation here
@@ -20746,7 +20746,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'flatten_shallow',
     functionSignature: "flatten_shallow(lists: list[list[any]]) -> list[any]",
-    starterCode: `def flatten_shallow(lists):
+    starterCode: `def flatten_shallow(lists: list[list[any]]) -> list[any]:
     """Concatenate a list of sublists into a single flat list (1 level deep).
     Empty input returns []."""
     # Your implementation here
@@ -20868,7 +20868,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'interleave_lists',
     functionSignature: "interleave_lists(a: list[any], b: list[any]) -> list[any]",
-    starterCode: `def interleave_lists(a, b):
+    starterCode: `def interleave_lists(a: list[any], b: list[any]) -> list[any]:
     """Interleave elements of lists a and b alternatingly, starting with a.
     If one list is longer, append remaining elements at the end."""
     # Your implementation here
@@ -20995,7 +20995,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'cumulative_moving_median',
     functionSignature: "cumulative_moving_median(nums: list[float]) -> list[float]",
-    starterCode: `def cumulative_moving_median(nums):
+    starterCode: `def cumulative_moving_median(nums: list[float]) -> list[float]:
     """Compute the running median after each element in nums is observed.
     Return list of medians rounded to 4 decimal places. Empty input returns []."""
     # Your implementation here
@@ -21101,7 +21101,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'group_by_predicate',
     functionSignature: "group_by_predicate(items: list[any], predicate_name: str) -> dict[str, list[any]]",
-    starterCode: `def group_by_predicate(items, predicate_name):
+    starterCode: `def group_by_predicate(items: list[any], predicate_name: str) -> dict[str, list[any]]:
     """Partition items into {'true': [...], 'false': [...]} based on predicate_name:
     - 'is_even': integers divisible by 2
     - 'is_positive': numeric values > 0
@@ -21236,7 +21236,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'retry_with_backoff_simulator',
     functionSignature: "retry_with_backoff_simulator(failure_count: int, max_retries: int) -> dict",
-    starterCode: `def retry_with_backoff_simulator(failure_count, max_retries):
+    starterCode: `def retry_with_backoff_simulator(failure_count: int, max_retries: int) -> dict:
     """Simulate retry execution where an operation fails failure_count times before succeeding.
     Initial try is attempt 1. Up to max_retries retries permitted.
     Delay before retry i (0-based) is 1.0 * (2 ** i).
@@ -21334,7 +21334,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'nested_key_counter',
     functionSignature: "nested_key_counter(data: any) -> int",
-    starterCode: `def nested_key_counter(data):
+    starterCode: `def nested_key_counter(data: any) -> int:
     """Count the total number of dictionary keys across all levels of nested dictionaries and lists."""
     # Your implementation here
     pass
@@ -21437,7 +21437,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'longest_consecutive_subsequence',
     functionSignature: "longest_consecutive_subsequence(nums: list[int]) -> int",
-    starterCode: `def longest_consecutive_subsequence(nums):
+    starterCode: `def longest_consecutive_subsequence(nums: list[int]) -> int:
     """Find the length of the longest consecutive elements sequence in nums in O(n) time.
     Elements need not be contiguous in the original list."""
     # Your implementation here
@@ -21546,7 +21546,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'merge_sorted_streams',
     functionSignature: "merge_sorted_streams(stream1: list[int], stream2: list[int]) -> list[int]",
-    starterCode: `def merge_sorted_streams(stream1, stream2):
+    starterCode: `def merge_sorted_streams(stream1: list[int], stream2: list[int]) -> list[int]:
     """Merge two sorted integer streams stream1 and stream2 into a single sorted list in O(n+m) time."""
     # Your implementation here
     pass
@@ -21674,7 +21674,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'evaluate_boolean_query',
     functionSignature: "evaluate_boolean_query(record: dict, query: dict) -> bool",
-    starterCode: `def evaluate_boolean_query(record, query):
+    starterCode: `def evaluate_boolean_query(record: dict, query: dict) -> bool:
     """Evaluate record dict against boolean query with optional clauses:
     - 'all_of': list of condition dicts (all must match)
     - 'any_of': list of condition dicts (at least one must match)
@@ -21808,7 +21808,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'frequency_map_equality',
     functionSignature: "frequency_map_equality(freq_a: dict[str, int], freq_b: dict[str, int]) -> bool",
-    starterCode: `def frequency_map_equality(freq_a, freq_b):
+    starterCode: `def frequency_map_equality(freq_a: dict[str, int], freq_b: dict[str, int]) -> bool:
     """Determine if frequency maps freq_a and freq_b represent identical multisets.
     Keys with count 0 must be treated as absent."""
     # Your implementation here
@@ -21906,7 +21906,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'matrix_diagonal_sums',
     functionSignature: "matrix_diagonal_sums(matrix: list[list[int]]) -> dict[str, int]",
-    starterCode: `def matrix_diagonal_sums(matrix):
+    starterCode: `def matrix_diagonal_sums(matrix: list[list[int]]) -> dict[str, int]:
     """Compute primary diagonal sum, secondary (anti) diagonal sum, and total combined sum
     (counting the central intersection element only once for odd-dimension square matrices).
     Return {'main': int, 'anti': int, 'total': int}."""
@@ -22044,7 +22044,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'safe_cast_dict',
     functionSignature: "safe_cast_dict(records: list[dict], types: dict[str, str]) -> list[dict]",
-    starterCode: `def safe_cast_dict(records, types):
+    starterCode: `def safe_cast_dict(records: list[dict], types: dict[str, str]) -> list[dict]:
     """Cast fields in records to target types specified in types dict ('int', 'float', 'str', 'bool').
     If casting fails, set field to None. Return new list of dicts."""
     # Your implementation here
@@ -22167,7 +22167,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'top_k_frequent_words',
     functionSignature: "top_k_frequent_words(words: list[str], k: int) -> list[str]",
-    starterCode: `def top_k_frequent_words(words, k):
+    starterCode: `def top_k_frequent_words(words: list[str], k: int) -> list[str]:
     """Return the k most frequent words sorted by frequency from highest to lowest.
     Words with the same frequency must be sorted in ascending alphabetical order."""
     # Your implementation here
@@ -22283,7 +22283,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'string_character_offset_cipher',
     functionSignature: "string_character_offset_cipher(text: str, shift: int) -> str",
-    starterCode: `def string_character_offset_cipher(text, shift):
+    starterCode: `def string_character_offset_cipher(text: str, shift: int) -> str:
     """Encrypt text by shifting alphabetic characters by shift positions (wrapping around A-Z / a-z).
     Preserve casing and leave non-alphabetic characters untouched."""
     # Your implementation here
@@ -22363,7 +22363,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'dependency_graph_depth',
     functionSignature: "dependency_graph_depth(graph: dict[str, list[str]]) -> int",
-    starterCode: `def dependency_graph_depth(graph):
+    starterCode: `def dependency_graph_depth(graph: dict[str, list[str]]) -> int:
     """Compute the maximum path length (number of edges) in directed dependency graph.
     If a cycle exists, return -1. Empty graph returns 0."""
     # Your implementation here
@@ -22466,7 +22466,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'stream_sliding_percentile',
     functionSignature: "stream_sliding_percentile(nums: list[float], window_size: int, percentile: float) -> list[float]",
-    starterCode: `def stream_sliding_percentile(nums, window_size, percentile):
+    starterCode: `def stream_sliding_percentile(nums: list[float], window_size: int, percentile: float) -> list[float]:
     """Compute the sliding window percentile using the nearest rank method:
     rank_index = max(0, ceil(percentile * window_size) - 1) on sorted window.
     Return list of percentile values rounded to 4 decimals."""
@@ -22579,7 +22579,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'custom_json_serializer',
     functionSignature: "custom_json_serializer(data: any) -> str",
-    starterCode: `def custom_json_serializer(data):
+    starterCode: `def custom_json_serializer(data: any) -> str:
     """Serialize primitive and nested Python data (None, bool, int, float, str, list, dict)
     into a valid JSON string without using json.dumps()."""
     # Your implementation here
@@ -22671,7 +22671,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'expression_parenthesization_validator',
     functionSignature: "expression_parenthesization_validator(s: str) -> bool",
-    starterCode: `def expression_parenthesization_validator(s):
+    starterCode: `def expression_parenthesization_validator(s: str) -> bool:
     """Determine if brackets (), {}, [] in string s are correctly paired and nested.
     Non-bracket characters are ignored. Return True if balanced, else False."""
     # Your implementation here
@@ -22747,7 +22747,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'event_bus_dispatcher_simulator',
     functionSignature: "event_bus_dispatcher_simulator(subscriptions: list[dict], events: list[dict]) -> list[str]",
-    starterCode: `def event_bus_dispatcher_simulator(subscriptions, events):
+    starterCode: `def event_bus_dispatcher_simulator(subscriptions: list[dict], events: list[dict]) -> list[str]:
     """Dispatch events to matching subscribers.
     Subscriptions: [{'topic': 'sensor.*', 'id': 'sub1'}].
     Wildcard '*' matches a single dot-delimited segment; '#' matches zero or more segments.
@@ -22883,7 +22883,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'bloom_filter_simulator',
     functionSignature: "bloom_filter_simulator(elements: list[str], test_elements: list[str], m: int, num_hashes: int) -> list[bool]",
-    starterCode: `def bloom_filter_simulator(elements, test_elements, m, num_hashes):
+    starterCode: `def bloom_filter_simulator(elements: list[str], test_elements: list[str], m: int, num_hashes: int) -> list[bool]:
     """Simulate an m-bit Bloom filter using num_hashes hash functions from prime bases:
     [31, 37, 41, 43, 47, 53, 59, 61][:num_hashes] where h_b(s) = sum(ord(c) * (b ** j)) % m.
     Insert elements, then test each element in test_elements. Return list of bools."""
@@ -23003,7 +23003,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'lfu_cache_simulator',
     functionSignature: "lfu_cache_simulator(operations: list[dict], capacity: int) -> list[any]",
-    starterCode: `def lfu_cache_simulator(operations, capacity):
+    starterCode: `def lfu_cache_simulator(operations: list[dict], capacity: int) -> list[any]:
     """Simulate Least Frequently Used (LFU) cache of capacity with operations:
     {'op': 'put', 'key': k, 'val': v} and {'op': 'get', 'key': k}.
     Ties in frequency evicted by LRU. Return list of results for 'get' ops."""
@@ -23150,7 +23150,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'immutable_persistent_stack_simulator',
     functionSignature: "immutable_persistent_stack_simulator(operations: list[dict]) -> list[any]",
-    starterCode: `def immutable_persistent_stack_simulator(operations):
+    starterCode: `def immutable_persistent_stack_simulator(operations: list[dict]) -> list[any]:
     """Simulate a fully persistent stack where versions are immutable.
     Version 0 is empty stack ().
     - {'op': 'push', 'version': v, 'val': x}: returns new version integer
@@ -23294,7 +23294,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'remove_elements',
     functionSignature: "remove_elements(head: dict | None, val: int) -> dict | None",
-    starterCode: `def remove_elements(head, val):
+    starterCode: `def remove_elements(head: dict | None, val: int) -> dict | None:
     """Remove all nodes from linked list that have node['val'] == val.
     Nodes are {'val': int, 'next': node | None}. Return head of modified list."""
     # Your implementation here
@@ -23431,7 +23431,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'middle_node',
     functionSignature: "middle_node(head: dict | None) -> dict | None",
-    starterCode: `def middle_node(head):
+    starterCode: `def middle_node(head: dict | None) -> dict | None:
     """Find the middle node of singly linked list head.
     If there are two middle nodes (even length), return the second middle node."""
     # Your implementation here
@@ -23564,7 +23564,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'delete_duplicates_sorted',
     functionSignature: "delete_duplicates_sorted(head: dict | None) -> dict | None",
-    starterCode: `def delete_duplicates_sorted(head):
+    starterCode: `def delete_duplicates_sorted(head: dict | None) -> dict | None:
     """Delete duplicate values from sorted linked list so each element appears only once.
     Return head of modified list."""
     # Your implementation here
@@ -23682,7 +23682,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'min_stack_ops',
     functionSignature: "min_stack_ops(operations: list[dict]) -> list[any]",
-    starterCode: `def min_stack_ops(operations):
+    starterCode: `def min_stack_ops(operations: list[dict]) -> list[any]:
     """Simulate MinStack supporting push(val), pop(), top(), and get_min() in O(1) time.
     Operations: {'op': 'push', 'val': x}, {'op': 'pop'}, {'op': 'top'}, {'op': 'get_min'}.
     Return list of results for 'top' and 'get_min' calls."""
@@ -23807,7 +23807,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'backspace_compare',
     functionSignature: "backspace_compare(s: str, t: str) -> bool",
-    starterCode: `def backspace_compare(s, t):
+    starterCode: `def backspace_compare(s: str, t: str) -> bool:
     """Determine if strings s and t are equal when typed into empty text editors
     where '#' represents a backspace character."""
     # Your implementation here
@@ -23887,7 +23887,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'daily_temperatures',
     functionSignature: "daily_temperatures(temperatures: list[int]) -> list[int]",
-    starterCode: `def daily_temperatures(temperatures):
+    starterCode: `def daily_temperatures(temperatures: list[int]) -> list[int]:
     """Return array answer where answer[i] is the number of days until a warmer temperature.
     If no future day is warmer, answer[i] == 0."""
     # Your implementation here
@@ -24007,7 +24007,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'flatten_multilevel_list',
     functionSignature: "flatten_multilevel_list(head: dict | None) -> dict | None",
-    starterCode: `def flatten_multilevel_list(head):
+    starterCode: `def flatten_multilevel_list(head: dict | None) -> dict | None:
     """Flatten a multilevel singly linked list where nodes have 'val', 'next', and optional 'child'.
     Depth-first order: child nodes are traversed before next nodes.
     Return the head of the new flattened list (without child pointers)."""
@@ -24144,7 +24144,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'swap_pairs',
     functionSignature: "swap_pairs(head: dict | None) -> dict | None",
-    starterCode: `def swap_pairs(head):
+    starterCode: `def swap_pairs(head: dict | None) -> dict | None:
     """Swap every two adjacent nodes of linked list head and return new head.
     Must swap nodes themselves, not just their values."""
     # Your implementation here
@@ -24262,7 +24262,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'simplify_path',
     functionSignature: "simplify_path(path: str) -> str",
-    starterCode: `def simplify_path(path):
+    starterCode: `def simplify_path(path: str) -> str:
     """Simplify an absolute Unix filesystem path string into its canonical form.
     Handles '.', '..', and multiple consecutive slashes '/'."""
     # Your implementation here
@@ -24338,7 +24338,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'decode_string',
     functionSignature: "decode_string(s: str) -> str",
-    starterCode: `def decode_string(s):
+    starterCode: `def decode_string(s: str) -> str:
     """Decode string formatted as k[encoded_string] where encoded_string inside square brackets
     is repeated exactly k times. Handles arbitrary nesting (e.g. '3[a2[c]]' -> 'accaccacc')."""
     # Your implementation here
@@ -24414,7 +24414,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'asteroid_collision',
     functionSignature: "asteroid_collision(asteroids: list[int]) -> list[int]",
-    starterCode: `def asteroid_collision(asteroids):
+    starterCode: `def asteroid_collision(asteroids: list[int]) -> list[int]:
     """Simulate asteroid collisions where positive means moving right, negative moving left.
     Absolute value is size. Equal sizes destroy both. Larger destroys smaller. Return survivors."""
     # Your implementation here
@@ -24516,7 +24516,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'merge_k_sorted_lists',
     functionSignature: "merge_k_sorted_lists(lists: list[dict | None]) -> dict | None",
-    starterCode: `def merge_k_sorted_lists(lists):
+    starterCode: `def merge_k_sorted_lists(lists: list[dict | None]) -> dict | None:
     """Merge k sorted linked lists into one sorted linked list.
     Return head of merged list. Input is a list of head nodes."""
     # Your implementation here
@@ -24680,7 +24680,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'reverse_k_group',
     functionSignature: "reverse_k_group(head: dict | None, k: int) -> dict | None",
-    starterCode: `def reverse_k_group(head, k):
+    starterCode: `def reverse_k_group(head: dict | None, k: int) -> dict | None:
     """Reverse nodes of linked list k at a time and return modified head.
     If the remaining number of nodes is less than k, leave them in original order."""
     # Your implementation here
@@ -24835,7 +24835,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'largest_rectangle_area',
     functionSignature: "largest_rectangle_area(heights: list[int]) -> int",
-    starterCode: `def largest_rectangle_area(heights):
+    starterCode: `def largest_rectangle_area(heights: list[int]) -> int:
     """Find the area of the largest rectangle in histogram heights in O(n) time using a stack."""
     # Your implementation here
     pass
@@ -24936,7 +24936,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'sliding_window_max_queue',
     functionSignature: "sliding_window_max_queue(nums: list[int], k: int) -> list[int]",
-    starterCode: `def sliding_window_max_queue(nums, k):
+    starterCode: `def sliding_window_max_queue(nums: list[int], k: int) -> list[int]:
     """Find the maximum value in each sliding window of size k in array nums in O(n) time
     using a monotonic double-ended queue."""
     # Your implementation here
@@ -25055,7 +25055,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'merge_trees',
     functionSignature: "merge_trees(root1: dict | None, root2: dict | None) -> dict | None",
-    starterCode: `def merge_trees(root1, root2):
+    starterCode: `def merge_trees(root1: dict | None, root2: dict | None) -> dict | None:
     """root1, root2: binary tree roots as {'val', 'left', 'right'} or None.
     Merge root2 into root1 by summing node values where both exist, or using
     the existing subtree where one is None. Return the merged root."""
@@ -25194,7 +25194,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'lowest_common_ancestor_bst',
     functionSignature: "lowest_common_ancestor_bst(root: dict, p: int, q: int) -> int",
-    starterCode: `def lowest_common_ancestor_bst(root, p, q):
+    starterCode: `def lowest_common_ancestor_bst(root: dict, p: int, q: int) -> int:
     """root: root of a BST with distinct integer values.
     p, q: values of two distinct nodes guaranteed to exist in the BST.
     Return the value of their Lowest Common Ancestor (LCA)."""
@@ -25349,7 +25349,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'search_rotated_array',
     functionSignature: "search_rotated_array(nums: list[int], target: int) -> int",
-    starterCode: `def search_rotated_array(nums, target):
+    starterCode: `def search_rotated_array(nums: list[int], target: int) -> int:
     """nums: list of distinct integers sorted ascending, then rotated at an unknown pivot.
     target: integer value to find.
     Return index of target in nums, or -1 if not present. Must run in O(log n)."""
@@ -25452,7 +25452,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'find_min_rotated_array',
     functionSignature: "find_min_rotated_array(nums: list[int]) -> int",
-    starterCode: `def find_min_rotated_array(nums):
+    starterCode: `def find_min_rotated_array(nums: list[int]) -> int:
     """nums: list of unique integers sorted ascending and rotated between 1 and n times.
     Return the minimum element in nums in O(log n) time."""
     # Your implementation here
@@ -25538,7 +25538,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'level_order_traversal',
     functionSignature: "level_order_traversal(root: dict | None) -> list[list[int]]",
-    starterCode: `def level_order_traversal(root):
+    starterCode: `def level_order_traversal(root: dict | None) -> list[list[int]]:
     """root: binary tree root node as {'val', 'left', 'right'} or None.
     Return the level order traversal of its nodes' values as a list of lists,
     from left to right, level by level."""
@@ -25645,7 +25645,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'lowest_common_ancestor_bt',
     functionSignature: "lowest_common_ancestor_bt(root: dict, p: int, q: int) -> int",
-    starterCode: `def lowest_common_ancestor_bt(root, p, q):
+    starterCode: `def lowest_common_ancestor_bt(root: dict, p: int, q: int) -> int:
     """root: binary tree root node as {'val', 'left', 'right'}.
     p, q: values of two distinct nodes guaranteed to be in the tree.
     Return the value of the Lowest Common Ancestor (LCA) node."""
@@ -25780,7 +25780,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'zigzag_level_order',
     functionSignature: "zigzag_level_order(root: dict | None) -> list[list[int]]",
-    starterCode: `def zigzag_level_order(root):
+    starterCode: `def zigzag_level_order(root: dict | None) -> list[list[int]]:
     """root: binary tree root node as {'val', 'left', 'right'} or None.
     Return zigzag level order traversal (alternating left-to-right and right-to-left
     at each level)."""
@@ -25887,7 +25887,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'count_complete_tree_nodes',
     functionSignature: "count_complete_tree_nodes(root: dict | None) -> int",
-    starterCode: `def count_complete_tree_nodes(root):
+    starterCode: `def count_complete_tree_nodes(root: dict | None) -> int:
     """root: root of a complete binary tree as {'val', 'left', 'right'} or None.
     Return total number of nodes in strictly less than O(n) time."""
     # Your implementation here
@@ -25990,7 +25990,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'find_peak_element',
     functionSignature: "find_peak_element(nums: list[int]) -> int",
-    starterCode: `def find_peak_element(nums):
+    starterCode: `def find_peak_element(nums: list[int]) -> int:
     """nums: list of integers where nums[i] != nums[i+1].
     Return index of any peak element (nums[i] strictly greater than its neighbors).
     Must run in O(log n) time."""
@@ -26086,7 +26086,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'find_kth_number_multiplication_table',
     functionSignature: "find_kth_number_multiplication_table(m: int, n: int, k: int) -> int",
-    starterCode: `def find_kth_number_multiplication_table(m, n, k):
+    starterCode: `def find_kth_number_multiplication_table(m: int, n: int, k: int) -> int:
     """m, n: dimensions of multiplication table where table[i][j] = i * j (1-indexed).
     k: target rank (1-indexed).
     Return the kth smallest value in the m x n table in O(m * log(m*n)) time."""
@@ -26159,7 +26159,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'deserialize_tree',
     functionSignature: "deserialize_tree(data: str) -> dict | None",
-    starterCode: `def deserialize_tree(data):
+    starterCode: `def deserialize_tree(data: str) -> dict | None:
     """data: comma-separated string encoding of a binary tree in preorder,
     where '#' denotes a null/empty node.
     Reconstruct and return the tree as nested dicts {'val', 'left', 'right'}."""
@@ -26251,7 +26251,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'min_camera_cover',
     functionSignature: "min_camera_cover(root: dict | None) -> int",
-    starterCode: `def min_camera_cover(root):
+    starterCode: `def min_camera_cover(root: dict | None) -> int:
     """root: binary tree root node as {'val', 'left', 'right'} or None.
     A camera monitors its node, parent, and immediate children.
     Return the minimum number of cameras needed to monitor all nodes."""
@@ -26358,7 +26358,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'vertical_order_traversal',
     functionSignature: "vertical_order_traversal(root: dict | None) -> list[list[int]]",
-    starterCode: `def vertical_order_traversal(root):
+    starterCode: `def vertical_order_traversal(root: dict | None) -> list[list[int]]:
     """root: binary tree root node as {'val', 'left', 'right'} or None.
     Return vertical column traversal of node values from left to right.
     For nodes at same column and row, order them by value ascending."""
@@ -26513,7 +26513,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'split_array_largest_sum',
     functionSignature: "split_array_largest_sum(nums: list[int], k: int) -> int",
-    starterCode: `def split_array_largest_sum(nums, k):
+    starterCode: `def split_array_largest_sum(nums: list[int], k: int) -> int:
     """nums: list of non-negative integers.
     k: number of contiguous non-empty subarrays to partition nums into.
     Return the minimized largest sum among these k subarrays."""
@@ -26600,7 +26600,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'find_swapped_values_bst',
     functionSignature: "find_swapped_values_bst(root: dict | None) -> list[int]",
-    starterCode: `def find_swapped_values_bst(root):
+    starterCode: `def find_swapped_values_bst(root: dict | None) -> list[int]:
     """root: root of a BST where exactly two node values were swapped by mistake.
     Find and return the two swapped values as [smaller_val, larger_val] in ascending order."""
     # Your implementation here
@@ -26712,7 +26712,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'min_cost_climbing_stairs',
     functionSignature: "min_cost_climbing_stairs(cost: list[int]) -> int",
-    starterCode: `def min_cost_climbing_stairs(cost):
+    starterCode: `def min_cost_climbing_stairs(cost: list[int]) -> int:
     """cost: list of non-negative integers where cost[i] is the cost of stepping on stair i.
     You can start at index 0 or index 1, and take 1 or 2 steps each time.
     Return the minimum cost to reach the top of the floor (past the last index)."""
@@ -26797,7 +26797,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'tribonacci',
     functionSignature: "tribonacci(n: int) -> int",
-    starterCode: `def tribonacci(n):
+    starterCode: `def tribonacci(n: int) -> int:
     """n: non-negative integer.
     T_0 = 0, T_1 = 1, T_2 = 1, and T_{n+3} = T_n + T_{n+1} + T_{n+2}.
     Return the value of T_n."""
@@ -26864,7 +26864,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'can_place_flowers',
     functionSignature: "can_place_flowers(flowerbed: list[int], n: int) -> bool",
-    starterCode: `def can_place_flowers(flowerbed, n):
+    starterCode: `def can_place_flowers(flowerbed: list[int], n: int) -> bool:
     """flowerbed: list of 0s and 1s where 1 means a flower is planted.
     No two flowers can be planted in adjacent plots.
     n: number of new flowers to plant.
@@ -26951,7 +26951,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'max_profit_stock',
     functionSignature: "max_profit_stock(prices: list[int]) -> int",
-    starterCode: `def max_profit_stock(prices):
+    starterCode: `def max_profit_stock(prices: list[int]) -> int:
     """prices: list of stock prices on consecutive days.
     You may complete at most one transaction (buy once, sell once in the future).
     Return maximum profit achievable, or 0 if no profit is possible."""
@@ -27036,7 +27036,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'assign_cookies',
     functionSignature: "assign_cookies(g: list[int], s: list[int]) -> int",
-    starterCode: `def assign_cookies(g, s):
+    starterCode: `def assign_cookies(g: list[int], s: list[int]) -> int:
     """g: list of greed factors of children.
     s: list of sizes of cookies.
     Each child can get at most one cookie, and is satisfied only if s[j] >= g[i].
@@ -27129,7 +27129,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'count_bits',
     functionSignature: "count_bits(n: int) -> list[int]",
-    starterCode: `def count_bits(n):
+    starterCode: `def count_bits(n: int) -> list[int]:
     """n: non-negative integer.
     Return an array ans of length n + 1 where ans[i] is the number of 1's
     in the binary representation of i, computed in O(n) time using dynamic programming."""
@@ -27208,7 +27208,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'lemonade_change',
     functionSignature: "lemonade_change(bills: list[int]) -> bool",
-    starterCode: `def lemonade_change(bills):
+    starterCode: `def lemonade_change(bills: list[int]) -> bool:
     """bills: list of integers where bills[i] is 5, 10, or 20.
     Each lemonade costs $5. Customers pay in order. You start with no change.
     Return True if you can provide every customer with correct change, False otherwise."""
@@ -27289,7 +27289,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'divisor_game',
     functionSignature: "divisor_game(n: int) -> bool",
-    starterCode: `def divisor_game(n):
+    starterCode: `def divisor_game(n: int) -> bool:
     """n: initial number on blackboard.
     Alice and Bob take turns choosing x (0 < x < n, n % x == 0) and replacing n with n - x.
     The player who cannot make a move loses. Alice goes first.
@@ -27356,7 +27356,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'pascals_triangle_row',
     functionSignature: "pascals_triangle_row(rowIndex: int) -> list[int]",
-    starterCode: `def pascals_triangle_row(rowIndex):
+    starterCode: `def pascals_triangle_row(rowIndex: int) -> list[int]:
     """rowIndex: 0-indexed row number.
     Return the rowIndex-th row of Pascal's triangle using O(rowIndex) extra space."""
     # Your implementation here
@@ -27431,7 +27431,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'maximum_units_on_truck',
     functionSignature: "maximum_units_on_truck(boxTypes: list[list[int]], truckSize: int) -> int",
-    starterCode: `def maximum_units_on_truck(boxTypes, truckSize):
+    starterCode: `def maximum_units_on_truck(boxTypes: list[list[int]], truckSize: int) -> int:
     """boxTypes: list of [numberOfBoxes_i, numberOfUnitsPerBox_i].
     truckSize: maximum number of boxes that can be put on the truck.
     Return the maximum total number of units that can be loaded onto the truck."""
@@ -27537,7 +27537,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'unique_paths_with_obstacles',
     functionSignature: "unique_paths_with_obstacles(obstacleGrid: list[list[int]]) -> int",
-    starterCode: `def unique_paths_with_obstacles(obstacleGrid):
+    starterCode: `def unique_paths_with_obstacles(obstacleGrid: list[list[int]]) -> int:
     """obstacleGrid: m x n binary grid where 1 marks an obstacle and 0 an empty space.
     Robot starts at top-left (0,0) and can only move down or right.
     Return the number of unique paths to bottom-right (m-1, n-1)."""
@@ -27633,7 +27633,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'min_path_sum',
     functionSignature: "min_path_sum(grid: list[list[int]]) -> int",
-    starterCode: `def min_path_sum(grid):
+    starterCode: `def min_path_sum(grid: list[list[int]]) -> int:
     """grid: m x n grid filled with non-negative numbers.
     Find a path from top-left (0,0) to bottom-right (m-1, n-1) which minimizes
     the sum of all numbers along its path. You can only move right or down."""
@@ -27731,7 +27731,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'longest_increasing_subsequence',
     functionSignature: "longest_increasing_subsequence(nums: list[int]) -> int",
-    starterCode: `def longest_increasing_subsequence(nums):
+    starterCode: `def longest_increasing_subsequence(nums: list[int]) -> int:
     """nums: integer array.
     Return the length of the longest strictly increasing subsequence.
     Must run in O(n log n) time."""
@@ -27819,7 +27819,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'longest_common_subsequence',
     functionSignature: "longest_common_subsequence(text1: str, text2: str) -> int",
-    starterCode: `def longest_common_subsequence(text1, text2):
+    starterCode: `def longest_common_subsequence(text1: str, text2: str) -> int:
     """text1, text2: two input strings.
     Return the length of their longest common subsequence.
     A subsequence is derived by deleting zero or more characters without changing relative order."""
@@ -27889,7 +27889,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'can_jump',
     functionSignature: "can_jump(nums: list[int]) -> bool",
-    starterCode: `def can_jump(nums):
+    starterCode: `def can_jump(nums: list[int]) -> bool:
     """nums: integer array where nums[i] is the maximum jump length from position i.
     You start at index 0. Return True if you can reach the last index, False otherwise."""
     # Your implementation here
@@ -27969,7 +27969,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'min_jumps',
     functionSignature: "min_jumps(nums: list[int]) -> int",
-    starterCode: `def min_jumps(nums):
+    starterCode: `def min_jumps(nums: list[int]) -> int:
     """nums: integer array where nums[i] is maximum forward jump length from index i.
     You start at index 0. You are guaranteed to be able to reach the last index.
     Return the minimum number of jumps to reach the last index."""
@@ -28051,7 +28051,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'can_partition_equal_subset',
     functionSignature: "can_partition_equal_subset(nums: list[int]) -> bool",
-    starterCode: `def can_partition_equal_subset(nums):
+    starterCode: `def can_partition_equal_subset(nums: list[int]) -> bool:
     """nums: array of positive integers.
     Determine if the array can be partitioned into two subsets such that the
     sum of elements in both subsets is equal."""
@@ -28132,7 +28132,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'erase_overlap_intervals',
     functionSignature: "erase_overlap_intervals(intervals: list[list[int]]) -> int",
-    starterCode: `def erase_overlap_intervals(intervals):
+    starterCode: `def erase_overlap_intervals(intervals: list[list[int]]) -> int:
     """intervals: list of intervals [start, end].
     Return the minimum number of intervals you need to remove to make the rest
     of the intervals non-overlapping."""
@@ -28239,7 +28239,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'gas_station_start',
     functionSignature: "gas_station_start(gas: list[int], cost: list[int]) -> int",
-    starterCode: `def gas_station_start(gas, cost):
+    starterCode: `def gas_station_start(gas: list[int], cost: list[int]) -> int:
     """gas, cost: lists of non-negative integers of length n.
     There are n gas stations along a circular route. gas[i] is the gas at station i,
     and cost[i] is the gas needed to travel from station i to station (i + 1) % n.
@@ -28335,7 +28335,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'house_robber_ii',
     functionSignature: "house_robber_ii(nums: list[int]) -> int",
-    starterCode: `def house_robber_ii(nums):
+    starterCode: `def house_robber_ii(nums: list[int]) -> int:
     """nums: non-negative integers representing the amount of money of each house.
     All houses are arranged in a circle (house 0 and house n-1 are adjacent).
     Adjacent houses cannot both be robbed. Return the maximum amount of money you can rob."""
@@ -28413,7 +28413,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'num_decodings',
     functionSignature: "num_decodings(s: str) -> int",
-    starterCode: `def num_decodings(s):
+    starterCode: `def num_decodings(s: str) -> int:
     """s: string containing digits ('1'-'26' map to 'A'-'Z').
     A message can be decoded in multiple ways (e.g. '12' -> 'AB' or 'L').
     Return the total number of ways to decode s."""
@@ -28480,7 +28480,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'max_product_subarray',
     functionSignature: "max_product_subarray(nums: list[int]) -> int",
-    starterCode: `def max_product_subarray(nums):
+    starterCode: `def max_product_subarray(nums: list[int]) -> int:
     """nums: integer array.
     Find a contiguous non-empty subarray within nums that has the largest product,
     and return that product."""
@@ -28561,7 +28561,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'max_profit_k_transactions',
     functionSignature: "max_profit_k_transactions(k: int, prices: list[int]) -> int",
-    starterCode: `def max_profit_k_transactions(k, prices):
+    starterCode: `def max_profit_k_transactions(k: int, prices: list[int]) -> int:
     """k: maximum number of completed buy-sell transactions allowed.
     prices: list of stock prices on consecutive days.
     Return the maximum profit achievable."""
@@ -28647,7 +28647,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'is_regex_match',
     functionSignature: "is_regex_match(s: str, p: str) -> bool",
-    starterCode: `def is_regex_match(s, p):
+    starterCode: `def is_regex_match(s: str, p: str) -> bool:
     """s: input string.
     p: pattern supporting '.' (matches any single char) and '*' (matches zero or more of preceding char).
     Return True if s matches pattern p across the entire string."""
@@ -28720,7 +28720,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'is_wildcard_match',
     functionSignature: "is_wildcard_match(s: str, p: str) -> bool",
-    starterCode: `def is_wildcard_match(s, p):
+    starterCode: `def is_wildcard_match(s: str, p: str) -> bool:
     """s: input string.
     p: pattern supporting '?' (matches any single character) and '*' (matches any sequence of characters including empty).
     Return True if pattern matches entire string s."""
@@ -28791,7 +28791,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'max_coins_burst_balloons',
     functionSignature: "max_coins_burst_balloons(nums: list[int]) -> int",
-    starterCode: `def max_coins_burst_balloons(nums):
+    starterCode: `def max_coins_burst_balloons(nums: list[int]) -> int:
     """nums: array of numbers on balloons.
     Bursting balloon i yields nums[i-1] * nums[i] * nums[i+1] coins (out-of-bounds treat as 1).
     Return maximum coins you can collect by bursting all balloons wisely."""
@@ -28868,7 +28868,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'candy',
     functionSignature: "candy(ratings: list[int]) -> int",
-    starterCode: `def candy(ratings):
+    starterCode: `def candy(ratings: list[int]) -> int:
     """ratings: list of ratings of children standing in a line.
     Each child must have at least one candy. Children with a higher rating
     get more candies than their immediate neighbors. Return the minimum total candies needed."""
@@ -28945,7 +28945,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'num_distinct_subsequences',
     functionSignature: "num_distinct_subsequences(s: str, t: str) -> int",
-    starterCode: `def num_distinct_subsequences(s, t):
+    starterCode: `def num_distinct_subsequences(s: str, t: str) -> int:
     """s, t: strings of lowercase English letters.
     Return the number of distinct subsequences of s which equal t."""
     # Your implementation here
@@ -29015,7 +29015,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'longest_valid_parentheses',
     functionSignature: "longest_valid_parentheses(s: str) -> int",
-    starterCode: `def longest_valid_parentheses(s):
+    starterCode: `def longest_valid_parentheses(s: str) -> int:
     """s: string containing just the characters '(' and ')'.
     Return the length of the longest valid (well-formed) parentheses substring."""
     # Your implementation here
@@ -29081,7 +29081,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'calculate_minimum_hp',
     functionSignature: "calculate_minimum_hp(dungeon: list[list[int]]) -> int",
-    starterCode: `def calculate_minimum_hp(dungeon):
+    starterCode: `def calculate_minimum_hp(dungeon: list[list[int]]) -> int:
     """dungeon: m x n grid containing integers (demons are negative, magic orbs positive).
     Knight starts at top-left (0,0) and must reach princess at bottom-right (m-1, n-1).
     Knight can only move right or down, and health must remain >= 1 at all times.
@@ -29174,7 +29174,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'regression_metrics',
     functionSignature: "regression_metrics(y_true: list[float], y_pred: list[float]) -> dict[str, float]",
-    starterCode: `def regression_metrics(y_true, y_pred):
+    starterCode: `def regression_metrics(y_true: list[float], y_pred: list[float]) -> dict[str, float]:
     """y_true, y_pred: equal-length lists of true and predicted regression values.
     Return dict with keys 'mse', 'mae', 'rmse', each rounded to 4 decimal places."""
     # Your implementation here
@@ -29277,7 +29277,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'confusion_matrix_binary',
     functionSignature: "confusion_matrix_binary(y_true: list[int], y_pred: list[int]) -> dict[str, int]",
-    starterCode: `def confusion_matrix_binary(y_true, y_pred):
+    starterCode: `def confusion_matrix_binary(y_true: list[int], y_pred: list[int]) -> dict[str, int]:
     """y_true, y_pred: lists of binary labels (0 or 1).
     Return a dict with keys 'tp', 'fp', 'tn', 'fn' representing the counts
     of true positives, false positives, true negatives, and false negatives."""
@@ -29394,7 +29394,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'feature_min_max_normalize',
     functionSignature: "feature_min_max_normalize(X: list[list[float]]) -> list[list[float]]",
-    starterCode: `def feature_min_max_normalize(X):
+    starterCode: `def feature_min_max_normalize(X: list[list[float]]) -> list[list[float]]:
     """X: 2D matrix (n_samples x n_features) of numerical features.
     Scale each feature column independently into [0.0, 1.0] using min-max scaling.
     If a column has zero range (max == min), set all values in that column to 0.0.
@@ -29524,7 +29524,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'z_score_normalize',
     functionSignature: "z_score_normalize(X: list[list[float]]) -> list[list[float]]",
-    starterCode: `def z_score_normalize(X):
+    starterCode: `def z_score_normalize(X: list[list[float]]) -> list[list[float]]:
     """X: 2D matrix of shape (n_samples x n_features).
     Standardize each feature column independently to have zero mean and unit variance:
     z = (x - mean) / std. If std is 0.0, set transformed values to 0.0.
@@ -29656,7 +29656,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'pairwise_distances',
     functionSignature: "pairwise_distances(X: list[list[float]], metric: str) -> list[list[float]]",
-    starterCode: `def pairwise_distances(X, metric):
+    starterCode: `def pairwise_distances(X: list[list[float]], metric: str) -> list[list[float]]:
     """X: list of n feature vectors of length d.
     metric: 'euclidean' or 'manhattan'.
     Return an n x n distance matrix D where D[i][j] is the distance between X[i] and X[j],
@@ -29784,7 +29784,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'one_hot_encode',
     functionSignature: "one_hot_encode(labels: list[str]) -> list[list[int]]",
-    starterCode: `def one_hot_encode(labels):
+    starterCode: `def one_hot_encode(labels: list[str]) -> list[list[int]]:
     """labels: list of categorical string labels.
     Find all unique categories sorted lexicographically.
     Return 2D list of 0/1 indicator vectors representing one-hot encoded rows."""
@@ -29913,7 +29913,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'train_test_split_indices',
     functionSignature: "train_test_split_indices(n_samples: int, test_size: float) -> tuple[list[int], list[int]]",
-    starterCode: `def train_test_split_indices(n_samples, test_size):
+    starterCode: `def train_test_split_indices(n_samples: int, test_size: float) -> tuple[list[int], list[int]]:
     """n_samples: total number of samples (integer >= 1).
     test_size: float in (0.0, 1.0) indicating fraction of test samples.
     Let n_test = int(n_samples * test_size) and n_train = n_samples - n_test.
@@ -30022,7 +30022,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'knn_classify',
     functionSignature: "knn_classify(X_train: list[list[float]], y_train: list[int], X_test: list[list[float]], k: int) -> list[int]",
-    starterCode: `def knn_classify(X_train, y_train, X_test, k):
+    starterCode: `def knn_classify(X_train: list[list[float]], y_train: list[int], X_test: list[list[float]], k: int) -> list[int]:
     """X_train: training features (n_train x d).
     y_train: training integer labels.
     X_test: test features (n_test x d).
@@ -30172,7 +30172,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'batch_gradient_descent_linear',
     functionSignature: "batch_gradient_descent_linear(X: list[list[float]], y: list[float], lr: float, epochs: int) -> list[float]",
-    starterCode: `def batch_gradient_descent_linear(X, y, lr, epochs):
+    starterCode: `def batch_gradient_descent_linear(X: list[list[float]], y: list[float], lr: float, epochs: int) -> list[float]:
     """X: feature matrix (n x d).
     y: targets of length n.
     lr: learning rate.
@@ -30303,7 +30303,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'kmeans_step',
     functionSignature: "kmeans_step(X: list[list[float]], centroids: list[list[float]]) -> tuple[list[int], list[list[float]]]",
-    starterCode: `def kmeans_step(X, centroids):
+    starterCode: `def kmeans_step(X: list[list[float]], centroids: list[list[float]]) -> tuple[list[int], list[list[float]]]:
     """X: data points (n x d).
     centroids: current cluster centers (k x d).
     Perform one step of Lloyd's algorithm:
@@ -30479,7 +30479,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'polynomial_features_1d',
     functionSignature: "polynomial_features_1d(x: list[float], degree: int) -> list[list[float]]",
-    starterCode: `def polynomial_features_1d(x, degree):
+    starterCode: `def polynomial_features_1d(x: list[float], degree: int) -> list[list[float]]:
     """x: 1D list of scalar features of length n.
     degree: positive integer maximum degree.
     Transform each x_i into [x_i^1, x_i^2, ..., x_i^degree].
@@ -30582,7 +30582,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'adaboost_weight_update',
     functionSignature: "adaboost_weight_update(weights: list[float], y_true: list[int], y_pred: list[int], alpha: float) -> list[float]",
-    starterCode: `def adaboost_weight_update(weights, y_true, y_pred, alpha):
+    starterCode: `def adaboost_weight_update(weights: list[float], y_true: list[int], y_pred: list[int], alpha: float) -> list[float]:
     """weights: positive sample weights summing to 1.0.
     y_true, y_pred: binary labels in {-1, 1}.
     alpha: estimator weight.
@@ -30706,7 +30706,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'softmax_probabilities',
     functionSignature: "softmax_probabilities(logits: list[list[float]]) -> list[list[float]]",
-    starterCode: `def softmax_probabilities(logits):
+    starterCode: `def softmax_probabilities(logits: list[list[float]]) -> list[list[float]]:
     """logits: 2D matrix (n_samples x n_classes) of raw score values.
     Apply numerically stable softmax row-wise: p_ij = exp(z_ij - max_j) / sum_k(exp(z_ik - max_j)).
     Return probability matrix with entries rounded to 4 decimal places."""
@@ -30819,7 +30819,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'best_binary_split',
     functionSignature: "best_binary_split(X_col: list[float], y: list[int]) -> tuple[float, float]",
-    starterCode: `def best_binary_split(X_col, y):
+    starterCode: `def best_binary_split(X_col: list[float], y: list[int]) -> tuple[float, float]:
     """X_col: 1D feature values of length n.
     y: binary target labels in {0, 1}.
     Gini impurity: 1 - sum(p_k^2).
@@ -30932,7 +30932,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'dbscan_core_points',
     functionSignature: "dbscan_core_points(X: list[list[float]], eps: float, min_samples: int) -> list[int]",
-    starterCode: `def dbscan_core_points(X, eps, min_samples):
+    starterCode: `def dbscan_core_points(X: list[list[float]], eps: float, min_samples: int) -> list[int]:
     """X: list of d-dimensional points (n x d).
     eps: neighborhood radius distance threshold (Euclidean).
     min_samples: minimum number of points (including self) in eps-neighborhood.
@@ -31054,7 +31054,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'lda_projection_vector',
     functionSignature: "lda_projection_vector(class0: list[list[float]], class1: list[list[float]]) -> list[float]",
-    starterCode: `def lda_projection_vector(class0, class1):
+    starterCode: `def lda_projection_vector(class0: list[list[float]], class1: list[list[float]]) -> list[float]:
     """class0, class1: lists of 2D data points for two classes.
     Compute Fisher's linear discriminant vector w = S_w^(-1) * (m1 - m0).
     S_w is the within-class scatter matrix S0 + S1.
@@ -31198,7 +31198,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'gmm_em_step_1d',
     functionSignature: "gmm_em_step_1d(X: list[float], weights: list[float], means: list[float], variances: list[float]) -> dict",
-    starterCode: `def gmm_em_step_1d(X, weights, means, variances):
+    starterCode: `def gmm_em_step_1d(X: list[float], weights: list[float], means: list[float], variances: list[float]) -> dict:
     """X: 1D observed data points.
     weights, means, variances: initial parameters for k Gaussian components.
     Perform one EM iteration:
@@ -31358,7 +31358,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'lasso_coordinate_descent',
     functionSignature: "lasso_coordinate_descent(X: list[list[float]], y: list[float], alpha: float, max_iter: int) -> list[float]",
-    starterCode: `def lasso_coordinate_descent(X, y, alpha, max_iter):
+    starterCode: `def lasso_coordinate_descent(X: list[list[float]], y: list[float], alpha: float, max_iter: int) -> list[float]:
     """X: design matrix (n x p).
     y: target vector of length n.
     alpha: L1 regularization penalty parameter.
@@ -31493,7 +31493,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'find_star_center',
     functionSignature: "find_star_center(edges: list[list[int]]) -> int",
-    starterCode: `def find_star_center(edges):
+    starterCode: `def find_star_center(edges: list[list[int]]) -> int:
     """edges: list of undirected edges representing an n-node star graph.
     Return the center node of the star graph in O(1) time."""
     # Your implementation here
@@ -31599,7 +31599,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'valid_path_exists',
     functionSignature: "valid_path_exists(n: int, edges: list[list[int]], source: int, destination: int) -> bool",
-    starterCode: `def valid_path_exists(n, edges, source, destination):
+    starterCode: `def valid_path_exists(n: int, edges: list[list[int]], source: int, destination: int) -> bool:
     """n: number of vertices (0 to n-1).
     edges: list of undirected edges [u, v].
     source, destination: start and goal vertices.
@@ -31711,7 +31711,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'compute_node_degrees',
     functionSignature: "compute_node_degrees(n: int, edges: list[list[int]]) -> dict[int, int]",
-    starterCode: `def compute_node_degrees(n, edges):
+    starterCode: `def compute_node_degrees(n: int, edges: list[list[int]]) -> dict[int, int]:
     """n: number of nodes labeled 0 to n-1.
     edges: list of undirected edges [u, v].
     Return a dictionary mapping each node index 0..n-1 to its degree (incident edge count)."""
@@ -31815,7 +31815,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'adj_list_to_matrix',
     functionSignature: "adj_list_to_matrix(n: int, adj_list: dict[int, list[int]]) -> list[list[int]]",
-    starterCode: `def adj_list_to_matrix(n, adj_list):
+    starterCode: `def adj_list_to_matrix(n: int, adj_list: dict[int, list[int]]) -> list[list[int]]:
     """n: number of vertices (0 to n-1).
     adj_list: dictionary mapping node u to list of neighbors.
     Return n x n binary adjacency matrix where matrix[u][v] = 1 if edge exists, else 0."""
@@ -31931,7 +31931,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'is_bipartite_bfs',
     functionSignature: "is_bipartite_bfs(n: int, graph: list[list[int]]) -> bool",
-    starterCode: `def is_bipartite_bfs(n, graph):
+    starterCode: `def is_bipartite_bfs(n: int, graph: list[list[int]]) -> bool:
     """n: number of nodes labeled 0 to n-1.
     graph: adjacency list where graph[u] is list of neighbors of u.
     Return True if the graph is bipartite (2-colorable), False otherwise."""
@@ -32040,7 +32040,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'find_town_judge',
     functionSignature: "find_town_judge(n: int, trust: list[list[int]]) -> int",
-    starterCode: `def find_town_judge(n, trust):
+    starterCode: `def find_town_judge(n: int, trust: list[list[int]]) -> int:
     """n: number of people labeled 1 to n.
     trust: list of pairs [a, b] meaning person a trusts person b.
     Town judge trusts nobody and is trusted by everyone else (n-1 people).
@@ -32138,7 +32138,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'count_connected_components_undirected',
     functionSignature: "count_connected_components_undirected(n: int, edges: list[list[int]]) -> int",
-    starterCode: `def count_connected_components_undirected(n, edges):
+    starterCode: `def count_connected_components_undirected(n: int, edges: list[list[int]]) -> int:
     """n: number of vertices (0 to n-1).
     edges: list of undirected edges [u, v].
     Return total number of connected components in the graph."""
@@ -32238,7 +32238,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'transpose_directed_graph',
     functionSignature: "transpose_directed_graph(n: int, edges: list[list[int]]) -> list[list[int]]",
-    starterCode: `def transpose_directed_graph(n, edges):
+    starterCode: `def transpose_directed_graph(n: int, edges: list[list[int]]) -> list[list[int]]:
     """n: number of vertices (0 to n-1).
     edges: list of directed edges [u, v] (directed from u to v).
     Return list of transposed edges [v, u] sorted lexicographically."""
@@ -32352,7 +32352,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'all_paths_source_target',
     functionSignature: "all_paths_source_target(graph: list[list[int]]) -> list[list[int]]",
-    starterCode: `def all_paths_source_target(graph):
+    starterCode: `def all_paths_source_target(graph: list[list[int]]) -> list[list[int]]:
     """graph: adjacency list of a directed acyclic graph (DAG) of n nodes (0 to n-1).
     graph[i] is list of all nodes you can visit from node i.
     Find all possible paths from node 0 to node n-1, returned in any order."""
@@ -32498,7 +32498,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'kruskal_mst_weight',
     functionSignature: "kruskal_mst_weight(n: int, edges: list[list[int]]) -> int",
-    starterCode: `def kruskal_mst_weight(n, edges):
+    starterCode: `def kruskal_mst_weight(n: int, edges: list[list[int]]) -> int:
     """n: number of vertices (0 to n-1).
     edges: list of [u, v, weight] undirected weighted edges.
     The graph is guaranteed to be connected.
@@ -32618,7 +32618,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'can_finish_courses',
     functionSignature: "can_finish_courses(numCourses: int, prerequisites: list[list[int]]) -> bool",
-    starterCode: `def can_finish_courses(numCourses, prerequisites):
+    starterCode: `def can_finish_courses(numCourses: int, prerequisites: list[list[int]]) -> bool:
     """numCourses: total courses labeled 0 to numCourses - 1.
     prerequisites: list of [dest, src] meaning you must take course src before course dest.
     Return True if it is possible to finish all courses (graph is acyclic), False otherwise."""
@@ -32702,7 +32702,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'find_course_order',
     functionSignature: "find_course_order(numCourses: int, prerequisites: list[list[int]]) -> list[int]",
-    starterCode: `def find_course_order(numCourses, prerequisites):
+    starterCode: `def find_course_order(numCourses: int, prerequisites: list[list[int]]) -> list[int]:
     """numCourses: total courses labeled 0 to numCourses - 1.
     prerequisites: list of [dest, src] (must take src before dest).
     Return a valid topological order of courses to take. If impossible due to a cycle, return []."""
@@ -32805,7 +32805,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'num_islands_grid',
     functionSignature: "num_islands_grid(grid: list[list[str]]) -> int",
-    starterCode: `def num_islands_grid(grid):
+    starterCode: `def num_islands_grid(grid: list[list[str]]) -> int:
     """grid: m x n binary grid where '1' is land and '0' is water.
     An island is surrounded by water and formed by connecting adjacent lands horizontally or vertically.
     Return total number of islands."""
@@ -32939,7 +32939,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'oranges_rotting',
     functionSignature: "oranges_rotting(grid: list[list[int]]) -> int",
-    starterCode: `def oranges_rotting(grid):
+    starterCode: `def oranges_rotting(grid: list[list[int]]) -> int:
     """grid: m x n grid where 0 is empty, 1 is fresh orange, 2 is rotten orange.
     Every minute, any fresh orange 4-directionally adjacent to a rotten orange becomes rotten.
     Return minimum minutes until no fresh orange remains, or -1 if impossible."""
@@ -33043,7 +33043,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'dijkstra_shortest_paths',
     functionSignature: "dijkstra_shortest_paths(n: int, edges: list[list[int]], src: int) -> dict[int, int]",
-    starterCode: `def dijkstra_shortest_paths(n, edges, src):
+    starterCode: `def dijkstra_shortest_paths(n: int, edges: list[list[int]], src: int) -> dict[int, int]:
     """n: number of vertices (0 to n-1).
     edges: list of [u, v, weight] undirected edges with non-negative weights.
     src: source vertex.
@@ -33172,7 +33172,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'clone_graph_dict',
     functionSignature: "clone_graph_dict(node: dict | None) -> dict | None",
-    starterCode: `def clone_graph_dict(node):
+    starterCode: `def clone_graph_dict(node: dict | None) -> dict | None:
     """node: dict representation of graph node {'val': int, 'neighbors': list}.
     Create and return an independent deep copy of the node structure."""
     # Your implementation here
@@ -33256,7 +33256,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'network_delay_time',
     functionSignature: "network_delay_time(times: list[list[int]], n: int, k: int) -> int",
-    starterCode: `def network_delay_time(times, n, k):
+    starterCode: `def network_delay_time(times: list[list[int]], n: int, k: int) -> int:
     """times: list of [u, v, w] directed edges (travel time w from u to v).
     n: total nodes (1 to n).
     k: source node signal originates from.
@@ -33359,7 +33359,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'find_redundant_connection',
     functionSignature: "find_redundant_connection(edges: list[list[int]]) -> list[int]",
-    starterCode: `def find_redundant_connection(edges):
+    starterCode: `def find_redundant_connection(edges: list[list[int]]) -> list[int]:
     """edges: list of undirected edges formed by adding one edge to a tree of n nodes (1 to n).
     Find and return an edge that can be removed so that the resulting graph is a tree.
     If multiple answers exist, return the one that occurs last in the input."""
@@ -33487,7 +33487,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'find_cheapest_flight',
     functionSignature: "find_cheapest_flight(n: int, flights: list[list[int]], src: int, dst: int, k: int) -> int",
-    starterCode: `def find_cheapest_flight(n, flights, src, dst, k):
+    starterCode: `def find_cheapest_flight(n: int, flights: list[list[int]], src: int, dst: int, k: int) -> int:
     """n: number of cities (0 to n-1).
     flights: list of [from, to, price].
     src: departure city, dst: destination city.
@@ -33618,7 +33618,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'min_cost_connect_all_points',
     functionSignature: "min_cost_connect_all_points(points: list[list[int]]) -> int",
-    starterCode: `def min_cost_connect_all_points(points):
+    starterCode: `def min_cost_connect_all_points(points: list[list[int]]) -> int:
     """points: 2D integer coordinates [xi, yi].
     Cost to connect two points is Manhattan distance |xi - xj| + |yi - yj|.
     Return the minimum cost to make all points connected (Minimum Spanning Tree)."""
@@ -33724,7 +33724,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'find_all_articulation_points',
     functionSignature: "find_all_articulation_points(n: int, edges: list[list[int]]) -> list[int]",
-    starterCode: `def find_all_articulation_points(n, edges):
+    starterCode: `def find_all_articulation_points(n: int, edges: list[list[int]]) -> list[int]:
     """n: number of vertices (0 to n-1).
     edges: list of undirected edges [u, v].
     An articulation point (cut vertex) is a node whose removal increases the
@@ -33856,7 +33856,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'find_itinerary',
     functionSignature: "find_itinerary(tickets: list[list[str]]) -> list[str]",
-    starterCode: `def find_itinerary(tickets):
+    starterCode: `def find_itinerary(tickets: list[list[str]]) -> list[str]:
     """tickets: list of airline ticket pairs [from, to].
     All tickets must be used exactly once, departing from 'JFK'.
     If multiple valid itineraries exist, return the one with smallest lexical order.
@@ -33989,7 +33989,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'find_strongly_connected_components',
     functionSignature: "find_strongly_connected_components(n: int, edges: list[list[int]]) -> list[list[int]]",
-    starterCode: `def find_strongly_connected_components(n, edges):
+    starterCode: `def find_strongly_connected_components(n: int, edges: list[list[int]]) -> list[list[int]]:
     """n: number of vertices (0 to n-1).
     edges: list of directed edges [u, v].
     Find all strongly connected components (SCCs).
@@ -34122,7 +34122,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'critical_connections',
     functionSignature: "critical_connections(n: int, connections: list[list[int]]) -> list[list[int]]",
-    starterCode: `def critical_connections(n, connections):
+    starterCode: `def critical_connections(n: int, connections: list[list[int]]) -> list[list[int]]:
     """n: number of servers labeled 0 to n-1.
     connections: list of undirected connections [a, b].
     A critical connection (bridge) is an edge whose removal disconnects the network.
@@ -34243,7 +34243,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'shortest_path_visiting_all_nodes',
     functionSignature: "shortest_path_visiting_all_nodes(graph: list[list[int]]) -> int",
-    starterCode: `def shortest_path_visiting_all_nodes(graph):
+    starterCode: `def shortest_path_visiting_all_nodes(graph: list[list[int]]) -> int:
     """graph: undirected connected graph represented as adjacency list.
     Return the length of the shortest path that visits every node (nodes may be revisited)."""
     # Your implementation here
@@ -34337,7 +34337,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'max_network_flow',
     functionSignature: "max_network_flow(n: int, source: int, sink: int, capacities: list[list[int]]) -> int",
-    starterCode: `def max_network_flow(n, source, sink, capacities):
+    starterCode: `def max_network_flow(n: int, source: int, sink: int, capacities: list[list[int]]) -> int:
     """n: number of vertices (0 to n-1).
     source, sink: indices of source and sink vertices.
     capacities: n x n matrix where capacities[u][v] is edge capacity from u to v.
@@ -34464,7 +34464,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'pagerank_power_iteration',
     functionSignature: "pagerank_power_iteration(n: int, edges: list[list[int]], d: float, max_iter: int) -> list[float]",
-    starterCode: `def pagerank_power_iteration(n, edges, d, max_iter):
+    starterCode: `def pagerank_power_iteration(n: int, edges: list[list[int]], d: float, max_iter: int) -> list[float]:
     """n: number of web pages (0 to n-1).
     edges: list of directed links [u, v].
     d: damping factor (e.g. 0.85).
@@ -34577,7 +34577,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'find_all_ladders',
     functionSignature: "find_all_ladders(beginWord: str, endWord: str, wordList: list[str]) -> list[list[str]]",
-    starterCode: `def find_all_ladders(beginWord, endWord, wordList):
+    starterCode: `def find_all_ladders(beginWord: str, endWord: str, wordList: list[str]) -> list[list[str]]:
     """beginWord, endWord: strings.
     wordList: dictionary of valid vocabulary words.
     Find all shortest transformation sequences from beginWord to endWord where
@@ -34689,7 +34689,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'max_bipartite_matching',
     functionSignature: "max_bipartite_matching(u_count: int, v_count: int, edges: list[list[int]]) -> int",
-    starterCode: `def max_bipartite_matching(u_count, v_count, edges):
+    starterCode: `def max_bipartite_matching(u_count: int, v_count: int, edges: list[list[int]]) -> int:
     """u_count, v_count: number of vertices in left partition U and right partition V.
     edges: list of [u, v] where u in 0..u_count-1 and v in 0..v_count-1.
     Find the maximum number of disjoint edges that can be matched."""
@@ -34792,7 +34792,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '25–30 min',
     functionName: 'tsp_exact_cost',
     functionSignature: "tsp_exact_cost(dist_matrix: list[list[int]]) -> int",
-    starterCode: `def tsp_exact_cost(dist_matrix):
+    starterCode: `def tsp_exact_cost(dist_matrix: list[list[int]]) -> int:
     """dist_matrix: n x n symmetric distance matrix where dist_matrix[i][j] is travel cost.
     Find the minimum total cost of a Hamiltonian tour visiting every city exactly once
     and returning to city 0 using Held-Karp O(n^2 * 2^n) dynamic programming."""
@@ -34905,7 +34905,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'attention_score',
     functionSignature: 'attention_score(q: list[float], k: list[float]) -> float',
-    starterCode: `def attention_score(q, k):
+    starterCode: `def attention_score(q: list[float], k: list[float]) -> float:
     """Compute the scaled dot-product attention score between query q and key k.
     
     Score = dot(q, k) / sqrt(d_k) where d_k = len(q).
@@ -34957,7 +34957,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'softmax',
     functionSignature: 'softmax(x: list[float]) -> list[float]',
-    starterCode: `def softmax(x):
+    starterCode: `def softmax(x: list[float]) -> list[float]:
     """Compute numerically stable softmax of a list of floats.
     
     Uses the max-subtraction trick to avoid overflow.
@@ -35009,7 +35009,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–15 min',
     functionName: 'layer_norm',
     functionSignature: 'layer_norm(x: list[float], eps: float = 1e-5) -> list[float]',
-    starterCode: `def layer_norm(x, eps=1e-5):
+    starterCode: `def layer_norm(x: list[float], eps: float = 1e-5) -> list[float]:
     """Apply Layer Normalization to vector x.
     
     Computes: (x - mean(x)) / sqrt(var(x) + eps)
@@ -35060,7 +35060,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–12 min',
     functionName: 'gelu',
     functionSignature: 'gelu(x: float) -> float',
-    starterCode: `def gelu(x):
+    starterCode: `def gelu(x: float) -> float:
     """Compute the GELU (Gaussian Error Linear Unit) activation.
     
     Uses the tanh approximation:
@@ -35109,7 +35109,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '12–15 min',
     functionName: 'positional_encoding',
     functionSignature: 'positional_encoding(max_len: int, d_model: int) -> list[list[float]]',
-    starterCode: `def positional_encoding(max_len, d_model):
+    starterCode: `def positional_encoding(max_len: int, d_model: int) -> list[list[float]]:
     """Generate sinusoidal positional encodings.
     
     PE[pos][2i]   = sin(pos / 10000^(2i/d_model))
@@ -35158,7 +35158,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–12 min',
     functionName: 'split_heads',
     functionSignature: 'split_heads(x: list[float], num_heads: int) -> list[list[float]]',
-    starterCode: `def split_heads(x, num_heads):
+    starterCode: `def split_heads(x: list[float], num_heads: int) -> list[list[float]]:
     """Split an embedding vector into num_heads equal-sized head vectors.
     
     Args:
@@ -35205,7 +35205,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–12 min',
     functionName: 'rms_norm',
     functionSignature: 'rms_norm(x: list[float], eps: float = 1e-8) -> list[float]',
-    starterCode: `def rms_norm(x, eps=1e-8):
+    starterCode: `def rms_norm(x: list[float], eps: float = 1e-8) -> list[float]:
     """Apply Root Mean Square Layer Normalization.
     
     RMSNorm(x) = x / sqrt(mean(x^2) + eps)
@@ -35258,7 +35258,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '12–15 min',
     functionName: 'ffn_forward',
     functionSignature: 'ffn_forward(x: list[float], W1: list[list[float]], b1: list[float], W2: list[list[float]], b2: list[float]) -> list[float]',
-    starterCode: `def ffn_forward(x, W1, b1, W2, b2):
+    starterCode: `def ffn_forward(x: list[float], W1: list[list[float]], b1: list[float], W2: list[list[float]], b2: list[float]) -> list[float]:
     """Compute one forward pass of a two-layer FFN with ReLU activation.
     
     h = ReLU(W1 @ x + b1)
@@ -35309,7 +35309,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–12 min',
     functionName: 'causal_attention_weights',
     functionSignature: 'causal_attention_weights(scores: list[list[float]]) -> list[list[float]]',
-    starterCode: `def causal_attention_weights(scores):
+    starterCode: `def causal_attention_weights(scores: list[list[float]]) -> list[list[float]]:
     """Apply causal mask and softmax to an n x n score matrix.
     
     Masks future positions (upper triangle) with -inf, then applies
@@ -35357,7 +35357,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '8–10 min',
     functionName: 'update_kv_cache',
     functionSignature: 'update_kv_cache(keys: list[list[float]], values: list[list[float]], new_key: list[float], new_value: list[float]) -> tuple',
-    starterCode: `def update_kv_cache(keys, values, new_key, new_value):
+    starterCode: `def update_kv_cache(keys: list[list[float]], values: list[list[float]], new_key: list[float], new_value: list[float]) -> tuple:
     """Append a new key-value pair to the KV cache.
     
     During autoregressive generation, each new token produces one
@@ -35408,7 +35408,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'scaled_dot_product_attention',
     functionSignature: 'scaled_dot_product_attention(Q: list[list[float]], K: list[list[float]], V: list[list[float]]) -> list[list[float]]',
-    starterCode: `def scaled_dot_product_attention(Q, K, V):
+    starterCode: `def scaled_dot_product_attention(Q: list[list[float]], K: list[list[float]], V: list[list[float]]) -> list[list[float]]:
     """Compute full scaled dot-product attention.
     
     Attention(Q, K, V) = softmax(Q @ K.T / sqrt(d_k)) @ V
@@ -35458,7 +35458,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–12 min',
     functionName: 'token_embedding',
     functionSignature: 'token_embedding(token_ids: list[int], embedding_table: list[list[float]]) -> list[list[float]]',
-    starterCode: `def token_embedding(token_ids, embedding_table):
+    starterCode: `def token_embedding(token_ids: list[int], embedding_table: list[list[float]]) -> list[list[float]]:
     """Look up embeddings for a sequence of token IDs.
     
     Args:
@@ -35505,7 +35505,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–12 min',
     functionName: 'create_causal_mask',
     functionSignature: 'create_causal_mask(seq_len: int) -> list[list[int]]',
-    starterCode: `def create_causal_mask(seq_len):
+    starterCode: `def create_causal_mask(seq_len: int) -> list[list[int]]:
     """Create a causal (lower-triangular) attention mask matrix.
     
     mask[i][j] = 1 if position i can attend to position j (j <= i), else 0.
@@ -35554,7 +35554,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '12–15 min',
     functionName: 'cross_entropy_loss',
     functionSignature: 'cross_entropy_loss(logits: list[float], target: int) -> float',
-    starterCode: `def cross_entropy_loss(logits, target):
+    starterCode: `def cross_entropy_loss(logits: list[float], target: int) -> float:
     """Compute cross-entropy loss for a single token prediction.
     
     CE = -log(softmax(logits)[target])
@@ -35608,7 +35608,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '12–15 min',
     functionName: 'assign_kv_groups',
     functionSignature: 'assign_kv_groups(num_heads: int, num_kv_heads: int) -> list[int]',
-    starterCode: `def assign_kv_groups(num_heads, num_kv_heads):
+    starterCode: `def assign_kv_groups(num_heads: int, num_kv_heads: int) -> list[int]:
     """Assign each query head to its corresponding KV head index (GQA).
     
     In Grouped Query Attention, query heads are divided into groups,
@@ -35662,7 +35662,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'rope_embedding',
     functionSignature: 'rope_embedding(x: list[float], position: int, theta: float = 10000.0) -> list[float]',
-    starterCode: `def rope_embedding(x, position, theta=10000.0):
+    starterCode: `def rope_embedding(x: list[float], position: int, theta: float = 10000.0) -> list[float]:
     """Apply Rotary Positional Embedding (RoPE) to vector x at given position.
     
     Rotates consecutive pairs (x[2i], x[2i+1]) by angle position * theta^(-2i/d).
@@ -35714,7 +35714,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–12 min',
     functionName: 'label_smoothed_targets',
     functionSignature: 'label_smoothed_targets(target: int, num_classes: int, epsilon: float = 0.1) -> list[float]',
-    starterCode: `def label_smoothed_targets(target, num_classes, epsilon=0.1):
+    starterCode: `def label_smoothed_targets(target: int, num_classes: int, epsilon: float = 0.1) -> list[float]:
     """Generate label-smoothed soft target distribution.
     
     True label gets probability (1 - epsilon).
@@ -35766,7 +35766,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '12–15 min',
     functionName: 'clip_grad_norm',
     functionSignature: 'clip_grad_norm(grads: list[list[float]], max_norm: float) -> tuple',
-    starterCode: `def clip_grad_norm(grads, max_norm):
+    starterCode: `def clip_grad_norm(grads: list[list[float]], max_norm: float) -> tuple:
     """Clip gradients by global norm.
     
     Computes global norm = sqrt(sum of squares of all gradients).
@@ -35815,7 +35815,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '10–12 min',
     functionName: 'cosine_lr',
     functionSignature: 'cosine_lr(step: int, total_steps: int, base_lr: float, min_lr: float = 0.0) -> float',
-    starterCode: `def cosine_lr(step, total_steps, base_lr, min_lr=0.0):
+    starterCode: `def cosine_lr(step: int, total_steps: int, base_lr: float, min_lr: float = 0.0) -> float:
     """Compute learning rate using cosine annealing schedule.
     
     LR = min_lr + 0.5 * (base_lr - min_lr) * (1 + cos(pi * step/total_steps))
@@ -35868,7 +35868,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '12–15 min',
     functionName: 'warmup_cosine_lr',
     functionSignature: 'warmup_cosine_lr(step: int, warmup_steps: int, total_steps: int, base_lr: float) -> float',
-    starterCode: `def warmup_cosine_lr(step, warmup_steps, total_steps, base_lr):
+    starterCode: `def warmup_cosine_lr(step: int, warmup_steps: int, total_steps: int, base_lr: float) -> float:
     """Compute LR with linear warmup followed by cosine decay.
     
     During warmup (step < warmup_steps): LR = base_lr * step / warmup_steps
@@ -35922,7 +35922,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'beam_search_step',
     functionSignature: 'beam_search_step(beam_scores: list[float], log_probs: list[list[float]], beam_width: int) -> list[tuple]',
-    starterCode: `def beam_search_step(beam_scores, log_probs, beam_width):
+    starterCode: `def beam_search_step(beam_scores: list[float], log_probs: list[list[float]], beam_width: int) -> list[tuple]:
     """Perform one beam search expansion step.
     
     Expands each beam state with all possible next tokens, selects top beam_width
@@ -35971,7 +35971,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '12–15 min',
     functionName: 'sliding_window_attention_mask',
     functionSignature: 'sliding_window_attention_mask(seq_len: int, window_size: int) -> list[list[int]]',
-    starterCode: `def sliding_window_attention_mask(seq_len, window_size):
+    starterCode: `def sliding_window_attention_mask(seq_len: int, window_size: int) -> list[list[int]]:
     """Create a sliding window causal attention mask.
     
     Position i can attend to positions in [i - window_size, i] (causal window).
@@ -36022,7 +36022,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–30 min',
     functionName: 'flash_attention_online',
     functionSignature: 'flash_attention_online(Q: list[list[float]], K: list[list[float]], V: list[list[float]]) -> list[list[float]]',
-    starterCode: `def flash_attention_online(Q, K, V):
+    starterCode: `def flash_attention_online(Q: list[list[float]], K: list[list[float]], V: list[list[float]]) -> list[list[float]]:
     """Compute scaled dot-product attention using online (tiled) softmax.
     
     Implements the Flash Attention memory-efficient algorithm:
@@ -36074,7 +36074,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'lora_linear',
     functionSignature: 'lora_linear(x: list[float], W: list[list[float]], A: list[list[float]], B: list[list[float]], r: int, alpha: float) -> list[float]',
-    starterCode: `def lora_linear(x, W, A, B, r, alpha):
+    starterCode: `def lora_linear(x: list[float], W: list[list[float]], A: list[list[float]], B: list[list[float]], r: int, alpha: float) -> list[float]:
     """Compute LoRA-augmented linear layer output.
     
     output = W @ x + (alpha / r) * B @ A @ x
@@ -36129,7 +36129,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'moe_router',
     functionSignature: 'moe_router(x: list[float], W_gate: list[list[float]], k: int) -> tuple',
-    starterCode: `def moe_router(x, W_gate, k):
+    starterCode: `def moe_router(x: list[float], W_gate: list[list[float]], k: int) -> tuple:
     """Compute Mixture of Experts (MoE) top-k routing for a single token.
     
     Computes gate logits = W_gate @ x, selects top-k experts,
@@ -36184,7 +36184,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'speculative_acceptance_prob',
     functionSignature: 'speculative_acceptance_prob(draft_probs: list[float], target_probs: list[float], draft_token: int) -> float',
-    starterCode: `def speculative_acceptance_prob(draft_probs, target_probs, draft_token):
+    starterCode: `def speculative_acceptance_prob(draft_probs: list[float], target_probs: list[float], draft_token: int) -> float:
     """Compute speculative decoding acceptance probability for a draft token.
     
     The acceptance probability is: min(1, target_prob[t] / draft_prob[t])
@@ -36235,7 +36235,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'kv_cache_memory_bytes',
     functionSignature: 'kv_cache_memory_bytes(seq_len: int, num_layers: int, num_kv_heads: int, head_dim: int, precision_bytes: int = 2) -> int',
-    starterCode: `def kv_cache_memory_bytes(seq_len, num_layers, num_kv_heads, head_dim, precision_bytes=2):
+    starterCode: `def kv_cache_memory_bytes(seq_len: int, num_layers: int, num_kv_heads: int, head_dim: int, precision_bytes: int = 2) -> int:
     """Estimate KV cache memory usage in bytes for one sequence.
     
     KV cache stores K and V tensors per layer, per KV head, per token.
@@ -36285,7 +36285,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'attention_sink_fraction',
     functionSignature: 'attention_sink_fraction(attn_weights: list[list[float]], sink_tokens: int = 1) -> float',
-    starterCode: `def attention_sink_fraction(attn_weights, sink_tokens=1):
+    starterCode: `def attention_sink_fraction(attn_weights: list[list[float]], sink_tokens: int = 1) -> float:
     """Compute the average fraction of attention mass on initial "sink" tokens.
     
     Attention sinks are the first few tokens that receive disproportionate
@@ -36337,7 +36337,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '15–20 min',
     functionName: 'compute_perplexity',
     functionSignature: 'compute_perplexity(log_probs: list[float]) -> float',
-    starterCode: `def compute_perplexity(log_probs):
+    starterCode: `def compute_perplexity(log_probs: list[float]) -> float:
     """Compute perplexity from per-token log-probabilities (natural log).
     
     Perplexity = exp(-mean(log_probs))
@@ -36391,7 +36391,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     estimatedTime: '20–25 min',
     functionName: 'alibi_slopes',
     functionSignature: 'alibi_slopes(num_heads: int) -> list[float]',
-    starterCode: `def alibi_slopes(num_heads):
+    starterCode: `def alibi_slopes(num_heads: int) -> list[float]:
     """Compute ALiBi (Attention with Linear Biases) slopes for each head.
     
     Slope for head h (1-indexed): slope_h = 2^(-8h/num_heads)
@@ -36445,7 +36445,7 @@ def resample_interpolate_timeseries(records, freq="1h", method="ffill"):
     functionSignature: "vectorized_softmax(scores: list[list[float]]) -> list[list[float]]",
     starterCode: `import math
 
-def vectorized_softmax(scores):
+def vectorized_softmax(scores: list[list[float]]) -> list[list[float]]:
     """Compute row-wise numerically stable softmax probabilities.
     Round each float to 4 decimal places.
     Empty rows return empty lists.
@@ -36569,7 +36569,7 @@ def vectorized_softmax(scores):
     estimatedTime: '10–15 min',
     functionName: 'missingness_report',
     functionSignature: "missingness_report(records: list[dict], column_names: list[str]) -> dict[str, dict]",
-    starterCode: `def missingness_report(records, column_names):
+    starterCode: `def missingness_report(records: list[dict], column_names: list[str]) -> dict[str, dict]:
     """Compute missing_count and missing_ratio for each specified column.
     Missing is defined as missing key, None, or empty string.
     Round missing_ratio to 4 decimal places.
@@ -36706,7 +36706,7 @@ def vectorized_softmax(scores):
     estimatedTime: '10–15 min',
     functionName: 'simulate_token_bucket',
     functionSignature: "simulate_token_bucket(events: list[tuple[float, int]], capacity: int, refill_rate: float) -> list[bool]",
-    starterCode: `def simulate_token_bucket(events, capacity, refill_rate):
+    starterCode: `def simulate_token_bucket(events: list[tuple[float, int]], capacity: int, refill_rate: float) -> list[bool]:
     """Simulate token bucket rate limiter on stream of (timestamp, cost).
     Returns list of booleans indicating whether each request was accepted.
     """
@@ -36831,7 +36831,7 @@ def vectorized_softmax(scores):
     functionSignature: "pairwise_cosine_distance(x: list[list[float]], y: list[list[float]]) -> list[list[float]]",
     starterCode: `import math
 
-def pairwise_cosine_distance(x, y):
+def pairwise_cosine_distance(x: list[list[float]], y: list[list[float]]) -> list[list[float]]:
     """Compute N x M cosine distance matrix between vectors in x and y.
     Round each distance to 4 decimal places.
     Zero-norm vectors have distance 1.0.
@@ -36966,7 +36966,7 @@ def pairwise_cosine_distance(x, y):
     estimatedTime: '10–15 min',
     functionName: 'stratified_split_indices',
     functionSignature: "stratified_split_indices(labels: list[str], test_size: float) -> tuple[list[int], list[int]]",
-    starterCode: `def stratified_split_indices(labels, test_size):
+    starterCode: `def stratified_split_indices(labels: list[str], test_size: float) -> tuple[list[int], list[int]]:
     """Split sample indices into train and test preserving class balance.
     Returns (train_indices, test_indices) both sorted ascending.
     """
@@ -37096,7 +37096,7 @@ def pairwise_cosine_distance(x, y):
     estimatedTime: '10–15 min',
     functionName: 'count_min_sketch',
     functionSignature: "count_min_sketch(stream: list[str], queries: list[str], width: int, depth: int, seeds: list[int]) -> list[int]",
-    starterCode: `def count_min_sketch(stream, queries, width, depth, seeds):
+    starterCode: `def count_min_sketch(stream: list[str], queries: list[str], width: int, depth: int, seeds: list[int]) -> list[int]:
     """Estimate frequencies of queries in stream using Count-Min Sketch.
     Uses polynomial rolling hash with given seeds.
     """
@@ -37231,7 +37231,7 @@ def pairwise_cosine_distance(x, y):
     estimatedTime: '10–15 min',
     functionName: 'polynomial_features_1d',
     functionSignature: "polynomial_features_1d(x: list[float], degree: int) -> list[list[float]]",
-    starterCode: `def polynomial_features_1d(x, degree):
+    starterCode: `def polynomial_features_1d(x: list[float], degree: int) -> list[list[float]]:
     """Generate polynomial feature matrix of powers 0 through degree.
     Round each float to 4 decimal places.
     """
@@ -37352,7 +37352,7 @@ def pairwise_cosine_distance(x, y):
     estimatedTime: '10–15 min',
     functionName: 'cumulative_metrics_by_group',
     functionSignature: "cumulative_metrics_by_group(records: list[dict], group_key: str, val_key: str) -> list[dict]",
-    starterCode: `def cumulative_metrics_by_group(records, group_key, val_key):
+    starterCode: `def cumulative_metrics_by_group(records: list[dict], group_key: str, val_key: str) -> list[dict]:
     """Compute running cum_sum and cum_max per group in arrival order.
     Returns list of augmented dicts.
     """
@@ -37515,7 +37515,7 @@ def pairwise_cosine_distance(x, y):
     estimatedTime: '10–15 min',
     functionName: 'deterministic_reservoir_sample',
     functionSignature: "deterministic_reservoir_sample(stream: list[str], k: int, random_floats: list[float]) -> list[str]",
-    starterCode: `def deterministic_reservoir_sample(stream, k, random_floats):
+    starterCode: `def deterministic_reservoir_sample(stream: list[str], k: int, random_floats: list[float]) -> list[str]:
     """Implement Algorithm R reservoir sampling with provided random probabilities.
     Returns list of selected elements.
     """
@@ -37624,7 +37624,7 @@ def pairwise_cosine_distance(x, y):
     functionSignature: "normalize_columns_l2(matrix: list[list[float]]) -> list[list[float]]",
     starterCode: `import math
 
-def normalize_columns_l2(matrix):
+def normalize_columns_l2(matrix: list[list[float]]) -> list[list[float]]:
     """Normalize matrix columns to unit L2 length.
     Round each float to 4 decimal places.
     """
@@ -37763,7 +37763,7 @@ def normalize_columns_l2(matrix):
     estimatedTime: '10–15 min',
     functionName: 'explode_column',
     functionSignature: "explode_column(records: list[dict], list_column: str) -> list[dict]",
-    starterCode: `def explode_column(records, list_column):
+    starterCode: `def explode_column(records: list[dict], list_column: str) -> list[dict]:
     """Explode list_column into individual records.
     Empty list rows are excluded.
     """
@@ -37912,7 +37912,7 @@ def normalize_columns_l2(matrix):
     estimatedTime: '10–15 min',
     functionName: 'track_event_watermarks',
     functionSignature: "track_event_watermarks(event_times: list[int], max_lateness: int) -> list[int]",
-    starterCode: `def track_event_watermarks(event_times, max_lateness):
+    starterCode: `def track_event_watermarks(event_times: list[int], max_lateness: int) -> list[int]:
     """Track event watermarks as max(0, max_observed_timestamp - max_lateness).
     Returns list of watermarks corresponding to each event.
     """
@@ -38014,7 +38014,7 @@ def normalize_columns_l2(matrix):
     estimatedTime: '10–15 min',
     functionName: 'broadcast_outer_difference',
     functionSignature: "broadcast_outer_difference(a: list[float], b: list[float]) -> list[list[float]]",
-    starterCode: `def broadcast_outer_difference(a, b):
+    starterCode: `def broadcast_outer_difference(a: list[float], b: list[float]) -> list[list[float]]:
     """Compute outer difference matrix M[i][j] = a[i] - b[j].
     Round each float to 4 decimal places.
     """
@@ -38143,7 +38143,7 @@ def normalize_columns_l2(matrix):
     estimatedTime: '10–15 min',
     functionName: 'grouped_dense_rank',
     functionSignature: "grouped_dense_rank(records: list[dict], group_col: str, score_col: str, descending: bool) -> list[dict]",
-    starterCode: `def grouped_dense_rank(records, group_col, score_col, descending):
+    starterCode: `def grouped_dense_rank(records: list[dict], group_col: str, score_col: str, descending: bool) -> list[dict]:
     """Compute dense rank per group.
     Returns records with added dense_rank key.
     """
@@ -38321,7 +38321,7 @@ def normalize_columns_l2(matrix):
     functionSignature: "sliding_window_event_rate(timestamps: list[float], window_seconds: float) -> list[int]",
     starterCode: `from collections import deque
 
-def sliding_window_event_rate(timestamps, window_seconds):
+def sliding_window_event_rate(timestamps: list[float], window_seconds: float) -> list[int]:
     """Compute count of events within the preceding window_seconds for each arrival.
     Returns list of event counts.
     """
@@ -38425,7 +38425,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'batch_affine_transform',
     functionSignature: "batch_affine_transform(x: list[list[float]], w: list[list[float]], b: list[float]) -> list[list[float]]",
-    starterCode: `def batch_affine_transform(x, w, b):
+    starterCode: `def batch_affine_transform(x: list[list[float]], w: list[list[float]], b: list[float]) -> list[list[float]]:
     """Compute X @ W + b for batch X with weight matrix W and bias b.
     Round each float to 4 decimal places.
     """
@@ -38577,7 +38577,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'melt_dataframe',
     functionSignature: "melt_dataframe(records: list[dict], id_vars: list[str], value_vars: list[str], var_name: str, value_name: str) -> list[dict]",
-    starterCode: `def melt_dataframe(records, id_vars, value_vars, var_name, value_name):
+    starterCode: `def melt_dataframe(records: list[dict], id_vars: list[str], value_vars: list[str], var_name: str, value_name: str) -> list[dict]:
     """Unpivot wide records into long format preserving id_vars.
     Returns list of long-format dicts.
     """
@@ -38713,7 +38713,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'misra_gries_frequent_items',
     functionSignature: "misra_gries_frequent_items(stream: list[str], k: int) -> dict[str, int]",
-    starterCode: `def misra_gries_frequent_items(stream, k):
+    starterCode: `def misra_gries_frequent_items(stream: list[str], k: int) -> dict[str, int]:
     """Find frequent items in a stream using Misra-Gries algorithm with capacity k-1.
     Returns dictionary of surviving candidate items and their counts.
     """
@@ -38812,7 +38812,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'row_top_k',
     functionSignature: "row_top_k(matrix: list[list[float]], k: int) -> list[dict]",
-    starterCode: `def row_top_k(matrix, k):
+    starterCode: `def row_top_k(matrix: list[list[float]], k: int) -> list[dict]:
     """Find top k values and column indices for each row.
     Returns list of dicts with 'values' and 'indices'.
     """
@@ -38951,7 +38951,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'exponential_decay_activity',
     functionSignature: "exponential_decay_activity(events: list[dict], half_life_seconds: float, current_time: float) -> dict[str, float]",
-    starterCode: `def exponential_decay_activity(events, half_life_seconds, current_time):
+    starterCode: `def exponential_decay_activity(events: list[dict], half_life_seconds: float, current_time: float) -> dict[str, float]:
     """Calculate half-life exponentially decayed activity score per user.
     Returns dict mapping user_id to score rounded to 4 decimal places.
     """
@@ -39055,7 +39055,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'streaming_moving_variance',
     functionSignature: "streaming_moving_variance(stream: list[float]) -> list[dict]",
-    starterCode: `def streaming_moving_variance(stream):
+    starterCode: `def streaming_moving_variance(stream: list[float]) -> list[dict]:
     """Compute running count, mean, and sample variance using Welford's algorithm.
     Returns list of dicts with keys 'count', 'mean', 'variance'.
     """
@@ -39185,7 +39185,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'matrix_diagonal_summary',
     functionSignature: "matrix_diagonal_summary(matrix: list[list[float]], k: int) -> dict",
-    starterCode: `def matrix_diagonal_summary(matrix, k):
+    starterCode: `def matrix_diagonal_summary(matrix: list[list[float]], k: int) -> dict:
     """Extract main diagonal, offset k diagonal, and compute trace.
     Returns dict with 'main_diagonal', 'k_diagonal', and 'trace'.
     """
@@ -39336,7 +39336,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'create_lag_lead_features',
     functionSignature: "create_lag_lead_features(records: list[dict], order_col: str, val_col: str, lags: list[int], leads: list[int]) -> list[dict]",
-    starterCode: `def create_lag_lead_features(records, order_col, val_col, lags, leads):
+    starterCode: `def create_lag_lead_features(records: list[dict], order_col: str, val_col: str, lags: list[int], leads: list[int]) -> list[dict]:
     """Sort records by order_col and attach lag and lead features.
     Out of bounds shifts should be None.
     """
@@ -39517,7 +39517,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'simulate_hyperloglog',
     functionSignature: "simulate_hyperloglog(stream: list[str], num_buckets_log2: int) -> int",
-    starterCode: `def simulate_hyperloglog(stream, num_buckets_log2):
+    starterCode: `def simulate_hyperloglog(stream: list[str], num_buckets_log2: int) -> int:
     """Estimate cardinality of stream using HyperLogLog algorithm.
     Returns integer estimate.
     """
@@ -39804,7 +39804,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'pairwise_manhattan_distance',
     functionSignature: "pairwise_manhattan_distance(x: list[list[float]], y: list[list[float]]) -> list[list[float]]",
-    starterCode: `def pairwise_manhattan_distance(x, y):
+    starterCode: `def pairwise_manhattan_distance(x: list[list[float]], y: list[list[float]]) -> list[list[float]]:
     """Compute pairwise Manhattan (L1) distance matrix between vectors in x and y.
     Round each float to 4 decimal places.
     """
@@ -39941,7 +39941,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'quantile_bin_data',
     functionSignature: "quantile_bin_data(values: list[float], num_bins: int) -> list[int]",
-    starterCode: `def quantile_bin_data(values, num_bins):
+    starterCode: `def quantile_bin_data(values: list[float], num_bins: int) -> list[int]:
     """Discretize values into num_bins quantile bins (0 to num_bins - 1).
     Returns list of integer bin indices.
     """
@@ -40049,7 +40049,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'sliding_window_median',
     functionSignature: "sliding_window_median(stream: list[float], window_size: int) -> list[float]",
-    starterCode: `def sliding_window_median(stream, window_size):
+    starterCode: `def sliding_window_median(stream: list[float], window_size: int) -> list[float]:
     """Compute rolling median over sliding window of size window_size.
     Returns list of medians rounded to 4 decimal places.
     """
@@ -40156,7 +40156,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'empirical_cdf',
     functionSignature: "empirical_cdf(samples: list[float], query_points: list[float]) -> list[float]",
-    starterCode: `def empirical_cdf(samples, query_points):
+    starterCode: `def empirical_cdf(samples: list[float], query_points: list[float]) -> list[float]:
     """Compute empirical CDF F(q) = P(X <= q) for each query point.
     Round each float to 4 decimal places.
     """
@@ -40269,7 +40269,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'flatten_groupby_agg',
     functionSignature: "flatten_groupby_agg(records: list[dict], group_cols: list[str], agg_specs: dict[str, list[str]]) -> list[dict]",
-    starterCode: `def flatten_groupby_agg(records, group_cols, agg_specs):
+    starterCode: `def flatten_groupby_agg(records: list[dict], group_cols: list[str], agg_specs: dict[str, list[str]]) -> list[dict]:
     """Group by group_cols, aggregate by agg_specs, and return flat records.
     Columns formatted as f'{col}_{agg}'.
     """
@@ -40431,7 +40431,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'schedule_stream_retries',
     functionSignature: "schedule_stream_retries(attempts: list[int], base_delay: float, factor: float, max_delay: float) -> list[float]",
-    starterCode: `def schedule_stream_retries(attempts, base_delay, factor, max_delay):
+    starterCode: `def schedule_stream_retries(attempts: list[int], base_delay: float, factor: float, max_delay: float) -> list[float]:
     """Calculate scheduled retry delay for each attempt count.
     Delay = min(max_delay, base_delay * factor**(attempt - 1)).
     Round floats to 4 decimal places.
@@ -40537,7 +40537,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'pairwise_jaccard_similarity',
     functionSignature: "pairwise_jaccard_similarity(matrix_a: list[list[int]], matrix_b: list[list[int]]) -> list[list[float]]",
-    starterCode: `def pairwise_jaccard_similarity(matrix_a, matrix_b):
+    starterCode: `def pairwise_jaccard_similarity(matrix_a: list[list[int]], matrix_b: list[list[int]]) -> list[list[float]]:
     """Compute pairwise Jaccard similarity between binary matrices A and B.
     Round each float to 4 decimal places.
     """
@@ -40679,7 +40679,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'encode_with_rare_grouping',
     functionSignature: "encode_with_rare_grouping(categories: list[str], min_count: int, rare_label: str) -> list[str]",
-    starterCode: `def encode_with_rare_grouping(categories, min_count, rare_label):
+    starterCode: `def encode_with_rare_grouping(categories: list[str], min_count: int, rare_label: str) -> list[str]:
     """Replace categories with count < min_count with rare_label.
     Returns list of updated strings.
     """
@@ -40788,7 +40788,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'sliding_window_distinct_count',
     functionSignature: "sliding_window_distinct_count(stream: list[str], window_size: int) -> list[int]",
-    starterCode: `def sliding_window_distinct_count(stream, window_size):
+    starterCode: `def sliding_window_distinct_count(stream: list[str], window_size: int) -> list[int]:
     """Compute number of distinct elements in each sliding window of size window_size.
     Returns list of distinct element counts.
     """
@@ -40890,7 +40890,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'rolling_window_strides',
     functionSignature: "rolling_window_strides(values: list[float], window_size: int, step: int) -> list[list[float]]",
-    starterCode: `def rolling_window_strides(values, window_size, step):
+    starterCode: `def rolling_window_strides(values: list[float], window_size: int, step: int) -> list[list[float]]:
     """Extract rolling sub-windows with given window_size and step stride.
     Round each float to 4 decimal places.
     """
@@ -41019,7 +41019,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'ffill_with_limit',
     functionSignature: "ffill_with_limit(series: list[any], limit: int) -> list[any]",
-    starterCode: `def ffill_with_limit(series, limit):
+    starterCode: `def ffill_with_limit(series: list[any], limit: int) -> list[any]:
     """Forward-fill None values with a maximum consecutive fill limit.
     Returns list with imputed values.
     """
@@ -41123,7 +41123,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     estimatedTime: '10–15 min',
     functionName: 'batch_stream_events',
     functionSignature: "batch_stream_events(events: list[tuple[float, str]], max_batch_size: int, max_latency: float) -> list[list[str]]",
-    starterCode: `def batch_stream_events(events, max_batch_size, max_latency):
+    starterCode: `def batch_stream_events(events: list[tuple[float, str]], max_batch_size: int, max_latency: float) -> list[list[str]]:
     """Batch stream events by count or max latency threshold.
     Returns list of batches (lists of items).
     """
@@ -41248,7 +41248,7 @@ def sliding_window_event_rate(timestamps, window_seconds):
     functionSignature: "pairwise_euclidean_distance(x: list[list[float]], y: list[list[float]]) -> list[list[float]]",
     starterCode: `import math
 
-def pairwise_euclidean_distance(x, y):
+def pairwise_euclidean_distance(x: list[list[float]], y: list[list[float]]) -> list[list[float]]:
     """Compute N x M Euclidean distance matrix between vectors in x and y.
     Round each float to 4 decimal places.
     """
@@ -41371,7 +41371,7 @@ def pairwise_euclidean_distance(x, y):
     estimatedTime: '10–15 min',
     functionName: 'contingency_table',
     functionSignature: "contingency_table(row_labels: list[str], col_labels: list[str]) -> dict[str, dict[str, int]]",
-    starterCode: `def contingency_table(row_labels, col_labels):
+    starterCode: `def contingency_table(row_labels: list[str], col_labels: list[str]) -> dict[str, dict[str, int]]:
     """Compute two-way frequency contingency table.
     Returns nested dict table[row][col] = count.
     """
@@ -41493,7 +41493,7 @@ def pairwise_euclidean_distance(x, y):
     estimatedTime: '10–15 min',
     functionName: 'streaming_macd',
     functionSignature: "streaming_macd(prices: list[float], fast_period: int, slow_period: int, signal_period: int) -> list[dict]",
-    starterCode: `def streaming_macd(prices, fast_period, slow_period, signal_period):
+    starterCode: `def streaming_macd(prices: list[float], fast_period: int, slow_period: int, signal_period: int) -> list[dict]:
     """Compute streaming MACD line and signal EMA for prices.
     Returns list of dicts with 'fast_ema', 'slow_ema', 'macd', 'signal'.
     """
@@ -41658,7 +41658,7 @@ def pairwise_euclidean_distance(x, y):
     functionSignature: "vectorized_log_sum_exp(matrix: list[list[float]]) -> list[float]",
     starterCode: `import math
 
-def vectorized_log_sum_exp(matrix):
+def vectorized_log_sum_exp(matrix: list[list[float]]) -> list[float]:
     """Compute row-wise numerically stable log-sum-exp.
     Round each float to 4 decimal places.
     """
@@ -41758,7 +41758,7 @@ def vectorized_log_sum_exp(matrix):
     functionSignature: "extract_log_features(log_lines: list[str]) -> list[dict]",
     starterCode: `import re
 
-def extract_log_features(log_lines):
+def extract_log_features(log_lines: list[str]) -> list[dict]:
     """Parse HTTP access log lines into structured dicts.
     Returns list of dicts with ip, timestamp, method, status, bytes.
     """
@@ -41859,7 +41859,7 @@ def extract_log_features(log_lines):
     estimatedTime: '10–15 min',
     functionName: 'simulate_leaky_bucket',
     functionSignature: "simulate_leaky_bucket(packets: list[tuple[float, int]], capacity: int, leak_rate: float) -> list[tuple[float, int, bool]]",
-    starterCode: `def simulate_leaky_bucket(packets, capacity, leak_rate):
+    starterCode: `def simulate_leaky_bucket(packets: list[tuple[float, int]], capacity: int, leak_rate: float) -> list[tuple[float, int, bool]]:
     """Simulate leaky bucket buffer traffic shaper.
     Returns list of [timestamp, size, accepted].
     """
@@ -42007,7 +42007,7 @@ def extract_log_features(log_lines):
     functionSignature: "masked_array_stats(values: list[float], mask: list[bool]) -> dict[str, float]",
     starterCode: `import math
 
-def masked_array_stats(values, mask):
+def masked_array_stats(values: list[float], mask: list[bool]) -> dict[str, float]:
     """Compute count, mean, and population std ignoring masked (True) elements.
     Returns dict with keys 'count', 'mean', 'std'.
     """
@@ -42128,7 +42128,7 @@ def masked_array_stats(values, mask):
     functionSignature: "encode_cyclical_time(hours: list[float], period: float) -> list[tuple[float, float]]",
     starterCode: `import math
 
-def encode_cyclical_time(hours, period):
+def encode_cyclical_time(hours: list[float], period: float) -> list[tuple[float, float]]:
     """Encode periodic values into [sin, cos] circular coordinates.
     Round each float to 4 decimal places.
     """
@@ -42250,7 +42250,7 @@ def encode_cyclical_time(hours, period):
     functionSignature: "rolling_pearson_correlation(series_x: list[float], series_y: list[float], window_size: int) -> list[float]",
     starterCode: `import math
 
-def rolling_pearson_correlation(series_x, series_y, window_size):
+def rolling_pearson_correlation(series_x: list[float], series_y: list[float], window_size: int) -> list[float]:
     """Compute rolling Pearson correlation between two aligned series over window_size.
     Returns list of correlations rounded to 4 decimal places.
     """
@@ -43857,7 +43857,7 @@ def rolling_pearson_correlation(series_x, series_y, window_size):
     functionSignature: "complete_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float",
     starterCode: `import math
 
-def complete_linkage_distance(cluster_a, cluster_b):
+def complete_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float:
     """Compute complete linkage (maximum pairwise distance) between two clusters.
     Round result to 4 decimal places.
     """
@@ -43972,7 +43972,7 @@ def complete_linkage_distance(cluster_a, cluster_b):
     functionSignature: "sigmoid_predict(x: list[float], w: list[float], b: float) -> float",
     starterCode: `import math
 
-def sigmoid_predict(x, w, b):
+def sigmoid_predict(x: list[float], w: list[float], b: float) -> float:
     """Compute logistic regression sigmoid probability for sample x with weights w and bias b.
     Round float to 4 decimal places.
     """
@@ -44061,7 +44061,7 @@ def sigmoid_predict(x, w, b):
     functionSignature: "silhouette_sample(point: list[float], own_cluster: list[list[float]], other_clusters: list[list[list[float]]]) -> float",
     starterCode: `import math
 
-def silhouette_sample(point, own_cluster, other_clusters):
+def silhouette_sample(point: list[float], own_cluster: list[list[float]], other_clusters: list[list[list[float]]]) -> float:
     """Compute silhouette coefficient for point in [-1.0, 1.0].
     Round to 4 decimal places.
     """
@@ -44190,7 +44190,7 @@ def silhouette_sample(point, own_cluster, other_clusters):
     estimatedTime: '10–15 min',
     functionName: 'ridge_loss',
     functionSignature: "ridge_loss(y_true: list[float], y_pred: list[float], weights: list[float], alpha: float) -> float",
-    starterCode: `def ridge_loss(y_true, y_pred, weights, alpha):
+    starterCode: `def ridge_loss(y_true: list[float], y_pred: list[float], weights: list[float], alpha: float) -> float:
     """Compute total Ridge regression loss (MSE + alpha * ||w||_2^2).
     Round float to 4 decimal places.
     """
@@ -44292,7 +44292,7 @@ def silhouette_sample(point, own_cluster, other_clusters):
     functionSignature: "average_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float",
     starterCode: `import math
 
-def average_linkage_distance(cluster_a, cluster_b):
+def average_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float:
     """Compute average linkage distance between all cross-cluster point pairs.
     Round float to 4 decimal places.
     """
@@ -44402,7 +44402,7 @@ def average_linkage_distance(cluster_a, cluster_b):
     estimatedTime: '10–15 min',
     functionName: 'lasso_subgradient_step',
     functionSignature: "lasso_subgradient_step(rho: float, z_j: float, alpha: float) -> float",
-    starterCode: `def lasso_subgradient_step(rho, z_j, alpha):
+    starterCode: `def lasso_subgradient_step(rho: float, z_j: float, alpha: float) -> float:
     """Compute soft-thresholding coordinate descent update for Lasso.
     Round float to 4 decimal places.
     """
@@ -44474,7 +44474,7 @@ def average_linkage_distance(cluster_a, cluster_b):
     estimatedTime: '10–15 min',
     functionName: 'dbscan_point_classifier',
     functionSignature: "dbscan_point_classifier(points: list[list[float]], eps: float, min_samples: int) -> list[str]",
-    starterCode: `def dbscan_point_classifier(points, eps, min_samples):
+    starterCode: `def dbscan_point_classifier(points: list[list[float]], eps: float, min_samples: int) -> list[str]:
     """Classify each point as 'core', 'border', or 'noise'.
     Returns list of category strings.
     """
@@ -44602,7 +44602,7 @@ def average_linkage_distance(cluster_a, cluster_b):
     estimatedTime: '10–15 min',
     functionName: 'gini_impurity',
     functionSignature: "gini_impurity(labels: list[any]) -> float",
-    starterCode: `def gini_impurity(labels):
+    starterCode: `def gini_impurity(labels: list[any]) -> float:
     """Compute Gini impurity for class label list.
     Round float to 4 decimal places. Empty list returns 0.0.
     """
@@ -44683,7 +44683,7 @@ def average_linkage_distance(cluster_a, cluster_b):
     functionSignature: "davies_bouldin_pair(centroid_i: list[float], spread_i: float, centroid_j: list[float], spread_j: float) -> float",
     starterCode: `import math
 
-def davies_bouldin_pair(centroid_i, spread_i, centroid_j, spread_j):
+def davies_bouldin_pair(centroid_i: list[float], spread_i: float, centroid_j: list[float], spread_j: float) -> float:
     """Compute Davies-Bouldin similarity ratio R_ij between two clusters.
     Round float to 4 decimal places.
     """
@@ -44778,7 +44778,7 @@ def davies_bouldin_pair(centroid_i, spread_i, centroid_j, spread_j):
     functionSignature: "entropy_info_gain(parent_labels: list[any], left_labels: list[any], right_labels: list[any]) -> float",
     starterCode: `import math
 
-def entropy_info_gain(parent_labels, left_labels, right_labels):
+def entropy_info_gain(parent_labels: list[any], left_labels: list[any], right_labels: list[any]) -> float:
     """Compute Information Gain (entropy reduction) for split.
     Round float to 4 decimal places.
     """
@@ -44878,7 +44878,7 @@ def entropy_info_gain(parent_labels, left_labels, right_labels):
     estimatedTime: '10–15 min',
     functionName: 'user_cf_prediction',
     functionSignature: "user_cf_prediction(user_sims: list[float], ratings: list[float]) -> float",
-    starterCode: `def user_cf_prediction(user_sims, ratings):
+    starterCode: `def user_cf_prediction(user_sims: list[float], ratings: list[float]) -> float:
     """Compute similarity-weighted rating prediction for positive similarities.
     Round float to 4 decimal places.
     """
@@ -44964,7 +44964,7 @@ def entropy_info_gain(parent_labels, left_labels, right_labels):
     estimatedTime: '10–15 min',
     functionName: 'best_split_threshold',
     functionSignature: "best_split_threshold(feature_values: list[float], labels: list[any]) -> tuple[float, float]",
-    starterCode: `def best_split_threshold(feature_values, labels):
+    starterCode: `def best_split_threshold(feature_values: list[float], labels: list[any]) -> tuple[float, float]:
     """Find threshold minimizing weighted Gini impurity.
     Returns (best_threshold, min_weighted_gini).
     """
@@ -45072,7 +45072,7 @@ def entropy_info_gain(parent_labels, left_labels, right_labels):
     estimatedTime: '10–15 min',
     functionName: 'kmeans_plus_plus_distances',
     functionSignature: "kmeans_plus_plus_distances(points: list[list[float]], centroids: list[list[float]]) -> list[float]",
-    starterCode: `def kmeans_plus_plus_distances(points, centroids):
+    starterCode: `def kmeans_plus_plus_distances(points: list[list[float]], centroids: list[list[float]]) -> list[float]:
     """Compute min squared Euclidean distance from each point to nearest centroid.
     Round floats to 4 decimal places.
     """
@@ -45194,7 +45194,7 @@ def entropy_info_gain(parent_labels, left_labels, right_labels):
     estimatedTime: '10–15 min',
     functionName: 'perceptron_step',
     functionSignature: "perceptron_step(x: list[float], y: int, weights: list[float], bias: float, lr: float) -> dict",
-    starterCode: `def perceptron_step(x, y, weights, bias, lr):
+    starterCode: `def perceptron_step(x: list[float], y: int, weights: list[float], bias: float, lr: float) -> dict:
     """Execute single Perceptron training step.
     Returns dict with keys 'weights', 'bias', 'updated'.
     """
@@ -45311,7 +45311,7 @@ def entropy_info_gain(parent_labels, left_labels, right_labels):
     estimatedTime: '10–15 min',
     functionName: 'matrix_factorization_error',
     functionSignature: "matrix_factorization_error(r_matrix: list[list[any]], p_matrix: list[list[float]], q_matrix: list[list[float]]) -> float",
-    starterCode: `def matrix_factorization_error(r_matrix, p_matrix, q_matrix):
+    starterCode: `def matrix_factorization_error(r_matrix: list[list[any]], p_matrix: list[list[float]], q_matrix: list[list[float]]) -> float:
     """Compute sum of squared errors over observed entries in R vs P @ Q.T.
     Round float to 4 decimal places.
     """
@@ -45448,7 +45448,7 @@ def entropy_info_gain(parent_labels, left_labels, right_labels):
     functionSignature: "naive_bayes_predict(class_priors: dict[str, float], feature_probs: dict[str, dict[int, dict[any, float]]], sample: list[any]) -> str",
     starterCode: `import math
 
-def naive_bayes_predict(class_priors, feature_probs, sample):
+def naive_bayes_predict(class_priors: dict[str, float], feature_probs: dict[str, dict[int, dict[any, float]]], sample: list[any]) -> str:
     """Predict class using Naive Bayes log-posterior maximization.
     Returns predicted class label string.
     """
@@ -45578,7 +45578,7 @@ def naive_bayes_predict(class_priors, feature_probs, sample):
     functionSignature: "centroid_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float",
     starterCode: `import math
 
-def centroid_linkage_distance(cluster_a, cluster_b):
+def centroid_linkage_distance(cluster_a: list[list[float]], cluster_b: list[list[float]]) -> float:
     """Compute Euclidean distance between the centroids of two clusters.
     Round float to 4 decimal places.
     """
@@ -45694,7 +45694,7 @@ def centroid_linkage_distance(cluster_a, cluster_b):
     functionSignature: "knn_regression_predict(x_train: list[list[float]], y_train: list[float], x_query: list[float], k: int) -> float",
     starterCode: `import math
 
-def knn_regression_predict(x_train, y_train, x_query, k):
+def knn_regression_predict(x_train: list[list[float]], y_train: list[float], x_query: list[float], k: int) -> float:
     """Predict continuous target by averaging targets of k nearest neighbors.
     Round float to 4 decimal places.
     """
@@ -45812,7 +45812,7 @@ def knn_regression_predict(x_train, y_train, x_query, k):
     estimatedTime: '10–15 min',
     functionName: 'cluster_purity',
     functionSignature: "cluster_purity(cluster_assignments: list[int], true_labels: list[any]) -> float",
-    starterCode: `def cluster_purity(cluster_assignments, true_labels):
+    starterCode: `def cluster_purity(cluster_assignments: list[int], true_labels: list[any]) -> float:
     """Compute clustering purity = (1/N) * sum_k max_j |c_k cap t_j|.
     Round float to 4 decimal places.
     """
@@ -45910,7 +45910,7 @@ def knn_regression_predict(x_train, y_train, x_query, k):
     estimatedTime: '10–15 min',
     functionName: 'svm_hinge_loss',
     functionSignature: "svm_hinge_loss(y_true: int, x: list[float], w: list[float], b: float) -> float",
-    starterCode: `def svm_hinge_loss(y_true, x, w, b):
+    starterCode: `def svm_hinge_loss(y_true: int, x: list[float], w: list[float], b: float) -> float:
     """Compute SVM hinge loss max(0, 1 - y * (w.x + b)).
     Round float to 4 decimal places.
     """
@@ -46005,7 +46005,7 @@ def knn_regression_predict(x_train, y_train, x_query, k):
     functionSignature: "gmm_e_step_1d(x: list[float], weights: list[float], means: list[float], variances: list[float]) -> list[list[float]]",
     starterCode: `import math
 
-def gmm_e_step_1d(x, weights, means, variances):
+def gmm_e_step_1d(x: list[float], weights: list[float], means: list[float], variances: list[float]) -> list[list[float]]:
     """Compute posterior responsibilities gamma_ik for 1D GMM.
     Round each float to 4 decimal places.
     """
@@ -46135,7 +46135,7 @@ def gmm_e_step_1d(x, weights, means, variances):
     functionSignature: "adaboost_exp_loss(y_true: list[int], f_x: list[float]) -> float",
     starterCode: `import math
 
-def adaboost_exp_loss(y_true, f_x):
+def adaboost_exp_loss(y_true: list[int], f_x: list[float]) -> float:
     """Compute mean exponential loss (1/N) * sum(exp(-y * f(x))).
     Round float to 4 decimal places.
     """
@@ -46220,7 +46220,7 @@ def adaboost_exp_loss(y_true, f_x):
     estimatedTime: '10–15 min',
     functionName: 'gmm_m_step_1d',
     functionSignature: "gmm_m_step_1d(x: list[float], responsibilities: list[list[float]]) -> dict",
-    starterCode: `def gmm_m_step_1d(x, responsibilities):
+    starterCode: `def gmm_m_step_1d(x: list[float], responsibilities: list[list[float]]) -> dict:
     """Execute M-step for 1D GMM to update weights, means, and variances.
     Returns dict with updated parameters rounded to 4 decimal places.
     """
@@ -46370,7 +46370,7 @@ def adaboost_exp_loss(y_true, f_x):
     functionSignature: "adaboost_weight_update(sample_weights: list[float], y_true: list[int], predictions: list[int], alpha: float) -> list[float]",
     starterCode: `import math
 
-def adaboost_weight_update(sample_weights, y_true, predictions, alpha):
+def adaboost_weight_update(sample_weights: list[float], y_true: list[int], predictions: list[int], alpha: float) -> list[float]:
     """Update and renormalize AdaBoost sample distribution weights.
     Round each float to 4 decimal places.
     """
@@ -46485,7 +46485,7 @@ def adaboost_weight_update(sample_weights, y_true, predictions, alpha):
     estimatedTime: '10–15 min',
     functionName: 'calinski_harabasz_score',
     functionSignature: "calinski_harabasz_score(points: list[list[float]], cluster_labels: list[int]) -> float",
-    starterCode: `def calinski_harabasz_score(points, cluster_labels):
+    starterCode: `def calinski_harabasz_score(points: list[list[float]], cluster_labels: list[int]) -> float:
     """Compute Calinski-Harabasz variance ratio criterion score.
     Round float to 4 decimal places.
     """
@@ -46616,7 +46616,7 @@ def adaboost_weight_update(sample_weights, y_true, predictions, alpha):
     functionSignature: "gbm_pseudo_residuals(y_true: list[float], raw_predictions: list[float], loss_type: str) -> list[float]",
     starterCode: `import math
 
-def gbm_pseudo_residuals(y_true, raw_predictions, loss_type):
+def gbm_pseudo_residuals(y_true: list[float], raw_predictions: list[float], loss_type: str) -> list[float]:
     """Compute negative gradient direction (pseudo-residuals) for GBM.
     loss_type is 'regression' or 'classification'.
     Round floats to 4 decimal places.
@@ -46716,7 +46716,7 @@ def gbm_pseudo_residuals(y_true, raw_predictions, loss_type):
     estimatedTime: '10–15 min',
     functionName: 'cluster_contingency_pairs',
     functionSignature: "cluster_contingency_pairs(labels_true: list[any], labels_pred: list[any]) -> dict[str, int]",
-    starterCode: `def cluster_contingency_pairs(labels_true, labels_pred):
+    starterCode: `def cluster_contingency_pairs(labels_true: list[any], labels_pred: list[any]) -> dict[str, int]:
     """Count pairwise agreement quadruplets (tp, fp, fn, tn) for clustering evaluation.
     Returns dict of counts.
     """
@@ -46825,7 +46825,7 @@ def gbm_pseudo_residuals(y_true, raw_predictions, loss_type):
     estimatedTime: '10–15 min',
     functionName: 'lda_scatter_matrices',
     functionSignature: "lda_scatter_matrices(class0: list[list[float]], class1: list[list[float]]) -> dict",
-    starterCode: `def lda_scatter_matrices(class0, class1):
+    starterCode: `def lda_scatter_matrices(class0: list[list[float]], class1: list[list[float]]) -> dict:
     """Compute within-class scatter Sw and between-class scatter Sb for two classes.
     Returns dict with keys 'sw' and 'sb'.
     """
@@ -46988,7 +46988,7 @@ def gbm_pseudo_residuals(y_true, raw_predictions, loss_type):
     estimatedTime: '10–15 min',
     functionName: 'slope_one_predict',
     functionSignature: "slope_one_predict(ratings: dict[str, float], dev_matrix: dict[str, dict[str, float]], count_matrix: dict[str, dict[str, int]], target_item: str) -> float",
-    starterCode: `def slope_one_predict(ratings, dev_matrix, count_matrix, target_item):
+    starterCode: `def slope_one_predict(ratings: dict[str, float], dev_matrix: dict[str, dict[str, float]], count_matrix: dict[str, dict[str, int]], target_item: str) -> float:
     """Predict rating for target_item using Slope One algorithm.
     Round float to 4 decimal places.
     """
@@ -47087,7 +47087,7 @@ def gbm_pseudo_residuals(y_true, raw_predictions, loss_type):
     estimatedTime: '10–15 min',
     functionName: 'elastic_net_penalty',
     functionSignature: "elastic_net_penalty(weights: list[float], l1_ratio: float, alpha: float) -> float",
-    starterCode: `def elastic_net_penalty(weights, l1_ratio, alpha):
+    starterCode: `def elastic_net_penalty(weights: list[float], l1_ratio: float, alpha: float) -> float:
     """Compute Elastic Net penalty alpha * (l1_ratio * ||w||_1 + 0.5 * (1 - l1_ratio) * ||w||_2^2).
     Round float to 4 decimal places.
     """
@@ -47170,7 +47170,7 @@ def gbm_pseudo_residuals(y_true, raw_predictions, loss_type):
     functionSignature: "k_distance_sorted(points: list[list[float]], k: int) -> list[float]",
     starterCode: `import math
 
-def k_distance_sorted(points, k):
+def k_distance_sorted(points: list[list[float]], k: int) -> list[float]:
     """Compute sorted distances to k-th nearest neighbor across all points.
     Round each float to 4 decimal places.
     """
@@ -47289,7 +47289,7 @@ def k_distance_sorted(points, k):
     estimatedTime: '10–15 min',
     functionName: 'huber_loss',
     functionSignature: "huber_loss(y_true: list[float], y_pred: list[float], delta: float) -> float",
-    starterCode: `def huber_loss(y_true, y_pred, delta):
+    starterCode: `def huber_loss(y_true: list[float], y_pred: list[float], delta: float) -> float:
     """Compute mean Huber loss over regression residuals with threshold delta.
     Round float to 4 decimal places.
     """
@@ -47377,7 +47377,7 @@ def k_distance_sorted(points, k):
     functionSignature: "mean_shift_step(center: list[float], points: list[list[float]], bandwidth: float) -> list[float]",
     starterCode: `import math
 
-def mean_shift_step(center, points, bandwidth):
+def mean_shift_step(center: list[float], points: list[list[float]], bandwidth: float) -> list[float]:
     """Execute single Gaussian mean shift update step.
     Round coordinates to 4 decimal places.
     """
@@ -47490,7 +47490,7 @@ def mean_shift_step(center, points, bandwidth):
     estimatedTime: '10–15 min',
     functionName: 'variance_reduction',
     functionSignature: "variance_reduction(parent_targets: list[float], left_targets: list[float], right_targets: list[float]) -> float",
-    starterCode: `def variance_reduction(parent_targets, left_targets, right_targets):
+    starterCode: `def variance_reduction(parent_targets: list[float], left_targets: list[float], right_targets: list[float]) -> float:
     """Compute target variance reduction for candidate regression tree split.
     Round float to 4 decimal places.
     """
@@ -47588,7 +47588,7 @@ def mean_shift_step(center, points, bandwidth):
     estimatedTime: '10–15 min',
     functionName: 'precision_recall_at_k',
     functionSignature: "precision_recall_at_k(recommended: list[str], relevant: list[str], k: int) -> dict",
-    starterCode: `def precision_recall_at_k(recommended, relevant, k):
+    starterCode: `def precision_recall_at_k(recommended: list[str], relevant: list[str], k: int) -> dict:
     """Compute Precision@K and Recall@K for recommendation ranking.
     Returns dict with keys 'precision' and 'recall'.
     """
@@ -47691,7 +47691,7 @@ def mean_shift_step(center, points, bandwidth):
     functionSignature: "multiclass_log_loss(y_true: list[int], pred_probs: list[list[float]], eps: float) -> float",
     starterCode: `import math
 
-def multiclass_log_loss(y_true, pred_probs, eps):
+def multiclass_log_loss(y_true: list[int], pred_probs: list[list[float]], eps: float) -> float:
     """Compute average multi-class log loss with probability clipping.
     Round float to 4 decimal places.
     """
@@ -47804,7 +47804,7 @@ def multiclass_log_loss(y_true, pred_probs, eps):
     functionSignature: "select_cluster_medoid(points: list[list[float]]) -> list[float]",
     starterCode: `import math
 
-def select_cluster_medoid(points):
+def select_cluster_medoid(points: list[list[float]]) -> list[float]:
     """Find the medoid point in points minimizing total distance to all other points.
     Returns the medoid coordinate list.
     """
@@ -47906,7 +47906,7 @@ def select_cluster_medoid(points):
     estimatedTime: '10–15 min',
     functionName: 'f_beta_score',
     functionSignature: "f_beta_score(tp: int, fp: int, fn: int, beta: float) -> float",
-    starterCode: `def f_beta_score(tp, fp, fn, beta):
+    starterCode: `def f_beta_score(tp: int, fp: int, fn: int, beta: float) -> float:
     """Compute F-beta score given confusion counts and weighting parameter beta.
     Round float to 4 decimal places.
     """
@@ -47983,7 +47983,7 @@ def select_cluster_medoid(points):
     functionSignature: "nmi_clustering(labels_true: list[any], labels_pred: list[any]) -> float",
     starterCode: `import math
 
-def nmi_clustering(labels_true, labels_pred):
+def nmi_clustering(labels_true: list[any], labels_pred: list[any]) -> float:
     """Compute Normalized Mutual Information NMI(T, P) in [0.0, 1.0].
     Round float to 4 decimal places.
     """
@@ -48079,7 +48079,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10–15 min',
     functionName: 'roc_auc_score',
     functionSignature: "roc_auc_score(y_true: list[int], y_scores: list[float]) -> float",
-    starterCode: `def roc_auc_score(y_true, y_scores):
+    starterCode: `def roc_auc_score(y_true: list[int], y_scores: list[float]) -> float:
     """Compute Trapezoidal ROC-AUC score for binary labels {0, 1}.
     Round float to 4 decimal places.
     """
@@ -48176,7 +48176,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10–15 min',
     functionName: 'dendrogram_merge_step',
     functionSignature: "dendrogram_merge_step(dist_matrix: list[list[float]], cluster_names: list[str]) -> dict",
-    starterCode: `def dendrogram_merge_step(dist_matrix, cluster_names):
+    starterCode: `def dendrogram_merge_step(dist_matrix: list[list[float]], cluster_names: list[str]) -> dict:
     """Find pair of closest clusters to merge from symmetric distance matrix.
     Returns dict with keys 'cluster_1', 'cluster_2', 'distance'.
     """
@@ -48326,7 +48326,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10–15 min',
     functionName: 'sgd_momentum_step',
     functionSignature: "sgd_momentum_step(weights: list[float], velocity: list[float], gradients: list[float], lr: float, momentum: float) -> dict",
-    starterCode: `def sgd_momentum_step(weights, velocity, gradients, lr, momentum):
+    starterCode: `def sgd_momentum_step(weights: list[float], velocity: list[float], gradients: list[float], lr: float, momentum: float) -> dict:
     """Execute single SGD with momentum parameter update step.
     Returns dict with keys 'weights' and 'velocity'.
     """
@@ -48448,7 +48448,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10–15 min',
     functionName: 'bipartite_item_projection',
     functionSignature: "bipartite_item_projection(user_items: list[tuple[str, str]]) -> dict[str, dict[str, int]]",
-    starterCode: `def bipartite_item_projection(user_items):
+    starterCode: `def bipartite_item_projection(user_items: list[tuple[str, str]]) -> dict[str, dict[str, int]]:
     """Project bipartite (user, item) graph onto item-item co-occurrence graph.
     Returns nested dict mapping item to co-occurrence counts with other items.
     """
@@ -48579,7 +48579,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10–15 min',
     functionName: 'target_encoding_smooth',
     functionSignature: "target_encoding_smooth(categories: list[str], targets: list[float], m_weight: float) -> list[float]",
-    starterCode: `def target_encoding_smooth(categories, targets, m_weight):
+    starterCode: `def target_encoding_smooth(categories: list[str], targets: list[float], m_weight: float) -> list[float]:
     """Compute m-estimate smoothed target encoding for categorical features.
     Round each float to 4 decimal places.
     """
@@ -48684,7 +48684,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10–15 min',
     functionName: 'mean_reciprocal_rank',
     functionSignature: "mean_reciprocal_rank(recommendation_lists: list[list[str]], relevant_items: list[list[str]]) -> float",
-    starterCode: `def mean_reciprocal_rank(recommendation_lists, relevant_items):
+    starterCode: `def mean_reciprocal_rank(recommendation_lists: list[list[str]], relevant_items: list[list[str]]) -> float:
     """Compute Mean Reciprocal Rank (MRR) across recommendation queries.
     Round float to 4 decimal places.
     """
@@ -49778,7 +49778,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'vector_norms',
     functionSignature: "vector_norms(v: list[float]) -> dict[str, float]",
-    starterCode: `def vector_norms(v):
+    starterCode: `def vector_norms(v: list[float]) -> dict[str, float]:
     """Compute L1, L2, and Linf norms of vector v.
     Return {'l1': float, 'l2': float, 'linf': float} rounded to 4 decimals."""
     # Your implementation here
@@ -49889,7 +49889,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'vector_dot_and_angle',
     functionSignature: "vector_dot_and_angle(u: list[float], v: list[float]) -> dict[str, Any]",
-    starterCode: `def vector_dot_and_angle(u, v):
+    starterCode: `def vector_dot_and_angle(u: list[float], v: list[float]) -> dict[str, Any]:
     """Compute dot product, angle in radians, and whether u and v are orthogonal.
     Return {'dot': float, 'angle_radians': float, 'orthogonal': bool}."""
     # Your implementation here
@@ -50014,7 +50014,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'vector_projection',
     functionSignature: "vector_projection(u: list[float], v: list[float]) -> dict[str, list[float]]",
-    starterCode: `def vector_projection(u, v):
+    starterCode: `def vector_projection(u: list[float], v: list[float]) -> dict[str, list[float]]:
     """Decompose vector u into parallel projection along v and perpendicular rejection.
     Return {'proj': list[float], 'rej': list[float]} with coordinates rounded to 4 decimals."""
     # Your implementation here
@@ -50161,7 +50161,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'cosine_distance_matrix',
     functionSignature: "cosine_distance_matrix(matrix: list[list[float]]) -> list[list[float]]",
-    starterCode: `def cosine_distance_matrix(matrix):
+    starterCode: `def cosine_distance_matrix(matrix: list[list[float]]) -> list[list[float]]:
     """Compute pairwise cosine distance matrix D where D[i][j] = 1 - cosine_similarity(matrix[i], matrix[j]).
     Round values to 4 decimals."""
     # Your implementation here
@@ -50325,7 +50325,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'gram_schmidt',
     functionSignature: "gram_schmidt(vectors: list[list[float]]) -> list[list[float]]",
-    starterCode: `def gram_schmidt(vectors):
+    starterCode: `def gram_schmidt(vectors: list[list[float]]) -> list[list[float]]:
     """Produce an orthonormal basis from linearly independent vectors using Gram-Schmidt.
     Discard vectors with norm < 1e-7. Round coordinates to 4 decimals."""
     # Your implementation here
@@ -50486,7 +50486,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'matrix_multiply',
     functionSignature: "matrix_multiply(A: list[list[float]], B: list[list[float]]) -> list[list[float]]",
-    starterCode: `def matrix_multiply(A, B):
+    starterCode: `def matrix_multiply(A: list[list[float]], B: list[list[float]]) -> list[list[float]]:
     """Multiply matrix A (n x m) and B (m x k). Return n x k matrix rounded to 4 decimals."""
     # Your implementation here
     pass
@@ -50683,7 +50683,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'matrix_properties',
     functionSignature: "matrix_properties(A: list[list[float]]) -> dict[str, Any]",
-    starterCode: `def matrix_properties(A):
+    starterCode: `def matrix_properties(A: list[list[float]]) -> dict[str, Any]:
     """Compute trace, Frobenius norm, and symmetry of square matrix A.
     Return {'trace': float, 'frobenius': float, 'symmetric': bool}."""
     # Your implementation here
@@ -50827,7 +50827,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'matrix_determinant',
     functionSignature: "matrix_determinant(A: list[list[float]]) -> float",
-    starterCode: `def matrix_determinant(A):
+    starterCode: `def matrix_determinant(A: list[list[float]]) -> float:
     """Compute determinant of 1x1, 2x2, or 3x3 matrix A.
     Return float rounded to 4 decimals."""
     # Your implementation here
@@ -50955,7 +50955,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'matrix_inverse',
     functionSignature: "matrix_inverse(A: list[list[float]]) -> list[list[float]] | None",
-    starterCode: `def matrix_inverse(A):
+    starterCode: `def matrix_inverse(A: list[list[float]]) -> list[list[float]] | None:
     """Compute inverse of square matrix A using Gauss-Jordan elimination with partial pivoting.
     Return None if singular (pivot < 1e-9). Round values to 4 decimals."""
     # Your implementation here
@@ -51124,7 +51124,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'power_iteration',
     functionSignature: "power_iteration(A: list[list[float]], num_iters: int = 20) -> dict[str, Any]",
-    starterCode: `def power_iteration(A, num_iters=20):
+    starterCode: `def power_iteration(A: list[list[float]], num_iters: int = 20) -> dict[str, Any]:
     """Compute dominant eigenvalue and normalized eigenvector using power iteration.
     Initialize with all-ones vector [1.0, ..., 1.0]. Return {'eigenvalue': float, 'eigenvector': list[float]}."""
     # Your implementation here
@@ -51275,7 +51275,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'quadratic_form_gradient',
     functionSignature: "quadratic_form_gradient(A: list[list[float]], b: list[float], x: list[float]) -> list[float]",
-    starterCode: `def quadratic_form_gradient(A, b, x):
+    starterCode: `def quadratic_form_gradient(A: list[list[float]], b: list[float], x: list[float]) -> list[float]:
     """Compute gradient of f(x) = 0.5 * x^T A x - b^T x for symmetric matrix A.
     Return gradient vector Ax - b rounded to 4 decimals."""
     # Your implementation here
@@ -51443,7 +51443,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'nonlinear_jacobian',
     functionSignature: "nonlinear_jacobian(W: list[list[float]], x: list[float], b: list[float]) -> list[list[float]]",
-    starterCode: `def nonlinear_jacobian(W, x, b):
+    starterCode: `def nonlinear_jacobian(W: list[list[float]], x: list[float], b: list[float]) -> list[list[float]]:
     """Compute Jacobian matrix of map f_i(x) = sum_j (W_ij * x_j^2) + b_i.
     Return m x n Jacobian matrix where J_ij = 2 * W_ij * x_j rounded to 4 decimals."""
     # Your implementation here
@@ -51634,7 +51634,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'quadratic_hessian',
     functionSignature: "quadratic_hessian(A: list[list[float]]) -> list[list[float]]",
-    starterCode: `def quadratic_hessian(A):
+    starterCode: `def quadratic_hessian(A: list[list[float]]) -> list[list[float]]:
     """Compute Hessian matrix H of quadratic form f(x) = 0.5 * x^T A x.
     H = 0.5 * (A + A^T). Return n x n matrix rounded to 4 decimals."""
     # Your implementation here
@@ -51798,7 +51798,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'multivariable_taylor_approx',
     functionSignature: "multivariable_taylor_approx(f0: float, grad0: list[float], H0: list[list[float]], delta_x: list[float]) -> float",
-    starterCode: `def multivariable_taylor_approx(f0, grad0, H0, delta_x):
+    starterCode: `def multivariable_taylor_approx(f0: float, grad0: list[float], H0: list[list[float]], delta_x: list[float]) -> float:
     """Compute second-order Taylor approximation f(x0 + dx) ~ f0 + grad0^T dx + 0.5 * dx^T H0 dx.
     Return float rounded to 4 decimals."""
     # Your implementation here
@@ -51958,7 +51958,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'directional_derivative',
     functionSignature: "directional_derivative(grad: list[float], direction: list[float]) -> float",
-    starterCode: `def directional_derivative(grad, direction):
+    starterCode: `def directional_derivative(grad: list[float], direction: list[float]) -> float:
     """Compute directional derivative nabla f(x) . u where u is normalized direction.
     Return float rounded to 4 decimals."""
     # Your implementation here
@@ -52066,7 +52066,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'sample_covariance_matrix',
     functionSignature: "sample_covariance_matrix(data: list[list[float]]) -> list[list[float]]",
-    starterCode: `def sample_covariance_matrix(data):
+    starterCode: `def sample_covariance_matrix(data: list[list[float]]) -> list[list[float]]:
     """Compute d x d sample covariance matrix from n x d data matrix with denominator (n - 1).
     Return d x d matrix rounded to 4 decimals."""
     # Your implementation here
@@ -52254,7 +52254,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'gaussian_log_likelihood',
     functionSignature: "gaussian_log_likelihood(x: list[float], mean: list[float], variances: list[float]) -> float",
-    starterCode: `def gaussian_log_likelihood(x, mean, variances):
+    starterCode: `def gaussian_log_likelihood(x: list[float], mean: list[float], variances: list[float]) -> float:
     """Compute log-likelihood log p(x) under diagonal covariance Gaussian.
     log p(x) = -0.5 * sum(log(2*pi*sigma_i^2) + (x_i - mu_i)^2 / sigma_i^2).
     Return float rounded to 4 decimals."""
@@ -52381,7 +52381,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'bayes_posterior',
     functionSignature: "bayes_posterior(priors: list[float], likelihoods: list[float]) -> list[float]",
-    starterCode: `def bayes_posterior(priors, likelihoods):
+    starterCode: `def bayes_posterior(priors: list[float], likelihoods: list[float]) -> list[float]:
     """Compute posterior probabilities P(H_k | E) = P(E | H_k) * P(H_k) / sum_j P(E | H_j) * P(H_j).
     Return list of posterior probabilities rounded to 4 decimals."""
     # Your implementation here
@@ -52503,7 +52503,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'shannon_and_cross_entropy',
     functionSignature: "shannon_and_cross_entropy(p: list[float], q: list[float]) -> dict[str, float]",
-    starterCode: `def shannon_and_cross_entropy(p, q):
+    starterCode: `def shannon_and_cross_entropy(p: list[float], q: list[float]) -> dict[str, float]:
     """Compute Shannon entropy H(p), cross-entropy H(p, q), and KL divergence D_KL(p || q) in base 2 bits.
     Return {'entropy_p': float, 'cross_entropy': float, 'kl_div': float} rounded to 4 decimals."""
     # Your implementation here
@@ -52632,7 +52632,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'jensen_shannon_divergence',
     functionSignature: "jensen_shannon_divergence(p: list[float], q: list[float]) -> float",
-    starterCode: `def jensen_shannon_divergence(p, q):
+    starterCode: `def jensen_shannon_divergence(p: list[float], q: list[float]) -> float:
     """Compute symmetric Jensen-Shannon divergence JSD(p || q) in base 2 bits.
     M = 0.5*(p + q), JSD = 0.5*KL(p || M) + 0.5*KL(q || M). Return float rounded to 4 decimals."""
     # Your implementation here
@@ -52741,7 +52741,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'momentum_gd_step',
     functionSignature: "momentum_gd_step(w: list[float], grad: list[float], v: list[float], lr: float = 0.01, beta: float = 0.9) -> dict[str, list[float]]",
-    starterCode: `def momentum_gd_step(w, grad, v, lr=0.01, beta=0.9):
+    starterCode: `def momentum_gd_step(w: list[float], grad: list[float], v: list[float], lr: float = 0.01, beta: float = 0.9) -> dict[str, list[float]]:
     """Compute single step of gradient descent with classical Polyak momentum.
     v_next = beta * v + lr * grad; w_next = w - v_next. Return {'w': list, 'v': list}."""
     # Your implementation here
@@ -52908,7 +52908,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'nesterov_momentum_step',
     functionSignature: "nesterov_momentum_step(w: list[float], grad_lookahead: list[float], v: list[float], lr: float = 0.01, beta: float = 0.9) -> dict[str, list[float]]",
-    starterCode: `def nesterov_momentum_step(w, grad_lookahead, v, lr=0.01, beta=0.9):
+    starterCode: `def nesterov_momentum_step(w: list[float], grad_lookahead: list[float], v: list[float], lr: float = 0.01, beta: float = 0.9) -> dict[str, list[float]]:
     """Compute NAG step given gradient evaluated at lookahead point w - beta * v.
     v_next = beta * v + lr * grad_lookahead; w_next = w - v_next. Return {'w': list, 'v': list}."""
     # Your implementation here
@@ -53069,7 +53069,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'adagrad_step',
     functionSignature: "adagrad_step(w: list[float], grad: list[float], accum: list[float], lr: float = 0.01, eps: float = 1e-8) -> dict[str, list[float]]",
-    starterCode: `def adagrad_step(w, grad, accum, lr=0.01, eps=1e-8):
+    starterCode: `def adagrad_step(w: list[float], grad: list[float], accum: list[float], lr: float = 0.01, eps: float = 1e-8) -> dict[str, list[float]]:
     """Compute single step of AdaGrad optimizer.
     accum_next = accum + grad^2; w_next = w - (lr / (sqrt(accum_next) + eps)) * grad.
     Return {'w': list, 'accum': list}."""
@@ -53232,7 +53232,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'rmsprop_step',
     functionSignature: "rmsprop_step(w: list[float], grad: list[float], v: list[float], lr: float = 0.001, beta: float = 0.9, eps: float = 1e-8) -> dict[str, list[float]]",
-    starterCode: `def rmsprop_step(w, grad, v, lr=0.001, beta=0.9, eps=1e-8):
+    starterCode: `def rmsprop_step(w: list[float], grad: list[float], v: list[float], lr: float = 0.001, beta: float = 0.9, eps: float = 1e-8) -> dict[str, list[float]]:
     """Compute single step of RMSprop optimizer with leaky second moment.
     v_next = beta * v + (1 - beta) * grad^2; w_next = w - (lr / (sqrt(v_next) + eps)) * grad.
     Return {'w': list, 'v': list}."""
@@ -53404,7 +53404,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'adam_step',
     functionSignature: "adam_step(w: list[float], grad: list[float], m: list[float], v: list[float], t: int = 1, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8) -> dict[str, list[float]]",
-    starterCode: `def adam_step(w, grad, m, v, t=1, lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8):
+    starterCode: `def adam_step(w: list[float], grad: list[float], m: list[float], v: list[float], t: int = 1, lr: float = 0.001, beta1: float = 0.9, beta2: float = 0.999, eps: float = 1e-8) -> dict[str, list[float]]:
     """Compute single step of Adam optimizer with first and second moment bias corrections.
     Return {'w': list, 'm': list, 'v': list} rounded to 4 decimals."""
     # Your implementation here
@@ -53609,7 +53609,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'stable_softmax_and_ce',
     functionSignature: "stable_softmax_and_ce(logits: list[float], target_idx: int) -> dict[str, Any]",
-    starterCode: `def stable_softmax_and_ce(logits, target_idx):
+    starterCode: `def stable_softmax_and_ce(logits: list[float], target_idx: int) -> dict[str, Any]:
     """Compute numerically stable softmax probabilities and cross-entropy loss.
     Subtract max(logits) before exponentiating. Return {'probs': list[float], 'loss': float}."""
     # Your implementation here
@@ -53738,7 +53738,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'log_sum_exp',
     functionSignature: "log_sum_exp(logits: list[float]) -> float",
-    starterCode: `def log_sum_exp(logits):
+    starterCode: `def log_sum_exp(logits: list[float]) -> float:
     """Compute log(sum(exp(x_i))) in a numerically stable way.
     LSE(x) = max(x) + log(sum(exp(x_i - max(x)))). Return float rounded to 4 decimals."""
     # Your implementation here
@@ -53831,7 +53831,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'cholesky_decomposition',
     functionSignature: "cholesky_decomposition(A: list[list[float]]) -> list[list[float]] | None",
-    starterCode: `def cholesky_decomposition(A):
+    starterCode: `def cholesky_decomposition(A: list[list[float]]) -> list[list[float]] | None:
     """Compute lower triangular matrix L such that A = L * L^T for symmetric positive-definite A.
     Return None if A is not positive-definite. Round entries to 4 decimals."""
     # Your implementation here
@@ -54000,7 +54000,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'solve_triangular_system',
     functionSignature: "solve_triangular_system(L: list[list[float]], b: list[float], lower: bool = True) -> list[float]",
-    starterCode: `def solve_triangular_system(L, b, lower=True):
+    starterCode: `def solve_triangular_system(L: list[list[float]], b: list[float], lower: bool = True) -> list[float]:
     """Solve triangular linear system L * x = b.
     If lower is True, use forward substitution; if False, use backward substitution.
     Return solution vector x rounded to 4 decimals."""
@@ -54166,7 +54166,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'conjugate_gradient_step',
     functionSignature: "conjugate_gradient_step(A: list[list[float]], b: list[float], x: list[float], r: list[float], p: list[float]) -> dict[str, list[float]]",
-    starterCode: `def conjugate_gradient_step(A, b, x, r, p):
+    starterCode: `def conjugate_gradient_step(A: list[list[float]], b: list[float], x: list[float], r: list[float], p: list[float]) -> dict[str, list[float]]:
     """Compute a single iteration of the Conjugate Gradient algorithm for A x = b.
     alpha = (r^T r) / (p^T A p); x_next = x + alpha * p; r_next = r - alpha * A p.
     beta = (r_next^T r_next) / (r^T r); p_next = r_next + beta * p.
@@ -54413,7 +54413,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'minkowski_distance',
     functionSignature: "minkowski_distance(p_order: float, u: list[float], v: list[float]) -> float",
-    starterCode: `def minkowski_distance(p_order, u, v):
+    starterCode: `def minkowski_distance(p_order: float, u: list[float], v: list[float]) -> float:
     """Compute Minkowski distance (sum(|u_i - v_i|^p))^(1/p) between vectors u and v.
     Return float rounded to 4 decimals."""
     # Your implementation here
@@ -54526,7 +54526,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'is_orthogonal_matrix',
     functionSignature: "is_orthogonal_matrix(A: list[list[float]], tol: float = 1e-5) -> bool",
-    starterCode: `def is_orthogonal_matrix(A, tol=1e-5):
+    starterCode: `def is_orthogonal_matrix(A: list[list[float]], tol: float = 1e-5) -> bool:
     """Check if square matrix A is orthogonal (A^T * A = I within tolerance tol).
     Return bool."""
     # Your implementation here
@@ -54651,7 +54651,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'householder_reflection',
     functionSignature: "householder_reflection(v: list[float]) -> list[list[float]]",
-    starterCode: `def householder_reflection(v):
+    starterCode: `def householder_reflection(v: list[float]) -> list[list[float]]:
     """Construct Householder reflection matrix H = I - 2 * (v v^T) / (v^T v).
     Return n x n matrix rounded to 4 decimals. If ||v|| == 0, return identity."""
     # Your implementation here
@@ -54785,7 +54785,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'qr_decomposition',
     functionSignature: "qr_decomposition(A: list[list[float]]) -> dict[str, list[list[float]]]",
-    starterCode: `def qr_decomposition(A):
+    starterCode: `def qr_decomposition(A: list[list[float]]) -> dict[str, list[list[float]]]:
     """Decompose m x n matrix A into Q (m x n orthonormal columns) and R (n x n upper triangular).
     Return {'Q': list[list], 'R': list[list]} rounded to 4 decimals."""
     # Your implementation here
@@ -55012,7 +55012,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'rank_one_svd_approx',
     functionSignature: "rank_one_svd_approx(u: list[float], s: float, v: list[float]) -> list[list[float]]",
-    starterCode: `def rank_one_svd_approx(u, s, v):
+    starterCode: `def rank_one_svd_approx(u: list[float], s: float, v: list[float]) -> list[list[float]]:
     """Construct rank-1 matrix approximation A_1 = s * (u v^T) from singular vectors u, v and singular value s.
     Return m x n matrix rounded to 4 decimals."""
     # Your implementation here
@@ -55163,7 +55163,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'condition_number_frobenius',
     functionSignature: "condition_number_frobenius(A: list[list[float]]) -> float",
-    starterCode: `def condition_number_frobenius(A):
+    starterCode: `def condition_number_frobenius(A: list[list[float]]) -> float:
     """Compute condition number kappa_F(A) = ||A||_F * ||A^-1||_F.
     Return -1.0 if A is singular. Round result to 4 decimals."""
     # Your implementation here
@@ -55277,7 +55277,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'finite_difference_gradient',
     functionSignature: "finite_difference_gradient(f_center: float, f_plus: list[float], f_minus: list[float], h: float = 0.0001) -> list[float]",
-    starterCode: `def finite_difference_gradient(f_center, f_plus, f_minus, h=0.0001):
+    starterCode: `def finite_difference_gradient(f_center: float, f_plus: list[float], f_minus: list[float], h: float = 0.0001) -> list[float]:
     """Compute numerical gradient using central differences g_i = (f(x0 + h e_i) - f(x0 - h e_i)) / (2 * h).
     Return gradient vector rounded to 4 decimals."""
     # Your implementation here
@@ -55404,7 +55404,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'newton_raphson_step',
     functionSignature: "newton_raphson_step(x: float, f_prime: float, f_double_prime: float) -> float",
-    starterCode: `def newton_raphson_step(x, f_prime, f_double_prime):
+    starterCode: `def newton_raphson_step(x: float, f_prime: float, f_double_prime: float) -> float:
     """Compute single Newton-Raphson minimization step x_next = x - f'(x) / f''(x).
     If |f''(x)| < 1e-9, return x unchanged. Return float rounded to 4 decimals."""
     # Your implementation here
@@ -55490,7 +55490,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'armijo_line_search',
     functionSignature: "armijo_line_search(f_curr: float, grad_norm_sq: float, candidate_evals: list[float], alpha: float = 1.0, beta: float = 0.5, c: float = 0.0001) -> float",
-    starterCode: `def armijo_line_search(f_curr, grad_norm_sq, candidate_evals, alpha=1.0, beta=0.5, c=1e-4):
+    starterCode: `def armijo_line_search(f_curr: float, grad_norm_sq: float, candidate_evals: list[float], alpha: float = 1.0, beta: float = 0.5, c: float = 0.0001) -> float:
     """Find step size alpha satisfying Armijo sufficient decrease: f(x + alpha*d) <= f(x) - c * alpha * ||grad||^2.
     candidate_evals contains evaluations for alpha, beta*alpha, beta^2*alpha, etc. Return accepted alpha."""
     # Your implementation here
@@ -55601,7 +55601,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mahalanobis_distance',
     functionSignature: "mahalanobis_distance(u: list[float], v: list[float], inv_cov: list[list[float]]) -> float",
-    starterCode: `def mahalanobis_distance(u, v, inv_cov):
+    starterCode: `def mahalanobis_distance(u: list[float], v: list[float], inv_cov: list[list[float]]) -> float:
     """Compute Mahalanobis distance D_M(u, v) = sqrt((u - v)^T * inv_cov * (u - v)).
     Return float rounded to 4 decimals."""
     # Your implementation here
@@ -55747,7 +55747,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'wasserstein_1d',
     functionSignature: "wasserstein_1d(p: list[float], q: list[float]) -> float",
-    starterCode: `def wasserstein_1d(p, q):
+    starterCode: `def wasserstein_1d(p: list[float], q: list[float]) -> float:
     """Compute 1D Wasserstein distance W_1(p, q) = sum_i |CDF_p(i) - CDF_q(i)| on discrete bins.
     Return float rounded to 4 decimals."""
     # Your implementation here
@@ -55857,7 +55857,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'gmm_e_step',
     functionSignature: "gmm_e_step(X: list[float], weights: list[float], means: list[float], variances: list[float]) -> list[list[float]]",
-    starterCode: `def gmm_e_step(X, weights, means, variances):
+    starterCode: `def gmm_e_step(X: list[float], weights: list[float], means: list[float], variances: list[float]) -> list[list[float]]:
     """Compute responsibility matrix gamma_ik = P(Z_i = k | x_i).
     Return N x K matrix rounded to 4 decimals."""
     # Your implementation here
@@ -56037,7 +56037,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'gmm_m_step',
     functionSignature: "gmm_m_step(X: list[float], responsibilities: list[list[float]]) -> dict[str, list[float]]",
-    starterCode: `def gmm_m_step(X, responsibilities):
+    starterCode: `def gmm_m_step(X: list[float], responsibilities: list[list[float]]) -> dict[str, list[float]]:
     """Re-estimate GMM weights, means, and variances given responsibilities.
     Return {'weights': list, 'means': list, 'variances': list} rounded to 4 decimals."""
     # Your implementation here
@@ -56234,7 +56234,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'monte_carlo_integrate',
     functionSignature: "monte_carlo_integrate(samples_f: list[float], a: float, b: float) -> dict[str, float]",
-    starterCode: `def monte_carlo_integrate(samples_f, a, b):
+    starterCode: `def monte_carlo_integrate(samples_f: list[float], a: float, b: float) -> dict[str, float]:
     """Compute Monte Carlo integral estimate and standard error from function evaluations on [a, b].
     Return {'estimate': float, 'standard_error': float} rounded to 4 decimals."""
     # Your implementation here
@@ -56349,7 +56349,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'importance_sampling',
     functionSignature: "importance_sampling(f_evals: list[float], p_densities: list[float], q_densities: list[float]) -> dict[str, float]",
-    starterCode: `def importance_sampling(f_evals, p_densities, q_densities):
+    starterCode: `def importance_sampling(f_evals: list[float], p_densities: list[float], q_densities: list[float]) -> dict[str, float]:
     """Compute self-normalized importance sampling expectation and effective sample size (ESS).
     Return {'estimate': float, 'effective_sample_size': float} rounded to 4 decimals."""
     # Your implementation here
@@ -56496,7 +56496,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'lasso_coordinate_descent_step',
     functionSignature: "lasso_coordinate_descent_step(rho_j: float, z_j: float, l1_lambda: float) -> float",
-    starterCode: `def lasso_coordinate_descent_step(rho_j, z_j, l1_lambda):
+    starterCode: `def lasso_coordinate_descent_step(rho_j: float, z_j: float, l1_lambda: float) -> float:
     """Compute updated weight w_j using the soft-thresholding operator S(rho_j, lambda) / z_j.
     Return float rounded to 4 decimals."""
     # Your implementation here
@@ -56582,7 +56582,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'elastic_net_subgradient',
     functionSignature: "elastic_net_subgradient(w: list[float], grad_loss: list[float], l1_ratio: float = 0.5, alpha: float = 0.1) -> list[float]",
-    starterCode: `def elastic_net_subgradient(w, grad_loss, l1_ratio=0.5, alpha=0.1):
+    starterCode: `def elastic_net_subgradient(w: list[float], grad_loss: list[float], l1_ratio: float = 0.5, alpha: float = 0.1) -> list[float]:
     """Compute subgradient of regularized loss: grad_loss + alpha * (1 - l1_ratio) * w + alpha * l1_ratio * sign(w).
     Set sign(0) = 0.0. Return list rounded to 4 decimals."""
     # Your implementation here
@@ -56709,7 +56709,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'linear_system_rollout',
     functionSignature: "linear_system_rollout(A: list[list[float]], B: list[list[float]], x0: list[float], U: list[list[float]]) -> list[list[float]]",
-    starterCode: `def linear_system_rollout(A, B, x0, U):
+    starterCode: `def linear_system_rollout(A: list[list[float]], B: list[list[float]], x0: list[float], U: list[list[float]]) -> list[list[float]]:
     """Simulate discrete linear dynamical system x_{t+1} = A x_t + B u_t.
     Return list of state vectors [x0, x1, ..., xT] rounded to 4 decimals."""
     # Your implementation here
@@ -56961,7 +56961,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'kalman_filter_step',
     functionSignature: "kalman_filter_step(x_prior: float, P_prior: float, measurement: float, H: float = 1.0, R: float = 1.0) -> dict[str, float]",
-    starterCode: `def kalman_filter_step(x_prior, P_prior, measurement, H=1.0, R=1.0):
+    starterCode: `def kalman_filter_step(x_prior: float, P_prior: float, measurement: float, H: float = 1.0, R: float = 1.0) -> dict[str, float]:
     """Compute 1D Kalman filter measurement update step.
     Return {'x_post': float, 'P_post': float, 'K': float} rounded to 4 decimals."""
     # Your implementation here
@@ -57071,7 +57071,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'pagerank_step',
     functionSignature: "pagerank_step(adj_matrix: list[list[float]], p: list[float], damping: float = 0.85) -> list[float]",
-    starterCode: `def pagerank_step(adj_matrix, p, damping=0.85):
+    starterCode: `def pagerank_step(adj_matrix: list[list[float]], p: list[float], damping: float = 0.85) -> list[float]:
     """Perform a single PageRank power iteration step p_next = damping * M * p + (1 - damping) / n.
     Return list rounded to 4 decimals."""
     # Your implementation here
@@ -57226,7 +57226,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'conv1d_discrete',
     functionSignature: "conv1d_discrete(signal: list[float], kernel: list[float], stride: int = 1, padding: int = 0) -> list[float]",
-    starterCode: `def conv1d_discrete(signal, kernel, stride=1, padding=0):
+    starterCode: `def conv1d_discrete(signal: list[float], kernel: list[float], stride: int = 1, padding: int = 0) -> list[float]:
     """Compute discrete 1D convolution of signal with kernel using given stride and zero-padding.
     Return list of output values rounded to 4 decimals."""
     # Your implementation here
@@ -57365,7 +57365,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'conv2d_discrete',
     functionSignature: "conv2d_discrete(image: list[list[float]], kernel: list[list[float]], stride: int = 1, padding: int = 0) -> list[list[float]]",
-    starterCode: `def conv2d_discrete(image, kernel, stride=1, padding=0):
+    starterCode: `def conv2d_discrete(image: list[list[float]], kernel: list[list[float]], stride: int = 1, padding: int = 0) -> list[list[float]]:
     """Compute 2D cross-correlation of image with kernel using given stride and zero-padding.
     Return 2D output matrix rounded to 4 decimals."""
     # Your implementation here
@@ -57589,7 +57589,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'fft_radix2',
     functionSignature: "fft_radix2(x: list[float]) -> list[list[float]]",
-    starterCode: `def fft_radix2(x):
+    starterCode: `def fft_radix2(x: list[float]) -> list[list[float]]:
     """Compute Discrete Fourier Transform of real vector x (length power of 2) in O(N log N).
     Return list of [real, imag] pairs rounded to 4 decimals."""
     # Your implementation here
@@ -57765,7 +57765,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'rk4_step',
     functionSignature: "rk4_step(t0: float, y0: float, dt: float, a: float = 1.0, b: float = 0.0) -> float",
-    starterCode: `def rk4_step(t0, y0, dt, a=1.0, b=0.0):
+    starterCode: `def rk4_step(t0: float, y0: float, dt: float, a: float = 1.0, b: float = 0.0) -> float:
     """Compute single RK4 step for dy/dt = a*y + b*t.
     Return y_{t+dt} rounded to 4 decimals."""
     # Your implementation here
@@ -57859,7 +57859,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'lagrange_quadratic_equality',
     functionSignature: "lagrange_quadratic_equality(A: list[list[float]], b: list[float], C: list[list[float]], d: list[float]) -> list[float]",
-    starterCode: `def lagrange_quadratic_equality(A, b, C, d):
+    starterCode: `def lagrange_quadratic_equality(A: list[list[float]], b: list[float], C: list[list[float]], d: list[float]) -> list[float]:
     """Solve equality constrained QP: min 0.5 * x^T A x - b^T x s.t. C x = d via (n+m) x (n+m) KKT system.
     Return optimal primal vector x rounded to 4 decimals."""
     # Your implementation here
@@ -58047,7 +58047,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'projected_gradient_descent_step',
     functionSignature: "projected_gradient_descent_step(w: list[float], grad: list[float], lr: float = 0.1, radius: float = 1.0) -> list[float]",
-    starterCode: `def projected_gradient_descent_step(w, grad, lr=0.1, radius=1.0):
+    starterCode: `def projected_gradient_descent_step(w: list[float], grad: list[float], lr: float = 0.1, radius: float = 1.0) -> list[float]:
     """Compute single step of projected gradient descent w_next = Proj_Ball(w - lr * grad).
     Return list rounded to 4 decimals."""
     # Your implementation here
@@ -58177,7 +58177,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'simplex_pivot_step',
     functionSignature: "simplex_pivot_step(tableau: list[list[float]], pivot_row: int, pivot_col: int) -> list[list[float]]",
-    starterCode: `def simplex_pivot_step(tableau, pivot_row, pivot_col):
+    starterCode: `def simplex_pivot_step(tableau: list[list[float]], pivot_row: int, pivot_col: int) -> list[list[float]]:
     """Perform an elementary row pivot operation on a Simplex tableau.
     Scale pivot_row so tableau[pivot_row][pivot_col] = 1, then zero out all other entries in pivot_col.
     Return updated tableau rounded to 4 decimals."""
@@ -58368,7 +58368,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'gauss_seidel_iteration',
     functionSignature: "gauss_seidel_iteration(A: list[list[float]], b: list[float], x0: list[float], num_iters: int = 5) -> list[float]",
-    starterCode: `def gauss_seidel_iteration(A, b, x0, num_iters=5):
+    starterCode: `def gauss_seidel_iteration(A: list[list[float]], b: list[float], x0: list[float], num_iters: int = 5) -> list[float]:
     """Solve A x = b using num_iters of the Gauss-Seidel iterative method.
     Update coordinates immediately in place: x_i = (b_i - sum_{j!=i} A_ij x_j) / A_ii.
     Return solution vector x rounded to 4 decimals."""
@@ -58542,7 +58542,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'sor_iteration',
     functionSignature: "sor_iteration(A: list[list[float]], b: list[float], x0: list[float], omega: float = 1.2, num_iters: int = 5) -> list[float]",
-    starterCode: `def sor_iteration(A, b, x0, omega=1.2, num_iters=5):
+    starterCode: `def sor_iteration(A: list[list[float]], b: list[float], x0: list[float], omega: float = 1.2, num_iters: int = 5) -> list[float]:
     """Solve A x = b using Successive Over-Relaxation (SOR) with relaxation parameter omega.
     x_i = (1 - omega)*x_i + omega * ((b_i - sum_{j!=i} A_ij x_j) / A_ii).
     Return solution vector x rounded to 4 decimals."""
@@ -58720,7 +58720,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'levenberg_marquardt_step',
     functionSignature: "levenberg_marquardt_step(J: list[list[float]], r: list[float], damping: float = 0.01) -> list[float]",
-    starterCode: `def levenberg_marquardt_step(J, r, damping=0.01):
+    starterCode: `def levenberg_marquardt_step(J: list[list[float]], r: list[float], damping: float = 0.01) -> list[float]:
     """Compute single Levenberg-Marquardt step delta solving (J^T J + damping * I) * delta = -J^T r.
     Return delta vector rounded to 4 decimals."""
     # Your implementation here
@@ -58873,7 +58873,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'conv2d_valid',
     functionSignature: "conv2d_valid(image: list[list[float]], kernel: list[list[float]]) -> list[list[float]]",
-    starterCode: `def conv2d_valid(image, kernel):
+    starterCode: `def conv2d_valid(image: list[list[float]], kernel: list[list[float]]) -> list[list[float]]:
     """Perform 2D cross-correlation convolution in 'valid' mode.
     Round all output values to 4 decimal places."""
     # Implement solution logic here
@@ -59054,7 +59054,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'kronecker_product',
     functionSignature: "kronecker_product(A: list[list[float]], B: list[list[float]]) -> list[list[float]]",
-    starterCode: `def kronecker_product(A, B):
+    starterCode: `def kronecker_product(A: list[list[float]], B: list[list[float]]) -> list[list[float]]:
     """Compute the Kronecker product of matrix A and matrix B.
     Return resulting matrix rounded to 4 decimal places."""
     # Implement solution logic here
@@ -59233,7 +59233,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'top_k_elements',
     functionSignature: "top_k_elements(arr: list[float], k: int) -> dict[str, list]",
-    starterCode: `def top_k_elements(arr, k):
+    starterCode: `def top_k_elements(arr: list[float], k: int) -> dict[str, list]:
     """Extract top k largest elements and their original indices.
     Return {'values': list[float], 'indices': list[int]} sorted descending by value."""
     # Implement solution logic here
@@ -59352,7 +59352,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'extract_patches_2d',
     functionSignature: "extract_patches_2d(grid: list[list[float]], patch_size: int, stride: int) -> list[list[list[float]]]",
-    starterCode: `def extract_patches_2d(grid, patch_size, stride):
+    starterCode: `def extract_patches_2d(grid: list[list[float]], patch_size: int, stride: int) -> list[list[list[float]]]:
     """Extract square patches of shape patch_size x patch_size with given stride.
     Return list of 2D patches."""
     # Implement solution logic here
@@ -59655,7 +59655,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'mahalanobis_distance',
     functionSignature: "mahalanobis_distance(u: list[float], v: list[float], inv_cov: list[list[float]]) -> float",
-    starterCode: `def mahalanobis_distance(u, v, inv_cov):
+    starterCode: `def mahalanobis_distance(u: list[float], v: list[float], inv_cov: list[list[float]]) -> float:
     """Compute Mahalanobis distance sqrt((u - v)^T * inv_cov * (u - v)).
     Round float to 4 decimal places."""
     # Implement solution logic here
@@ -59775,7 +59775,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'temperature_softmax',
     functionSignature: "temperature_softmax(logits: list[list[float]], temperature: float) -> list[list[float]]",
-    starterCode: `def temperature_softmax(logits, temperature):
+    starterCode: `def temperature_softmax(logits: list[list[float]], temperature: float) -> list[list[float]]:
     """Compute row-wise temperature-scaled softmax.
     Round probabilities to 4 decimal places."""
     # Implement solution logic here
@@ -59891,7 +59891,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'decode_and_cross_entropy',
     functionSignature: "decode_and_cross_entropy(y_pred: list[list[float]], y_true_onehot: list[list[int]]) -> dict[str, any]",
-    starterCode: `def decode_and_cross_entropy(y_pred, y_true_onehot):
+    starterCode: `def decode_and_cross_entropy(y_pred: list[list[float]], y_true_onehot: list[list[int]]) -> dict[str, any]:
     """Decode predicted class labels and compute mean categorical cross-entropy.
     Return {'decoded_labels': list[int], 'cross_entropy': float}."""
     # Implement solution logic here
@@ -60043,7 +60043,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'batch_matmul_transpose',
     functionSignature: "batch_matmul_transpose(batch_A: list[list[list[float]]], batch_B: list[list[list[float]]]) -> list[list[list[float]]]",
-    starterCode: `def batch_matmul_transpose(batch_A, batch_B):
+    starterCode: `def batch_matmul_transpose(batch_A: list[list[list[float]]], batch_B: list[list[list[float]]]) -> list[list[list[float]]]:
     """Compute batch A @ batch B^T where batch_A is BxMxK and batch_B is BxNxK.
     Output is BxMxN rounded to 4 decimals."""
     # Implement solution logic here
@@ -60264,7 +60264,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'moving_average_1d',
     functionSignature: "moving_average_1d(signal: list[float], window_size: int) -> list[float]",
-    starterCode: `def moving_average_1d(signal, window_size):
+    starterCode: `def moving_average_1d(signal: list[float], window_size: int) -> list[float]:
     """Compute valid 1D rolling moving average using cumulative sums.
     Round output elements to 4 decimal places."""
     # Implement solution logic here
@@ -60363,7 +60363,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'estimate_jacobian',
     functionSignature: "estimate_jacobian(f_outputs_pos: list[list[float]], f_outputs_neg: list[list[float]], eps: float) -> list[list[float]]",
-    starterCode: `def estimate_jacobian(f_outputs_pos, f_outputs_neg, eps):
+    starterCode: `def estimate_jacobian(f_outputs_pos: list[list[float]], f_outputs_neg: list[list[float]], eps: float) -> list[list[float]]:
     """Compute m x n Jacobian matrix using central differences.
     f_outputs_pos[j] is f(x + eps*e_j); f_outputs_neg[j] is f(x - eps*e_j).
     Round entries to 4 decimals."""
@@ -60530,7 +60530,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'bilinear_interpolate',
     functionSignature: "bilinear_interpolate(grid: list[list[float]], x: float, y: float) -> float",
-    starterCode: `def bilinear_interpolate(grid, x, y):
+    starterCode: `def bilinear_interpolate(grid: list[list[float]], x: float, y: float) -> float:
     """Sample grid at continuous coordinates (x, y) using bilinear interpolation.
     Round result to 4 decimal places."""
     # Implement solution logic here
@@ -60640,7 +60640,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'tile_matrix_2d',
     functionSignature: "tile_matrix_2d(mat: list[list[float]], reps_row: int, reps_col: int) -> list[list[float]]",
-    starterCode: `def tile_matrix_2d(mat, reps_row, reps_col):
+    starterCode: `def tile_matrix_2d(mat: list[list[float]], reps_row: int, reps_col: int) -> list[list[float]]:
     """Replicate 2D matrix reps_row times vertically and reps_col times horizontally.
     Return expanded 2D grid."""
     # Implement solution logic here
@@ -60792,7 +60792,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'construct_tridiagonal',
     functionSignature: "construct_tridiagonal(main_diag: list[float], sub_diag: list[float], super_diag: list[float]) -> list[list[float]]",
-    starterCode: `def construct_tridiagonal(main_diag, sub_diag, super_diag):
+    starterCode: `def construct_tridiagonal(main_diag: list[float], sub_diag: list[float], super_diag: list[float]) -> list[list[float]]:
     """Construct n x n tridiagonal matrix from three diagonals.
     Round entries to 4 decimals."""
     # Implement solution logic here
@@ -60948,7 +60948,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'gram_schmidt_orthonormal',
     functionSignature: "gram_schmidt_orthonormal(vectors: list[list[float]]) -> list[list[float]]",
-    starterCode: `def gram_schmidt_orthonormal(vectors):
+    starterCode: `def gram_schmidt_orthonormal(vectors: list[list[float]]) -> list[list[float]]:
     """Convert list of linearly independent vectors into an orthonormal basis.
     Round all vector entries to 4 decimals."""
     # Implement solution logic here
@@ -61085,7 +61085,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'cosine_similarity_matrix',
     functionSignature: "cosine_similarity_matrix(queries: list[list[float]], targets: list[list[float]]) -> list[list[float]]",
-    starterCode: `def cosine_similarity_matrix(queries, targets):
+    starterCode: `def cosine_similarity_matrix(queries: list[list[float]], targets: list[list[float]]) -> list[list[float]]:
     """Compute Q x T pairwise cosine similarity matrix between queries and targets.
     Round values to 4 decimal places."""
     # Implement solution logic here
@@ -61234,7 +61234,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'collate_padded_batch',
     functionSignature: "collate_padded_batch(sequences: list[list[int]], pad_val: int) -> dict[str, list]",
-    starterCode: `def collate_padded_batch(sequences, pad_val):
+    starterCode: `def collate_padded_batch(sequences: list[list[int]], pad_val: int) -> dict[str, list]:
     """Pad sequences to max length and produce boolean attention mask.
     Return {'padded_batch': list[list[int]], 'attention_mask': list[list[int]]}."""
     # Implement solution logic here
@@ -61436,7 +61436,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'compute_discounted_returns',
     functionSignature: "compute_discounted_returns(rewards: list[float], gamma: float) -> list[float]",
-    starterCode: `def compute_discounted_returns(rewards, gamma):
+    starterCode: `def compute_discounted_returns(rewards: list[float], gamma: float) -> list[float]:
     """Compute temporal discounted cumulative returns G_t = sum_k gamma^k * R_{t+k}.
     Round elements to 4 decimals."""
     # Implement solution logic here
@@ -61534,7 +61534,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'weighted_log_loss',
     functionSignature: "weighted_log_loss(y_pred: list[list[float]], y_true_idx: list[int], class_weights: list[float]) -> float",
-    starterCode: `def weighted_log_loss(y_pred, y_true_idx, class_weights):
+    starterCode: `def weighted_log_loss(y_pred: list[list[float]], y_true_idx: list[int], class_weights: list[float]) -> float:
     """Compute sample-weighted negative log-likelihood across predictions.
     Round result to 4 decimal places."""
     # Implement solution logic here
@@ -61657,7 +61657,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'max_pool_2d',
     functionSignature: "max_pool_2d(grid: list[list[float]], pool_size: int, stride: int) -> list[list[float]]",
-    starterCode: `def max_pool_2d(grid, pool_size, stride):
+    starterCode: `def max_pool_2d(grid: list[list[float]], pool_size: int, stride: int) -> list[list[float]]:
     """Compute 2D spatial max pooling over grid.
     Return pooled 2D matrix rounded to 4 decimals."""
     # Implement solution logic here
@@ -61804,7 +61804,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'matrix_condition_number_1norm',
     functionSignature: "matrix_condition_number_1norm(mat: list[list[float]], inv_mat: list[list[float]]) -> dict[str, float]",
-    starterCode: `def matrix_condition_number_1norm(mat, inv_mat):
+    starterCode: `def matrix_condition_number_1norm(mat: list[list[float]], inv_mat: list[list[float]]) -> dict[str, float]:
     """Compute ||A||_1, ||A^{-1}||_1, and condition number kappa_1(A) = ||A||_1 * ||A^{-1}||_1.
     Return dict with keys 'norm_A', 'norm_inv', 'condition_number' rounded to 4 decimals."""
     # Implement solution logic here
@@ -61942,7 +61942,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'split_multi_head_projections',
     functionSignature: "split_multi_head_projections(hidden_states: list[list[list[float]]], num_heads: int, head_dim: int) -> list[list[list[list[float]]]]",
-    starterCode: `def split_multi_head_projections(hidden_states, num_heads, head_dim):
+    starterCode: `def split_multi_head_projections(hidden_states: list[list[list[float]]], num_heads: int, head_dim: int) -> list[list[list[list[float]]]]:
     """Reshape (B, S, num_heads * head_dim) into (B, num_heads, S, head_dim).
     Return 4D tensor representation."""
     # Implement solution logic here
@@ -62127,7 +62127,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'vectorized_huber_loss',
     functionSignature: "vectorized_huber_loss(y_true: list[float], y_pred: list[float], delta: float) -> dict[str, any]",
-    starterCode: `def vectorized_huber_loss(y_true, y_pred, delta):
+    starterCode: `def vectorized_huber_loss(y_true: list[float], y_pred: list[float], delta: float) -> dict[str, any]:
     """Compute Huber loss per sample and mean loss.
     Return {'sample_losses': list[float], 'mean_loss': float} rounded to 4 decimals."""
     # Implement solution logic here
@@ -62244,7 +62244,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'layer_norm',
     functionSignature: "layer_norm(features: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]",
-    starterCode: `def layer_norm(features, gamma, beta, eps=1e-5):
+    starterCode: `def layer_norm(features: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]:
     """Compute layer normalization over feature dimension.
     y = ((x - mean) / sqrt(var + eps)) * gamma + beta.
     Round entries to 4 decimals."""
@@ -62388,7 +62388,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'apply_causal_mask',
     functionSignature: "apply_causal_mask(scores: list[list[float]], mask_val: float = -10000.0) -> list[list[float]]",
-    starterCode: `def apply_causal_mask(scores, mask_val=-10000.0):
+    starterCode: `def apply_causal_mask(scores: list[list[float]], mask_val: float = -10000.0) -> list[list[float]]:
     """Mask upper triangular future positions (j > i) with large negative mask_val.
     Round output matrix entries to 4 decimals."""
     # Implement solution logic here
@@ -62528,7 +62528,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'apply_rope_rotation',
     functionSignature: "apply_rope_rotation(x: list[float], pos: int, theta: float = 10000.0) -> list[float]",
-    starterCode: `def apply_rope_rotation(x, pos, theta=10000.0):
+    starterCode: `def apply_rope_rotation(x: list[float], pos: int, theta: float = 10000.0) -> list[float]:
     """Rotate even-dimensional embedding vector x by RoPE angle at sequence position pos.
     Round entries to 4 decimals."""
     # Implement solution logic here
@@ -62630,7 +62630,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'low_rank_svd_reconstruct',
     functionSignature: "low_rank_svd_reconstruct(U: list[list[float]], S: list[float], Vt: list[list[float]], rank_k: int) -> list[list[float]]",
-    starterCode: `def low_rank_svd_reconstruct(U, S, Vt, rank_k):
+    starterCode: `def low_rank_svd_reconstruct(U: list[list[float]], S: list[float], Vt: list[list[float]], rank_k: int) -> list[list[float]]:
     """Reconstruct rank-k matrix approximation from truncated SVD components.
     Return reconstructed matrix rounded to 4 decimals."""
     # Implement solution logic here
@@ -62806,7 +62806,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'apply_householder_reflection',
     functionSignature: "apply_householder_reflection(v: list[float], x: list[float]) -> list[float]",
-    starterCode: `def apply_householder_reflection(v, x):
+    starterCode: `def apply_householder_reflection(v: list[float], x: list[float]) -> list[float]:
     """Compute Householder reflection H*x where H = I - 2 * (v v^T) / (v^T v).
     Round resulting vector to 4 decimals."""
     # Implement solution logic here
@@ -62908,7 +62908,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'swiglu_activation',
     functionSignature: "swiglu_activation(gate_proj: list[list[float]], up_proj: list[list[float]]) -> list[list[float]]",
-    starterCode: `def swiglu_activation(gate_proj, up_proj):
+    starterCode: `def swiglu_activation(gate_proj: list[list[float]], up_proj: list[list[float]]) -> list[list[float]]:
     """Compute SwiGLU(gate, up) = (gate * sigmoid(gate)) * up.
     Round entries to 4 decimals."""
     # Implement solution logic here
@@ -63037,7 +63037,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'apply_affine_2d',
     functionSignature: "apply_affine_2d(points: list[list[float]], transform_mat: list[list[float]], translation: list[float]) -> list[list[float]]",
-    starterCode: `def apply_affine_2d(points, transform_mat, translation):
+    starterCode: `def apply_affine_2d(points: list[list[float]], transform_mat: list[list[float]], translation: list[float]) -> list[list[float]]:
     """Apply 2D affine transformation p' = M @ p + t to a batch of 2D points.
     Round transformed coordinates to 4 decimals."""
     # Implement solution logic here
@@ -63195,7 +63195,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'merge_online_softmax_blocks',
     functionSignature: "merge_online_softmax_blocks(block_maxes: list[float], block_sums: list[float], block_weights: list[list[float]]) -> dict[str, any]",
-    starterCode: `def merge_online_softmax_blocks(block_maxes, block_sums, block_weights):
+    starterCode: `def merge_online_softmax_blocks(block_maxes: list[float], block_sums: list[float], block_weights: list[list[float]]) -> dict[str, any]:
     """Merge two tiled partial softmax blocks using online rescaling.
     Return {'merged_max': float, 'merged_sum': float, 'merged_output': list[float]} rounded to 4 decimals."""
     # Implement solution logic here
@@ -63336,7 +63336,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'validate_and_coerce_schema',
     functionSignature: "validate_and_coerce_schema(records: list[dict], schema: dict[str, str]) -> list[dict]",
-    starterCode: `def validate_and_coerce_schema(records, schema):
+    starterCode: `def validate_and_coerce_schema(records: list[dict], schema: dict[str, str]) -> list[dict]:
     """Validate schema and coerce types for records according to schema.
     Fallback: int -> 0, float -> 0.0, bool -> False, str -> ''.
     Round floats to 4 decimals."""
@@ -63469,7 +63469,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'impute_dataframe_columns',
     functionSignature: "impute_dataframe_columns(records: list[dict], strategies: dict[str, str]) -> list[dict]",
-    starterCode: `def impute_dataframe_columns(records, strategies):
+    starterCode: `def impute_dataframe_columns(records: list[dict], strategies: dict[str, str]) -> list[dict]:
     """Impute missing values using column strategies: 'mean', 'median', or 'mode'.
     Round numerical fill values to 4 decimals."""
     # Implement solution logic here
@@ -63614,7 +63614,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'groupby_multi_metric',
     functionSignature: "groupby_multi_metric(records: list[dict], group_col: str, target_col: str) -> dict[str, dict[str, float]]",
-    starterCode: `def groupby_multi_metric(records, group_col, target_col):
+    starterCode: `def groupby_multi_metric(records: list[dict], group_col: str, target_col: str) -> dict[str, dict[str, float]]:
     """Compute count, sum, mean, and sample std of target_col grouped by group_col.
     Round floats to 4 decimals."""
     # Implement solution logic here
@@ -63761,7 +63761,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'realign_timeseries_grid',
     functionSignature: "realign_timeseries_grid(timestamps: list[int], values: list[float], step: int) -> dict[str, list]",
-    starterCode: `def realign_timeseries_grid(timestamps, values, step):
+    starterCode: `def realign_timeseries_grid(timestamps: list[int], values: list[float], step: int) -> dict[str, list]:
     """Realign irregularly sampled time series onto regular grid using forward-fill.
     Return {'timestamps': list[int], 'values': list[float]}."""
     # Implement solution logic here
@@ -63900,7 +63900,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'clip_rolling_bollinger_outliers',
     functionSignature: "clip_rolling_bollinger_outliers(series: list[float], window: int, num_std: float) -> list[float]",
-    starterCode: `def clip_rolling_bollinger_outliers(series, window, num_std):
+    starterCode: `def clip_rolling_bollinger_outliers(series: list[float], window: int, num_std: float) -> list[float]:
     """Clip values exceeding rolling mean +/- num_std * rolling std.
     Round clipped values to 4 decimals."""
     # Implement solution logic here
@@ -64010,7 +64010,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'smooth_target_encoding',
     functionSignature: "smooth_target_encoding(categories: list[str], targets: list[float], m_prior: float) -> dict[str, any]",
-    starterCode: `def smooth_target_encoding(categories, targets, m_prior):
+    starterCode: `def smooth_target_encoding(categories: list[str], targets: list[float], m_prior: float) -> dict[str, any]:
     """Compute smoothed target encoding S_c = (n*mean_c + m*global_mean) / (n + m).
     Return {'global_mean': float, 'encoding_map': dict[str, float], 'encoded_series': list[float]}."""
     # Implement solution logic here
@@ -64151,7 +64151,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'pivot_table_with_margins',
     functionSignature: "pivot_table_with_margins(records: list[dict], index_col: str, col_col: str, val_col: str) -> dict[str, dict[str, float]]",
-    starterCode: `def pivot_table_with_margins(records, index_col, col_col, val_col):
+    starterCode: `def pivot_table_with_margins(records: list[dict], index_col: str, col_col: str, val_col: str) -> dict[str, dict[str, float]]:
     """Create 2D pivot table (sum of val_col) with 'ALL' total row and column.
     Round entries to 4 decimals."""
     # Implement solution logic here
@@ -64307,7 +64307,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'merge_asof_temporal',
     functionSignature: "merge_asof_temporal(left_events: list[dict], right_quotes: list[dict], tolerance: int) -> list[dict]",
-    starterCode: `def merge_asof_temporal(left_events, right_quotes, tolerance):
+    starterCode: `def merge_asof_temporal(left_events: list[dict], right_quotes: list[dict], tolerance: int) -> list[dict]:
     """Perform as-of join matching each event with latest quote where quote_t <= event_t.
     Prefix quote keys with 'quote_'. If unmatched, set to None."""
     # Implement solution logic here
@@ -64463,7 +64463,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'expanding_percentile_rank',
     functionSignature: "expanding_percentile_rank(series: list[float]) -> list[float]",
-    starterCode: `def expanding_percentile_rank(series):
+    starterCode: `def expanding_percentile_rank(series: list[float]) -> list[float]:
     """Compute expanding cumulative percentile rank count(x <= current) / total * 100.0.
     Round percentages to 4 decimals."""
     # Implement solution logic here
@@ -64561,7 +64561,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'deduplicate_fuzzy_records',
     functionSignature: "deduplicate_fuzzy_records(records: list[dict], key_field: str, threshold: float = 0.6) -> list[list[dict]]",
-    starterCode: `def deduplicate_fuzzy_records(records, key_field, threshold=0.6):
+    starterCode: `def deduplicate_fuzzy_records(records: list[dict], key_field: str, threshold: float = 0.6) -> list[list[dict]]:
     """Group duplicate records where word-level Jaccard similarity of key_field >= threshold.
     Return list of clustered record lists."""
     # Implement solution logic here
@@ -64716,7 +64716,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'unstack_multilevel_index',
     functionSignature: "unstack_multilevel_index(rows: list[tuple[str, str, str, float]]) -> dict[str, dict[str, dict[str, float]]]",
-    starterCode: `def unstack_multilevel_index(rows):
+    starterCode: `def unstack_multilevel_index(rows: list[tuple[str, str, str, float]]) -> dict[str, dict[str, dict[str, float]]]:
     """Pivot multi-index tuples (entity, date, metric, val) into nested dict {entity: {date: {metric: val}}}.
     Round values to 4 decimals."""
     # Implement solution logic here
@@ -64850,7 +64850,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'flatten_json_payload',
     functionSignature: "flatten_json_payload(payload: dict, sep: str = '_') -> dict[str, any]",
-    starterCode: `def flatten_json_payload(payload, sep='_'):
+    starterCode: `def flatten_json_payload(payload: dict, sep: str = '_') -> dict[str, any]:
     """Flatten arbitrarily nested dictionary into a flat 1D dictionary with delimited keys.
     Return flat dictionary."""
     # Implement solution logic here
@@ -64948,7 +64948,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'sessionize_user_events',
     functionSignature: "sessionize_user_events(events: list[dict], inactivity_timeout: int) -> list[dict]",
-    starterCode: `def sessionize_user_events(events, inactivity_timeout):
+    starterCode: `def sessionize_user_events(events: list[dict], inactivity_timeout: int) -> list[dict]:
     """Assign session_id '{user_id}_s{count}' whenever gap between user events exceeds inactivity_timeout.
     Return event records with added 'session_id' field."""
     # Implement solution logic here
@@ -65107,7 +65107,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'stratified_split_dataset',
     functionSignature: "stratified_split_dataset(labels: list[any], train_ratio: float = 0.7, val_ratio: float = 0.15) -> dict[str, list[int]]",
-    starterCode: `def stratified_split_dataset(labels, train_ratio=0.7, val_ratio=0.15):
+    starterCode: `def stratified_split_dataset(labels: list[any], train_ratio: float = 0.7, val_ratio: float = 0.15) -> dict[str, list[int]]:
     """Partition dataset indices into train, validation, and test sets preserving label proportions.
     Return {'train': list[int], 'validation': list[int], 'test': list[int]} with sorted indices."""
     # Implement solution logic here
@@ -65240,7 +65240,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'ewm_covariance_stream',
     functionSignature: "ewm_covariance_stream(returns_a: list[float], returns_b: list[float], alpha: float = 0.1) -> list[float]",
-    starterCode: `def ewm_covariance_stream(returns_a, returns_b, alpha=0.1):
+    starterCode: `def ewm_covariance_stream(returns_a: list[float], returns_b: list[float], alpha: float = 0.1) -> list[float]:
     """Compute online exponentially weighted covariance cov_t = alpha*(ra-mua)*(rb-mub) + (1-alpha)*cov_{t-1}.
     Round values to 4 decimals."""
     # Implement solution logic here
@@ -65345,7 +65345,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'profile_missing_patterns',
     functionSignature: "profile_missing_patterns(records: list[dict], columns: list[str]) -> dict[str, int]",
-    starterCode: `def profile_missing_patterns(records, columns):
+    starterCode: `def profile_missing_patterns(records: list[dict], columns: list[str]) -> dict[str, int]:
     """Profile frequency of missing column combinations ('none', 'colA+colB').
     Return sorted dictionary mapping pattern string to frequency count."""
     # Implement solution logic here
@@ -65462,7 +65462,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'build_cohort_retention_matrix',
     functionSignature: "build_cohort_retention_matrix(events: list[dict]) -> dict[str, dict[str, float]]",
-    starterCode: `def build_cohort_retention_matrix(events):
+    starterCode: `def build_cohort_retention_matrix(events: list[dict]) -> dict[str, dict[str, float]]:
     """Build cohort retention percentage matrix {cohort: {'period_0': pct, 'period_1': pct, ...}}.
     Round percentage values to 4 decimals."""
     # Implement solution logic here
@@ -65585,7 +65585,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'reconcile_dataframes',
     functionSignature: "reconcile_dataframes(source_df: list[dict], target_df: list[dict], primary_key: str) -> dict[str, any]",
-    starterCode: `def reconcile_dataframes(source_df, target_df, primary_key):
+    starterCode: `def reconcile_dataframes(source_df: list[dict], target_df: list[dict], primary_key: str) -> dict[str, any]:
     """Reconcile source and target tables: find added_keys, removed_keys, and discrepancies.
     Return {'added_keys': list, 'removed_keys': list, 'discrepancies': list[dict]}."""
     # Implement solution logic here
@@ -65727,7 +65727,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'compute_population_stability_index',
     functionSignature: "compute_population_stability_index(ref_counts: list[int], prod_counts: list[int]) -> dict[str, any]",
-    starterCode: `def compute_population_stability_index(ref_counts, prod_counts):
+    starterCode: `def compute_population_stability_index(ref_counts: list[int], prod_counts: list[int]) -> dict[str, any]:
     """Compute PSI = sum (prod_pct - ref_pct) * ln(prod_pct / ref_pct).
     Flag drift if PSI >= 0.25. Return {'psi': float, 'drift_detected': bool}."""
     # Implement solution logic here
@@ -65830,7 +65830,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'aggregate_sliding_time_windows',
     functionSignature: "aggregate_sliding_time_windows(events: list[dict], entity_id: str, target_metric: str, windows_sec: list[int]) -> dict[str, dict[str, float]]",
-    starterCode: `def aggregate_sliding_time_windows(events, entity_id, target_metric, windows_sec):
+    starterCode: `def aggregate_sliding_time_windows(events: list[dict], entity_id: str, target_metric: str, windows_sec: list[int]) -> dict[str, dict[str, float]]:
     """Compute count, sum, mean of target_metric across backwards sliding time windows from latest event.
     Return {'{w}s': {'count': int, 'sum': float, 'mean': float}}."""
     # Implement solution logic here
@@ -65995,7 +65995,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'generate_polynomial_interactions',
     functionSignature: "generate_polynomial_interactions(records: list[dict], feature_cols: list[str]) -> list[dict]",
-    starterCode: `def generate_polynomial_interactions(records, feature_cols):
+    starterCode: `def generate_polynomial_interactions(records: list[dict], feature_cols: list[str]) -> list[dict]:
     """Generate degree-2 cross terms 'f1*f2' for all i <= j. Enriched records returned.
     Round product floats to 4 decimals."""
     # Implement solution logic here
@@ -66116,7 +66116,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'prune_rare_categories',
     functionSignature: "prune_rare_categories(series: list[str], min_frequency: float = 0.05, other_label: str = 'Other') -> dict[str, any]",
-    starterCode: `def prune_rare_categories(series, min_frequency=0.05, other_label='Other'):
+    starterCode: `def prune_rare_categories(series: list[str], min_frequency: float = 0.05, other_label: str = 'Other') -> dict[str, any]:
     """Replace categories with relative frequency < min_frequency with other_label.
     Return {'pruned_series': list[str], 'retained_categories': list[str]}."""
     # Implement solution logic here
@@ -66245,7 +66245,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'build_markov_transition_matrix',
     functionSignature: "build_markov_transition_matrix(sequences: list[list[str]]) -> dict[str, dict[str, float]]",
-    starterCode: `def build_markov_transition_matrix(sequences):
+    starterCode: `def build_markov_transition_matrix(sequences: list[list[str]]) -> dict[str, dict[str, float]]:
     """Compute row-normalized transition probability matrix between categorical states.
     Return {state_from: {state_to: prob}} rounded to 4 decimals."""
     # Implement solution logic here
@@ -66384,7 +66384,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'multi_class_brier_score',
     functionSignature: "multi_class_brier_score(probabilities: list[list[float]], true_labels: list[int], num_classes: int) -> float",
-    starterCode: `def multi_class_brier_score(probabilities, true_labels, num_classes):
+    starterCode: `def multi_class_brier_score(probabilities: list[list[float]], true_labels: list[int], num_classes: int) -> float:
     """Compute overall multi-class Brier score (1/N) * sum_i sum_k (p_ik - y_ik)^2.
     Round score to 4 decimals."""
     # Implement solution logic here
@@ -66492,7 +66492,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'reduce_chunked_aggregations',
     functionSignature: "reduce_chunked_aggregations(chunks: list[list[dict]], agg_field: str) -> dict[str, float]",
-    starterCode: `def reduce_chunked_aggregations(chunks, agg_field):
+    starterCode: `def reduce_chunked_aggregations(chunks: list[list[dict]], agg_field: str) -> dict[str, float]:
     """Compute running count, sum, mean, min, and max across chunk partitions.
     Return {'count': int, 'sum': float, 'mean': float, 'min': float, 'max': float} rounded to 4 decimals."""
     # Implement solution logic here
@@ -66624,7 +66624,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'aggregate_ohlcv_bars',
     functionSignature: "aggregate_ohlcv_bars(ticks: list[dict], bar_seconds: int) -> list[dict]",
-    starterCode: `def aggregate_ohlcv_bars(ticks, bar_seconds):
+    starterCode: `def aggregate_ohlcv_bars(ticks: list[dict], bar_seconds: int) -> list[dict]:
     """Resample raw trades into OHLCV candlestick bars of bar_seconds interval.
     Return list of bars: {'bucket': int, 'open': float, 'high': float, 'low': float, 'close': float, 'volume': float}."""
     # Implement solution logic here
@@ -66764,7 +66764,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'transform_group_standardization',
     functionSignature: "transform_group_standardization(records: list[dict], group_col: str, target_col: str) -> list[dict]",
-    starterCode: `def transform_group_standardization(records, group_col, target_col):
+    starterCode: `def transform_group_standardization(records: list[dict], group_col: str, target_col: str) -> list[dict]:
     """Compute within-group z-score and dense rank for target_col, preserving row order.
     Add 'z_score' and 'group_rank' fields to each record."""
     # Implement solution logic here
@@ -66925,7 +66925,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'compute_correlation_with_mask',
     functionSignature: "compute_correlation_with_mask(matrix_cols: dict[str, list[float]]) -> dict[str, any]",
-    starterCode: `def compute_correlation_with_mask(matrix_cols):
+    starterCode: `def compute_correlation_with_mask(matrix_cols: dict[str, list[float]]) -> dict[str, any]:
     """Compute all pairwise Pearson correlation coefficients and boolean significance mask (|r| >= 0.5).
     Return {'correlation': dict, 'significant_mask': dict}."""
     # Implement solution logic here
@@ -67099,7 +67099,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'watermark_stream_filter',
     functionSignature: "watermark_stream_filter(stream: list[dict], max_delay: int) -> dict[str, list[dict]]",
-    starterCode: `def watermark_stream_filter(stream, max_delay):
+    starterCode: `def watermark_stream_filter(stream: list[dict], max_delay: int) -> dict[str, list[dict]]:
     """Filter stream events based on watermarking watermark = max_ts - max_delay.
     Drop events where timestamp < current_watermark. Return {'accepted_events': list, 'rejected_events': list}."""
     # Implement solution logic here
@@ -67264,7 +67264,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-25 min',
     functionName: 'execute_pipeline_dag',
     functionSignature: "execute_pipeline_dag(initial_state: dict[str, list[float]], stages: list[dict]) -> dict[str, any]",
-    starterCode: `def execute_pipeline_dag(initial_state, stages):
+    starterCode: `def execute_pipeline_dag(initial_state: dict[str, list[float]], stages: list[dict]) -> dict[str, any]:
     """Execute sequential data pipeline stages ('scale', 'add', 'clip') across columns.
     Return {'final_state': dict, 'stages_executed': list[str]} with values rounded to 4 decimals."""
     # Implement solution logic here
@@ -68436,7 +68436,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15–20 min',
     functionName: 'consistent_hash_lookup',
     functionSignature: 'consistent_hash_lookup(key: str, ring: list[tuple[int, str]]) -> str',
-    starterCode: `def consistent_hash_lookup(key, ring):
+    starterCode: `def consistent_hash_lookup(key: str, ring: list[tuple[int, str]]) -> str:
     pass
 `,
     mission: 'Implement consistent hash ring lookup, the core operation behind distributed caching and load balancing.',
@@ -68459,7 +68459,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_2',
     functionSignature: 'dist_sys_2(data: list[int]) -> bool',
-    starterCode: `def dist_sys_2(data):
+    starterCode: `def dist_sys_2(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 2.',
@@ -68482,7 +68482,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_3',
     functionSignature: 'dist_sys_3(data: list[int]) -> bool',
-    starterCode: `def dist_sys_3(data):
+    starterCode: `def dist_sys_3(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 3.',
@@ -68505,7 +68505,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_4',
     functionSignature: 'dist_sys_4(data: list[int]) -> bool',
-    starterCode: `def dist_sys_4(data):
+    starterCode: `def dist_sys_4(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 4.',
@@ -68528,7 +68528,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_5',
     functionSignature: 'dist_sys_5(data: list[int]) -> bool',
-    starterCode: `def dist_sys_5(data):
+    starterCode: `def dist_sys_5(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 5.',
@@ -68551,7 +68551,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_6',
     functionSignature: 'dist_sys_6(data: list[int]) -> bool',
-    starterCode: `def dist_sys_6(data):
+    starterCode: `def dist_sys_6(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 6.',
@@ -68574,7 +68574,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_7',
     functionSignature: 'dist_sys_7(data: list[int]) -> bool',
-    starterCode: `def dist_sys_7(data):
+    starterCode: `def dist_sys_7(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 7.',
@@ -68597,7 +68597,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_8',
     functionSignature: 'dist_sys_8(data: list[int]) -> bool',
-    starterCode: `def dist_sys_8(data):
+    starterCode: `def dist_sys_8(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 8.',
@@ -68620,7 +68620,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_9',
     functionSignature: 'dist_sys_9(data: list[int]) -> bool',
-    starterCode: `def dist_sys_9(data):
+    starterCode: `def dist_sys_9(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 9.',
@@ -68643,7 +68643,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_10',
     functionSignature: 'dist_sys_10(data: list[int]) -> bool',
-    starterCode: `def dist_sys_10(data):
+    starterCode: `def dist_sys_10(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 10.',
@@ -68666,7 +68666,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_11',
     functionSignature: 'dist_sys_11(data: list[int]) -> bool',
-    starterCode: `def dist_sys_11(data):
+    starterCode: `def dist_sys_11(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 11.',
@@ -68689,7 +68689,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_12',
     functionSignature: 'dist_sys_12(data: list[int]) -> bool',
-    starterCode: `def dist_sys_12(data):
+    starterCode: `def dist_sys_12(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 12.',
@@ -68712,7 +68712,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_13',
     functionSignature: 'dist_sys_13(data: list[int]) -> bool',
-    starterCode: `def dist_sys_13(data):
+    starterCode: `def dist_sys_13(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 13.',
@@ -68735,7 +68735,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_14',
     functionSignature: 'dist_sys_14(data: list[int]) -> bool',
-    starterCode: `def dist_sys_14(data):
+    starterCode: `def dist_sys_14(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 14.',
@@ -68758,7 +68758,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_15',
     functionSignature: 'dist_sys_15(data: list[int]) -> bool',
-    starterCode: `def dist_sys_15(data):
+    starterCode: `def dist_sys_15(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 15.',
@@ -68781,7 +68781,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_16',
     functionSignature: 'dist_sys_16(data: list[int]) -> bool',
-    starterCode: `def dist_sys_16(data):
+    starterCode: `def dist_sys_16(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 16.',
@@ -68804,7 +68804,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_17',
     functionSignature: 'dist_sys_17(data: list[int]) -> bool',
-    starterCode: `def dist_sys_17(data):
+    starterCode: `def dist_sys_17(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 17.',
@@ -68827,7 +68827,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_18',
     functionSignature: 'dist_sys_18(data: list[int]) -> bool',
-    starterCode: `def dist_sys_18(data):
+    starterCode: `def dist_sys_18(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 18.',
@@ -68850,7 +68850,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_19',
     functionSignature: 'dist_sys_19(data: list[int]) -> bool',
-    starterCode: `def dist_sys_19(data):
+    starterCode: `def dist_sys_19(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 19.',
@@ -68873,7 +68873,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_20',
     functionSignature: 'dist_sys_20(data: list[int]) -> bool',
-    starterCode: `def dist_sys_20(data):
+    starterCode: `def dist_sys_20(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 20.',
@@ -68896,7 +68896,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_21',
     functionSignature: 'dist_sys_21(data: list[int]) -> bool',
-    starterCode: `def dist_sys_21(data):
+    starterCode: `def dist_sys_21(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 21.',
@@ -68919,7 +68919,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_22',
     functionSignature: 'dist_sys_22(data: list[int]) -> bool',
-    starterCode: `def dist_sys_22(data):
+    starterCode: `def dist_sys_22(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 22.',
@@ -68942,7 +68942,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_23',
     functionSignature: 'dist_sys_23(data: list[int]) -> bool',
-    starterCode: `def dist_sys_23(data):
+    starterCode: `def dist_sys_23(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 23.',
@@ -68965,7 +68965,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_24',
     functionSignature: 'dist_sys_24(data: list[int]) -> bool',
-    starterCode: `def dist_sys_24(data):
+    starterCode: `def dist_sys_24(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 24.',
@@ -68988,7 +68988,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '10-15 min',
     functionName: 'dist_sys_25',
     functionSignature: 'dist_sys_25(data: list[int]) -> bool',
-    starterCode: `def dist_sys_25(data):
+    starterCode: `def dist_sys_25(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement distributed concept 25.',
@@ -69011,7 +69011,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '20-30 min',
     functionName: 'pq_encode',
     functionSignature: 'pq_encode(vector: list[float], codebook: list[list[float]], subspace_size: int) -> list[int]',
-    starterCode: `def pq_encode(vector, codebook, subspace_size):
+    starterCode: `def pq_encode(vector: list[float], codebook: list[list[float]], subspace_size: int) -> list[int]:
     pass
 `,
     mission: 'Implement product quantization subspace encoding.',
@@ -69034,7 +69034,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mcp_sys_46',
     functionSignature: 'mcp_sys_46(data: list[int]) -> bool',
-    starterCode: `def mcp_sys_46(data):
+    starterCode: `def mcp_sys_46(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement MCP System concept 46.',
@@ -69057,7 +69057,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mcp_sys_47',
     functionSignature: 'mcp_sys_47(data: list[int]) -> bool',
-    starterCode: `def mcp_sys_47(data):
+    starterCode: `def mcp_sys_47(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement MCP System concept 47.',
@@ -69080,7 +69080,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mcp_sys_48',
     functionSignature: 'mcp_sys_48(data: list[int]) -> bool',
-    starterCode: `def mcp_sys_48(data):
+    starterCode: `def mcp_sys_48(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement MCP System concept 48.',
@@ -69103,7 +69103,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mcp_sys_49',
     functionSignature: 'mcp_sys_49(data: list[int]) -> bool',
-    starterCode: `def mcp_sys_49(data):
+    starterCode: `def mcp_sys_49(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement MCP System concept 49.',
@@ -69126,7 +69126,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mcp_sys_50',
     functionSignature: 'mcp_sys_50(data: list[int]) -> bool',
-    starterCode: `def mcp_sys_50(data):
+    starterCode: `def mcp_sys_50(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement MCP System concept 50.',
@@ -69149,7 +69149,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mcp_sys_51',
     functionSignature: 'mcp_sys_51(data: list[int]) -> bool',
-    starterCode: `def mcp_sys_51(data):
+    starterCode: `def mcp_sys_51(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement MCP System concept 51.',
@@ -69172,7 +69172,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mcp_sys_52',
     functionSignature: 'mcp_sys_52(data: list[int]) -> bool',
-    starterCode: `def mcp_sys_52(data):
+    starterCode: `def mcp_sys_52(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement MCP System concept 52.',
@@ -69195,7 +69195,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mcp_sys_53',
     functionSignature: 'mcp_sys_53(data: list[int]) -> bool',
-    starterCode: `def mcp_sys_53(data):
+    starterCode: `def mcp_sys_53(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement MCP System concept 53.',
@@ -69218,7 +69218,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mcp_sys_54',
     functionSignature: 'mcp_sys_54(data: list[int]) -> bool',
-    starterCode: `def mcp_sys_54(data):
+    starterCode: `def mcp_sys_54(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement MCP System concept 54.',
@@ -69241,7 +69241,7 @@ def nmi_clustering(labels_true, labels_pred):
     estimatedTime: '15-20 min',
     functionName: 'mcp_sys_55',
     functionSignature: 'mcp_sys_55(data: list[int]) -> bool',
-    starterCode: `def mcp_sys_55(data):
+    starterCode: `def mcp_sys_55(data: list[int]) -> bool:
     pass
 `,
     mission: 'Implement MCP System concept 55.',
@@ -131093,7 +131093,7 @@ def attention_entropy(attention_weights):
     estimatedTime: '10–15 min',
     functionName: 'mse',
     functionSignature: 'mse(y_true: list[float], y_pred: list[float]) -> float',
-    starterCode: `def mse(y_true, y_pred):
+    starterCode: `def mse(y_true: list[float], y_pred: list[float]) -> float:
     """Compute mean squared error between y_true and y_pred.
     Raise ValueError if lengths differ or if empty.
     """
@@ -131207,7 +131207,7 @@ def attention_entropy(attention_weights):
     estimatedTime: '15–20 min',
     functionName: 'weighted_rmse',
     functionSignature: 'weighted_rmse(y_true: list[float], y_pred: list[float], weights: list[float]) -> float',
-    starterCode: `def weighted_rmse(y_true, y_pred, weights):
+    starterCode: `def weighted_rmse(y_true: list[float], y_pred: list[float], weights: list[float]) -> float:
     """Compute weighted root-mean-squared error.
     Raise ValueError if lengths do not match or if sum of weights is zero.
     """
@@ -131320,7 +131320,7 @@ def attention_entropy(attention_weights):
     estimatedTime: '15–20 min',
     functionName: 'gradient_descent_step',
     functionSignature: 'gradient_descent_step(x: list[float], y: list[float], w: float, b: float, alpha: float) -> tuple[float, float]',
-    starterCode: `def gradient_descent_step(x, y, w, b, alpha):
+    starterCode: `def gradient_descent_step(x: list[float], y: list[float], w: float, b: float, alpha: float) -> tuple[float, float]:
     """Compute one gradient descent step for univariate linear regression.
     Return (new_w, new_b).
     """
@@ -131423,7 +131423,7 @@ def attention_entropy(attention_weights):
     estimatedTime: '15–20 min',
     functionName: 'kmeans_assignment_step',
     functionSignature: 'kmeans_assignment_step(points: list[list[float]], centroids: list[list[float]]) -> list[int]',
-    starterCode: `def kmeans_assignment_step(points, centroids):
+    starterCode: `def kmeans_assignment_step(points: list[list[float]], centroids: list[list[float]]) -> list[int]:
     """Assign each point to its nearest centroid by squared Euclidean distance.
     Break ties to the lowest centroid index.
     """
@@ -131550,7 +131550,7 @@ def attention_entropy(attention_weights):
     estimatedTime: '15–20 min',
     functionName: 'kmeans_update_step',
     functionSignature: 'kmeans_update_step(points: list[list[float]], assignments: list[int], k: int, old_centroids: list[list[float]]) -> list[list[float]]',
-    starterCode: `def kmeans_update_step(points, assignments, k, old_centroids):
+    starterCode: `def kmeans_update_step(points: list[list[float]], assignments: list[int], k: int, old_centroids: list[list[float]]) -> list[list[float]]:
     """Update centroids to the mean of assigned points.
     If a cluster is empty, keep its old centroid position.
     """
@@ -131709,7 +131709,7 @@ def attention_entropy(attention_weights):
     estimatedTime: '15–20 min',
     functionName: 'sigmoid_derivative',
     functionSignature: 'sigmoid_derivative(z_list: list[float]) -> list[float]',
-    starterCode: `def sigmoid_derivative(z_list):
+    starterCode: `def sigmoid_derivative(z_list: list[float]) -> list[float]:
     """Compute d(sigmoid(z))/dz for each z in z_list using a numerically stable sigmoid.
     Return list of floats.
     """
@@ -131784,7 +131784,7 @@ def attention_entropy(attention_weights):
     estimatedTime: '20–25 min',
     functionName: 'softmax_gradient',
     functionSignature: 'softmax_gradient(s: list[float], grad_output: list[float]) -> list[float]',
-    starterCode: `def softmax_gradient(s, grad_output):
+    starterCode: `def softmax_gradient(s: list[float], grad_output: list[float]) -> list[float]:
     """Compute the vector-Jacobian product for softmax in O(n) time.
     s is the softmax probability vector, grad_output is dL/ds.
     Return dL/dz.
@@ -131879,7 +131879,7 @@ def attention_entropy(attention_weights):
     functionSignature: 'rms_norm(x: list[list[float]], gamma: list[float], eps: float = 1e-6) -> list[list[float]]',
     starterCode: `import numpy as np
 
-def rms_norm(x, gamma, eps=1e-6):
+def rms_norm(x: list[list[float]], gamma: list[float], eps: float = 1e-6) -> list[list[float]]:
     """Compute RMS Normalization across the feature dimension.
     x: 2D array or list of lists (batch_size, d)
     gamma: 1D scale parameters (d,)
@@ -131996,7 +131996,7 @@ def rms_norm(x, gamma, eps=1e-6):
     functionSignature: 'layer_norm(x: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]',
     starterCode: `import numpy as np
 
-def layer_norm(x, gamma, beta, eps=1e-5):
+def layer_norm(x: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]:
     """Compute Layer Normalization across the feature dimension.
     Return normalized output as list of lists.
     """
@@ -132122,7 +132122,7 @@ def layer_norm(x, gamma, beta, eps=1e-5):
     functionSignature: 'batch_norm(x: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]',
     starterCode: `import numpy as np
 
-def batch_norm(x, gamma, beta, eps=1e-5):
+def batch_norm(x: list[list[float]], gamma: list[float], beta: list[float], eps: float = 1e-5) -> list[list[float]]:
     """Compute Batch Normalization across the batch dimension (axis 0).
     Return normalized output as list of lists.
     """
@@ -132237,7 +132237,7 @@ def batch_norm(x, gamma, beta, eps=1e-5):
     functionSignature: 'categorical_cross_entropy(y_pred: list[list[float]], y_true_idx: list[int], eps: float = 1e-12) -> float',
     starterCode: `import numpy as np
 
-def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
+def categorical_cross_entropy(y_pred: list[list[float]], y_true_idx: list[int], eps: float = 1e-12) -> float:
     """Compute mean categorical cross-entropy loss.
     y_pred: (N, C) probability distributions
     y_true_idx: (N,) true class indices
@@ -132334,7 +132334,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     estimatedTime: '10–15 min',
     functionName: 'sample_mean_and_variance',
     functionSignature: 'sample_mean_and_variance(data: list[float]) -> tuple[float, float]',
-    starterCode: `def sample_mean_and_variance(data):
+    starterCode: `def sample_mean_and_variance(data: list[float]) -> tuple[float, float]:
     """Compute (mean, variance) of a list of numbers.
     Raise ValueError if data is empty.
     """
@@ -132426,7 +132426,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     estimatedTime: '10–15 min',
     functionName: 'standardize',
     functionSignature: 'standardize(data: list[float]) -> list[float]',
-    starterCode: `def standardize(data):
+    starterCode: `def standardize(data: list[float]) -> list[float]:
     """Compute z-score standardized values: (x - mean) / std.
     Raise ValueError if variance is zero or data is empty.
     """
@@ -132514,7 +132514,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     estimatedTime: '15–20 min',
     functionName: 'bayes_posterior',
     functionSignature: 'bayes_posterior(prior: float, sensitivity: float, false_positive_rate: float) -> float',
-    starterCode: `def bayes_posterior(prior, sensitivity, false_positive_rate):
+    starterCode: `def bayes_posterior(prior: float, sensitivity: float, false_positive_rate: float) -> float:
     """Compute P(Condition | Positive) using Bayes' Theorem.
     prior: P(Condition)
     sensitivity: P(Positive | Condition) (true positive rate)
@@ -132585,7 +132585,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     estimatedTime: '15–20 min',
     functionName: 'numerical_gradient',
     functionSignature: 'numerical_gradient(f: any, x: list[float], h: float = 1e-5) -> list[float]',
-    starterCode: `def numerical_gradient(f, x, h=1e-5):
+    starterCode: `def numerical_gradient(f: any, x: list[float], h: float = 1e-5) -> list[float]:
     """f: callable (e.g. lambda x: ...) or string expression in terms of x (e.g. 'x[0]**2').
     x: point to differentiate at (list of numbers).
     Return list of partial derivatives, one per dimension of x.
@@ -132667,7 +132667,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     estimatedTime: '10–15 min',
     functionName: 'cosine_similarity',
     functionSignature: 'cosine_similarity(a: list[float], b: list[float]) -> float',
-    starterCode: `def cosine_similarity(a, b):
+    starterCode: `def cosine_similarity(a: list[float], b: list[float]) -> float:
     """Compute cosine similarity between two non-empty vectors: dot(a, b) / (norm(a) * norm(b)).
     Raise ValueError if lengths differ or if either vector has zero magnitude.
     """
@@ -132768,7 +132768,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     estimatedTime: '15–20 min',
     functionName: 'cosine_similarity_matrix',
     functionSignature: 'cosine_similarity_matrix(vectors: list[list[float]]) -> list[list[float]]',
-    starterCode: `def cosine_similarity_matrix(vectors):
+    starterCode: `def cosine_similarity_matrix(vectors: list[list[float]]) -> list[list[float]]:
     """Compute the n x n pairwise cosine similarity matrix for a list of n vectors.
     Raise ValueError if any vector has zero magnitude.
     """
@@ -132886,7 +132886,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     estimatedTime: '10–15 min',
     functionName: 'tf_idf',
     functionSignature: 'tf_idf(term: str, document: list[str], corpus: list[list[str]]) -> float',
-    starterCode: `def tf_idf(term, document, corpus):
+    starterCode: `def tf_idf(term: str, document: list[str], corpus: list[list[str]]) -> float:
     """Compute TF-IDF weight for a term in a document given a corpus.
     TF = document.count(term) / len(document)
     IDF = math.log(len(corpus) / df) where df = docs in corpus containing term.
@@ -133006,7 +133006,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     estimatedTime: '15–20 min',
     functionName: 'convolve2d',
     functionSignature: 'convolve2d(image: list[list[float]], kernel: list[list[float]]) -> list[list[float]]',
-    starterCode: `def convolve2d(image, kernel):
+    starterCode: `def convolve2d(image: list[list[float]], kernel: list[list[float]]) -> list[list[float]]:
     """Compute 2D valid cross-correlation / convolution between image and kernel.
     Return the (H - Kh + 1) x (W - Kw + 1) output grid.
     """
@@ -133139,7 +133139,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     estimatedTime: '10–15 min',
     functionName: 'discounted_return',
     functionSignature: 'discounted_return(rewards: list[float], gamma: float) -> float',
-    starterCode: `def discounted_return(rewards, gamma):
+    starterCode: `def discounted_return(rewards: list[float], gamma: float) -> float:
     """Compute total discounted return G = sum(gamma^t * r_t for t in 0..T-1).
     """
     # Your code here
@@ -133210,7 +133210,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     estimatedTime: '15–20 min',
     functionName: 'returns_to_go',
     functionSignature: 'returns_to_go(rewards: list[float], gamma: float) -> list[float]',
-    starterCode: `def returns_to_go(rewards, gamma):
+    starterCode: `def returns_to_go(rewards: list[float], gamma: float) -> list[float]:
     """Compute the return-to-go G_t for each timestep t in O(T) time.
     G_t = r_t + gamma * G_{t+1}.
     Return list of returns-to-go.
@@ -133307,7 +133307,7 @@ def categorical_cross_entropy(y_pred, y_true_idx, eps=1e-12):
     functionSignature: 'swiglu_mlp(x: list[list[float]], W1: list[list[float]], W3: list[list[float]], W2: list[list[float]]) -> list[list[float]]',
     starterCode: `import numpy as np
 
-def swiglu_mlp(x, W1, W3, W2):
+def swiglu_mlp(x: list[list[float]], W1: list[list[float]], W3: list[list[float]], W2: list[list[float]]) -> list[list[float]]:
     """Compute the SwiGLU MLP forward pass: (silu(x @ W1) * (x @ W3)) @ W2.
     Return output as list of lists.
     """
@@ -133442,7 +133442,7 @@ def swiglu_mlp(x, W1, W3, W2):
     functionSignature: 'rope(x: list[float], position: int, base: float = 10000.0) -> list[float]',
     starterCode: `import numpy as np
 
-def rope(x, position, base=10000.0):
+def rope(x: list[float], position: int, base: float = 10000.0) -> list[float]:
     """Apply Rotary Positional Embedding (RoPE) to 1D vector x at position m.
     Return transformed vector as list of floats.
     """
@@ -133536,7 +133536,7 @@ def rope(x, position, base=10000.0):
     functionSignature: 'alibi_bias(num_heads: int, seq_len: int) -> list[list[list[float]]]',
     starterCode: `import numpy as np
 
-def alibi_bias(num_heads, seq_len):
+def alibi_bias(num_heads: int, seq_len: int) -> list[list[list[float]]]:
     """Compute ALiBi attention bias matrix of shape (num_heads, seq_len, seq_len).
     Return 3D list of floats.
     """
@@ -133670,7 +133670,7 @@ def alibi_bias(num_heads, seq_len):
     functionSignature: 'grouped_query_attention(Q: list[list[list[float]]], K: list[list[list[float]]], V: list[list[list[float]]], num_kv_groups: int) -> list[list[list[float]]]',
     starterCode: `import numpy as np
 
-def grouped_query_attention(Q, K, V, num_kv_groups):
+def grouped_query_attention(Q: list[list[list[float]]], K: list[list[list[float]]], V: list[list[list[float]]], num_kv_groups: int) -> list[list[list[float]]]:
     """Compute Grouped Query Attention where Q has num_heads and K, V have num_kv_groups.
     Return attention output matching shape of Q.
     """
@@ -133895,7 +133895,7 @@ def grouped_query_attention(Q, K, V, num_kv_groups):
     functionSignature: 'moe_top_k_gating(logits: list[float], k: int) -> tuple[list[int], list[float]]',
     starterCode: `import numpy as np
 
-def moe_top_k_gating(logits, k):
+def moe_top_k_gating(logits: list[float], k: int) -> tuple[list[int], list[float]]:
     """Select top-k expert indices and compute normalized softmax weights.
     Return (top_indices, normalized_weights).
     """
@@ -134000,7 +134000,7 @@ def moe_top_k_gating(logits, k):
     functionSignature: 'lora_linear(x: list[list[float]], W0: list[list[float]], A: list[list[float]], B: list[list[float]], alpha: float, r: int) -> list[list[float]]',
     starterCode: `import numpy as np
 
-def lora_linear(x, W0, A, B, alpha, r):
+def lora_linear(x: list[list[float]], W0: list[list[float]], A: list[list[float]], B: list[list[float]], alpha: float, r: int) -> list[list[float]]:
     """Compute LoRA forward pass: x @ W0.T + (alpha / r) * (x @ A.T) @ B.T.
     Return output as list of lists.
     """
@@ -134121,7 +134121,7 @@ def lora_linear(x, W0, A, B, alpha, r):
     functionSignature: 'top_p_filter(probs: list[float], p: float) -> list[float]',
     starterCode: `import numpy as np
 
-def top_p_filter(probs, p):
+def top_p_filter(probs: list[float], p: float) -> list[float]:
     """Filter vocabulary probabilities to nucleus with cumulative mass >= p.
     Zero out excluded tokens and re-normalize remaining probabilities to sum to 1.
     """
@@ -134214,7 +134214,7 @@ def top_p_filter(probs, p):
     estimatedTime: '15–20 min',
     functionName: 'parallel_sum_reduction',
     functionSignature: 'parallel_sum_reduction(arr: list[float]) -> float',
-    starterCode: `def parallel_sum_reduction(arr):
+    starterCode: `def parallel_sum_reduction(arr: list[float]) -> float:
     """Simulate parallel tree sum reduction in O(log n) stages.
     Return total sum.
     """
@@ -134291,7 +134291,7 @@ def top_p_filter(probs, p):
     functionSignature: 'quantize_int8(W: list[list[float]]) -> tuple[list[list[int]], float]',
     starterCode: `import numpy as np
 
-def quantize_int8(W):
+def quantize_int8(W: list[list[float]]) -> tuple[list[list[int]], float]:
     """Compute symmetric INT8 weight quantization.
     scale = max(abs(W)) / 127.0 (or 1.0 if zero).
     Return (quantized_matrix_as_int, scale_float).
@@ -134417,7 +134417,7 @@ def quantize_int8(W):
     estimatedTime: '15–20 min',
     functionName: 'speculative_verify',
     functionSignature: 'speculative_verify(draft_prob: float, target_prob: float, r: float) -> tuple[bool, float]',
-    starterCode: `def speculative_verify(draft_prob, target_prob, r):
+    starterCode: `def speculative_verify(draft_prob: float, target_prob: float, r: float) -> tuple[bool, float]:
     """Verify speculative token using rejection sampling:
     accept_prob = min(1.0, target_prob / draft_prob)
     accepted = r <= accept_prob
@@ -134496,7 +134496,7 @@ def quantize_int8(W):
     estimatedTime: '20–30 min',
     functionName: 'design_challenge_rag_system',
     functionSignature: 'design_challenge_rag_system(query: str, documents: list[dict], top_k: int = 2) -> dict',
-    starterCode: `def design_challenge_rag_system(query, documents, top_k=2):
+    starterCode: `def design_challenge_rag_system(query: str, documents: list[dict], top_k: int = 2) -> dict:
     """Retrieve and format relevant document context for enterprise RAG.
     Each doc has 'id', 'text', 'metadata'.
     Return dict with 'retrieved_ids' and 'context_str'.
@@ -134591,7 +134591,7 @@ def quantize_int8(W):
     estimatedTime: '20–30 min',
     functionName: 'design_challenge_fraud_detection',
     functionSignature: 'design_challenge_fraud_detection(transaction: dict, velocity_history: list[dict], rules: dict) -> dict',
-    starterCode: `def design_challenge_fraud_detection(transaction, velocity_history, rules):
+    starterCode: `def design_challenge_fraud_detection(transaction: dict, velocity_history: list[dict], rules: dict) -> dict:
     """Evaluate real-time transaction for fraud indicators.
     transaction: {'id', 'user_id', 'amount', 'timestamp'}
     rules: {'max_amount', 'max_velocity_1h'}
@@ -134724,7 +134724,7 @@ def quantize_int8(W):
     estimatedTime: '20–30 min',
     functionName: 'design_challenge_support_agent',
     functionSignature: 'design_challenge_support_agent(intent: str, refund_amount: float, max_auto_refund: float = 50.0) -> dict',
-    starterCode: `def design_challenge_support_agent(intent, refund_amount, max_auto_refund=50.0):
+    starterCode: `def design_challenge_support_agent(intent: str, refund_amount: float, max_auto_refund: float = 50.0) -> dict:
     """Determine autonomous agent action authorization.
     intent: 'query_order' | 'issue_refund' | 'escalate_human'
     Return {'status': 'executed' | 'escalated' | 'denied', 'message': str}.
@@ -134813,7 +134813,7 @@ def quantize_int8(W):
     estimatedTime: '20–30 min',
     functionName: 'design_challenge_recommendations',
     functionSignature: 'design_challenge_recommendations(user_history: list[str], catalog: list[dict], top_n: int = 3) -> list[str]',
-    starterCode: `def design_challenge_recommendations(user_history, catalog, top_n=3):
+    starterCode: `def design_challenge_recommendations(user_history: list[str], catalog: list[dict], top_n: int = 3) -> list[str]:
     """Retrieve top_n recommendations based on category affinity and popularity.
     catalog items have 'id', 'category', 'popularity'.
     Exclude already-viewed items in user_history.
@@ -134915,7 +134915,7 @@ def quantize_int8(W):
     estimatedTime: '10–15 min',
     functionName: 'pair_with_target_sum',
     functionSignature: 'pair_with_target_sum(arr: list[int], target: int) -> list[int]',
-    starterCode: `def pair_with_target_sum(arr, target):
+    starterCode: `def pair_with_target_sum(arr: list[int], target: int) -> list[int]:
     """arr is sorted ascending. Return [i, j], i < j, with arr[i] + arr[j] == target.
     Raise ValueError if no pair exists.
     """
@@ -135020,7 +135020,7 @@ def quantize_int8(W):
     estimatedTime: '15–20 min',
     functionName: 'longest_unique_run',
     functionSignature: 'longest_unique_run(s: str) -> int',
-    starterCode: `def longest_unique_run(s):
+    starterCode: `def longest_unique_run(s: str) -> int:
     """Find the length of the longest substring with all distinct characters.
     """
     # Your code here
@@ -135089,7 +135089,7 @@ def quantize_int8(W):
     estimatedTime: '15–20 min',
     functionName: 'find_rotation_point',
     functionSignature: 'find_rotation_point(arr: list) -> int',
-    starterCode: `def find_rotation_point(arr):
+    starterCode: `def find_rotation_point(arr: list) -> int:
     """Find the index of the smallest element in a rotated sorted array.
     O(log n) time complexity required.
     """
@@ -135184,7 +135184,7 @@ def quantize_int8(W):
     estimatedTime: '15–20 min',
     functionName: 'max_non_adjacent_sum',
     functionSignature: 'max_non_adjacent_sum(nums: list[int]) -> int',
-    starterCode: `def max_non_adjacent_sum(nums):
+    starterCode: `def max_non_adjacent_sum(nums: list[int]) -> int:
     """Find maximum sum of a subsequence such that no two elements are adjacent.
     O(n) time, O(1) space.
     """
@@ -135268,7 +135268,7 @@ def quantize_int8(W):
     estimatedTime: '10–15 min',
     functionName: 'lone_number',
     functionSignature: 'lone_number(nums: list[int]) -> int',
-    starterCode: `def lone_number(nums):
+    starterCode: `def lone_number(nums: list[int]) -> int:
     """Every element appears twice except one. Find that single number in O(n) time and O(1) space.
     """
     # Your code here
@@ -135343,7 +135343,7 @@ def quantize_int8(W):
     estimatedTime: '10–15 min',
     functionName: 'find_missing_number',
     functionSignature: 'find_missing_number(nums: list[int]) -> int',
-    starterCode: `def find_missing_number(nums):
+    starterCode: `def find_missing_number(nums: list[int]) -> int:
     """nums contains n distinct numbers from 0..n with one missing. Find it in O(n) time, O(1) space.
     """
     # Your code here
@@ -135420,7 +135420,7 @@ def quantize_int8(W):
     estimatedTime: '20–25 min',
     functionName: 'largest_rectangle_area',
     functionSignature: 'largest_rectangle_area(heights: list[int]) -> int',
-    starterCode: `def largest_rectangle_area(heights):
+    starterCode: `def largest_rectangle_area(heights: list[int]) -> int:
     """Find the area of the largest rectangle in the histogram in O(n) time.
     """
     # Your code here
@@ -135508,7 +135508,7 @@ def quantize_int8(W):
     estimatedTime: '15–20 min',
     functionName: 'min_stack_ops',
     functionSignature: 'min_stack_ops(operations: list[list]) -> list',
-    starterCode: `def min_stack_ops(operations):
+    starterCode: `def min_stack_ops(operations: list[list]) -> list:
     """Simulate a MinStack supporting 'push', 'pop', 'top', 'get_min'.
     operations: list of ['push', val], ['pop'], ['top'], ['get_min'].
     Return list of return values for 'pop', 'top', 'get_min' (None for push).
@@ -135620,7 +135620,7 @@ def quantize_int8(W):
     functionSignature: 'merge_k_sorted(lists: list[list[int]]) -> list[int]',
     starterCode: `import heapq
 
-def merge_k_sorted(lists):
+def merge_k_sorted(lists: list[list[int]]) -> list[int]:
     """Merge k sorted lists into one sorted list in O(N log k) time.
     """
     # Your code here
@@ -135736,7 +135736,7 @@ def merge_k_sorted(lists):
     functionSignature: 'shortest_path_length(graph: dict, start: str, end: str) -> int',
     starterCode: `from collections import deque
 
-def shortest_path_length(graph, start, end):
+def shortest_path_length(graph: dict, start: str, end: str) -> int:
     """Find shortest path distance between start and end in unweighted graph.
     Return distance, or -1 if unreachable.
     """
@@ -135826,7 +135826,7 @@ def shortest_path_length(graph, start, end):
     estimatedTime: '15–20 min',
     functionName: 'count_islands',
     functionSignature: 'count_islands(grid: list[list[int]]) -> int',
-    starterCode: `def count_islands(grid):
+    starterCode: `def count_islands(grid: list[list[int]]) -> int:
     """Count connected components of 1s in a 2D binary grid.
     """
     # Your code here
@@ -135953,7 +135953,7 @@ def shortest_path_length(graph, start, end):
     estimatedTime: '15–20 min',
     functionName: 'has_cycle',
     functionSignature: 'has_cycle(graph: dict) -> bool',
-    starterCode: `def has_cycle(graph):
+    starterCode: `def has_cycle(graph: dict) -> bool:
     """Detect if directed graph contains a cycle using 3-color DFS.
     graph: {node: [neighbors]}.
     Return True if cycle exists, False otherwise.
@@ -136051,7 +136051,7 @@ def _get_left(node):
 def _get_right(node):
     return node.get('right') if isinstance(node, dict) else getattr(node, 'right', None)
 
-def level_order(root):
+def level_order(root: dict | None) -> list[int]:
     """root: dict with 'val', 'left', 'right', or None.
     Return list of node values in breadth-first level order.
     """
@@ -136152,7 +136152,7 @@ def _get_left(node):
 def _get_right(node):
     return node.get('right') if isinstance(node, dict) else getattr(node, 'right', None)
 
-def is_valid_bst(root, low=float('-inf'), high=float('inf')):
+def is_valid_bst(root: dict | None, low: float = float('-inf'), high: float = float('inf')) -> bool:
     """Validate if binary tree satisfies Binary Search Tree properties.
     All nodes in left subtree must be < root.val, right subtree > root.val.
     """
@@ -136249,7 +136249,7 @@ def _get_left(node):
 def _get_right(node):
     return node.get('right') if isinstance(node, dict) else getattr(node, 'right', None)
 
-def lowest_common_ancestor(root, p_val, q_val):
+def lowest_common_ancestor(root: dict | None, p_val: int, q_val: int) -> dict | None:
     """Return the node dict that is the lowest common ancestor of p_val and q_val.
     """
     # Your code here
@@ -136365,7 +136365,7 @@ def lowest_common_ancestor(root, p_val, q_val):
     estimatedTime: '15–20 min',
     functionName: 'three_sum_zero',
     functionSignature: 'three_sum_zero(nums: list[int]) -> list[list[int]]',
-    starterCode: `def three_sum_zero(nums):
+    starterCode: `def three_sum_zero(nums: list[int]) -> list[list[int]]:
     """Find all unique triplets [a, b, c] that sum to 0 in O(n^2) time.
     """
     # Your code here
@@ -136470,7 +136470,7 @@ def lowest_common_ancestor(root, p_val, q_val):
     estimatedTime: '20–25 min',
     functionName: 'min_window_substring',
     functionSignature: 'min_window_substring(s: str, t: str) -> str',
-    starterCode: `def min_window_substring(s, t):
+    starterCode: `def min_window_substring(s: str, t: str) -> str:
     """Find the minimum window in s that contains all characters of t in O(n) time.
     """
     # Your code here
@@ -136533,7 +136533,7 @@ def lowest_common_ancestor(root, p_val, q_val):
     estimatedTime: '15–20 min',
     functionName: 'search_rotated',
     functionSignature: 'search_rotated(arr: list[int], target: int) -> int',
-    starterCode: `def search_rotated(arr, target):
+    starterCode: `def search_rotated(arr: list[int], target: int) -> int:
     """Search for target in rotated sorted array in O(log n) time.
     Return index or -1 if not found.
     """
@@ -136617,7 +136617,7 @@ def lowest_common_ancestor(root, p_val, q_val):
     functionSignature: 'longest_increasing_subsequence(nums: list[int]) -> int',
     starterCode: `import bisect
 
-def longest_increasing_subsequence(nums):
+def longest_increasing_subsequence(nums: list[int]) -> int:
     """Find length of longest strictly increasing subsequence in O(n log n) time.
     """
     # Your code here
@@ -136706,7 +136706,7 @@ def longest_increasing_subsequence(nums):
     estimatedTime: '15–20 min',
     functionName: 'two_lone_numbers',
     functionSignature: 'two_lone_numbers(nums: list[int]) -> list[int]',
-    starterCode: `def two_lone_numbers(nums):
+    starterCode: `def two_lone_numbers(nums: list[int]) -> list[int]:
     """Every element appears twice except two. Find them in O(n) time, O(1) space.
     Return [a, b] sorted ascending.
     """
@@ -136794,7 +136794,7 @@ def longest_increasing_subsequence(nums):
     estimatedTime: '15–20 min',
     functionName: 'find_duplicates',
     functionSignature: 'find_duplicates(nums: list[int]) -> list[int]',
-    starterCode: `def find_duplicates(nums):
+    starterCode: `def find_duplicates(nums: list[int]) -> list[int]:
     """nums of length n with elements in range 1..n. Each appears 1 or 2 times.
     Find all elements appearing twice in O(n) time, O(1) extra space.
     Return sorted list of duplicates.
@@ -136877,7 +136877,7 @@ def longest_increasing_subsequence(nums):
     estimatedTime: '15–20 min',
     functionName: 'days_until_warmer',
     functionSignature: 'days_until_warmer(temps: list[int]) -> list[int]',
-    starterCode: `def days_until_warmer(temps):
+    starterCode: `def days_until_warmer(temps: list[int]) -> list[int]:
     """For each day, compute days until a warmer temperature in O(n) time.
     Return 0 if no future day is warmer.
     """
@@ -136974,7 +136974,7 @@ def longest_increasing_subsequence(nums):
     estimatedTime: '15–20 min',
     functionName: 'lru_cache_ops',
     functionSignature: 'lru_cache_ops(capacity: int, operations: list[list]) -> list',
-    starterCode: `def lru_cache_ops(capacity, operations):
+    starterCode: `def lru_cache_ops(capacity: int, operations: list[list]) -> list:
     """Simulate LRUCache supporting 'get' and 'put' in O(1) average time.
     operations: list of ['put', key, val] or ['get', key].
     Return list of results (None for put, val or -1 for get).
@@ -137111,7 +137111,7 @@ def longest_increasing_subsequence(nums):
     functionSignature: 'smallest_range(lists: list[list[int]]) -> list[int]',
     starterCode: `import heapq
 
-def smallest_range(lists):
+def smallest_range(lists: list[list[int]]) -> list[int]:
     """Find the smallest range [a, b] that includes at least one number from each of the k lists.
     """
     # Your code here
@@ -137221,7 +137221,7 @@ def smallest_range(lists):
     functionSignature: 'minutes_to_rot_all(grid: list[list[int]]) -> int',
     starterCode: `from collections import deque
 
-def minutes_to_rot_all(grid):
+def minutes_to_rot_all(grid: list[list[int]]) -> int:
     """Compute minimum minutes until no fresh oranges remain using multi-source BFS.
     0 = empty, 1 = fresh, 2 = rotten. Return -1 if impossible.
     """
@@ -137329,7 +137329,7 @@ def _get_left(node):
 def _get_right(node):
     return node.get('right') if isinstance(node, dict) else getattr(node, 'right', None)
 
-def right_side_view(root):
+def right_side_view(root: dict | None) -> list[int]:
     """Return values of nodes visible from the right side of the binary tree.
     """
     # Your code here
@@ -137432,7 +137432,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'minimal_agent_loop',
     functionSignature: 'minimal_agent_loop(initial_state: dict, max_steps: int = 5) -> dict',
-    starterCode: `def minimal_agent_loop(initial_state, max_steps=5):
+    starterCode: `def minimal_agent_loop(initial_state: dict, max_steps: int = 5) -> dict:
     """Execute minimal agent step loop until goal is reached or max_steps exceeded.
     Return final state dict with 'steps_taken' and 'status' ('completed' or 'max_steps_reached').
     """
@@ -137520,7 +137520,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'react_loop_from_scratch',
     functionSignature: 'react_loop_from_scratch(thought: str, action: str, observation: str) -> dict',
-    starterCode: `def react_loop_from_scratch(thought, action, observation):
+    starterCode: `def react_loop_from_scratch(thought: str, action: str, observation: str) -> dict:
     """Format and validate a single ReAct iteration step.
     Return {'thought': thought, 'action': action, 'observation': observation, 'valid': bool}.
     """
@@ -137602,7 +137602,7 @@ def right_side_view(root):
     estimatedTime: '10–15 min',
     functionName: 'agent_step_budget',
     functionSignature: 'agent_step_budget(steps_taken: int, budget: int) -> dict',
-    starterCode: `def agent_step_budget(steps_taken, budget):
+    starterCode: `def agent_step_budget(steps_taken: int, budget: int) -> dict:
     """Track remaining agent steps against budget.
     Return {'remaining': int, 'exhausted': bool, 'pct_used': float}.
     """
@@ -137678,7 +137678,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'loop_termination_by_no_progress',
     functionSignature: 'loop_termination_by_no_progress(state_history: list[str], patience: int = 3) -> bool',
-    starterCode: `def loop_termination_by_no_progress(state_history, patience=3):
+    starterCode: `def loop_termination_by_no_progress(state_history: list[str], patience: int = 3) -> bool:
     """Detect if the last \`patience\` states are identical, indicating stagnation.
     Return True if loop should terminate due to zero progress.
     """
@@ -137755,7 +137755,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'repeated_tool_call_detector',
     functionSignature: 'repeated_tool_call_detector(tool_calls: list[dict], threshold: int = 3) -> bool',
-    starterCode: `def repeated_tool_call_detector(tool_calls, threshold=3):
+    starterCode: `def repeated_tool_call_detector(tool_calls: list[dict], threshold: int = 3) -> bool:
     """Detect if identical tool name and arguments are called consecutively >= threshold times.
     Return True if repeated loop detected.
     """
@@ -137862,7 +137862,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'agent_loop_replay',
     functionSignature: 'agent_loop_replay(trace_events: list[dict]) -> dict',
-    starterCode: `def agent_loop_replay(trace_events):
+    starterCode: `def agent_loop_replay(trace_events: list[dict]) -> dict:
     """Replay execution trace events to reconstruct final state.
     Events have 'type' ('set', 'add', 'clear') and 'key', 'val'.
     Return reconstructed state dict.
@@ -137949,7 +137949,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'deterministic_replay',
     functionSignature: 'deterministic_replay(event_log: list[dict], seed: int) -> bool',
-    starterCode: `def deterministic_replay(event_log, seed):
+    starterCode: `def deterministic_replay(event_log: list[dict], seed: int) -> bool:
     """Verify that event sequence has monotonically non-decreasing timestamps and valid checksum.
     Return True if valid replay log, False otherwise.
     """
@@ -138034,7 +138034,7 @@ def right_side_view(root):
     estimatedTime: '10–15 min',
     functionName: 'tool_result_truncation',
     functionSignature: 'tool_result_truncation(result_str: str, max_chars: int = 1000) -> str',
-    starterCode: `def tool_result_truncation(result_str, max_chars=1000):
+    starterCode: `def tool_result_truncation(result_str: str, max_chars: int = 1000) -> str:
     """Truncate tool output if it exceeds max_chars, retaining head and tail with notice.
     Return formatted string.
     """
@@ -138088,7 +138088,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'agent_state_recovery',
     functionSignature: 'agent_state_recovery(checkpoint: dict, error_message: str) -> dict',
-    starterCode: `def agent_state_recovery(checkpoint, error_message):
+    starterCode: `def agent_state_recovery(checkpoint: dict, error_message: str) -> dict:
     """Recover agent state from checkpoint upon failure.
     Return recovered state with 'recovered': True and 'last_error': error_message.
     """
@@ -138161,7 +138161,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'infinite_loop_guard',
     functionSignature: 'infinite_loop_guard(visited_actions: list[str], max_repeats: int = 2) -> bool',
-    starterCode: `def infinite_loop_guard(visited_actions, max_repeats=2):
+    starterCode: `def infinite_loop_guard(visited_actions: list[str], max_repeats: int = 2) -> bool:
     """Check if any 2-action cycle (A -> B -> A -> B) repeats >= max_repeats times at tail.
     Return True if infinite cycle detected.
     """
@@ -138239,7 +138239,7 @@ def right_side_view(root):
     estimatedTime: '10–15 min',
     functionName: 'tool_output_schema_validator',
     functionSignature: 'tool_output_schema_validator(output: dict, expected_keys: list[str]) -> dict',
-    starterCode: `def tool_output_schema_validator(output, expected_keys):
+    starterCode: `def tool_output_schema_validator(output: dict, expected_keys: list[str]) -> dict:
     """Validate output dictionary contains all expected_keys.
     Return {'valid': bool, 'missing_keys': list[str]}.
     """
@@ -138327,7 +138327,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'asynchronous_tool_runner',
     functionSignature: 'asynchronous_tool_runner(tasks: list[dict]) -> list[dict]',
-    starterCode: `def asynchronous_tool_runner(tasks):
+    starterCode: `def asynchronous_tool_runner(tasks: list[dict]) -> list[dict]:
     """Sort tasks by priority ('high': 0, 'medium': 1, 'low': 2) and tie-break by id.
     Return ordered list of task dicts.
     """
@@ -138422,7 +138422,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'parallel_tool_execution_engine',
     functionSignature: 'parallel_tool_execution_engine(tool_invocations: list[dict]) -> list[list[str]]',
-    starterCode: `def parallel_tool_execution_engine(tool_invocations):
+    starterCode: `def parallel_tool_execution_engine(tool_invocations: list[dict]) -> list[list[str]]:
     """Group independent tool invocations into parallel execution batches.
     Each item has 'id' and 'depends_on' (list of ids).
     Return list of batches (lists of tool ids).
@@ -138526,7 +138526,7 @@ def right_side_view(root):
     estimatedTime: '10–15 min',
     functionName: 'tool_execution_timeout_handler',
     functionSignature: 'tool_execution_timeout_handler(elapsed_ms: int, timeout_ms: int) -> dict',
-    starterCode: `def tool_execution_timeout_handler(elapsed_ms, timeout_ms):
+    starterCode: `def tool_execution_timeout_handler(elapsed_ms: int, timeout_ms: int) -> dict:
     """Evaluate tool execution elapsed time against timeout threshold.
     Return {'status': 'timeout' | 'ok', 'overage_ms': int}.
     """
@@ -138599,7 +138599,7 @@ def right_side_view(root):
     estimatedTime: '10–15 min',
     functionName: 'agent_action_dispatched_log',
     functionSignature: 'agent_action_dispatched_log(action: str, params: dict, timestamp: int) -> dict',
-    starterCode: `def agent_action_dispatched_log(action, params, timestamp):
+    starterCode: `def agent_action_dispatched_log(action: str, params: dict, timestamp: int) -> dict:
     """Create structured dispatch log entry with param count and status 'dispatched'.
     """
     # Your code here
@@ -138673,7 +138673,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'tool_argument_transformer',
     functionSignature: 'tool_argument_transformer(raw_args: dict, type_mapping: dict) -> dict',
-    starterCode: `def tool_argument_transformer(raw_args, type_mapping):
+    starterCode: `def tool_argument_transformer(raw_args: dict, type_mapping: dict) -> dict:
     """Coerce string arguments to target types ('int', 'float', 'bool').
     Return transformed argument dict.
     """
@@ -138746,7 +138746,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'agent_decision_point_logger',
     functionSignature: 'agent_decision_point_logger(alternatives: list[str], chosen: str, rationale: str) -> dict',
-    starterCode: `def agent_decision_point_logger(alternatives, chosen, rationale):
+    starterCode: `def agent_decision_point_logger(alternatives: list[str], chosen: str, rationale: str) -> dict:
     """Log decision point with rejected alternatives and selection rationale.
     Return formatted audit dict.
     """
@@ -138821,7 +138821,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'dynamic_tool_selector',
     functionSignature: 'dynamic_tool_selector(query: str, tools: list[dict]) -> list[str]',
-    starterCode: `def dynamic_tool_selector(query, tools):
+    starterCode: `def dynamic_tool_selector(query: str, tools: list[dict]) -> list[str]:
     """Select tools whose descriptions contain any words from query.
     Rank by match count descending, tie-break by tool name ascending.
     Return list of matching tool names.
@@ -138896,7 +138896,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'sub_agent_loop_call',
     functionSignature: 'sub_agent_loop_call(parent_task: str, subagent_spec: dict) -> dict',
-    starterCode: `def sub_agent_loop_call(parent_task, subagent_spec):
+    starterCode: `def sub_agent_loop_call(parent_task: str, subagent_spec: dict) -> dict:
     """Delegate subtask to subagent with isolated context.
     subagent_spec: {'role': str, 'subtask': str}.
     Return {'parent_task': str, 'delegated_to': str, 'subtask': str, 'status': 'spawned'}.
@@ -138949,7 +138949,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'tool_failure_fallback_strategy',
     functionSignature: 'tool_failure_fallback_strategy(primary_tool: str, fallback_tool: str, primary_failed: bool) -> str',
-    starterCode: `def tool_failure_fallback_strategy(primary_tool, fallback_tool, primary_failed):
+    starterCode: `def tool_failure_fallback_strategy(primary_tool: str, fallback_tool: str, primary_failed: bool) -> str:
     """Select fallback_tool if primary_failed is True, else return primary_tool.
     """
     # Your code here
@@ -139004,7 +139004,7 @@ def right_side_view(root):
     estimatedTime: '10–15 min',
     functionName: 'human_in_the_loop_pause',
     functionSignature: 'human_in_the_loop_pause(confidence: float, threshold: float = 0.8) -> bool',
-    starterCode: `def human_in_the_loop_pause(confidence, threshold=0.8):
+    starterCode: `def human_in_the_loop_pause(confidence: float, threshold: float = 0.8) -> bool:
     """Determine whether agent loop should pause for human feedback based on confidence.
     Return True if confidence < threshold.
     """
@@ -139068,7 +139068,7 @@ def right_side_view(root):
     estimatedTime: '10–15 min',
     functionName: 'human_approval_gate',
     functionSignature: 'human_approval_gate(action_type: str, sensitive_actions: list[str]) -> dict',
-    starterCode: `def human_approval_gate(action_type, sensitive_actions):
+    starterCode: `def human_approval_gate(action_type: str, sensitive_actions: list[str]) -> dict:
     """Check if action_type is in sensitive_actions.
     Return {'requires_approval': bool, 'action': action_type}.
     """
@@ -139133,7 +139133,7 @@ def right_side_view(root):
     estimatedTime: '10–15 min',
     functionName: 'agent_state_serializer',
     functionSignature: 'agent_state_serializer(state: dict) -> str',
-    starterCode: `def agent_state_serializer(state):
+    starterCode: `def agent_state_serializer(state: dict) -> str:
     """Serialize agent state to deterministic sorted canonical JSON string.
     """
     # Your code here
@@ -139187,7 +139187,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'agent_context_window_trimmer',
     functionSignature: 'agent_context_window_trimmer(messages: list[dict], max_tokens: int) -> list[dict]',
-    starterCode: `def agent_context_window_trimmer(messages, max_tokens):
+    starterCode: `def agent_context_window_trimmer(messages: list[dict], max_tokens: int) -> list[dict]:
     """Trim oldest non-system messages to keep estimated tokens <= max_tokens.
     Each message has 'role' and 'content'. Estimate tokens as len(content) // 4.
     Always preserve the first message if role == 'system'.
@@ -139282,7 +139282,7 @@ def right_side_view(root):
     estimatedTime: '10–15 min',
     functionName: 'step_execution_cost_tracker',
     functionSignature: 'step_execution_cost_tracker(prompt_tokens: int, completion_tokens: int, prompt_rate: float, completion_rate: float) -> float',
-    starterCode: `def step_execution_cost_tracker(prompt_tokens, completion_tokens, prompt_rate, completion_rate):
+    starterCode: `def step_execution_cost_tracker(prompt_tokens: int, completion_tokens: int, prompt_rate: float, completion_rate: float) -> float:
     """Calculate inference cost: (prompt_tokens * prompt_rate + completion_tokens * completion_rate) / 1e6.
     Return dollar cost rounded to 6 decimal places.
     """
@@ -139340,7 +139340,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'agent_run_history_compactor',
     functionSignature: 'agent_run_history_compactor(history: list[dict]) -> list[dict]',
-    starterCode: `def agent_run_history_compactor(history):
+    starterCode: `def agent_run_history_compactor(history: list[dict]) -> list[dict]:
     """Compact history by merging consecutive messages from the same role.
     Join contents with '\n'.
     Return compacted list of message dicts.
@@ -139432,7 +139432,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'tool_call_deduplicator',
     functionSignature: 'tool_call_deduplicator(tool_calls: list[dict]) -> list[dict]',
-    starterCode: `def tool_call_deduplicator(tool_calls):
+    starterCode: `def tool_call_deduplicator(tool_calls: list[dict]) -> list[dict]:
     """Remove duplicate tool calls with identical name and arguments while preserving first occurrence order.
     """
     # Your code here
@@ -139540,7 +139540,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'streaming_react_loop',
     functionSignature: 'streaming_react_loop(tokens: list[str]) -> dict',
-    starterCode: `def streaming_react_loop(tokens):
+    starterCode: `def streaming_react_loop(tokens: list[str]) -> dict:
     """Parse streamed tokens into 'thought' and 'action' sections.
     Text before 'Action:' is thought, text after 'Action:' is action.
     Return {'thought': str, 'action': str}.
@@ -139606,7 +139606,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'fault_tolerant_agent_runner',
     functionSignature: 'fault_tolerant_agent_runner(attempts: list[bool], max_retries: int = 3) -> dict',
-    starterCode: `def fault_tolerant_agent_runner(attempts, max_retries=3):
+    starterCode: `def fault_tolerant_agent_runner(attempts: list[bool], max_retries: int = 3) -> dict:
     """Simulate retry loop over boolean attempt outcomes (True = success, False = fail).
     Return {'succeeded': bool, 'attempts_used': int}.
     """
@@ -139690,7 +139690,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'self_healing_agent_step',
     functionSignature: 'self_healing_agent_step(failed_call: dict, error_feedback: str) -> dict',
-    starterCode: `def self_healing_agent_step(failed_call, error_feedback):
+    starterCode: `def self_healing_agent_step(failed_call: dict, error_feedback: str) -> dict:
     """Repair failed tool call using error feedback.
     failed_call: {'tool': str, 'args': dict}.
     If 'unknown parameter: X' in error_feedback, remove key X.
@@ -139767,7 +139767,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'pddl_goal_decomposition',
     functionSignature: 'pddl_goal_decomposition(goals: list[str]) -> list[str]',
-    starterCode: `def pddl_goal_decomposition(goals):
+    starterCode: `def pddl_goal_decomposition(goals: list[str]) -> list[str]:
     """Decompose conjunctive goals into a goal stack, returning subgoals in LIFO evaluation order.
     """
     # Your code here
@@ -139839,7 +139839,7 @@ def right_side_view(root):
     estimatedTime: '15–20 min',
     functionName: 'task_dependency_topological_sort',
     functionSignature: 'task_dependency_topological_sort(dependencies: dict) -> list[str]',
-    starterCode: `def task_dependency_topological_sort(dependencies):
+    starterCode: `def task_dependency_topological_sort(dependencies: dict) -> list[str]:
     """Sort tasks topologically given dependencies {task: [prerequisites]}.
     Tie-break tasks ready at the same time alphabetically.
     """
@@ -139914,7 +139914,7 @@ def right_side_view(root):
     functionSignature: 'bfs_planning(transitions: dict, start_state: str, goal_state: str) -> list[str]',
     starterCode: `from collections import deque
 
-def bfs_planning(transitions, start_state, goal_state):
+def bfs_planning(transitions: dict, start_state: str, goal_state: str) -> list[str]:
     """Find shortest action sequence from start_state to goal_state.
     transitions: {state: [(action_name, next_state)]}.
     Return list of action_names, or None if unreachable.
@@ -140011,7 +140011,7 @@ def bfs_planning(transitions, start_state, goal_state):
     estimatedTime: '15–20 min',
     functionName: 'dfs_planning_backtrack',
     functionSignature: 'dfs_planning_backtrack(transitions: dict, start: str, goal: str, max_depth: int = 5) -> list[str] | None',
-    starterCode: `def dfs_planning_backtrack(transitions, start, goal, max_depth=5):
+    starterCode: `def dfs_planning_backtrack(transitions: dict, start: str, goal: str, max_depth: int = 5) -> list[str] | None:
     """Find plan via depth-limited DFS with backtracking.
     Return list of action names or None.
     """
@@ -140072,7 +140072,7 @@ def bfs_planning(transitions, start_state, goal_state):
     estimatedTime: '10–15 min',
     functionName: 'a_star_cost',
     functionSignature: 'a_star_cost(g_cost: float, h_cost: float) -> float',
-    starterCode: `def a_star_cost(g_cost, h_cost):
+    starterCode: `def a_star_cost(g_cost: float, h_cost: float) -> float:
     """Compute A* total evaluation function f(n) = g(n) + h(n).
     Return float rounded to 4 decimal places.
     """
@@ -140136,7 +140136,7 @@ def bfs_planning(transitions, start_state, goal_state):
     estimatedTime: '15–20 min',
     functionName: 'strips_state_update',
     functionSignature: 'strips_state_update(current_state: list[str], preconditions: list[str], add_effects: list[str], del_effects: list[str]) -> list[str]',
-    starterCode: `def strips_state_update(current_state, preconditions, add_effects, del_effects):
+    starterCode: `def strips_state_update(current_state: list[str], preconditions: list[str], add_effects: list[str], del_effects: list[str]) -> list[str]:
     """Apply STRIPS action: if all preconditions in current_state,
     return sorted((current_state - del_effects) + add_effects).
     Raise ValueError if preconditions not satisfied.
@@ -140214,7 +140214,7 @@ def bfs_planning(transitions, start_state, goal_state):
     estimatedTime: '15–20 min',
     functionName: 'htn_method_selection',
     functionSignature: 'htn_method_selection(task: str, methods: list[dict], current_state: dict) -> str | None',
-    starterCode: `def htn_method_selection(task, methods, current_state):
+    starterCode: `def htn_method_selection(task: str, methods: list[dict], current_state: dict) -> str | None:
     """Select first method for task whose preconditions match current_state.
     Each method has 'task', 'name', 'preconditions' (dict of required key:val).
     Return method name, or None.
@@ -140303,7 +140303,7 @@ def bfs_planning(transitions, start_state, goal_state):
     functionSignature: 'mcts_uct_score(node_wins: float, node_visits: int, parent_visits: int, c: float = 1.414) -> float',
     starterCode: `import math
 
-def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
+def mcts_uct_score(node_wins: float, node_visits: int, parent_visits: int, c: float = 1.414) -> float:
     """Compute UCT score: (node_wins / node_visits) + c * sqrt(ln(parent_visits) / node_visits).
     Return float rounded to 4 decimal places. Return inf if node_visits == 0.
     """
@@ -140361,7 +140361,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'parse_react_trace',
     functionSignature: 'parse_react_trace(trace_text: str) -> list[dict]',
-    starterCode: `def parse_react_trace(trace_text):
+    starterCode: `def parse_react_trace(trace_text: str) -> list[dict]:
     """Parse multiline trace text into list of {'thought': str, 'action': str}.
     """
     # Your code here
@@ -140411,7 +140411,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '10–15 min',
     functionName: 'cot_step_validity',
     functionSignature: 'cot_step_validity(steps: list[dict]) -> bool',
-    starterCode: `def cot_step_validity(steps):
+    starterCode: `def cot_step_validity(steps: list[dict]) -> bool:
     """Verify that every step has 'step_num' (1, 2, 3...) strictly increasing starting at 1,
     and non-empty 'rationale'.
     """
@@ -140484,7 +140484,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'extract_tao_triples',
     functionSignature: 'extract_tao_triples(log_text: str) -> list[dict]',
-    starterCode: `def extract_tao_triples(log_text):
+    starterCode: `def extract_tao_triples(log_text: str) -> list[dict]:
     """Extract complete (Thought, Action, Observation) triples from log text.
     Return list of {'thought': str, 'action': str, 'observation': str}.
     """
@@ -140532,7 +140532,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'validate_plan',
     functionSignature: 'validate_plan(initial_state: list[str], plan: list[dict]) -> bool',
-    starterCode: `def validate_plan(initial_state, plan):
+    starterCode: `def validate_plan(initial_state: list[str], plan: list[dict]) -> bool:
     """Simulate plan step-by-step. Each action has 'preconditions', 'add', 'del'.
     Return True if every action's preconditions are satisfied when executed, else False.
     """
@@ -140622,7 +140622,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'goal_regression_step',
     functionSignature: 'goal_regression_step(subgoals: list[str], action: dict) -> list[str]',
-    starterCode: `def goal_regression_step(subgoals, action):
+    starterCode: `def goal_regression_step(subgoals: list[str], action: dict) -> list[str]:
     """Regress subgoals backwards through action:
     return sorted((subgoals - action['add']) + action['preconditions']).
     """
@@ -140681,7 +140681,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'csp_check_assignment',
     functionSignature: 'csp_check_assignment(assignment: dict, constraints: list[dict]) -> bool',
-    starterCode: `def csp_check_assignment(assignment, constraints):
+    starterCode: `def csp_check_assignment(assignment: dict, constraints: list[dict]) -> bool:
     """Verify assignment satisfies binary inequality constraints.
     Each constraint has 'var1', 'var2', 'relation' ('!=').
     """
@@ -140759,7 +140759,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '10–15 min',
     functionName: 'planning_horizon_limit',
     functionSignature: 'planning_horizon_limit(plan: list[str], max_horizon: int) -> list[str]',
-    starterCode: `def planning_horizon_limit(plan, max_horizon):
+    starterCode: `def planning_horizon_limit(plan: list[str], max_horizon: int) -> list[str]:
     """Truncate plan to at most max_horizon actions.
     """
     # Your code here
@@ -140826,7 +140826,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'identify_subgoals',
     functionSignature: 'identify_subgoals(task_text: str, keywords: list[str]) -> list[str]',
-    starterCode: `def identify_subgoals(task_text, keywords):
+    starterCode: `def identify_subgoals(task_text: str, keywords: list[str]) -> list[str]:
     """Split task_text by sentences/clauses and return those containing any keyword.
     Strip whitespace and filter non-empty.
     """
@@ -140876,7 +140876,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '10–15 min',
     functionName: 'total_plan_cost',
     functionSignature: 'total_plan_cost(plan_actions: list[str], cost_map: dict) -> float',
-    starterCode: `def total_plan_cost(plan_actions, cost_map):
+    starterCode: `def total_plan_cost(plan_actions: list[str], cost_map: dict) -> float:
     """Calculate sum of action costs from cost_map. Default cost is 1.0 if unspecified.
     Return float rounded to 4 decimal places.
     """
@@ -140939,7 +140939,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'detect_violated_condition',
     functionSignature: 'detect_violated_condition(state: dict, required_conditions: dict) -> list[str]',
-    starterCode: `def detect_violated_condition(state, required_conditions):
+    starterCode: `def detect_violated_condition(state: dict, required_conditions: dict) -> list[str]:
     """Find keys in required_conditions where state[k] != required_conditions[k].
     Return sorted list of violated keys.
     """
@@ -141007,7 +141007,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'greedy_best_first_step',
     functionSignature: 'greedy_best_first_step(candidates: list[dict]) -> str | None',
-    starterCode: `def greedy_best_first_step(candidates):
+    starterCode: `def greedy_best_first_step(candidates: list[dict]) -> str | None:
     """Each candidate has 'action' and 'h_cost'. Select action with minimum h_cost.
     Tie-break by action name ascending. Return None if empty.
     """
@@ -141080,7 +141080,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'iterative_deepening_search',
     functionSignature: 'iterative_deepening_search(depth_limits: list[int], target_depth: int) -> int',
-    starterCode: `def iterative_deepening_search(depth_limits, target_depth):
+    starterCode: `def iterative_deepening_search(depth_limits: list[int], target_depth: int) -> int:
     """Simulate IDDFS: find smallest depth_limit >= target_depth. Return that limit, or -1.
     """
     # Your code here
@@ -141141,7 +141141,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'simulate_rollout',
     functionSignature: 'simulate_rollout(state: int, actions: list[int]) -> int',
-    starterCode: `def simulate_rollout(state, actions):
+    starterCode: `def simulate_rollout(state: int, actions: list[int]) -> int:
     """Apply sequential action deltas to scalar state. Return final state.
     """
     # Your code here
@@ -141198,7 +141198,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '10–15 min',
     functionName: 'plan_utility',
     functionSignature: 'plan_utility(reward: float, cost: float, discount: float) -> float',
-    starterCode: `def plan_utility(reward, cost, discount):
+    starterCode: `def plan_utility(reward: float, cost: float, discount: float) -> float:
     """Calculate utility = reward - (cost * discount).
     Return float rounded to 4 decimal places.
     """
@@ -141253,7 +141253,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'risk_aware_plan_selection',
     functionSignature: 'risk_aware_plan_selection(plans: list[dict], risk_tolerance: float = 0.5) -> str | None',
-    starterCode: `def risk_aware_plan_selection(plans, risk_tolerance=0.5):
+    starterCode: `def risk_aware_plan_selection(plans: list[dict], risk_tolerance: float = 0.5) -> str | None:
     """Score plans by score = expected_return - risk_tolerance * variance.
     Select plan with maximum score. Tie-break by name ascending.
     """
@@ -141307,7 +141307,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'find_independent_tasks',
     functionSignature: 'find_independent_tasks(tasks: list[dict]) -> list[str]',
-    starterCode: `def find_independent_tasks(tasks):
+    starterCode: `def find_independent_tasks(tasks: list[dict]) -> list[str]:
     """Find task names that share NO resource locks with any other task.
     Each task has 'name' and 'resources' (list of strings).
     Return sorted list of names.
@@ -141372,7 +141372,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'schedule_sequential_dependencies',
     functionSignature: 'schedule_sequential_dependencies(tasks: list[dict]) -> list[str]',
-    starterCode: `def schedule_sequential_dependencies(tasks):
+    starterCode: `def schedule_sequential_dependencies(tasks: list[dict]) -> list[str]:
     """Sequence tasks so prerequisites always execute before dependents.
     Each task has 'id' and 'prereq' (single prereq id, or None).
     Return list of task ids in valid execution order.
@@ -141432,7 +141432,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '10–15 min',
     functionName: 'compress_consecutive_steps',
     functionSignature: 'compress_consecutive_steps(actions: list[str]) -> list[dict]',
-    starterCode: `def compress_consecutive_steps(actions):
+    starterCode: `def compress_consecutive_steps(actions: list[str]) -> list[dict]:
     """Run-length encode consecutive identical actions: [{'action': a, 'count': n}, ...].
     """
     # Your code here
@@ -141523,7 +141523,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'beam_search_step',
     functionSignature: 'beam_search_step(candidates: list[dict], beam_width: int = 2) -> list[str]',
-    starterCode: `def beam_search_step(candidates, beam_width=2):
+    starterCode: `def beam_search_step(candidates: list[dict], beam_width: int = 2) -> list[str]:
     """Select top beam_width candidates sorted by score descending.
     Tie-break by candidate 'plan_id' ascending. Return list of plan_ids.
     """
@@ -141587,7 +141587,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '10–15 min',
     functionName: 'should_trigger_replan',
     functionSignature: 'should_trigger_replan(expected_state: dict, actual_state: dict) -> bool',
-    starterCode: `def should_trigger_replan(expected_state, actual_state):
+    starterCode: `def should_trigger_replan(expected_state: dict, actual_state: dict) -> bool:
     """Trigger replan (return True) if actual_state differs from expected_state on any key in expected_state.
     """
     # Your code here
@@ -141648,7 +141648,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '10–15 min',
     functionName: 'prioritize_goals',
     functionSignature: 'prioritize_goals(goals: list[dict]) -> list[str]',
-    starterCode: `def prioritize_goals(goals):
+    starterCode: `def prioritize_goals(goals: list[dict]) -> list[str]:
     """Sort goals by priority score = importance * urgency descending.
     Each goal has 'name', 'importance', 'urgency'. Tie-break by name ascending.
     Return sorted list of goal names.
@@ -141711,7 +141711,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: '15–20 min',
     functionName: 'state_diff_monitor',
     functionSignature: 'state_diff_monitor(before_state: dict, after_state: dict) -> dict',
-    starterCode: `def state_diff_monitor(before_state, after_state):
+    starterCode: `def state_diff_monitor(before_state: dict, after_state: dict) -> dict:
     """Compute state delta:
     'added': sorted keys in after but not before,
     'removed': sorted keys in before but not after,
@@ -141791,7 +141791,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "sliding_window_context",
     functionSignature: "sliding_window_context(messages: list[dict], max_tokens: int) -> list[dict]",
-    starterCode: `def sliding_window_context(messages, max_tokens):
+    starterCode: `def sliding_window_context(messages: list[dict], max_tokens: int) -> list[dict]:
     """Truncate conversation history using a sliding window.
     
     If messages[0]['role'] == 'system', preserve it (deducting its tokens).
@@ -141933,7 +141933,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "enforce_token_budget",
     functionSignature: "enforce_token_budget(sections: dict[str, int], total_budget: int, priorities: list[str]) -> dict[str, int]",
-    starterCode: `def enforce_token_budget(sections, total_budget, priorities):
+    starterCode: `def enforce_token_budget(sections: dict[str, int], total_budget: int, priorities: list[str]) -> dict[str, int]:
     """Allocate token budget across context sections according to strict priorities.
     
     sections: {section_name: requested_tokens}
@@ -142036,7 +142036,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "semantic_memory_retrieval",
     functionSignature: "semantic_memory_retrieval(query_embedding: list[float], memory_store: list[dict], k: int) -> list[str]",
-    starterCode: `def semantic_memory_retrieval(query_embedding, memory_store, k):
+    starterCode: `def semantic_memory_retrieval(query_embedding: list[float], memory_store: list[dict], k: int) -> list[str]:
     """Retrieve top-K memory IDs from memory_store based on cosine similarity to query_embedding.
     
     Tie-break equal similarity scores alphabetically by memory ID.
@@ -142185,7 +142185,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "episodic_memory_retrieve",
     functionSignature: "episodic_memory_retrieve(query_embedding: list[float], memories: list[dict], current_step: int, decay_factor: float, alpha: float, k: int) -> list[str]",
-    starterCode: `def episodic_memory_retrieve(query_embedding, memories, current_step, decay_factor, alpha, k):
+    starterCode: `def episodic_memory_retrieve(query_embedding: list[float], memories: list[dict], current_step: int, decay_factor: float, alpha: float, k: int) -> list[str]:
     """Retrieve top-K memories scoring by alpha * recency + (1 - alpha) * relevance.
     
     recency = decay_factor ** (current_step - memory['timestamp'])
@@ -142339,7 +142339,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "fifo_working_memory",
     functionSignature: "fifo_working_memory(operations: list[dict], max_capacity: int) -> list[str]",
-    starterCode: `def fifo_working_memory(operations, max_capacity):
+    starterCode: `def fifo_working_memory(operations: list[dict], max_capacity: int) -> list[str]:
     """Simulate a fixed-capacity working memory buffer with FIFO eviction.
     
     operations: list of {'action': 'add', 'item': str} or {'action': 'clear'}
@@ -142459,7 +142459,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "consolidate_memories",
     functionSignature: "consolidate_memories(memories: list[dict], similarity_threshold: float) -> list[dict]",
-    starterCode: `def consolidate_memories(memories, similarity_threshold):
+    starterCode: `def consolidate_memories(memories: list[dict], similarity_threshold: float) -> list[dict]:
     """Consolidate incoming memories by merging entries with cosine similarity >= similarity_threshold.
     
     Merge rule:
@@ -142642,7 +142642,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "bm25_memory_retrieval",
     functionSignature: "bm25_memory_retrieval(query: str, documents: list[str], k: int) -> list[int]",
-    starterCode: `def bm25_memory_retrieval(query, documents, k):
+    starterCode: `def bm25_memory_retrieval(query: str, documents: list[str], k: int) -> list[int]:
     """Score and retrieve top-k document indices using Okapi BM25 (k1=1.5, b=0.75).
     
     Tokens are lowercase alphanumeric words (re.findall(r'\\w+', text.lower())).
@@ -142729,7 +142729,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "pack_context_windows",
     functionSignature: "pack_context_windows(item_tokens: list[int], max_window_tokens: int) -> list[list[int]]",
-    starterCode: `def pack_context_windows(item_tokens, max_window_tokens):
+    starterCode: `def pack_context_windows(item_tokens: list[int], max_window_tokens: int) -> list[list[int]]:
     """Pack context item token counts into minimum windows using First-Fit Decreasing.
     
     Sort items descending. For each item, place it into the first existing window
@@ -142838,7 +142838,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "compress_memory_with_summary",
     functionSignature: "compress_memory_with_summary(messages: list[dict], max_tokens: int, summary_token_cost: int) -> list[dict]",
-    starterCode: `def compress_memory_with_summary(messages, max_tokens, summary_token_cost):
+    starterCode: `def compress_memory_with_summary(messages: list[dict], max_tokens: int, summary_token_cost: int) -> list[dict]:
     """Compress conversation history when total tokens exceed max_tokens.
     
     Preserve initial system message if present. Replace the smallest prefix
@@ -143004,7 +143004,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "deduplicate_memories",
     functionSignature: "deduplicate_memories(memories: list[str], jaccard_threshold: float) -> list[str]",
-    starterCode: `def deduplicate_memories(memories, jaccard_threshold):
+    starterCode: `def deduplicate_memories(memories: list[str], jaccard_threshold: float) -> list[str]:
     """Filter out near-duplicate memories using Jaccard word-set similarity.
     
     Retain a memory only if its Jaccard similarity < jaccard_threshold
@@ -143093,7 +143093,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "hierarchical_memory_split",
     functionSignature: "hierarchical_memory_split(memories: list[dict], min_access_count: int, min_importance: float) -> dict[str, list[str]]",
-    starterCode: `def hierarchical_memory_split(memories, min_access_count, min_importance):
+    starterCode: `def hierarchical_memory_split(memories: list[dict], min_access_count: int, min_importance: float) -> dict[str, list[str]]:
     """Partition memories into short_term and long_term tiers based on access frequency or importance.
     
     Promote to long_term if access_count >= min_access_count OR importance >= min_importance.
@@ -143200,7 +143200,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "build_entity_index",
     functionSignature: "build_entity_index(memories: list[dict]) -> dict[str, list[str]]",
-    starterCode: `def build_entity_index(memories):
+    starterCode: `def build_entity_index(memories: list[dict]) -> dict[str, list[str]]:
     """Build an inverted index mapping lowercased entity names to sorted lists of memory IDs.
     
     Result dictionary must have sorted entity keys.
@@ -143325,7 +143325,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "evict_expired_memories",
     functionSignature: "evict_expired_memories(memories: list[dict], current_timestamp: int) -> list[str]",
-    starterCode: `def evict_expired_memories(memories, current_timestamp):
+    starterCode: `def evict_expired_memories(memories: list[dict], current_timestamp: int) -> list[str]:
     """Return IDs of unexpired memories where current_timestamp < created_at + ttl.
     
     Preserve relative order of active memories.
@@ -143421,7 +143421,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "sync_cross_session_memory",
     functionSignature: "sync_cross_session_memory(persistent_state: dict, session_updates: dict, immutable_keys: list[str]) -> dict",
-    starterCode: `def sync_cross_session_memory(persistent_state, session_updates, immutable_keys):
+    starterCode: `def sync_cross_session_memory(persistent_state: dict, session_updates: dict, immutable_keys: list[str]) -> dict:
     """Merge session updates into persistent state while protecting existing immutable keys.
     """
     # Your code here
@@ -143521,7 +143521,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "cache_tool_calls",
     functionSignature: "cache_tool_calls(calls: list[dict], cache_ttl: int) -> list[dict]",
-    starterCode: `def cache_tool_calls(calls, cache_ttl):
+    starterCode: `def cache_tool_calls(calls: list[dict], cache_ttl: int) -> list[dict]:
     """Cache tool call executions by (tool, sorted_args) within a TTL window.
     
     Each call has {'tool': str, 'args': dict, 'timestamp': int, 'result': any}.
@@ -143672,7 +143672,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "update_belief_state",
     functionSignature: "update_belief_state(current_beliefs: dict, turn_deltas: list[dict]) -> dict",
-    starterCode: `def update_belief_state(current_beliefs, turn_deltas):
+    starterCode: `def update_belief_state(current_beliefs: dict, turn_deltas: list[dict]) -> dict:
     """Update agent dialogue belief state with slot deltas.
     
     turn_deltas: list of {'slot': str, 'action': 'set' | 'delete', 'value': any}
@@ -143778,7 +143778,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "detect_memory_contradictions",
     functionSignature: "detect_memory_contradictions(facts: list[dict]) -> list[dict]",
-    starterCode: `def detect_memory_contradictions(facts):
+    starterCode: `def detect_memory_contradictions(facts: list[dict]) -> list[dict]:
     """Detect conflicting facts having the same (subject, predicate) with different objects.
     
     facts: list of {'id': str, 'subject': str, 'predicate': str, 'object': str, 'timestamp': int}
@@ -143896,7 +143896,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "score_memory_importance",
     functionSignature: "score_memory_importance(content: str, weights: dict[str, float], base_score: float) -> float",
-    starterCode: `def score_memory_importance(content, weights, base_score):
+    starterCode: `def score_memory_importance(content: str, weights: dict[str, float], base_score: float) -> float:
     """Compute heuristic importance score for memory content clamped to [1.0, 10.0].
     
     content tokens: re.findall(r'\\w+', content.lower())
@@ -143975,7 +143975,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "ebbinghaus_retention",
     functionSignature: "ebbinghaus_retention(initial_strength: float, elapsed_hours: float, stability: float) -> float",
-    starterCode: `def ebbinghaus_retention(initial_strength, elapsed_hours, stability):
+    starterCode: `def ebbinghaus_retention(initial_strength: float, elapsed_hours: float, stability: float) -> float:
     """Calculate Ebbinghaus memory retention: R = initial_strength * exp(-elapsed_hours / stability).
     
     Round result to 4 decimal places.
@@ -144045,7 +144045,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "attention_memory_selection",
     functionSignature: "attention_memory_selection(query: list[float], keys: list[list[float]]) -> list[float]",
-    starterCode: `def attention_memory_selection(query, keys):
+    starterCode: `def attention_memory_selection(query: list[float], keys: list[list[float]]) -> list[float]:
     """Calculate scaled dot-product attention weights over memory keys.
     
     score_i = (query . keys[i]) / sqrt(d)
@@ -144152,7 +144152,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "build_rag_prompt",
     functionSignature: "build_rag_prompt(system_prompt: str, retrieved_memories: list[str], user_query: str, max_context_chars: int) -> str",
-    starterCode: `def build_rag_prompt(system_prompt, retrieved_memories, user_query, max_context_chars):
+    starterCode: `def build_rag_prompt(system_prompt: str, retrieved_memories: list[str], user_query: str, max_context_chars: int) -> str:
     """Assemble a structured memory-augmented prompt with strict character budget for context.
     
     Format:
@@ -144238,7 +144238,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "extract_conversation_summary",
     functionSignature: "extract_conversation_summary(messages: list[dict]) -> dict",
-    starterCode: `def extract_conversation_summary(messages):
+    starterCode: `def extract_conversation_summary(messages: list[dict]) -> dict:
     """Extract summary metrics: user_turns, assistant_turns, and list of user question texts.
     
     A user message is a question if it contains '?'.
@@ -144341,7 +144341,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "execute_kv_operations",
     functionSignature: "execute_kv_operations(operations: list[dict]) -> list",
-    starterCode: `def execute_kv_operations(operations):
+    starterCode: `def execute_kv_operations(operations: list[dict]) -> list:
     """Execute sequence of SET, GET, DELETE, and EXISTS operations on an in-memory KV store.
     
     SET: returns "OK"
@@ -144466,7 +144466,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "entity_centric_lookup",
     functionSignature: "entity_centric_lookup(entity_graph: dict[str, dict], entity: str, relation: str) -> list[str]",
-    starterCode: `def entity_centric_lookup(entity_graph, entity, relation):
+    starterCode: `def entity_centric_lookup(entity_graph: dict[str, dict], entity: str, relation: str) -> list[str]:
     """Retrieve unique sorted target entities connected to an entity via a relation.
     
     entity_graph: {entity_name: {relation_name: [targets]}}
@@ -144566,7 +144566,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "manage_memory_overflow",
     functionSignature: "manage_memory_overflow(memories: list[dict], capacity: int, policy: str) -> list[str]",
-    starterCode: `def manage_memory_overflow(memories, capacity, policy):
+    starterCode: `def manage_memory_overflow(memories: list[dict], capacity: int, policy: str) -> list[str]:
     """Evict excess memories down to capacity based on policy ('lru', 'lfu', 'importance').
     
     Return IDs of retained memories in their original input order.
@@ -144694,7 +144694,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "check_memory_permission",
     functionSignature: "check_memory_permission(user_role: str, action: str, memory_meta: dict) -> bool",
-    starterCode: `def check_memory_permission(user_role, action, memory_meta):
+    starterCode: `def check_memory_permission(user_role: str, action: str, memory_meta: dict) -> bool:
     """Verify if user_role ('admin', 'editor', 'viewer') has permission to perform action ('read', 'write', 'delete').
     
     admin (level 3) has full access.
@@ -144777,7 +144777,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "retrieval_reasoning_step",
     functionSignature: "retrieval_reasoning_step(hypothesis: str, evidence_snippets: list[dict], confidence_threshold: float) -> dict",
-    starterCode: `def retrieval_reasoning_step(hypothesis, evidence_snippets, confidence_threshold):
+    starterCode: `def retrieval_reasoning_step(hypothesis: str, evidence_snippets: list[dict], confidence_threshold: float) -> dict:
     """Evaluate whether evidence supports hypothesis (accept >= 0.6, reject <= 0.4, else retrieve_more).
     
     Only snippets with relevance >= confidence_threshold are considered.
@@ -144894,7 +144894,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "route_multimodal_memory",
     functionSignature: "route_multimodal_memory(observation: dict) -> str",
-    starterCode: `def route_multimodal_memory(observation):
+    starterCode: `def route_multimodal_memory(observation: dict) -> str:
     """Route incoming observation dict to 'sensory', 'procedural', 'semantic', or 'episodic' memory.
     """
     # Your code here
@@ -144963,7 +144963,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "track_memory_provenance",
     functionSignature: "track_memory_provenance(claim: str, sources: list[dict]) -> list[str]",
-    starterCode: `def track_memory_provenance(claim, sources):
+    starterCode: `def track_memory_provenance(claim: str, sources: list[dict]) -> list[str]:
     """Find source IDs that provide evidence for claim (>= 2 overlapping words with len > 3).
     
     Return sorted list of source IDs.
@@ -145050,7 +145050,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "synthesize_reflections",
     functionSignature: "synthesize_reflections(memories: list[dict], min_frequency: int) -> list[dict]",
-    starterCode: `def synthesize_reflections(memories, min_frequency):
+    starterCode: `def synthesize_reflections(memories: list[dict], min_frequency: int) -> list[dict]:
     """Synthesize high-level reflections from memories grouped by category.
     
     Only categories with count >= min_frequency are included.
@@ -145174,7 +145174,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "trie_insert_and_search",
     functionSignature: "trie_insert_and_search(words_to_insert: list[str], words_to_search: list[str]) -> list[bool]",
-    starterCode: `def trie_insert_and_search(words_to_insert, words_to_search):
+    starterCode: `def trie_insert_and_search(words_to_insert: list[str], words_to_search: list[str]) -> list[bool]:
     """Build a prefix tree (Trie) from words_to_insert, then search each word in words_to_search.
     
     Return a list of booleans indicating whether each search word is present in the Trie.
@@ -145273,7 +145273,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "trie_prefix_completion",
     functionSignature: "trie_prefix_completion(words: list[str], prefix: str) -> list[str]",
-    starterCode: `def trie_prefix_completion(words, prefix):
+    starterCode: `def trie_prefix_completion(words: list[str], prefix: str) -> list[str]:
     """Find all words in the Trie starting with prefix, returned in alphabetical order.
     """
     # Your code here
@@ -145359,7 +145359,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "segment_tree_range_sum",
     functionSignature: "segment_tree_range_sum(arr: list[int], queries: list[list[int]]) -> list[int]",
-    starterCode: `def segment_tree_range_sum(arr, queries):
+    starterCode: `def segment_tree_range_sum(arr: list[int], queries: list[list[int]]) -> list[int]:
     """Answer range sum queries [L, R] (inclusive) on arr using a Segment Tree in O(log N) time per query.
     """
     # Your code here
@@ -145480,7 +145480,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "segment_tree_point_update",
     functionSignature: "segment_tree_point_update(arr: list[int], operations: list[dict]) -> list[int]",
-    starterCode: `def segment_tree_point_update(arr, operations):
+    starterCode: `def segment_tree_point_update(arr: list[int], operations: list[dict]) -> list[int]:
     """Execute dynamic point updates and range sum queries on arr using a Segment Tree.
     
     operations: list of {'type': 'update', 'idx': int, 'val': int}
@@ -145609,7 +145609,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "fenwick_prefix_sum",
     functionSignature: "fenwick_prefix_sum(arr: list[int], query_indices: list[int]) -> list[int]",
-    starterCode: `def fenwick_prefix_sum(arr, query_indices):
+    starterCode: `def fenwick_prefix_sum(arr: list[int], query_indices: list[int]) -> list[int]:
     """Compute prefix sums sum(arr[0..idx]) for each 0-based idx in query_indices using a Binary Indexed Tree.
     """
     # Your code here
@@ -145711,7 +145711,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "fenwick_point_update",
     functionSignature: "fenwick_point_update(arr: list[int], operations: list[dict]) -> list[int]",
-    starterCode: `def fenwick_point_update(arr, operations):
+    starterCode: `def fenwick_point_update(arr: list[int], operations: list[dict]) -> list[int]:
     """Maintain Fenwick Tree under dynamic additions and prefix sum queries.
     
     operations: list of {'type': 'add', 'idx': int, 'delta': int}
@@ -145841,7 +145841,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "skip_list_search",
     functionSignature: "skip_list_search(levels: list[list[int]], target: int) -> bool",
-    starterCode: `def skip_list_search(levels, target):
+    starterCode: `def skip_list_search(levels: list[list[int]], target: int) -> bool:
     """Search for target in a multi-level Skip List representation.
     
     levels: list of sorted lists [level_k, ..., level_0] from top sparse to bottom dense.
@@ -145944,7 +145944,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "bloom_filter_check",
     functionSignature: "bloom_filter_check(capacity: int, items_to_add: list[str], items_to_check: list[str]) -> list[bool]",
-    starterCode: `def bloom_filter_check(capacity, items_to_add, items_to_check):
+    starterCode: `def bloom_filter_check(capacity: int, items_to_add: list[str], items_to_check: list[str]) -> list[bool]:
     """Simulate a Bloom filter of bit length capacity using two standard hash functions:
     - h1 (FNV-1a): init 2166136261, for ch: h ^= ord(ch), h = (h * 16777619) & 0xFFFFFFFF; return h % capacity
     - h2 (DJB2): init 5381, for ch: h = (((h << 5) + h) + ord(ch)) & 0xFFFFFFFF; return h % capacity
@@ -146040,7 +146040,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "min_heap_operations",
     functionSignature: "min_heap_operations(operations: list[dict]) -> list",
-    starterCode: `def min_heap_operations(operations):
+    starterCode: `def min_heap_operations(operations: list[dict]) -> list:
     """Simulate sequence of min-heap operations:
     {'op': 'push', 'val': int} -> pushes value
     {'op': 'pop'} -> returns smallest value or None if empty
@@ -146161,7 +146161,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "beam_search_top_k",
     functionSignature: "beam_search_top_k(candidates: list[dict], beam_width: int) -> list[str]",
-    starterCode: `def beam_search_top_k(candidates, beam_width):
+    starterCode: `def beam_search_top_k(candidates: list[dict], beam_width: int) -> list[str]:
     """Filter generation candidates for beam search expansion, selecting top beam_width items by score descending.
     
     candidates: list of {'id': str, 'score': float}
@@ -146266,7 +146266,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "disjoint_set_connected_components",
     functionSignature: "disjoint_set_connected_components(n: int, edges: list[list[int]]) -> int",
-    starterCode: `def disjoint_set_connected_components(n, edges):
+    starterCode: `def disjoint_set_connected_components(n: int, edges: list[list[int]]) -> int:
     """Count connected components in an undirected graph with n vertices (0 to n-1) using Union-Find.
     """
     # Your code here
@@ -146356,7 +146356,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "union_find_cycle_detection",
     functionSignature: "union_find_cycle_detection(n: int, edges: list[list[int]]) -> bool",
-    starterCode: `def union_find_cycle_detection(n, edges):
+    starterCode: `def union_find_cycle_detection(n: int, edges: list[list[int]]) -> bool:
     """Detect if adding edges to an n-node graph introduces a cycle using Union-Find with path compression.
     
     Return True if cycle detected, False otherwise.
@@ -146453,7 +146453,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "lru_cache_simulation",
     functionSignature: "lru_cache_simulation(capacity: int, operations: list[dict]) -> list",
-    starterCode: `def lru_cache_simulation(capacity, operations):
+    starterCode: `def lru_cache_simulation(capacity: int, operations: list[dict]) -> list:
     """Simulate an LRU cache supporting 'get' and 'put'. Return results of all 'get' operations.
     
     operations: [{'type': 'get', 'key': any}, {'type': 'put', 'key': any, 'val': any}]
@@ -146575,7 +146575,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "lfu_cache_simulation",
     functionSignature: "lfu_cache_simulation(capacity: int, operations: list[dict]) -> list",
-    starterCode: `def lfu_cache_simulation(capacity, operations):
+    starterCode: `def lfu_cache_simulation(capacity: int, operations: list[dict]) -> list:
     """Simulate an LFU cache supporting 'get' and 'put'. Tie-break lowest frequency by least recently used.
     
     Return results of all 'get' operations.
@@ -146722,7 +146722,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "btree_split_child",
     functionSignature: "btree_split_child(keys: list[int], max_degree: int) -> dict",
-    starterCode: `def btree_split_child(keys, max_degree):
+    starterCode: `def btree_split_child(keys: list[int], max_degree: int) -> dict:
     """Split an overflowing B-tree node containing keys into left child, promoted median, and right child.
     
     mid = len(keys) // 2
@@ -146837,7 +146837,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "hash_map_chaining",
     functionSignature: "hash_map_chaining(num_buckets: int, operations: list[dict]) -> list",
-    starterCode: `def hash_map_chaining(num_buckets, operations):
+    starterCode: `def hash_map_chaining(num_buckets: int, operations: list[dict]) -> list:
     """Simulate a separate chaining hash table with num_buckets buckets.
     
     Hash index = hash(key) % num_buckets.
@@ -146968,7 +146968,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "cuckoo_hash_insert",
     functionSignature: "cuckoo_hash_insert(table_size: int, keys: list[int]) -> dict",
-    starterCode: `def cuckoo_hash_insert(table_size, keys):
+    starterCode: `def cuckoo_hash_insert(table_size: int, keys: list[int]) -> dict:
     """Insert integer keys into two tables of size table_size using Cuckoo hashing:
     h1(k) = k % table_size
     h2(k) = (k // table_size) % table_size
@@ -147086,7 +147086,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "consistent_hash_ring",
     functionSignature: "consistent_hash_ring(nodes: list[str], keys: list[str]) -> dict[str, str]",
-    starterCode: `def consistent_hash_ring(nodes, keys):
+    starterCode: `def consistent_hash_ring(nodes: list[str], keys: list[str]) -> dict[str, str]:
     """Assign keys to nodes on a 360-degree hash ring using:
     hash_pos(s) = sum(ord(c) * (31 ** i) for i, c in enumerate(s)) % 360
     Walk clockwise to the first node with pos >= key_pos (wrap around to ring[0]).
@@ -147181,7 +147181,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "veb_successor",
     functionSignature: "veb_successor(elements: list[int], u: int, x: int) -> int | None",
-    starterCode: `def veb_successor(elements, u, x):
+    starterCode: `def veb_successor(elements: list[int], u: int, x: int) -> int | None:
     """Find the smallest element in elements (subset of universe [0, u-1]) strictly greater than x.
     
     Return None if no such element exists.
@@ -147263,7 +147263,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "radix_sort_integers",
     functionSignature: "radix_sort_integers(nums: list[int]) -> list[int]",
-    starterCode: `def radix_sort_integers(nums):
+    starterCode: `def radix_sort_integers(nums: list[int]) -> list[int]:
     """Sort non-negative integers using Least Significant Digit (LSD) Radix Sort in O(d * (n + k)) time.
     """
     # Your code here
@@ -147364,7 +147364,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "count_min_sketch",
     functionSignature: "count_min_sketch(width: int, depth: int, stream: list[str], queries: list[str]) -> list[int]",
-    starterCode: `def count_min_sketch(width, depth, stream, queries):
+    starterCode: `def count_min_sketch(width: int, depth: int, stream: list[str], queries: list[str]) -> list[int]:
     """Estimate point frequencies in a streaming dataset using Count-Min Sketch.
     
     Hash function for row r:
@@ -147470,7 +147470,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "hyperloglog_cardinality",
     functionSignature: "hyperloglog_cardinality(items: list[str], num_buckets: int) -> int",
-    starterCode: `def hyperloglog_cardinality(items, num_buckets):
+    starterCode: `def hyperloglog_cardinality(items: list[str], num_buckets: int) -> int:
     """Estimate unique item cardinality using HyperLogLog harmonic register averaging.
     
     Return rounded integer estimate.
@@ -147740,7 +147740,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "reservoir_sample",
     functionSignature: "reservoir_sample(stream: list[int], k: int, seed: int) -> list[int]",
-    starterCode: `def reservoir_sample(stream, k, seed):
+    starterCode: `def reservoir_sample(stream: list[int], k: int, seed: int) -> list[int]:
     """Select k uniform random samples from an unknown-length stream using Algorithm R.
     
     Use random.Random(seed).randint(0, i) to decide replacements for i in range(k, len(stream)).
@@ -147838,7 +147838,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "weighted_sample_cumulative",
     functionSignature: "weighted_sample_cumulative(weights: list[float], random_value: float) -> int",
-    starterCode: `def weighted_sample_cumulative(weights, random_value):
+    starterCode: `def weighted_sample_cumulative(weights: list[float], random_value: float) -> int:
     """Sample an item index given non-negative weights and a deterministic probe random_value in [0, 1).
     
     target = random_value * sum(weights)
@@ -147916,7 +147916,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "order_statistics_rank",
     functionSignature: "order_statistics_rank(arr: list[int], x: int) -> int",
-    starterCode: `def order_statistics_rank(arr, x):
+    starterCode: `def order_statistics_rank(arr: list[int], x: int) -> int:
     """Compute the 1-based rank of element x: total count of elements in arr <= x.
     """
     # Your code here
@@ -147996,7 +147996,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "interval_tree_find_overlaps",
     functionSignature: "interval_tree_find_overlaps(intervals: list[list[int]], query_interval: list[int]) -> list[list[int]]",
-    starterCode: `def interval_tree_find_overlaps(intervals, query_interval):
+    starterCode: `def interval_tree_find_overlaps(intervals: list[list[int]], query_interval: list[int]) -> list[list[int]]:
     """Find all closed intervals [start, end] in intervals that overlap with query_interval [qs, qe].
     
     Overlap condition: max(start, qs) <= min(end, qe).
@@ -148113,7 +148113,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "kd_tree_nearest_neighbor",
     functionSignature: "kd_tree_nearest_neighbor(points: list[list[float]], query: list[float]) -> list[float]",
-    starterCode: `def kd_tree_nearest_neighbor(points, query):
+    starterCode: `def kd_tree_nearest_neighbor(points: list[list[float]], query: list[float]) -> list[float]:
     """Find the 2D point in points nearest to query by Euclidean distance.
     
     Tie-break by point[0] ascending, then point[1] ascending.
@@ -148232,7 +148232,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "ball_tree_center_radius",
     functionSignature: "ball_tree_center_radius(points: list[list[float]]) -> dict",
-    starterCode: `def ball_tree_center_radius(points):
+    starterCode: `def ball_tree_center_radius(points: list[list[float]]) -> dict:
     """Compute centroid and bounding radius for a Ball Tree hyper-sphere node.
     
     center[d] = mean of points[:, d] rounded to 4 decimals
@@ -148354,7 +148354,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "hnsw_layer_greedy_search",
     functionSignature: "hnsw_layer_greedy_search(graph: dict[str, list[str]], node_vectors: dict[str, list[float]], entry_point: str, query: list[float]) -> str",
-    starterCode: `def hnsw_layer_greedy_search(graph, node_vectors, entry_point, query):
+    starterCode: `def hnsw_layer_greedy_search(graph: dict[str, list[str]], node_vectors: dict[str, list[float]], entry_point: str, query: list[float]) -> str:
     """Traverse a single proximity graph layer in an HNSW index using greedy best-first search.
     
     At each step, move to neighbor with strictly smaller Euclidean distance to query.
@@ -148509,7 +148509,7 @@ def mcts_uct_score(node_wins, node_visits, parent_visits, c=1.414):
     estimatedTime: "15–20 min",
     functionName: "inverted_index_boolean_and",
     functionSignature: "inverted_index_boolean_and(documents: dict[str, str], query_terms: list[str]) -> list[str]",
-    starterCode: `def inverted_index_boolean_and(documents, query_terms):
+    starterCode: `def inverted_index_boolean_and(documents: dict[str, str], query_terms: list[str]) -> list[str]:
     """Build an inverted index mapping lowercased tokens to doc IDs, then execute a Boolean AND query.
     
     Return sorted list of doc IDs that contain ALL query_terms.

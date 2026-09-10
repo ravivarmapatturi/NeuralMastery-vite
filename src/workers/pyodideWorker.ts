@@ -260,6 +260,21 @@ def _safe_eq(actual, expected):
         if len(actual) != len(expected):
             return False
         return all(_safe_eq(a, e) for a, e in zip(actual, expected))
+    if isinstance(actual, dict) and isinstance(expected, dict):
+        # expectedOutput always arrives from JS test-case data, where object
+        # keys can only ever be strings -- so a correct Python solution that
+        # legitimately returns non-string dict keys (e.g. int keys for a
+        # frequency count over integer input, which several problems'
+        # own constraints explicitly require) would otherwise always fail
+        # here even though every value genuinely matches. Compare by each
+        # key's str() form instead of the raw key object.
+        if len(actual) != len(expected):
+            return False
+        actual_by_str_key = {str(k): v for k, v in actual.items()}
+        expected_by_str_key = {str(k): v for k, v in expected.items()}
+        if set(actual_by_str_key.keys()) != set(expected_by_str_key.keys()):
+            return False
+        return all(_safe_eq(actual_by_str_key[k], expected_by_str_key[k]) for k in actual_by_str_key)
     return actual == expected
 
 def _to_json_str(val):

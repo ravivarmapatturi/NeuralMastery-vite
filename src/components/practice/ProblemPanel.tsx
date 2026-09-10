@@ -108,6 +108,56 @@ function StepByStepWalkthrough({ problem }: { problem: PracticeProblem }) {
   );
 }
 
+/** The specific skills/concepts this problem exercises, each linking to the
+ * lesson that teaches it -- e.g. a dict-counting problem links to Python
+ * dictionaries and loop constructs, not just a generic "Fundamentals" page.
+ * Shared between the Description tab's "Used In" block and the Worked
+ * Intuition tab (which previously had no related-links section at all). */
+function RelatedSkillsLinks({ problem }: { problem: PracticeProblem }) {
+  if (!problem.conceptConnections || problem.conceptConnections.length === 0) return null;
+  return (
+    <div>
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+          color: 'var(--nm-text-muted)',
+          marginBottom: 8,
+        }}
+      >
+        Related Skills
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        {problem.conceptConnections.map((conn, i) => (
+          <Link
+            key={i}
+            to={conn.route}
+            title={conn.description}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              fontSize: 12,
+              fontWeight: 500,
+              color: 'var(--nm-text-primary)',
+              padding: '4px 10px',
+              borderRadius: 6,
+              background: 'var(--nm-surface-alt)',
+              border: '1px solid var(--nm-border)',
+              textDecoration: 'none',
+            }}
+          >
+            <BookOpenIcon size={13} color="var(--nm-accent-secondary)" />
+            <span>{conn.title}</span>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 interface ProblemPanelProps {
   problem: PracticeProblem;
   mdxContent?: React.ReactNode;
@@ -493,48 +543,7 @@ export default function ProblemPanel({
                 {problem.mission}
               </div>
 
-              {/* Used In: Horizontal chip row */}
-              {problem.conceptConnections && problem.conceptConnections.length > 0 && (
-                <div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 700,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.06em',
-                      color: 'var(--nm-text-muted)',
-                      marginBottom: 8,
-                    }}
-                  >
-                    Used In
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                    {problem.conceptConnections.map((conn, i) => (
-                      <Link
-                        key={i}
-                        to={conn.route}
-                        title={conn.description}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 6,
-                          fontSize: 12,
-                          fontWeight: 500,
-                          color: 'var(--nm-text-primary)',
-                          padding: '4px 10px',
-                          borderRadius: 6,
-                          background: 'var(--nm-surface-alt)',
-                          border: '1px solid var(--nm-border)',
-                          textDecoration: 'none',
-                        }}
-                      >
-                        <BookOpenIcon size={13} color="var(--nm-accent-secondary)" />
-                        <span>{conn.title}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <RelatedSkillsLinks problem={problem} />
             </div>
 
             {/* Task Description */}
@@ -630,49 +639,67 @@ export default function ProblemPanel({
             </div>
           </div>
         ) : (
-          /* Intuition Tab: Shows VectorOpsPlayground if applicable, plus MDX */
+          /* Intuition Tab: structured step-by-step + related-skills content
+             is data-driven (problem.hints / problem.conceptConnections) and
+             genuinely per-problem, so it always renders here -- previously
+             it only showed up when a problem had no matching MDX content
+             page, which was nearly every problem (most practice problems
+             DO have one), so this tab was silently skipping its own most
+             useful content for almost every real visitor. The MDX writeup
+             (Overview/Task/reference Solution), when present, still renders
+             below it as supplementary depth, not a replacement. */
           <div>
             {vectorOpSpec && (
               <VectorOpsPlayground spec={vectorOpSpec} />
             )}
 
+            {!mdxContent && (
+              <div style={{ marginTop: vectorOpSpec ? 16 : 0, marginBottom: 18, lineHeight: 1.6, color: 'var(--nm-text-primary)', fontSize: 13.5 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 700, margin: '0 0 6px', color: 'var(--nm-text-primary)' }}>
+                  Worked Intuition &amp; Problem Walkthrough
+                </h3>
+                <p style={{ margin: '0 0 10px', color: 'var(--nm-text-secondary)', fontSize: 13 }}>
+                  {problem.mission}
+                </p>
+                <div style={{ fontSize: 12.5, color: 'var(--nm-text-muted)', lineHeight: 1.5 }}>
+                  {problem.taskDescription}
+                </div>
+              </div>
+            )}
+
+            {/* Step-by-Step Walkthrough -- always present, mdxContent or not */}
+            <div style={{ marginTop: mdxContent && vectorOpSpec ? 16 : 0 }}>
+              <StepByStepWalkthrough problem={problem} />
+            </div>
+
+            {/* Related Skills: the concept links previously only shown on
+                the Description tab -- a learner reading the Worked
+                Intuition walkthrough is exactly who needs "which lesson
+                teaches this skill" links, not just someone reading the
+                bare problem statement. */}
+            {problem.conceptConnections && problem.conceptConnections.length > 0 && (
+              <div style={{ marginTop: 18 }}>
+                <RelatedSkillsLinks problem={problem} />
+              </div>
+            )}
+
             {mdxContent ? (
-              <div style={{ marginTop: vectorOpSpec ? 16 : 0 }}>
+              <div style={{ marginTop: 22, paddingTop: 18, borderTop: '1px solid var(--nm-border)' }}>
                 {mdxContent}
               </div>
             ) : (
-              <div style={{ marginTop: vectorOpSpec ? 20 : 0, lineHeight: 1.6, color: 'var(--nm-text-primary)', fontSize: 13.5 }}>
-                <div style={{ marginBottom: 18 }}>
-                  <h3 style={{ fontSize: 15, fontWeight: 700, margin: '0 0 6px', color: 'var(--nm-text-primary)' }}>
-                    Worked Intuition &amp; Problem Walkthrough
-                  </h3>
-                  <p style={{ margin: '0 0 10px', color: 'var(--nm-text-secondary)', fontSize: 13 }}>
-                    {problem.mission}
-                  </p>
-                  <div style={{ fontSize: 12.5, color: 'var(--nm-text-muted)', lineHeight: 1.5 }}>
-                    {problem.taskDescription}
+              problem.constraints && problem.constraints.length > 0 && (
+                <div style={{ marginTop: 18, lineHeight: 1.6, fontSize: 13.5 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: 6 }}>
+                    Constraints to Keep in Mind
                   </div>
+                  <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12.5, color: 'var(--nm-text-secondary)', lineHeight: 1.6 }}>
+                    {problem.constraints.map((c, i) => (
+                      <li key={i}>{c}</li>
+                    ))}
+                  </ul>
                 </div>
-
-                {/* Step-by-Step Walkthrough */}
-                <div style={{ marginTop: 18 }}>
-                  <StepByStepWalkthrough problem={problem} />
-                </div>
-
-                {/* Constraints Reminder */}
-                {problem.constraints && problem.constraints.length > 0 && (
-                  <div style={{ marginTop: 18 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--nm-text-muted)', marginBottom: 6 }}>
-                      Constraints to Keep in Mind
-                    </div>
-                    <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12.5, color: 'var(--nm-text-secondary)', lineHeight: 1.6 }}>
-                      {problem.constraints.map((c, i) => (
-                        <li key={i}>{c}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
+              )
             )}
           </div>
         )}
