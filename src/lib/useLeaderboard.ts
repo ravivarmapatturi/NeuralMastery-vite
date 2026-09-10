@@ -4,6 +4,7 @@ export interface LeaderboardEntry {
   uid: string;
   displayName: string;
   points: number;
+  allTimePoints?: number;
 }
 
 /**
@@ -45,6 +46,7 @@ export function useLeaderboard(sortBy: 'allTime' | 'weekly', limitN = 25): { ent
                 uid: d.id,
                 displayName: typeof data.displayName === 'string' ? data.displayName : 'Learner',
                 points: (sortBy === 'allTime' ? data.allTimePoints : data.weeklyPoints) ?? 0,
+                allTimePoints: typeof data.allTimePoints === 'number' ? data.allTimePoints : undefined,
               };
             });
             setEntries(rows);
