@@ -432,7 +432,7 @@ export default function VectorOpsPlayground({ spec }: VectorOpsPlaygroundProps) 
                       value={val}
                       onChange={(e) => handleVecAChange(i, e.target.value)}
                       style={{
-                        width: 46,
+                        width: 56,
                         padding: '4px 6px',
                         borderRadius: 4,
                         border: `1.5px solid ${isHighlighted ? 'var(--nm-accent-primary)' : 'var(--nm-border)'}`,
@@ -471,7 +471,7 @@ export default function VectorOpsPlayground({ spec }: VectorOpsPlaygroundProps) 
                         value={val}
                         onChange={(e) => handleVecBChange(i, e.target.value)}
                         style={{
-                          width: 46,
+                          width: 56,
                           padding: '4px 6px',
                           borderRadius: 4,
                           border: `1.5px solid ${isHighlighted ? 'var(--nm-accent-teal)' : 'var(--nm-border)'}`,
@@ -511,7 +511,7 @@ export default function VectorOpsPlayground({ spec }: VectorOpsPlaygroundProps) 
                         value={val}
                         onChange={(e) => handleMatAChange(r, c, e.target.value)}
                         style={{
-                          width: 42,
+                          width: 50,
                           padding: '3px 4px',
                           borderRadius: 4,
                           border: '1px solid var(--nm-border)',
@@ -543,7 +543,7 @@ export default function VectorOpsPlayground({ spec }: VectorOpsPlaygroundProps) 
                           value={val}
                           onChange={(e) => handleMatBChange(r, c, e.target.value)}
                           style={{
-                            width: 42,
+                            width: 50,
                             padding: '3px 4px',
                             borderRadius: 4,
                             border: '1px solid var(--nm-border)',
