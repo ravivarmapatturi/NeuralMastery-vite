@@ -61,7 +61,21 @@ function CanvasNodeComponent({ id, data, selected }: NodeProps) {
         cursor: 'grab',
       }}
     >
-      {/* Ports / Handles: Top, Right, Bottom, Left */}
+      {/* Ports / Handles: Top, Right, Bottom, Left.
+          Each position stacks a source + target handle at the identical
+          pixel so a connection can be dragged either way from any side --
+          but React Flow hit-tests the DOM-topmost (last-rendered) element
+          at that pixel, so the one meant to be grabbed (the visible,
+          titled one) must always be rendered LAST, not first. Rendering
+          the invisible one last (the original bug) silently swapped
+          source/target on Right and Bottom, reversing the arrow direction
+          for any edge dragged from those sides. */}
+      <Handle
+        type="source"
+        position={Position.Top}
+        id="top-source"
+        style={{ ...handleStyle, top: -5, opacity: 0 }}
+      />
       <Handle
         type="target"
         position={Position.Top}
@@ -69,13 +83,13 @@ function CanvasNodeComponent({ id, data, selected }: NodeProps) {
         style={{ ...handleStyle, top: -5 }}
         title="Connect input here"
       />
-      <Handle
-        type="source"
-        position={Position.Top}
-        id="top-source"
-        style={{ ...handleStyle, top: -5, opacity: 0 }}
-      />
 
+      <Handle
+        type="target"
+        position={Position.Right}
+        id="right-target"
+        style={{ ...handleStyle, right: -5, opacity: 0 }}
+      />
       <Handle
         type="source"
         position={Position.Right}
@@ -83,13 +97,13 @@ function CanvasNodeComponent({ id, data, selected }: NodeProps) {
         style={{ ...handleStyle, right: -5 }}
         title="Connect output from here"
       />
+
       <Handle
         type="target"
-        position={Position.Right}
-        id="right-target"
-        style={{ ...handleStyle, right: -5, opacity: 0 }}
+        position={Position.Bottom}
+        id="bottom-target"
+        style={{ ...handleStyle, bottom: -5, opacity: 0 }}
       />
-
       <Handle
         type="source"
         position={Position.Bottom}
@@ -97,25 +111,19 @@ function CanvasNodeComponent({ id, data, selected }: NodeProps) {
         style={{ ...handleStyle, bottom: -5 }}
         title="Connect output from here"
       />
-      <Handle
-        type="target"
-        position={Position.Bottom}
-        id="bottom-target"
-        style={{ ...handleStyle, bottom: -5, opacity: 0 }}
-      />
 
+      <Handle
+        type="source"
+        position={Position.Left}
+        id="left-source"
+        style={{ ...handleStyle, left: -5, opacity: 0 }}
+      />
       <Handle
         type="target"
         position={Position.Left}
         id="left-target"
         style={{ ...handleStyle, left: -5 }}
         title="Connect input here"
-      />
-      <Handle
-        type="source"
-        position={Position.Left}
-        id="left-source"
-        style={{ ...handleStyle, left: -5, opacity: 0 }}
       />
 
       {/* Header with Icon, Badge & Title */}
