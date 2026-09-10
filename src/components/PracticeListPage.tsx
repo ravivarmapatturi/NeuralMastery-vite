@@ -16,7 +16,6 @@ import { useDocumentMeta } from '../lib/useDocumentMeta';
 import {
   ArrowRightIcon,
 } from './icons/PracticeIcons';
-import LiveComputation from './home/LiveComputation';
 
 const DIFFICULTY_COLOR: Record<PracticeDifficulty, string> = {
   easy: 'var(--nm-accent-primary)',
@@ -346,30 +345,6 @@ export default function PracticeListPage() {
             </Link>
           </div>
         )}
-
-        {/* Live Computation Showcase */}
-        <div style={{ marginBottom: '2.5rem' }}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'baseline',
-              marginBottom: '1rem',
-              flexWrap: 'wrap',
-              gap: 8,
-            }}
-          >
-            <div>
-              <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
-                Live Deterministic Computation
-              </h2>
-              <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', marginTop: 2 }}>
-                Step-by-step mathematical execution of fundamental AI algorithms
-              </div>
-            </div>
-          </div>
-          <LiveComputation />
-        </div>
 
         {/* Practice Tracks */}
         <div className="nm-practice-tracks" style={{ marginBottom: '2.5rem' }}>
