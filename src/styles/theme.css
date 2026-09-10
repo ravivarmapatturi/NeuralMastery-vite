@@ -291,6 +291,39 @@ html, body {
   }
 }
 
+/* /practice body: the problem catalogue is the primary thing a user comes
+   here for, so it gets the wide column; Practice Tracks is a side rail for
+   browsing by topic, not the top-level focus. grid-template-areas (not JSX
+   order) puts the catalogue first in both places -- desktop's 2-column row
+   and mobile's stacked column reuse the exact same DOM order. */
+.nm-practice-body {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(240px, 1fr);
+  grid-template-areas: "catalogue tracks";
+  gap: 2rem;
+  align-items: start;
+}
+.nm-practice-body-catalogue { grid-area: catalogue; }
+.nm-practice-body-tracks {
+  grid-area: tracks;
+  position: sticky;
+  top: 84px;
+  max-height: calc(100vh - 104px);
+  overflow-y: auto;
+}
+@media (max-width: 900px) {
+  .nm-practice-body {
+    grid-template-columns: 1fr;
+    grid-template-areas: "catalogue" "tracks";
+    gap: 2.5rem;
+  }
+  .nm-practice-body-tracks {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

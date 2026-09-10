@@ -346,97 +346,13 @@ export default function PracticeListPage() {
           </div>
         )}
 
-        {/* Practice Tracks */}
-        <div className="nm-practice-tracks" style={{ marginBottom: '2.5rem' }}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'baseline',
-              marginBottom: '1rem',
-              flexWrap: 'wrap',
-              gap: 8,
-            }}
-          >
-            <div>
-              <h2 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
-                Practice Tracks
-              </h2>
-              <div style={{ fontSize: 12, color: 'var(--nm-text-muted)', marginTop: 2 }}>
-                {tracks.length} tracks, your real progress
-              </div>
-            </div>
-            <span style={{ fontSize: 12, color: 'var(--nm-text-muted)' }}>Browse dedicated tracks</span>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(min(240px, 100%), 1fr))',
-              gap: '0.85rem',
-            }}
-          >
-            {sortedTracks.map(({ track, solved, total, pct, color }) => (
-              <Link
-                key={track.slug}
-                to={`/practice/track/${track.slug}`}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  gap: 10,
-                  padding: '12px 16px',
-                  borderRadius: 8,
-                  border: '1px solid var(--nm-border)',
-                  background: 'var(--nm-surface)',
-                  textDecoration: 'none',
-                  transition: 'border-color 0.15s ease',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--nm-text-primary)', lineHeight: 1.3 }}>
-                    {track.label}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 11.5,
-                      fontWeight: 700,
-                      color: pct > 0 ? color : 'var(--nm-text-muted)',
-                      whiteSpace: 'nowrap',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {solved}/{total} solved
-                  </span>
-                </div>
-
-                {/* Styled progress bar */}
-                <div
-                  style={{
-                    height: 5,
-                    width: '100%',
-                    background: 'var(--nm-surface-alt)',
-                    borderRadius: 3,
-                    overflow: 'hidden',
-                  }}
-                >
-                  <div
-                    style={{
-                      height: '100%',
-                      width: `${pct}%`,
-                      background: color,
-                      borderRadius: 3,
-                      transition: 'width 0.3s ease',
-                    }}
-                  />
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* All Problems Catalogue */}
-        <div id="practice-catalogue" style={{ marginBottom: '2.5rem', scrollMarginTop: 80 }}>
+        {/* Body: catalogue is the primary focus, tracks live in a side rail --
+            grid-template-areas keeps the catalogue first in DOM/visual order
+            on mobile (named areas let the sidebar reflow below it) while
+            giving it a real 2-column desktop layout, not a JSX reorder. */}
+        <div className="nm-practice-body">
+          {/* All Problems Catalogue */}
+          <div id="practice-catalogue" className="nm-practice-body-catalogue" style={{ scrollMarginTop: 80, minWidth: 0 }}>
           <div
             style={{
               display: 'flex',
@@ -722,6 +638,78 @@ export default function PracticeListPage() {
             </div>
           </div>
         )}
+          </div>
+
+          {/* Practice Tracks -- side rail, not the top-level focus */}
+          <div className="nm-practice-body-tracks">
+            <div style={{ marginBottom: '0.85rem' }}>
+              <h2 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: 'var(--nm-text-primary)' }}>
+                Practice Tracks
+              </h2>
+              <div style={{ fontSize: 11.5, color: 'var(--nm-text-muted)', marginTop: 2 }}>
+                {tracks.length} tracks, your real progress
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              {sortedTracks.map(({ track, solved, total, pct, color }) => (
+                <Link
+                  key={track.slug}
+                  to={`/practice/track/${track.slug}`}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: 8,
+                    padding: '10px 12px',
+                    borderRadius: 8,
+                    border: '1px solid var(--nm-border)',
+                    background: 'var(--nm-surface)',
+                    textDecoration: 'none',
+                    transition: 'border-color 0.15s ease',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
+                    <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--nm-text-primary)', lineHeight: 1.3 }}>
+                      {track.label}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 700,
+                        color: pct > 0 ? color : 'var(--nm-text-muted)',
+                        whiteSpace: 'nowrap',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {solved}/{total} solved
+                    </span>
+                  </div>
+
+                  {/* Styled progress bar */}
+                  <div
+                    style={{
+                      height: 4,
+                      width: '100%',
+                      background: 'var(--nm-surface-alt)',
+                      borderRadius: 3,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${pct}%`,
+                        background: color,
+                        borderRadius: 3,
+                        transition: 'width 0.3s ease',
+                      }}
+                    />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </main>
     </div>
