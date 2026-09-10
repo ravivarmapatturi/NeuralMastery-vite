@@ -212,8 +212,11 @@ export default function ProblemPanel({
         overflow: 'hidden',
       }}
     >
-      {/* Header bar */}
+      {/* Header bar -- tab buttons (Description/Worked Intuition/Need Help?/
+          Focus), not real content; excluded from the search index so it
+          doesn't pollute every practice page's search snippet. */}
       <div
+        data-pagefind-ignore
         style={{
           display: 'flex',
           alignItems: 'center',

@@ -808,9 +808,15 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
           onMouseLeave={(e) => ((e.target as HTMLElement).style.background = 'var(--nm-border)')}
         />
 
-        {/* Right: Coding & Testing Workspace OR Canvas Agent Builder */}
+        {/* Right: Coding & Testing Workspace OR Canvas Agent Builder --
+            data-pagefind-ignore on both branches below: this whole side is
+            IDE chrome (mode toggles, Run/Submit buttons, code editor, test
+            case labels), not real page content. Without it, Pagefind
+            indexed every button/tab label here, turning every practice
+            page's search snippet into unreadable concatenated UI text. */}
         {hasCanvas && workspaceMode === 'canvas' && problem?.canvasSpec ? (
           <div
+            data-pagefind-ignore
             style={{
               height: '100%',
               display: isMobile
@@ -834,6 +840,7 @@ export default function PracticeWorkspace({ problemId, mdxContent }: PracticeWor
         ) : (
           <div
             ref={splitBRef}
+            data-pagefind-ignore
             style={{
               height: '100%',
               display: isMobile

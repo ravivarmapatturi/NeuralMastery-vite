@@ -35,6 +35,7 @@ export default function Navbar({
     <>
       <header
         className="nm-navbar-header"
+        data-pagefind-ignore
         style={{
           position: 'sticky',
           top: 0,

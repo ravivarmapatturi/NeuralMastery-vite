@@ -10,6 +10,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer
+      data-pagefind-ignore
       style={{
         borderTop: '1px solid var(--nm-border)',
         padding: '1.5rem 1.5rem',
