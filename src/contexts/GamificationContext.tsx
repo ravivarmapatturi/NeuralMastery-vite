@@ -236,6 +236,27 @@ function leaderboardFields(user: User, events: AwardEvent[], now: number, displa
 export function GamificationProvider({ children }: { children: React.ReactNode }) {
   const { user, loading: authLoading } = useAuth();
   const [events, setEvents] = useState<AwardEvent[]>([]);
+  // `award()` reads this ref, never the `events` state closure directly.
+  // React batches/defers state updates, so two award() calls firing back
+  // to back (e.g. submitting two problems within the same tick, or a
+  // double-invoked handler) can both capture the SAME pre-update `events`
+  // snapshot -- each then computes nextEvents missing the other's new
+  // entry, and each independently commits its own get-merge-set round
+  // trip to Firestore. Because `{merge: true}` replaces an array FIELD
+  // wholesale rather than merging its elements, whichever round trip's
+  // setDoc lands last silently overwrites the other's write, permanently
+  // losing that event (this is the real cause of a real reported bug:
+  // "solved count stuck at 1 despite solving more"). Updating this ref
+  // synchronously on every real change -- before the async Firestore
+  // work in commit()/the sign-in effect even starts -- means a same-tick
+  // second call always sees the first call's addition, matching the
+  // pre-existing displayNameOverrideRef pattern just below for the same
+  // class of stale-closure bug.
+  const eventsRef = useRef<AwardEvent[]>([]);
+  const updateEvents = useCallback((next: AwardEvent[]) => {
+    eventsRef.current = next;
+    setEvents(next);
+  }, []);
   const [displayNameOverride, setDisplayNameOverride] = useState<string | null>(null);
   // Read via a ref (not the state closure) inside commit()/the sign-in
   // effect below -- those callbacks are created once per `user` change and
@@ -248,15 +269,15 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
   }, [displayNameOverride]);
 
   useEffect(() => {
-    setEvents(readStorage());
+    updateEvents(readStorage());
     setDisplayNameOverride(readDisplayNameOverride());
-  }, []);
+  }, [updateEvents]);
 
   useEffect(() => {
     if (authLoading) return;
 
     if (!user) {
-      setEvents(readStorage());
+      updateEvents(readStorage());
       return;
     }
 
@@ -327,7 +348,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
           console.error('Failed to sync leaderboard entry to the server after retrying:', err),
         );
 
-        setEvents(merged);
+        updateEvents(merged);
         writeStorage(merged);
 
         unsubscribe = onSnapshot(
@@ -336,7 +357,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
             if (cancelled) return;
             const remote: AwardEvent[] = normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : []);
             const currentMerged = mergeEvents(remote, readStorage());
-            setEvents(currentMerged);
+            updateEvents(currentMerged);
             writeStorage(currentMerged);
 
             const liveOverride = typeof snap.data()?.displayNameOverride === 'string' ? (snap.data()!.displayNameOverride as string) : null;
@@ -375,12 +396,12 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
       cancelled = true;
       unsubscribe?.();
     };
-  }, [user, authLoading]);
+  }, [user, authLoading, updateEvents]);
 
   const commit = useCallback(
     (next: AwardEvent[]) => {
       const normalized = normalizeEvents(next);
-      setEvents(normalized);
+      updateEvents(normalized);
       writeStorage(normalized);
 
       if (user) {
@@ -390,8 +411,13 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
             const remoteEvents: AwardEvent[] = snap?.exists()
               ? normalizeEvents(Array.isArray(snap.data()?.gamificationEvents) ? snap.data()!.gamificationEvents : [])
               : [];
-            const merged = mergeEvents(remoteEvents, normalized);
-            setEvents(merged);
+            // Merge against the LATEST local state (ref, not the `normalized`
+            // closure captured when this commit() call started) -- if
+            // another award() landed while this async round trip was in
+            // flight, its event is already in eventsRef.current and must
+            // not be dropped by writing an older snapshot here.
+            const merged = mergeEvents(remoteEvents, eventsRef.current);
+            updateEvents(merged);
             writeStorage(merged);
 
             void withRetry(() => setDoc(progressRef, { gamificationEvents: merged }, { merge: true })).catch((err) =>
@@ -404,11 +430,12 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
         });
       }
     },
-    [user],
+    [user, updateEvents],
   );
 
   const award = useCallback(
     (permalink: string, kind: AwardEvent['kind'], points: number, hintUsed?: boolean) => {
+      const events = eventsRef.current; // see eventsRef's own comment: never read the `events` state closure here
       if (hasAward(events, permalink, kind)) return; // already awarded once, ever -- no double-counting on repeat marks/reruns
       const now = new Date(Date.now());
       const nextEvents: AwardEvent[] = [
@@ -468,7 +495,7 @@ export function GamificationProvider({ children }: { children: React.ReactNode }
 
       commit(nextEvents);
     },
-    [events, commit, user],
+    [commit, user],
   );
 
 

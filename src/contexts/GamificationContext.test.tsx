@@ -25,6 +25,19 @@ function Harness() {
       <button onClick={() => awardFlashcardRevealed('flashcard:home-kv-cache')}>reveal-flashcard</button>
       <button onClick={() => awardFlashcardRevealed('flashcard:other-card')}>reveal-other-flashcard</button>
       <button onClick={() => awardArchitectureCompleted('/practice/react-agent-loop')}>complete-architecture</button>
+      <button
+        onClick={() => {
+          // Both calls fire in the SAME synchronous event handler, before
+          // React has committed either one's state update -- the exact
+          // real-world shape of the race this file's eventsRef fix
+          // guards against (e.g. two awardProblemCompleted calls from
+          // solving two problems in quick succession).
+          awardMarkUnderstood('/docs/race-a')
+          awardProblemCompleted('/docs/race-b', 'medium')
+        }}
+      >
+        race-two-awards-same-tick
+      </button>
     </div>
   )
 }
@@ -154,6 +167,16 @@ describe('GamificationContext: signed-out (localStorage only)', () => {
     await user.click(screen.getByText('mark-foo'))
     await user.click(screen.getByText('mark-foo'))
     expect(screen.getByTestId('points')).toHaveTextContent('10') // still just once
+  })
+
+  it('two award() calls fired in the same synchronous tick both persist -- neither is silently dropped by a stale events closure', async () => {
+    setup()
+    const user = userEvent.setup()
+    await user.click(screen.getByText('race-two-awards-same-tick'))
+    // 10 (mark) + 50 (medium complete) -- if either call had read a stale
+    // pre-update `events` snapshot, one of these two awards would be
+    // silently missing from the final total.
+    await waitFor(() => expect(screen.getByTestId('points')).toHaveTextContent(String(10 + 50)))
   })
 
   it('marking AND completing different real pages both count toward points', async () => {
